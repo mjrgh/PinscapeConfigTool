@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html style="height: 100%; width: 100%; margin: 0px; padding: 0px;">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <link rel="stylesheet" href="jquery-ui/jquery-ui-1.11.4.css"/>
+   <title>Pinscape Controller Setup</title>
+</head>
+<body style="margin: 0px; padding: 0px;">
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+
+<div style="display: table; width: 100%; height: 100%; margin: 0px;">
+   <div style="display: table-cell; height: 100%; vertical-align: middle; text-align: center; margin: 0px;">
+      <div style="margin: 2em; font-weight: bold;">
+	 Loading Configuration
+      </div>
+      <div>
+	 Please stand by
+      </div>
+   </div>
+</div>
+
+<script>
+$(function() {
+    window.navigate(window.location.href.replace(/ConfigureLoader/, "Configure"));
+});
+   
+</script>
+
+</body>
+</html>

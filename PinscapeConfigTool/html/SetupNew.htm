@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Pinscape Controller Setup</title>
+</head>
+<body>
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+<div>
+
+<h1>New KL25Z Setup</h1>
+
+   <p>
+      <b>If you have a brand new KL25Z</b>, fresh out of the box, you
+      <b>must</b> start by updating the "boot loader" firmware.
+      The factory-installed firmware doesn't work with the mbed platform
+      that we use.  This page leads you through the upgrade process.  
+   </p>
+
+   <p>
+      <b>If you've already updated this KL25Z,</b> there's no need to repeat
+      this.  The firmware fix is only needed once per card.
+   </p>
+   
+   <div style="text-align: center; margin: 4em 1em;" id="buttons1">
+      <a id="startButton" class="shower button" href="#" style="display: inline-block; min-width: 12ex;">Start</a>
+      <a class="button" href="Install.htm" style="display: inline-block; min-width: 12ex;">Skip this step</a>
+   </div>
+   <div class="hider">
+      <div id="warningWin8">
+	 <div class="warning">
+	    <p>Warning!</p>
+	    
+	    <p>
+	       This procedure <b>will fail</b> on Windows <b>8 OR LATER</b>.  It
+	       won't work on <b>ANY LATER VERSIONS:</b>
+	    </p>
+	    <p>
+	       <b>
+	       Windows 8 - FAIL
+	       <br>Windows 8.1 - FAIL
+	       <br>Windows 10 - FAIL
+	       <br>Anything else later than Windows 7 - FAIL
+	       </b>
+	    </p>
+	    
+	    <p>
+	       You <b>must</b> perform these steps using <b>Windows 7 or earlier</b>:
+	       XP, Vista, or Windows 7 will work, and <b>only</b> these versions will work.
+	       This is due to a bug/limitation in the KL25Z factory firmware.  There is
+	       no known workaround.
+	    </p>
+	    
+	    <p>
+	       <b>After</b> the upgrade, your KL25Z will work on <b>all Windows versions</b>.
+	    </p>
+	 </div>
+	 
+	 <div class="warning">
+	    <b>You don't have to install or run this config program on the older machine!</b>
+	    The only thing the config program does is to list the instructions.  Just display
+	    or print the instructions now, so that you can refer to them on the other machine.
+	 </div>
+      </div>
+
+      <div style="text-align: center;" id="warningWin8Opts">
+	 <div>
+	    <a href="#" id="xpvm">Are you out of your Vulcan mind? It's <span id="year"></span>! I don't have an XP or Win 7 machine!!!!</a>
+	 </div>
+	 <div>
+	    <a href="#" class="shower" id="dismissWarning">Got it, let's go!</a>
+	 </div>
+      </div>
+
+      <script>
+$(function() {
+    $("#year").html((new Date()).getFullYear());
+});
+
+$("#xpvm").click(function(ev) {
+    ev.preventDefault();
+    window.external.ShowHelp("xpvm.htm");
+});
+
+$("#startButton").click(function(ev) {
+    $("#buttons1").hide();
+});
+$("#dismissWarning").click(function(ev) {
+    $("#warningWin8, #warningWin8Opts").hide();
+});
+      </script>
+      
+      <div class="hider">
+	 <hr>
+	 <p>To upgrade the factory firmware, follow these steps:</P>
+
+	 <ol id="stepList">
+
+	    <li>In your Web browser, go to <a target="_blank" href="http://pemicro.com/opensda/">
+	       http://pemicro.com/opensda/</a>.
+
+	    <li>Find the section <b>OpenSDA Firmware (MSD &amp; Debug)</b>.
+	    Click on the <b>Firmware Apps</b> link.  You'll be asked to create a free account or to
+	    provide your email address to receive a download link.  Choose the option you prefer
+	    and download the file.
+
+	    <li>Unzip the downloaded file to a local folder on your hard disk.
+
+	    <li><b>Unplug all USB cables from your KL25Z.</b>  If you have any other KL25Z cards
+	    already installed, unplug all of those as well.
+
+	    <li>Open the My Computer window on your Windows desktop, so that you can view
+	    attached disk drives.
+
+	    <li><img src="kl25z-annotated.png" style="float: right; margin: 1em 0px 1em 2em;">
+	    <b>Press and hold</b> the KL25Z reset button.
+
+	    <li><b>Keep holding the reset button</b> while you plug a USB cable into the
+	    <b>programming</b> port on the KL25Z, and plug the other end into a USB port
+	    on your computer.
+
+	    <li>Release the reset button.
+
+	    <li>You should see a new thumb drive icon appear in the My Computer window,
+	    with a name like <b>BOOTLOADERAPP</b>.  This represents the KL25Z's programming port.
+
+	    <li>In the PEMicro software you downloaded above, find the file
+	    <b>BOOTUPDATEAPP_Pemicro_v111.SDA</b>.  (The digits at the end are the
+	    version number, so they can vary.)
+
+	    <li>Drag and drop that file onto the KL25Z thumb drive.
+
+	    <li>Wait for Windows to finish copying the file, then unplug the KL25Z.
+
+	    <li>We're now going to repeat the steps above with a different .SDA file.  As
+	    before, press and hold the reset button on the KL25Z, and plug in a USB cable
+	    between the KL25Z programming port and your computer.  Release the reset button.
+	    In the downloaded files, find <b>MSD-DEBUG-FRDM-KL25Z_Pemicro_v114.SDA</b>, and
+	    drag it onto the thumb drive.  (As before, the digits at the end might vary.)
+	    Unplug the USB cable after Windows finishes copying the file.
+
+	    <li>To confirm that everything worked, reconnect the KL25Z programming port
+	    to your PC <b>without pressing the reset button</b>.  The thumb drive should
+	    appear again, but it should now be titled <b>FRDM-KL25Z</b>.  You should also
+	    see a steady (non-blinking) green LED on the card while it's plugged in.
+
+	    <p><a href="#" class="shower" id="troubleshooting">It doesn't look right!</a>
+	    <p class="hider">
+	       <b>If any of this doesn't match what you see,</b> the update might not have
+	       worked.  <b>If you attempted the upgrade from Windows 8 or higher, that's probably
+	       the problem.</b>  The original factory firmware is incompatible with Windows 8-10
+	       and will fail silently and mysteriously (with no error messages) on these systems.
+	       If you did the update from Windows 7 or earlier and it still didn't work, it's
+	       possible that the procedures have changed since this writing.  Try looking
+	       for instructions (.txt and/or .pdf files) in the downloaded ZIP to see if
+	       there's any information on new procedures.
+	    </p>
+
+	    <li>If all went as expected, your KL25Z is now ready to use!  With the updated
+	    firmware in place, the device will now work on all versions of Windows from XP
+	    onward, so that earlier warning about Windows 8-10 no longer applies.
+
+	    <p>We're now ready to proceed to the next step, which is to install the
+	       Pinscape Controller software onto the KL25Z.
+	    </p>
+
+	    <p><b>Important!</b>  In the future, <b>DON'T</b> press or hold the Reset button
+	       while plugging in the KL25Z.  Doing so triggers the boot loader update process,
+	       which you've now finished!  This normally won't ever have to be repeated for
+	       the same card.
+	    </p>
+
+	 </ol>
+	 <div style="margin: 1ex 2em; clear: both;" id="listButtons">
+	    <a href="#" id="nextStep">Next Step</a>
+	    <span style="margin: 0px 1em;">|</span>
+	    <a href="#" id="showAll">Show All</a>
+	    <span style="margin: 0px 1em;">|</span>
+	    <a href="#" id="printBtn">Print these instructions</a>
+	 </div>
+	 <div style="margin: 1ex 2em; clear: both; display: none;" id="listButtonsDone">
+	    <a href="#" id="printBtn2">Print these instructions</a>
+	 </div>
+
+	 <div id="done" class="noPrint">
+	    <div style="margin: 2em; text-align: center;">
+	       <a class="button" href="Install.htm">Install Pinscape Software &gt;&gt;</a>
+	    </div>
+	 </div>
+      </div>
+   </div>
+
+   </div>
+</div>
+
+<div id="navproxy"></div>
+<div id="nav">
+   <div class="left">
+      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Return to the main menu"><img src="homeIcon.png"></a>
+   </div>
+   <div class="navSpacer">
+   </div>
+</div>
+
+<script type="text/javascript">
+$(function()
+{
+    // hide all but the first list element
+    $("#done").hide();
+    var lst = $("#stepList > li").slice(1);
+    lst.hide();
+
+    // "Next Step" -> show next list item: show the first element in the
+    // remaining list, then slice the list to remove the first element.
+    // If the list is empty, we're done.
+    $("#nextStep").click(function(ev) {
+	ev.preventDefault();
+	lst.first().show();
+	scrollIntoView($(this));
+	lst = lst.slice(1);
+	if (lst.length == 0)
+	    done(true);
+    });
+
+    // "Show All" -> show the whole rest of the list
+    $("#showAll").click(function(ev) {
+	ev.preventDefault();
+	lst.show();
+	done(false);
+    });
+
+    // Print button -> show the rest of the list and print the page
+    $("#printBtn, #printBtn2").click(function(ev) {
+	ev.preventDefault();
+	lst.show();
+	done(false);
+	$("#troubleshooting").click();
+	$("#warningWin8").show();
+	window.external.PrintPage();
+	$("#warningWin8").hide();
+    });
+
+    // When the last item is displayed, remove the Next Step and Show
+    // All buttons and show the "Done" section
+    function done(scroll)
+    {
+	$("#listButtons").hide();
+	$("#listButtonsDone").show();
+	$("#done").show();
+	if (scroll)
+	    scrollIntoView($("#done"));
+    }
+});
+</script>
+
+</body>
+</html>

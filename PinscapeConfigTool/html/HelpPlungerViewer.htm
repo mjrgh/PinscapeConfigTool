@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Plunger Sensor Viewer</title>
+</head>
+<body>
+
+<h1>
+   <img style="float: right;" src="h1plunger.png">
+   Plunger Sensor Viewer
+   <img style="visibility: hidden; vertical-align: middle;" src="h1plunger.png">
+</h1>
+
+<div>
+
+   <p>
+      This window is designed to help you install and adjust your
+      plunger sensor.  It shows the current position reading
+      and the calibration data.  If you're using an imaging
+      sensor (such as a TSL1410R), it shows a real-time view of
+      the captured image.
+   </p>
+
+   <h2>Sensor snapshot</h2>
+
+   <p>
+      For imaging sensors, the "snapshot" box displays the
+      image pixels that your sensor is capturing.  This is updated
+      continuously, so that you can immediately see the effects of
+      adjusting the sensor position or the light source.
+   </p>
+
+   <p>
+      The pixels are rendered in shades of gray, since the
+      sensors we support are monochromatic.  Black pixels correspond
+      to full darkness (or full shadow) on the sensor, and white
+      pixels are fully saturated (maximum brightness at the sensor).
+      Our sensor types are one-dimensional, meaning that
+      the pixel array is one pixel wide.  The display stretches
+      out each pixel vertically to make it easier to visualize,
+      so the image might look like a bar code or a series of
+      vertical stripes.
+   </p>
+
+   <p>
+      For optimal performance, adjust your sensor and light
+      source as follows:
+   </p>
+   
+   <ul>
+      
+      <li>Position the sensor so that the <b>shadow edge</b>
+      is always in view, whether the plunger is pushed all the
+      way forward or pulled all the way back.
+      
+      <li>The shadow edge should be sharp and narrow.
+      It's easier to get a sharp edge if you use a "point
+      source" - a light source with a small aperture - and
+      you position it relatively far away from the plunger
+      (on the floor of the cabinet, say).  The light
+      source should be roughly centered under the sensor
+      and pointing straight at it.
+      
+      <li>The light source brightness should be set so
+      that there's a good degree of contrast between the
+      dark and light regions in the image.  If the image
+      is all black or dark gray, the light source needs
+      to be brighter.  If the image is all white or
+      washed out, the light source needs to be dimmer.
+      
+   </ul>
+   
+   <p>
+      The statistics shown under the image give you some more
+      information about the sensor scan.
+   </p>
+
+   <p>The Min and Max Brightness levels are on a scale from 0 to
+      255.  0 is full darkness, 255 is fully saturated.  If your
+      light source is set up properly, the Max value should be
+      at least 30 or 40 higher than the Min value.  This indicates
+      a good level of contrast between the lit areas and the
+      shadows.
+   </p>
+
+   <h2>Plunger position</h2>
+
+   <p>If the controller is able to read the plunger position
+      from the sensor, the position will be displayed as a
+      green bar across the bottom of the snapshot box.
+   </p>
+
+   <p>
+      If you don't see a green bar, it means that the controller
+      can't read the position.  If you're using an imaging
+      sensor, this might be because the image is too dark
+      or too washed out.
+   </p>
+
+   <h2>Current calibration display</h2>
+
+   <p>The snapshot box draws little arrows to show the current
+      calibration limits.  The purple arrows show the park position,
+      where the plunger sits when at rest. 
+      The red arrows show the maximum retraction position.
+      If the plunger is calibrated properly, the plunger
+      should settle and stay roughly at the park position
+      when you're not moving it.
+   </p>
+
+   <p>Real plungers always have at least a little mechanical play,
+      so your plunger won't come to rest at exactly the same spot
+      every time you fire it.  It should be fairly consistent,
+      though.  If the park position shown isn't fairly close
+      to the actual resting position, re-run the calibration
+      procedure.
+   </p>
+      
+
+   <h2>Calibrating</h2>
+
+   <p>If you just installed the sensor, or you've adjusted
+      its position, you should calibrate it.  You can also
+      recalibrate any time if the displayed park position
+      doesn't look right.
+   </p>
+
+   <p>To calibrate, make sure the plunger is at rest at its
+      normal park position.  Then click the Calibrate button,
+      and follow the on-screen instructions.
+   </p>
+
+   <p>Note that the pixel display is disabled during the
+      calibration process.  It will resume when the
+      calibration finishes.
+   </p>
+   
+
+   <h2>Timing statistics</h2>
+
+   <p>The scan time shows you how long it takes, on average,
+      to take one position reading from the sensor.  For an imaging
+      sensor, this is the time it takes for the sensor to snap
+      a photo (so to speak) and then transfer the image pixels
+      to the microcontroller.  The controller has to read the pixels
+      one by one, so the pixel transfer is usually the bulk of the
+      scan time for an image sensor.  For an analog sensor (an LVDT
+      or potentiometer, for example), the "scan time" is simply the
+      time it takes to sample the analog voltage level on the
+      sensor output and turn it into a digital reading.
+   </p>
+
+   <p>The capture time for images from the TSL141R should be
+      about 2.5ms with the current controller software.  That's
+      about 400 frames per second, which would be considered
+      pretty fast in a regular photography or video context.  A
+      high frame rate is good for capturing fast motion, which
+      is exactly the situation we have when you pull back and
+      release the plunger.
+   </p>
+
+   <p>For non-imaging sensors, the "scan time" is usually
+      negligible (tens of microseconds), since we only have to
+      wait for the analog voltage sampler to take a reading.
+   </p>
+
+   <p>The "processing time" shows how long it took for the
+      software to analyze the raw data for the current frame to
+      determine the current plunger position.  For an imaging
+      sensor, this reflects the time it takes for the software
+      to analyze the image pixels.  For an analog sensor, this
+      is usually zero (or close enough), since we treat the
+      plunger position as linearly proportional to the voltage
+      level.  In other words, the "processing" is simply a
+      multiplication, which takes less than a microsecond on
+      the controller's CPU.
+   </p>
+
+   <p>The timing statistics are provided mostly as a sanity
+      check, to help determine if things are working as expected.
+      There isn't anything you can do in the configuration to
+      adjust these directly.  If the times displayed aren't in
+      the right ballpark, there might be a problem with the
+      software or with your setup that bears looking into.
+   </p>
+
+   <p>A couple of notes on the timing.  First, the image update
+      rate that you see in the setup window will be much slower
+      than what you see in the statistics.  The USB transfer to
+      send the full image to the PC takes a lot longer than
+      reading the image on the microcontroller.  This overhead
+      doesn't apply during normal operations - the controller
+      normally analyzes the pixels all by itself and never sends
+      them to the PC.  So the statistics really do reflect what's
+      going on in the controller, even though the viewer window
+      can't display updates at the same speed.
+      Second, for the TSL1410R sensor, the
+      "processing time" and "scan time" happen concurrently,
+      because the sensor is already snapping the next photo and
+      transferring it to the controller while the controller is
+      analyzing the previous one.  This means that the true frame
+      rate is basically determined by the longer of the sensor
+      scan time and the processing time.
+   </p>
+
+   <h2>Full resolution and low res</h2>
+   
+   <p>If you're using an image sensor, the <b>Full resolution</b> and
+      <b>Low resolution</b> buttons let you select how many pixels you
+      want to view in the dialog.  This doesn't affect how the controller
+      reads the sensor; it only affects the visualization in the dialog.
+      The low res mode is offered simply to let you speed up the frame
+      rate displayed in the dialog.
+   </p>
+
+   <p>The resolution setting doesn't change anything
+      outside of the dialog.  It has absolutely no effect on how the
+      controller reads the sensor or reports the plunger position in
+      normal pinball play.  It also has no effect even within the dialog
+      for non-imaging sensors.
+   </p>
+
+</div>
+
+
+</body>
+</html>

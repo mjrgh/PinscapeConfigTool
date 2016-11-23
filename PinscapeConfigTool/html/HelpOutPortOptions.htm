@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Output Port Options</title>
+</head>
+<body>
+<h1>
+   Output Port Options
+</h1>
+
+<div>
+
+   <h2>Gamma</h2>
+
+   <p>
+      If this option is checked, the controller will apply "gamma correction" to the port.
+      This adjusts the output's intensity level so that it better matches the way the human
+      eye perceives brightness.
+   </p>
+
+   <p>
+      Gamma correction can be beneficial for ports connected to lighting devices:
+      LEDs, incandescent bulbs, light strips, etc.  It isn't usually desirable for other
+      device types, such as solenoids or motors.
+   </p>
+
+   <p>
+      Note that this option is only meaningful with ports that are capable of dimming,
+      which means they must support PWM.  Digital ports (Digital GPIO ports,
+      74HC595 outputs, and chime board outputs) are limited on/off operation, so they
+      can't be gamma-corrected.
+   </p>
+
+   <p>
+      For simplicity, the controller uses a fixed gamma of 2.8.  Ideally, the exact gamma
+      value should be chosen individually for each device, since each device has its own
+      unique brightness response curve.  Other factors like ambient lighting also can
+      affect the results.  But in practice, the variation due to these factors is usually
+      pretty small, so the fixed gamma should be a good approximation in most cases.
+   </p>
+
+   <h2>Noisy</h2>
+
+   <p>
+      Set this option for ports that control noise-making devices, such as solenoids
+      and motors.
+   </p>
+
+   <p>
+      Each port marked "noisy" is included in the "night mode" cut-off group.  When
+      Night Mode is activated, all of these ports will be disabled.  They'll operate
+      normally the rest of the time.
+   </p>
+
+   <p>
+      If you're using the Night mode feature, you should first go through your
+      devices and figure out which port you're going to use for which device.  Then
+      simply check the "Noisy" box for each noise-making device.  When you turn on
+      Night Mode, these devices will be disabled, allowing you to play more quietly.
+   </p>
+
+   <p>
+      If you're not using the Night Mode feature, you can ignore this option.
+   </p>
+
+   <h2>Active Low</h2>
+
+   <p>
+      This option reverses the voltage levels for ON and OFF for a GPIO output port.
+   </p>
+
+   <p>
+      By default, ports are "active high", meaning that the output controller
+      sets the port's GPIO pin to "high" (3.3V) when the software port is ON,
+      and sets it to "low" (0V) when the software port is OFF.
+   </p>
+
+   <p>
+      Setting this option reverses those voltages.  An "active low" port's GPIO
+      pin is "low" (0V) when the software port is ON, and "high" (3.3V) when
+      the software port is OFF.
+   </p>
+
+   <p>
+      <b>Don't</b> use this option with the MOSFET "booster circuit" described
+      in the Build Guide.  That circuit is designed for the default Active High
+      triggering.
+   </p>
+
+   <p>
+      Do use this option if you're using some other type of booster circuit that
+      requires active-low triggering.  This is fairly common among third-party
+      "relay boards" designed for Arduino projects, for example.  If you have a
+      relay board that instructs you to connect the control input to "Ground" or
+      "GND" or 0V to trigger it, it's an active-low design and you should select
+      this option.
+   </p>
+
+   <p>
+      Note that this option only works with GPIO ports.  The Expansion Board
+      ports and the external output chips (TLC5940 and 74HC595) have different
+      designs that can't use this feature.  In the case of the expansion boards,
+      it's moot anyway because those boards have their own booster circuits built in.
+   </p>
+
+</div>
+
+</body>
+</html>

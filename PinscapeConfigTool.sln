@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinscapeConfigTool", "PinscapeConfigTool\PinscapeConfigTool.csproj", "{CA249706-72F4-47B2-9D99-ADEA5F7E6E4F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F18489DF-3A5D-4CF9-B1DA-91903D77D1DB} = {F18489DF-3A5D-4CF9-B1DA-91903D77D1DB}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncBuildNumber", "IncBuildNumber\IncBuildNumber.csproj", "{F18489DF-3A5D-4CF9-B1DA-91903D77D1DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinscapeConfigToolUpdater", "PinscapeConfigToolUpdater\PinscapeConfigToolUpdater.csproj", "{3AF2994E-3956-4F19-AB60-C8BC31DE2760}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NightMode", "NightMode\NightMode.csproj", "{EA65C39E-24E5-4D79-9BF0-B3CDADD733B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA249706-72F4-47B2-9D99-ADEA5F7E6E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA249706-72F4-47B2-9D99-ADEA5F7E6E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA249706-72F4-47B2-9D99-ADEA5F7E6E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA249706-72F4-47B2-9D99-ADEA5F7E6E4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F18489DF-3A5D-4CF9-B1DA-91903D77D1DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F18489DF-3A5D-4CF9-B1DA-91903D77D1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F18489DF-3A5D-4CF9-B1DA-91903D77D1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F18489DF-3A5D-4CF9-B1DA-91903D77D1DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF2994E-3956-4F19-AB60-C8BC31DE2760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF2994E-3956-4F19-AB60-C8BC31DE2760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF2994E-3956-4F19-AB60-C8BC31DE2760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF2994E-3956-4F19-AB60-C8BC31DE2760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA65C39E-24E5-4D79-9BF0-B3CDADD733B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA65C39E-24E5-4D79-9BF0-B3CDADD733B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA65C39E-24E5-4D79-9BF0-B3CDADD733B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA65C39E-24E5-4D79-9BF0-B3CDADD733B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
