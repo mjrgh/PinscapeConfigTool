@@ -11,37 +11,15 @@
 </h1>
 
 <div>
+   The "option" icons next to each port let you select special handling for the port.
+   Click on an option icon to toggle its status.  Note that some options are only
+   available with certain types of ports, so you won't necessarily see all of the
+   option icons listed next to every port.
+</div>
 
-   <h2>Gamma</h2>
+<div>
 
-   <p>
-      If this option is checked, the controller will apply "gamma correction" to the port.
-      This adjusts the output's intensity level so that it better matches the way the human
-      eye perceives brightness.
-   </p>
-
-   <p>
-      Gamma correction can be beneficial for ports connected to lighting devices:
-      LEDs, incandescent bulbs, light strips, etc.  It isn't usually desirable for other
-      device types, such as solenoids or motors.
-   </p>
-
-   <p>
-      Note that this option is only meaningful with ports that are capable of dimming,
-      which means they must support PWM.  Digital ports (Digital GPIO ports,
-      74HC595 outputs, and chime board outputs) are limited on/off operation, so they
-      can't be gamma-corrected.
-   </p>
-
-   <p>
-      For simplicity, the controller uses a fixed gamma of 2.8.  Ideally, the exact gamma
-      value should be chosen individually for each device, since each device has its own
-      unique brightness response curve.  Other factors like ambient lighting also can
-      affect the results.  But in practice, the variation due to these factors is usually
-      pretty small, so the fixed gamma should be a good approximation in most cases.
-   </p>
-
-   <h2>Noisy</h2>
+   <h2><img src="NoisyOn.png"> Noisy Port</h2>
 
    <p>
       Set this option for ports that control noise-making devices, such as solenoids
@@ -49,15 +27,14 @@
    </p>
 
    <p>
-      Each port marked "noisy" is included in the "night mode" cut-off group.  When
-      Night Mode is activated, all of these ports will be disabled.  They'll operate
-      normally the rest of the time.
+      Each port marked with this flag will be <b>deactivated</b> when Night Mode
+      is engaged.  These ports will operate only when Night Mode isn't in use.
    </p>
 
    <p>
-      If you're using the Night mode feature, you should first go through your
-      devices and figure out which port you're going to use for which device.  Then
-      simply check the "Noisy" box for each noise-making device.  When you turn on
+      If you're using the Night mode feature, you should first go through your devices
+      and figure out the port you're going to connect each device to.  Then,
+      set the "Noisy" flag for each noise-making device.  When you turn on
       Night Mode, these devices will be disabled, allowing you to play more quietly.
    </p>
 
@@ -65,7 +42,39 @@
       If you're not using the Night Mode feature, you can ignore this option.
    </p>
 
-   <h2>Active Low</h2>
+   <h2><img src="GammaOn.png"> Gamma</h2>
+
+   <p>
+      If this option is set, the controller applies "gamma correction" to the port.
+      This adjusts the intensity level of the port on a curved scale so that it
+      better matches the way the human eye perceives brightness.
+   </p>
+
+   <p>Gamma correction is best for ports connected to lighting devices like lamps
+      and LEDs.  When used with lights, gamma correction makes "fading" effects look
+      more linear to the eye, and improves RGB color mixing accuracy.  You generally
+      shouldn't use gamma correction with other device types, such as solenoids
+      and motors.
+   </p>
+
+   <p>
+      The gamma correction option is only available for ports with PWM capability,
+      because it only affects intermediate intensity levels between fully off
+      and fully on.  The ends of the curve - 0% and 100% brightness - are 
+      the same with or without gamma correction.  This means that you can't
+      gamma-correct digital-only ports, such as Digital GPIO ports, 74HC595 outputs,
+      and chime board outputs.
+   </p>
+
+   <p>
+      To keep things simple, the controller uses a fixed gamma of 2.8.  Even
+      though the ideal gamma does vary a little from one device to the next,
+      and can even be affected by other variables (e.g., ambient lighting),
+      the fixed 2.8 gamma should work well enough for most lighting devices,
+      and should at least be an improvement over purely linear brightness.
+   </p>
+
+   <h2><img src="ActiveLowOn.png"> Active Low</h2>
 
    <p>
       This option reverses the voltage levels for ON and OFF for a GPIO output port.

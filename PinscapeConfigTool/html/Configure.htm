@@ -1964,10 +1964,10 @@ function updateCalButtonStatus()
 		  <td><b>Important!</b> Set this port to "ZB Launch Ball" in the
 		     <a class="dofconfigtool">DOF Config Tool</td>
 	       </tr>
-	       <tr>
+	       <tr class="buttonRow">
 		  <td class="keylabel">Key/button:</td>
 		  <td>
-		     <span class="keymapping" id="keymapZB">
+		     <span class="keymapping" id="keymapZB" idx="1000">
 			<span class="keyname"></span>
 			<span class="keycode"></span>
 			<span class="keytype"></span>
@@ -2042,6 +2042,25 @@ $("#zbPort").change(function(ev) {
       pin or key assignment to change a setting.
 
       <div>
+	 <img src="ShiftButton.png" style="vertical-align: middle;">
+	 <b>Shift button number:</b> <input type="text" id="shiftButton" size="4">
+	 <a href="#" class="shower">What's this?</a>
+	 <div class="hider">You can designate one button as the <b>local
+	    Shift button</b>.  When you hold down this button, pressing any other
+	    button will use the "shifted" key assignment for the other
+	    button.  (If the other button <i>doesn't</i> have a shifted
+	    meaning assigned, its ordinary un-shifted meaning is used.)
+	    This lets you give every button a second meaning,
+	    expanding the number of controls without adding more physical
+	    buttons.  Select the button number to use as the Shift button
+	    if desired, or set it to zero if you don't want this feature.
+	    This is unrelated to the PC keyboard Left Shift and Right Shift
+	    keys, which you can assign to buttons of your choice like any
+	    other keyboard keys.
+	 </div>
+      </div>
+
+      <div>
 	 <a href="#" id="setAllJoystick">Set standard joystick buttons</a>
 	 | <a href="#" id="setAllKB">Set standard keyboard keys</a>
 	 | <a href="#" class="btnHelp">View standard key assignments</a>
@@ -2051,11 +2070,59 @@ $("#zbPort").change(function(ev) {
 	 <table id="buttonTab">
 	 </table>
       </div>
+      <div id="buttonTabStretchNote">
+	 <i><b>Note:</b> the firmware currently installed supports up to
+	    <span id="buttonTabMaxNote">0</span> physical buttons.  New rows
+	    will be added to the table above as you fill in more values, up
+	    to the limit.</i>
+      </div>
    </div>
 
    <script type="text/javascript" src="keycaps.js"></script>
 
    <script>
+
+// Button row updater.  We group updates to avoid updating
+// the same row repeatedly when performing a task that affects
+// multiple rows (config loading, changing the night mode
+// button, changing the shift button).
+var ButtonTabUpdate = {
+    touch: function(item) {  // item can be a button row element (TR) or any element within a row
+	if (!item.is("tr"))
+	    item = item.parents("tr.buttonRow");
+	this.pending[item.find(".keymapping").data("idx")] = item;
+	if (!this.queued) {
+	    var self = this;
+	    setTimeout(function() { self.go(); }, 1);
+	    this.queued = true;
+	}
+    },
+    pending: { },
+    queued: false,
+    go: function() {
+	$.each(this.pending, function(key, val) {
+	    updateButtonRow(val);
+	});
+	stretchButtonTable();
+	this.queued = false;
+	this.pending = { };
+    }
+};
+
+$("#shiftButton").change(function(ev)
+{
+    var n = $(this).val()
+    $("#buttonTab tr").removeClass("shiftRow")
+	 .find(".shiftCol span").attr("title", "Click here to make this the Local Shift Button");
+    $("#buttonRow" + n).addClass("shiftRow")
+	.find(".shiftCol span").attr("title", "This input is the Local Shift Button. Other "
+			   + "buttons pushed while the Shift Button is held down use "
+			   + "their shifted key codes.");
+
+    ButtonTabUpdate.touch($("#buttonRow1"));
+    showHideNightModeButtonShift();
+    updateNightModeButton();
+});
 
 $("#setAllJoystick").click(function(ev)
 {
@@ -2119,26 +2186,14 @@ var shiftKeyMap = {
     0x80: 0xE7		// right GUI
 };
 
-// size the button table to display the number of buttons the firmware
-// supports
-function sizeButtonTable(config)
-{
-    var count = 0;
-    $.each(config.buttons, function(key) { if (/\d+/.test(key)) ++count; });
-    $("#buttonTab tr").each(function() {
-	var tr = $(this);
-	var keymapping = tr.find(".keymapping");
-	if (keymapping.length)
-	{
-	    var active = (keymapping.data("idx") <= count);
-	    tr.toggle(active);
-	    keymapping.data("outOfService", !active);
-	    tr.find(".pinselect").data("outOfService", !active);
-	}
-    });
-}
-
-// standard VP key usage, indexed by "type.keyCodeInHex" (e.g., 2.28 = keyboard "A")
+// Standard VP key usage, indexed by "type.keyCodeInHex" (e.g., 2.1E = keyboard "1").
+// We rebuild this during initialization to index in decimal (2.30 = "1").  Hex is
+// more convenient for typing in the entries, while decimal is more convenient for
+// looking them up.  We could probably just as well dispense with the "2." and just
+// assume that only keyboard keys have standard VP usages, which is currently the
+// case, but we use the type code anyway for the sake of future-proofing, just in
+// case VP ever adopts standard usages for other input methods (e.g., joystick
+// buttons).
 var vpUsage = {
     "2.1E": "Start Game",
     "2.1F": "Extra Ball (Buy-In)",
@@ -2158,16 +2213,169 @@ var vpUsage = {
     "2.1D": "Left Nudge",
     "2.38": "Right Nudge",
     "2.4D": "Open/Close Coin Door",
-    "2.24": "Service Button - Cancel/Exit",
-    "2.25": "Service Button - Down/-",
-    "2.26": "Service Button - Up/+",
-    "2.27": "Service Button - Enter",
+    "2.24": "Service Button \"Cancel/Exit\"",
+    "2.25": "Service Button \"Down/-\"",
+    "2.26": "Service Button \"Up/+\"",
+    "2.27": "Service Button \"Enter\"",
     "2.2E": "VP Volume Down",
     "2.2D": "VP Volume Up"
 };
 
+function updateButtonRow(tr)
+{
+    // update the key caps
+    var km = tr.find(".keymapping");
+    if (km.length)
+    {
+	// update the displayed key caps
+	km.each(function() { updateKeyCap($(this)); });
+
+	// update the displayed usage 
+	var usage = [];
+	tr.find(".keymapping").each(function() {
+	    var m = $(this);
+	    usage.push(vpUsage[m.find(".keytype").val() + "." + (+m.find(".keycode").val())] || "-");
+	});
+	if ($("#shiftButton").val() == 0) usage.pop();	// remove the shifted key display if the shift button is disabled
+	tr.find(".keyusage").text(usage.join("/"));
+
+	// update the displayed flag icons
+	var flags = +tr.find("input.keyflags").val();
+	tr.find("td.keyflags img").each(function() {
+	    var img = $(this);
+	    var f = !!(flags & img.data("mask"));
+	    img.attr("src", img.attr("src").replace(/On|Off/, f ? "On" : "Off"));
+	});
+    }
+}
+
+function updateKeyCap(km)
+{
+    km.removeClass("asNone asKey asShiftKey asMediaKey asJoystickButton");
+    km.css("background-position", "");
+    var typ = +km.children(".keytype").val();
+    var code = +km.children(".keycode").val();
+    if (typ < 0 || typ > 2) typ = 0;
+    km.addClass(["asNone", "asJoystickButton", "asKey"][typ]);
+    var wid = "auto", ht = "32px", lht = "32px";
+    var txt = "", title = "";
+    switch (typ)
+    {
+    case 0:
+	title = "Pushing this button won't send any key press to the PC";
+	wid = ht = "32px";
+	break;
+
+    case 1:
+	txt = code;
+	title = "Joystick Button " + code;
+	wid = ht = "32px";
+	lht = "28px";
+	break;
+
+    case 2:
+	// get the key name
+	var k = keycaps[code];
+	title = k.name;
+
+	// show the "alternate" image if defined, otherwise just use the name
+	if (k.cx)
+	{
+	    wid = (k.cwid || 30) + "px";
+	    ht = (k.cht || 31) + "px";
+	    km.css("background-position", (-k.cx) + "px " + (-k.cy) + "px");
+	}
+	else if (k.x)
+	{
+	    wid = (k.wid || 30) + "px";
+	    ht = (k.ht || 31) + "px";
+	    km.css("background-position", (-k.x) + "px " + (-k.y) + "px");
+	}
+	else
+	{
+	    txt = "Keyboard " + k.name;
+	    km.removeClass("asKey").addClass("asKeyName");
+	}
+	break;
+    }
+    km.attr("title", title).css({ width: wid, height: ht, lineHeight: lht }); // set lineHeight for vertical centering of .keyname label
+    km.children(".keyname").text(txt);
+}
+
+// size the button table to display the number of buttons the firmware
+// supports
+var buttonTabMax = 0;
+function sizeButtonTable(config)
+{
+    var count = 0;
+    $.each(config.buttons, function(key) { if (/\d+/.test(key)) ++count; });
+    $("#shiftButton, #nightModeButtonNo").spinner("option", "max", count);
+    $("#buttonTabMaxNote").text(count);
+    buttonTabMax = count;
+    $("#buttonTab tr.buttonRow").each(function() {
+	var tr = $(this);
+	var keymapping = tr.find(".keymapping");
+	var idx = keymapping.data("idx");
+	var active = (idx <= count);
+	tr.toggle(active);
+	keymapping.data("outOfService", !active);
+	tr.find(".pinselect").data("outOfService", !active);
+    });
+}
+
+// Adjust the visibility of button table rows at the bottom.  We hide
+// rows after the last completely unused row.
+function stretchButtonTable()
+{
+    var last = 0;
+    $("#buttonTab tr.buttonRow").each(function() {
+	var tr = $(this);
+	var km = tr.find(".keymapping");
+	var idx = +km.data("idx");
+	if (idx > buttonTabMax) return false;
+	if (idx >= last)
+	{
+	    if (tr.find(".pinval").val() != "Not Connected")
+		last = idx;
+	    else if ($("#nightModeButtonNo").val() == idx)
+		last = idx;
+	    else
+	    {
+		km.each(function() {
+		    if ($(this).find(".keytype").val() != 0) {
+			last = idx;
+			return false;
+		    }
+		});
+	    }
+	}
+    });
+
+    var sb = +$("#shiftButton").val();
+    if (sb > last)
+	last = sb;
+
+    // show one blank row if we haven't maxed out the table
+    if (last < buttonTabMax) ++last;
+
+    $("#buttonTab tr.buttonRow").each(function() {
+	$(this).toggle(+$(this).find(".keymapping").data("idx") <= last);
+    });
+
+    $("#buttonTabStretchNote").toggle(last < buttonTabMax);
+}
+
 // build the button table rows
 $(function() {
+
+    // reindex the vpUsage table by decimal key code
+    var u = vpUsage;
+    vpUsage = { };
+    $.each(u, function(key, val) {
+	if (/(\d+)\.(.+)/.test(key)) {
+	    vpUsage[RegExp.$1 + "." + parseInt(RegExp.$2, 16)] = val;
+	}
+    });
 
     // Set the modifier key mapping for each modifier key in the key caps
     $.each(shiftKeyMap, function(k, v) { keycaps[v].modkey = k; });
@@ -2177,11 +2385,11 @@ $(function() {
     rows.push("<tr>"
 	      + "<th>No.</th>"
 	      + "<th>Port</th>"
-	      + "<th>PC Input</th>"
-	      + "<th style=\"padding: 0px;\">Pulse [<a href=\"#\" id=\"pulseKeyHelp\">?</a>]</th>"
 	      + "<th></th>"
-	      + "<th title=\"The standard meaning of the assigned key in Visual Pinball\" "
-	      +      "style=\"text-align: left; padding-left: 0px;\">VP Usage</th>"
+	      + "<th>PC Input</th>"
+	      + "<th>Shifted</th>"
+	      + "<th style=\"padding: 0px; white-space: nowrap;\">Options [<a href=\"#\" id=\"pulseKeyHelp\">?</a>]</th>"
+	      + "<th class=\"keyusage\" title=\"The standard meaning of the assigned key in Visual Pinball\">VP Usage</th>"
 	      + "</tr>");
 
     // Build a <TR> for each button table row.  Start with more than we
@@ -2202,7 +2410,7 @@ $(function() {
     // very tight.)
     for (var i = 1 ; i <= 128 ; ++i)
     {
-	rows.push("<tr>"
+	rows.push("<tr class=\"buttonRow\" id=\"buttonRow" + i + "\" data-idx=\"" + i + "\">"
 		  + "<td class=\"pinlabel keylabel\">" + i + "</td>"		   // button number			
 		  + "<td>"
 		  +   "<span class=\"pinselect withExpBoardAlias\" id=\"button" + i + "\" "    // input pin
@@ -2211,19 +2419,30 @@ $(function() {
 		  +      "data-desc=\"Button " + i + "\">"
 		  +   "</span>"
 		  + "</td>"
-		  + "<td>"
+		  + "<td class=\"shiftCol\">"
+		  +    "<span>"
+		  +    "</span>"
+		  + "</td>"
+		  + "<td class=\"buttonCol primary\">"
 		  +   "<span class=\"keymapping\" id=\"keymap" + i + "\" data-idx=\"" + i + "\">" // key mapping
 		  +     "<span class=\"keyname\"></span>"
 		  +     "<input class=\"keycode\" type=\"hidden\">"
 		  +     "<input class=\"keytype\" type=\"hidden\">"
 		  +     "<input class=\"keyflags\" type=\"hidden\">"
 		  +   "</span>"
+		  +   "<span class=\"keyNightMode\" title=\"This input activates Night mode\"></span>"
 		  + "</td>"
-		  + "<td class=\"keypulse\">"
-		  +   "<input type=\"checkbox\" id=\"keyPulse" + i + "\" class=\"keyPulse\">"	// pulse mode flag
+		  + "<td class=\"buttonCol shifted\">"
+		  +   "<span class=\"keymapping\" id=\"xkeymap" + i + "\" data-xidx=\"" + i + "\">" // shift key mapping
+		  +     "<span class=\"keyname\"></span>"
+		  +     "<input class=\"keycode\" type=\"hidden\">"
+		  +     "<input class=\"keytype\" type=\"hidden\">"
+		  +   "</span>"
+		  +   "<span class=\"keyNightMode\" title=\"This input activates Night mode\"></span>"
 		  + "</td>"
-		  + "<td class=\"keyremarks\" id=\"keyremarks" + i + "\">"	   // special function notes
-		  +     "<span class=\"keyNightMode\" title=\"This input activates Night mode\"></span>"
+		  + "<td class=\"keyflags\">"
+		  +   "<img src=\"PulseOff.png\" id=\"keyPulse" + i + "\" data-mask=\"1\" "   // pulse mode flag
+		  +      "title=\"Pulse mode: the button sends one key press when pushed, a second when released\">"
 		  + "</td>"
 		  + "<td class=\"keyusage\" id=\"keyusage" + i + "\" title=\"The standard meaning of this key in Visual Pinball\">"
 		  + "</td>"
@@ -2239,86 +2458,30 @@ $(function() {
 	ev.preventDefault();
     });
 
+    // set the shift key to a given row
+    $("#buttonTab .shiftCol span").click(function(ev) {
+	$("#shiftButton").val($(this).parents("tr.buttonRow").data("idx")).change();
+    });
+    
     // on changing the pin selection, update the expansion board alias, if applicable
     $("#buttonTab .pinselect").change(function()
     {
 	var port = $(this).children(".pinval").val();
 	var alias = (gpioPortAlias[port] || "").split("|");
 	$(this).find("input.expBoardAlt").val("$1 ($2)".formatOrUndef(alias[0], alias[1]) || port);
+	ButtonTabUpdate.touch($(this));
     });
 
     // pulse mode
-    $("#buttonTab input.keyPulse").change(function(ev)
+    $("#buttonTab td.keyflags img").click(function(ev)
     {
-	var checked = $(this).prop("checked");
-	var keyflags = $(this).parents("tr").first().find(".keyflags");
-	var f = keyflags.val();
-	if (checked) f |= 0x01; else f &= ~0x01;
-	keyflags.val(f);
+	var keyflags = $(this).parents("tr.buttonRow").find("input.keyflags");
+	keyflags.val(keyflags.val() ^ $(this).data("mask")).change();
     });
 
     // on changing any of the key sub-fields, update the displayed value
-    $(".keymapping .keycode, .keymapping .keytype, .keymapping .keyflags").change(function(ev) {
-	var sp = $(this).parent();
-	var tr = sp.parents("tr").first();
-	sp.removeClass("asNone asKey asShiftKey asMediaKey asJoystickButton");
-	sp.css("background-position", "");
-	var typ = +sp.children(".keytype").val();
-	var code = +sp.children(".keycode").val();
-	if (typ < 0 || typ > 2) t = 0;
-	sp.addClass(["asNone", "asJoystickButton", "asKey"][typ]);
-	var wid = "auto", ht = "32px";
-	var txt = "", title = "";
-	switch (typ)
-	{
-	case 0:
-	    title = "Pushing this button won't send any key press to the PC";
-	    wid = ht = "32px";
-	    break;
-	    
-	case 1:
-	    txt = code;
-	    title = "Joystick Button " + code;
-	    wid = ht = "32px";
-	    break;
-
-	case 2:
-	    // get the key name
-	    var k = keycaps[code];
-	    title = k.name;
-
-	    // show the "alternate" image if defined, otherwise just use the name
-	    if (k.cx)
-	    {
-		wid = (k.cwid || 30) + "px";
-		ht = (k.cht || 31) + "px";
-		sp.css("background-position", (-k.cx) + "px " + (-k.cy) + "px");
-	    }
-	    else if (k.x)
-	    {
-		wid = (k.wid || 30) + "px";
-		ht = (k.ht || 31) + "px";
-		sp.css("background-position", (-k.x) + "px " + (-k.y) + "px");
-	    }
-	    else
-	    {
-		txt = "Keyboard " + k.name;
-		sp.removeClass("asKey").addClass("asKeyName");
-	    }
-	    break;
-	}
-	sp.attr("title", title).css({ width: wid, height: ht });
-	sp.children(".keyname").text(txt).css({ width: wid, height: ht });
-	tr.find(".keyusage").text(vpUsage[typ + "." + code.toString(16).toUpperCase()] || "-");
-
-	var flags = +sp.children(".keyflags").val();
-	var pulseMode = !!(flags & 0x01);
-	tr.find("input.keyPulse").prop("checked", pulseMode);
-    });
-
-    // go to the appropriate section on clicking a special function icon
-    $(".keyNightMode").click(function() {
-	$("html,body").animate({scrollTop: $("a[name=nightmode]").parent().prev().offset().top - 8});
+    $(".keymapping .keycode, .keymapping .keytype, .keymapping input.keyflags").change(function(ev) {
+	ButtonTabUpdate.touch($(this));
     });
 
     // get the key selector dialog element so we can set it up
@@ -2332,7 +2495,7 @@ $(function() {
 	// if this key has a clickable image, add it
 	if (v.x)
 	{
-	    var usage = vpUsage["2." + parseInt(k).toString(16).toUpperCase()];
+	    var usage = vpUsage["2." + (+k)];
 	    usage = usage ? "\nTypical VP use: " + usage : "";
 	    btns.push("<span id=\"keycapBtn" + k + "\" "
 		      + "class=\"keycapBtn\" data-scancode=\"" + k + "\" "
@@ -2436,13 +2599,18 @@ $(function() {
 
     // click the "night mode" button in the key selector dialog
     $("#nightModeBtn").click(function(ev) {
-	var btn = dlgkey.data("idx");
+	var idx = dlgkey.data("idx"), xidx = dlgkey.data("xidx");
+	var btn = idx || xidx;
+	var shift = !!xidx;
 	var fld = $("#nightModeButtonNo");
-	if (fld.val() == btn) {
+	var ck = $("#nightModeButtonShift input");
+	if (fld.val() == btn && ck.prop("checked") == shift) {
+	    ck.prop("checked", shift);
 	    fld.val(0).change();
 	    $(this).removeClass("selected");
 	}
 	else {
+	    ck.prop("checked", shift);
 	    fld.val(btn).change();
 	    $(this).addClass("selected");
 	}
@@ -2450,13 +2618,15 @@ $(function() {
     });
     
     // on clicking any key mapping, display the key selector popup
-    $(".keymapping").click(function(ev) {
+    $(".keymapping, .keyNightMode").click(function(ev) {
 
 	// remember who opened the dialog
 	dlgkey = $(this);
+	if (dlgkey.hasClass("keyNightMode"))
+	    dlgkey = dlgkey.parents(".buttonCol").children(".keymapping");
 
 	// mark the label as active
-	dlgkeylbl = $(this).parents(":has(.keylabel)");
+	dlgkeylbl = dlgkey.parents("tr.buttonRow");
 	dlgkeylbl.addClass("openDlgRow");
 
 	// we'll fully handle the event here - skip any default action
@@ -2470,11 +2640,11 @@ $(function() {
 	dlg.parent().css("display", "block");
 
 	// position it below the field
-	var ofs = dlgkey.offset();
-	var dlght = dlg.outerHeight() + 24;
+	var ofs = dlgkeylbl.offset();
+	var dlght = dlgkeylbl.outerHeight() + 24;
 	var winht = window.innerHeight - $("#nav").outerHeight();
 	var scrolly = $("html,body").scrollTop();
-	var y = ofs.top + $(this).height();
+	var y = ofs.top + dlgkeylbl.height();
 	dlg.css("top", y + "px");
 
 	// make sure the bottom of the dialog is in view
@@ -2492,7 +2662,10 @@ $(function() {
 	var isSpecial = false;
 
 	// select the night mode button if applicable
-	if (dlgkey.data("idx") == $("#nightModeButtonNo").val()) {
+	var nightRow = $("#nightModeButtonNo").val();
+	var nightShift = $("#nightModeButtonShift input").prop("checked");
+	if ((dlgkey.data("idx") == nightRow && !nightShift)
+	    || (dlgkey.data("xidx") == nightRow && nightShift)) {
 	    $("#nightModeBtn").addClass("selected");
 	    isSpecial = true;
 	}
@@ -2849,13 +3022,19 @@ $("#hc595_nchips").change(function(ev)
 		  <span style="padding-left: 2em; font-style: italic;">0 = no input button assigned</span>
 	       </td>
 	    </tr>
+	    <tr id="nightModeButtonShift">
+	       <td></td>
+	       <td>
+		  <label><input type="checkbox"> Use shifted button</label> (see <a href="#buttonSection">Button Setup</a>)
+	       </td>
+	    </tr>
 	    <tr>
 	       <td>
 		  Button type:
 	       </td>
 	       <td>
 		  <table class="radio" style="display: inline-block; vertical-align: middle; margin: 1em 0px;">
-		     <tr>
+		     <tr id="nightModeButtonTypeRow">
 			<td>
 			   <label>
 			      <img src="pushButton.png"><br>
@@ -2893,12 +3072,23 @@ $("#hc595_nchips").change(function(ev)
    <script>
 
 // on changing the button number, update the icon display in the button setup section
-$("#nightModeButtonNo").change(function()
+$("#nightModeButtonShift input").change(function() { updateNightModeButton(); });
+$("#nightModeButtonNo").change(function() { updateNightModeButton(); });
+function updateNightModeButton()
 {
-    var n = +$(this).val();
-    $("#buttonTab .keyNightMode").removeClass("active");
+    var n = +$("#nightModeButtonNo").val();
+    $("#buttonTab .buttonCol").removeClass("nightMode");
     if (n)
-	$("#keyremarks" + n + " .keyNightMode").addClass("active");
+    {
+	var shifted = $("#shiftButton").val() != 0 && $("#nightModeButtonShift input").prop("checked");
+	$("#buttonRow" + n + " .buttonCol." + (shifted ? "shifted" : "primary")).addClass("nightMode");
+	ButtonTabUpdate.touch($("#buttonRow" + n));
+    }
+}
+
+$("#nightModeButtonTypeRow input").change(function() {
+    showHideNightModeButtonShift();
+    updateNightModeButton();
 });
 $("#nightModeOutputNo").change(function()
 {
@@ -2913,6 +3103,15 @@ $("#nightModeOutputNo").change(function()
 	    + "</span>");
     }
 });
+
+function showHideNightModeButtonShift()
+{
+    // the night mode button can only be on a shifted button if the shift
+    // button is enabled AND the night mode button is in toggle mode
+    $("#nightModeButtonShift").toggle(
+	$("#shiftButton").val() != 0
+	&& $("#nightModeOptions input:radio[name=nightModeButtonType]:checked").val() == 1);
+}
       
    </script>
 
@@ -2989,9 +3188,12 @@ $(function() {
 		  +   "<td class=\"outPortRemarks\"></td>"
 		  +   "<td class=\"outPortOptions\">"
 		  +      "<input class=\"pinflags\" type=\"hidden\">"
-		  +      "<label><input type=\"checkbox\" class=\"outPortNoisy\" data-mask=\"2\">Noisy</label> "
-		  +      "<label><input type=\"checkbox\" class=\"outPortGamma\" data-mask=\"4\">Gamma</label> "
-		  +      "<label><input type=\"checkbox\" class=\"outPortLow\" data-mask=\"1\">Active low</label> "
+		  +      "<img src=\"NoisyOff.png\" class=\"outPortNoisy\" data-mask=\"2\" "
+		  +         "title=\"Noisy device: disable this port when Night Mode is engaged\">"
+		  +      "<img src=\"GammaOff.png\" class=\"outPortGamma\" data-mask=\"4\" "
+		  +         "title=\"Use gamma correction on this port (suitable for lamps and LEDs)\">"
+		  +      "<img src=\"ActiveLowOff.png\" class=\"outPortLow\" data-mask=\"1\" "
+		  +         "title=\"Active low port: port connects to ground (0V) when ON\">"
 		  +   "</td>"
 		  + "</tr>");
     }
@@ -3091,15 +3293,13 @@ $(function() {
 	row.find(".dispPinType").text(typeDisp);
 
 	// enable/disable option checkboxes
-	row.find(".outPortOptions input[type=checkbox]").each(function() {
-	    var mask = $(this).data("mask");
-	    var lbl = $(this).parent();
-	    if (mask & opts)
-		lbl.css("display", "");
-	    else {
-		lbl.css("display", "none");
-		$(this).prop("checked", false);
-	    }
+	row.find(".outPortOptions img").each(function() {
+	    var img = $(this);
+	    var mask = img.data("mask");
+	    var vis = !!(mask & opts);
+	    img.toggle(vis);
+	    if (!vis)
+		img.attr("src", img.attr("src").replace(/On|Off/, "Off"));
 	});
     });
 
@@ -3107,22 +3307,19 @@ $(function() {
     $(".outPortRow .pinflags").change(function() {
 	var self = $(this);
 	var flags = +self.val();
-        self.parent().find("input[type=checkbox]").each(function() {
-	    $(this).prop("checked", (flags & $(this).data("mask")) != 0);
+        self.parent().find("img").each(function() {
+	    var img = $(this);
+	    var state = (flags & img.data("mask")) != 0 ? "On" : "Off";
+	    img.attr("src", img.attr("src").replace(/(On|Off)/, state));
 	});
     });
 
-    // change handlers for the port options checkboxes
-    $(".outPortRow .outPortOptions input[type=checkbox]").change(function() {
-	var self = $(this);
-	var mask = +self.data("mask");
-	var flagfield = self.parents(".outPortOptions").children(".pinflags");
-	var flags = +flagfield.val();
-	if (self.prop("checked"))
-	    flags |= mask;
-	else
-	    flags &= ~mask;
-	flagfield.val(flags);
+    // change handlers for the port options icons
+    $(".outPortRow .outPortOptions img").click(function(ev) {
+	var img = $(this);
+	var mask = +img.data("mask");
+	var flagfield = img.parents(".outPortOptions").children(".pinflags");
+	flagfield.val(+flagfield.val() ^ mask).change();
     });
 
     // insert a row
@@ -4189,6 +4386,7 @@ function valEq(a, b)
 	// check that all properties of a are in b
 	for (var p in a) {
 	    if (!(p in b)) {
+		//alert("p not in b: " + p); // debug
 		return false;
 	    }
 	}
@@ -4196,6 +4394,7 @@ function valEq(a, b)
 	// all a.p are in b; now check that all b.p equal a.p
 	for (var p in b) {
 	    if (!(p in a) || !valEq(a[p], b[p])) {
+		//alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // debug
 		return false;
 	    }
 	}
@@ -4231,12 +4430,12 @@ $(function() {
     $("#zbPort").spinner({min: 1, max: 128});
     $("#tlc_nchips").spinner({min: 0, max: 8});
     $("#hc595_nchips").spinner({min: 0, max: 8});
-    $("#nightModeButtonNo").spinner({min: 0, max: 32});
     $("#nightModeOutputNo").spinner({min: 0, max: 128});
+    $("#shiftButton, #nightModeButtonNo").spinner({min: 0, max: 128});
 
     // set spinner change listeners
     $("#numMainBoards, #numPowerBoards, #numChimeBoards, #zbPort, #tlc_nchips, "
-      + "#hc595_nchips, #nightModeButtonNo, #nightModeOutputNo").on(
+      + "#hc595_nchips, #nightModeButtonNo, #nightModeOutputNo, #shiftButton").on(
 	"spinstop", function() { $(this).change(); });
 
     // Retrieve the device ID from the URL.  The ID= parameter encodes
@@ -5845,13 +6044,13 @@ $(function() {
 		window.external.ShowAdviceDialog(
 		    "RawOutputPowerLimitWarning",
 		    "WARNING!\n\n"
-		    + "Please note that this pin is connected DIRECTLY to a "
-		    + "KL25Z output pin.  These pins have very limited power "
-		    + "handling capacity.  DON'T CONNECT ANY LOAD LARGER THAN "
-		    + "4mA TO THIS PIN.  This limit applies whether the pin "
-		    + "is used in \"active high\" or \"active low\" mode. "
-		    + "Exceeding 4mA in either mode can damage or destroy the "
-		    + "entire KL25Z board.");
+		    + "This pin is connected DIRECTLY to a CPU port on the KL25Z. "
+		    + "These pins have EXTREMELY low power handling capacity. "
+		    + "NEVER CONNECT ANY LOAD LARGER THAN 4mA TO THIS PIN. "
+		    + "The 4mA limit applies whether the pin is used in \"active "
+		    + "high\" or \"active low\" mode. Exceeding 4mA in either mode "
+		    + "can damage the CPU, which can render the whole KL25Z "
+		    + "board inoperable.");
 	    }
 
 	    // dismiss the dialog if desired, otherwise fix up the list display
@@ -6080,6 +6279,10 @@ function normalizeConfig(config)
     }
     numToString(config);
 
+    // if there's no night mode button, the button flags don't matter
+    if (config.nightMode && config.nightMode.button == 0)
+	config.nightMode.flags &= ~0x03;
+
     // return the updated config object
     return config;
 }
@@ -6267,9 +6470,22 @@ function configFunctionSetup()
 	},
 	{ prop: "nightMode.button", ctl: "#nightModeButtonNo", type: tText, datatype: dNumber },
 	{ prop: "nightMode.output", ctl: "#nightModeOutputNo", type: tText, datatype: dNumber },
-	{ prop: "nightMode.flags", ctl: "input:radio[name=nightModeButtonType]", type: tRadio, datatype: dNumber,
-          toUI: function(v) { return (v & 0x01) ? 2 : 1; },
-	  fromUI: function(v) { return v == "2" ? 0x01 : 0x00 }
+	{ prop: "nightMode.flags", ctl: "", type: tRadio, datatype: dNumber,
+          toUI: function(v) {
+	      // set the switch type: if flag bit 0x01 is set, it's switch mode (2), otherwise momentary toggle mode (1)
+	      $("input:radio[name=nightModeButtonType]").val([(v & 0x01) ? 2 : 1]).change();
+
+	      // set the shift status: if flag bit 0x02 is set, it's the shifted button, otherwise the primary button;
+	      // but this only applies in toggle mode, so bit 0x01 must not be set
+	      $("#nightModeButtonShift input").prop("checked", (v & 0x03) == 0x02);
+	      return undefined;
+          },
+	  fromUI: function(v) {
+	      var v = 0;
+	      if ($("input:radio[name=nightButtonModeType]:checked").val() == 2) v |= 0x01;  // switch mode (2) -> flag 0x01
+	      if (!(v & 0x01) && $("#nightModeButtonShift input").prop("checked")) v |= 0x02; // shift button -> flag 0x02
+	      return v;
+          }
 	},
 		  
 	{ prop: "expansionBoards.type", ctl: "input:radio[name=hardwareType]", type: tRadio, datatype: dNumber },
@@ -6285,6 +6501,7 @@ function configFunctionSetup()
 	},
 	{ prop: "TLC5940.nchips", ctl: "#tlc_nchips", type: tText, datatype: dNumber },
 	{ prop: "HC595.nchips", ctl: "#hc595_nchips", type: tText, datatype: dNumber },
+	{ prop: "shiftButton", ctl: "#shiftButton", type: tText, datatype: dNumber },
     ];
 
     // add field descriptors for all of the pin selectors
@@ -6308,13 +6525,15 @@ function configFunctionSetup()
     {
 	var self = $(this);
 	var idx = self.data("idx");
-	if (idx)
+	var xidx = self.data("xidx");
+	var prop = idx ? "buttons." + idx : xidx ? "xbuttons." + xidx : null;
+	if (prop)
 	{
 	    var filter = function(v) { return self.data("outOfService") ? undefined : v; };
-	    var prop = "buttons." + idx;
 	    fields.push({ prop: prop + ".keytype", ctl: self.children(".keytype"), type: tText, datatype: dNumber, filter: filter });
 	    fields.push({ prop: prop + ".keycode", ctl: self.children(".keycode"), type: tText, datatype: dNumber, filter: filter });
-	    fields.push({ prop: prop + ".flags", ctl: self.children(".keyflags"), type: tText, datatype: dNumber, filter: filter });
+	    if (idx)
+		fields.push({ prop: prop + ".flags", ctl: self.children("input.keyflags"), type: tText, datatype: dNumber, filter: filter });
 	}
     });
 

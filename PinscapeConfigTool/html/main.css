@@ -23,6 +23,10 @@ div {
 h1, h2, h3 {
 }
 
+h1 img, h2 img, h3 img {
+    vertical-align: middle;
+}
+
 h1 {
     padding: 1em 16px;
     margin: 0px -16px;
@@ -850,20 +854,42 @@ option {
     border-collapse: collapse;
 }
 #buttonTab th {
-    padding: 1ex 2em;
+    padding: 1ex 4px;
 }
 
 #buttonTab td {
     border: none;
-    padding: 0px 2em;
+    padding: 0px 4px;
     margin: 0px;
     border: none;
     text-align: center;
     vertical-align: middle;
 }
+#buttonTab td.wider {
+    padding: 0px 1em;
+}
+#buttonTab span {
+    vertical-align: middle;
+}
+
+#buttonTab td.buttonCol {
+    white-space: nowrap;
+}
+.shiftRow .buttonCol.shifted .keymapping {
+    display: none;
+}
+
+.buttonCol.nightMode .keyNightMode {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    background: url(nightModeSmall.png) no-repeat;
+    margin-left: 4px;
+}
 
 .keymapping {
     display: inline-block;
+    box-sizing: border-box;
     margin: 0px;
     padding: 0px;
     background: 0px 0px no-repeat;
@@ -879,36 +905,44 @@ option {
 .keymapping.asNone {
     background-image: url(unusedButton.png);
 }
+.buttonCol.nightMode .keymapping.asNone {
+    display: none;
+}
 .keymapping.asJoystickButton {
     background-image: url(joystickButton.png);
-    font-size: 10pt;
-    font-weight: bold;
     color: #ffffff;
 }
-#buttonTab td.keyusage {
+.keyname {
+    font-size: 10pt;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+#buttonTab td.keyusage, #buttonTab th.keyusage {
     text-align: left;
     padding: 0px;
+    padding-left: 1ex;
 }
-#buttonTab td.keypulse {
+#buttonTab td.keyflags {
     padding: 0px;
 }
 #buttonTab td.keyremarks {
     padding: 0px;
 }
 
-.keyname {
-    box-sizing: border-box;
-    display: inline-block;
-    padding-top: 8px;
-    text-align: center;
-}
-
-.keyNightMode.active {
-    padding-right: 8px;
+.shiftCol span {
     display: inline-block;
     height: 24px;
     width: 24px;
-    background: url(nightModeSmall.png) no-repeat;
+}
+.shiftRow .shiftCol span, .shiftRow .shiftCol span:hover {
+    background: url(ShiftButton.png) no-repeat;
+}
+.shiftCol span:hover {
+    background: url(ShiftButtonHere.png) no-repeat;
 }
 
 #zbFields td:nth-child(3) {
@@ -938,6 +972,9 @@ option {
 }
 #outputTab td.outPortOptions {
     text-align: left;
+}
+#outputTab td.outPortOptions img {
+    padding: 0px 2px;
 }
 #outputTab td.rowControls {
     padding: 0px;

@@ -434,6 +434,8 @@ namespace PinscapeConfigTool
             "13 plungerCal {zero:$W,max:$W,tRelease:$B}",
             "14 expansionBoards {type:$B,version:$B,ext0:$B,ext1:$B,ext2:$B}",
             "15 nightMode {button:$B,flags:$B,output:$B}",
+            "16 shiftButton $B",
+            "253[] xbuttons {keytype:$B,keycode:$B}",
             "254[] buttons {pin:$P,keytype:$B,keycode:$B,flags:$B}",
             "255[] outputs {port:$o,flags:$B}"
         };
