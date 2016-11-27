@@ -370,13 +370,13 @@ div.indented {
 #keySelector > div > div:first-child {
     margin: 0px;
     padding: 0px;
-    height: 243px;
+    height: 280px;
 }
 #oskeyboard, #osjoystick, #osunused, #osspecial {
     position: absolute;
     margin: 0px;
     padding: 0px;
-    height: 243px;
+    height: 280px;
     overflow: hidden;
     width: 360px;
 }
@@ -895,7 +895,7 @@ option {
     background: 0px 0px no-repeat;
     cursor: default;
 }
-.keymapping.asKey {
+.keymapping.asKey, .keymapping.asMediaKey {
     background-image: url(kb.png);
 }
 .keymapping.asKeyName {

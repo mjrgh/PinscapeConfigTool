@@ -2053,10 +2053,11 @@ $("#zbPort").change(function(ev) {
 	    This lets you give every button a second meaning,
 	    expanding the number of controls without adding more physical
 	    buttons.  Select the button number to use as the Shift button
-	    if desired, or set it to zero if you don't want this feature.
+	    if desired, or set it to zero to disable this feature.
 	    This is unrelated to the PC keyboard Left Shift and Right Shift
 	    keys, which you can assign to buttons of your choice like any
-	    other keyboard keys.
+	    other keyboard keys.  Note that the shift button itself can't
+	    have a shifted meaning assigned, as there'd be no way to activate it.
 	 </div>
       </div>
 
@@ -2255,13 +2256,14 @@ function updateKeyCap(km)
     km.css("background-position", "");
     var typ = +km.children(".keytype").val();
     var code = +km.children(".keycode").val();
-    if (typ < 0 || typ > 2) typ = 0;
-    km.addClass(["asNone", "asJoystickButton", "asKey"][typ]);
+    var typemap = { 0: "asNone", 1: "asJoystickButton", 2: "asKey", 3: "asMediaKey" };
+    km.addClass(typemap[typ] || "asNone");
     var wid = "auto", ht = "32px", lht = "32px";
     var txt = "", title = "";
     switch (typ)
     {
     case 0:
+    default:
 	title = "Pushing this button won't send any key press to the PC";
 	wid = ht = "32px";
 	break;
@@ -2274,8 +2276,9 @@ function updateKeyCap(km)
 	break;
 
     case 2:
+    case 3:
 	// get the key name
-	var k = keycaps[code];
+	var k = (typ == 2 ? keycaps[code] : mediaKeycaps[code]);
 	title = k.name;
 
 	// show the "alternate" image if defined, otherwise just use the name
@@ -2293,8 +2296,8 @@ function updateKeyCap(km)
 	}
 	else
 	{
-	    txt = "Keyboard " + k.name;
-	    km.removeClass("asKey").addClass("asKeyName");
+	    txt = k.name;
+	    km.removeClass("asKey asMediaKey").addClass("asKeyName");
 	}
 	break;
     }
@@ -2491,13 +2494,14 @@ $(function() {
     // a table mapping javascript key codes to keycaps entries
     var btns = [];
     var jsKeyCaps = { };
-    $.each(keycaps, function(k, v) {
+    var makeKey = function(k, v, typ) {
 	// if this key has a clickable image, add it
 	if (v.x)
 	{
-	    var usage = vpUsage["2." + (+k)];
+	    var usage = vpUsage[typ + "." + (+k)];
 	    usage = usage ? "\nTypical VP use: " + usage : "";
-	    btns.push("<span id=\"keycapBtn" + k + "\" "
+	    btns.push("<span id=\"keycapBtn" + typ + "_" + k + "\" "
+		      + "data-keytype=\"" + typ + "\" "
 		      + "class=\"keycapBtn\" data-scancode=\"" + k + "\" "
 		      + "title=\"" + (v.name + usage).replace(/"/, "&#34;") + "\" "
 		      + "style=\""
@@ -2511,7 +2515,9 @@ $(function() {
 	// if it has a javascript key code, add it to the js key map
 	if (v.jskey)
 	    (jsKeyCaps[v.jskey] = jsKeyCaps[v.jskey] || []).push(k);
-    });
+    };
+    $.each(keycaps, function(k, v) { makeKey(k, v, 2); });
+    $.each(mediaKeycaps, function(k, v) { makeKey(k, v, 3); });
     $("#oskeyboard").html(btns.join(""));
 
     // build the clickable buttons for the joystick button selector dialog page
@@ -2547,9 +2553,10 @@ $(function() {
     // handle events on the on-screen keyboard buttons
     $(".keycapBtn").click(function(ev) {
 	// click a key - select the key (keyboard is type 2) and close the dialog
-	selectButton("2", +$(this).data("scancode"), true);
+	selectButton($(this).data("keytype"), +$(this).data("scancode"), true);
 	ev.preventDefault();
     }).hover(redisp, redisp);
+
     function redisp() {
 	// Hack to work around a WebBrowser (IE) bug.  This workaround is a pretty
 	// egregious hack, but the bug is annoying.  The bug comes from using CSS
@@ -2641,7 +2648,7 @@ $(function() {
 
 	// position it below the field
 	var ofs = dlgkeylbl.offset();
-	var dlght = dlgkeylbl.outerHeight() + 24;
+	var dlght = dlg.outerHeight() + 24;
 	var winht = window.innerHeight - $("#nav").outerHeight();
 	var scrolly = $("html,body").scrollTop();
 	var y = ofs.top + dlgkeylbl.height();
@@ -2702,8 +2709,9 @@ $(function() {
 	    break;
 
 	case 2: // keyboard
+	case 3: // media key
 	    (page = $("#oskeyboard")).css("display", "");
-	    $("#keycapBtn" + code).addClass("selected");
+	    $("#keycapBtn" + typ + "_" + code).addClass("selected");
 	    $("#keytypeKB").addClass("selected");
 	    break;
 	}
