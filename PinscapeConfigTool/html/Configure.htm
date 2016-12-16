@@ -2490,8 +2490,8 @@ $(function() {
     // get the key selector dialog element so we can set it up
     var dlg = $("#keySelector");
 
-    // build the clickable buttons on the key cap image for the dialog, and
-    // a table mapping javascript key codes to keycaps entries
+    // build the clickable buttons on the key cap image for the dialog, and a
+    // table mapping javascript key codes to keycaps and mediaKeyCaps entries
     var btns = [];
     var jsKeyCaps = { };
     var makeKey = function(k, v, typ) {
@@ -2514,7 +2514,7 @@ $(function() {
 
 	// if it has a javascript key code, add it to the js key map
 	if (v.jskey)
-	    (jsKeyCaps[v.jskey] = jsKeyCaps[v.jskey] || []).push(k);
+	    (jsKeyCaps[v.jskey] = jsKeyCaps[v.jskey] || []).push({keytype: typ, keycode: k, jsloc: v.jsloc});
     };
     $.each(keycaps, function(k, v) { makeKey(k, v, 2); });
     $.each(mediaKeycaps, function(k, v) { makeKey(k, v, 3); });
@@ -2742,15 +2742,15 @@ $(function() {
 	    // multiple physical keys, such as keys on the numeric keypad and the
 	    // modifier keys that are mirrored on the left and right sides.
 	    var k = $.grep(jsKeyCaps[ev.which] || [], function(ele) {
-		var eleloc = keycaps[ele].jsloc;
+		var eleloc = ele.jsloc;
 		return typeof eleloc == "undefined" || eleloc == ev.originalEvent.location;
 	    });
 
 	    // if we found a key, select it
-	    if (k)
+	    if (k.length == 1)
 	    {
-		// one matching key - select it (keyboard = type 2)
-		selectButton("2", k, true);
+		// we found exactly one matching key - select it
+		selectButton(k[0].keytype, k[0].keycode, true);
 		ev.preventDefault();
 		ev.stopPropagation();
 	    }

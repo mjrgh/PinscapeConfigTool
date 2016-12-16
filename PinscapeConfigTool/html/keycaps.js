@@ -56,16 +56,16 @@ var keycaps = {
     0x25: { name: "Keyboard 8 *", x: 300, y: 94, jskey: 0x38 },
     0x26: { name: "Keyboard 9 (", x: 337, y: 94, jskey: 0x39 },
     0x27: { name: "Keyboard 0 )", x: 374, y: 94, jskey: 0x30 },
-    0x28: { name: "Keyboard Enter", x: 471, y: 168, wid: 72, cx: 480, cy: 244, cwid: 41, jskey: 13 },
+    0x28: { name: "Keyboard Enter", x: 471, y: 168, wid: 72, cx: 480, cy: 281, cwid: 41, jskey: 13, jsloc: 0 },
     0x29: { name: "Keyboard Escape", x: 4, y: 41, jskey: 27 },
-    0x2A: { name: "Keyboard Backspace", x: 485, y: 94, wid: 59, cx: 437, cy: 244, cwid: 41, jskey: 8 },
-    0x2B: { name: "Keyboard Tab", x: 5, y: 131, wid: 44, cx: 393, cy: 244, cwid: 41, jskey: 9 },
-    0x2C: { name: "Keyboard Spacebar", x: 141, y: 242, wid: 219, cx: 350, cy: 244, cwid: 41, jskey: 32 },
+    0x2A: { name: "Keyboard Backspace", x: 485, y: 94, wid: 59, cx: 437, cy: 281, cwid: 41, jskey: 8 },
+    0x2B: { name: "Keyboard Tab", x: 5, y: 131, wid: 44, cx: 393, cy: 281, cwid: 41, jskey: 9 },
+    0x2C: { name: "Keyboard Spacebar", x: 141, y: 242, wid: 219, cx: 350, cy: 281, cwid: 41, jskey: 32 },
     0x2D: { name: "Keyboard -_", x: 411, y: 94, jskey: 0xBD },
     0x2E: { name: "Keyboard =+", x: 448, y: 94, jskey: 0xBB },
     0x2F: { name: "Keyboard [{", x: 426, y: 131, jskey: 0xDB },
     0x30: { name: "Keyboard ]}", x: 463, y: 131, jskey: 0xDD },
-    0x31: { name: "Keyboard \|", x: 500, y: 131, wid: 44, cx: 608, cy: 244, jskey: 0xDC },
+    0x31: { name: "Keyboard \|", x: 500, y: 131, wid: 44, cx: 608, cy: 281, jskey: 0xDC },
     0x32: { name: "Keyboard #~" },
     0x33: { name: "Keyboard ;:", x: 399, y: 168, jskey: 0xBA },
     0x34: { name: "Keyboard '\"", x: 436, y: 168, jskey: 0xDE },
@@ -73,7 +73,7 @@ var keycaps = {
     0x36: { name: "Keyboard ,<", x: 342, y: 205, jskey: 0xBC },
     0x37: { name: "Keyboard .>", x: 378, y: 205, jskey: 0xBE },
     0x38: { name: "Keyboard /?", x: 415, y: 205, jskey: 0xBF },
-    0x39: { name: "Keyboard Caps Lock", x: 5, y: 168, wid: 55, cx: 523, cy: 244, cwid: 41, jskey: 0x14 },
+    0x39: { name: "Keyboard Caps Lock", x: 5, y: 168, wid: 55, cx: 523, cy: 281, cwid: 41, jskey: 0x14 },
     0x3A: { name: "Keyboard F1", x: 77, y: 41, jskey: 0x70 },
     0x3B: { name: "Keyboard F2", x: 114, y: 41, jskey: 0x71 },
     0x3C: { name: "Keyboard F3", x: 151, y: 41, jskey: 0x72 },
@@ -103,8 +103,8 @@ var keycaps = {
     0x54: { name: "Keypad /", x: 718, y: 94, jskey: 0x6F },
     0x55: { name: "Keypad *", x: 756, y: 94, jskey: 0x6A },
     0x56: { name: "Keypad -", x: 792, y: 94, jskey: 0x6D },
-    0x57: { name: "Keypad +", x: 792, y: 131, ht: 66, cx: 749, cy: 241, jskey: 0x6B },
-    0x58: { name: "Keypad Enter", x: 791, y: 204, ht: 66, cx: 717, cy: 241, jskey: 0x0D, jsloc: 3 }, // loc e=keypad
+    0x57: { name: "Keypad +", x: 792, y: 131, ht: 66, cx: 749, cy: 278, jskey: 0x6B },
+    0x58: { name: "Keypad Enter", x: 791, y: 204, ht: 66, cx: 717, cy: 278, jskey: 0x0D, jsloc: 3 }, // loc e=keypad
     0x59: { name: "Keypad 1/End", x: 682, y: 204, jskey: 0x61 },
     0x5A: { name: "Keypad 2/Down Arrow", x: 720, y: 204, jskey: 0x62 },
     0x5B: { name: "Keypad 3/Page Down", x: 757, y: 204, jskey: 0x63 },
@@ -114,7 +114,7 @@ var keycaps = {
     0x5F: { name: "Keypad 7/Home", x: 682, y: 131, jskey: 0x67 },
     0x60: { name: "Keypad 8/Up Arrow", x: 720, y: 131, jskey: 0x68 },
     0x61: { name: "Keypad 9/Page Up", x: 757, y: 131, jskey: 0x69 },
-    0x62: { name: "Keypad 0/Insert", x: 683, y: 241, wid: 68, cx: 684, cy: 241, jskey: 0x60 },
+    0x62: { name: "Keypad 0/Insert", x: 683, y: 241, wid: 68, cx: 684, cy: 278, jskey: 0x60 },
     0x63: { name: "Keypad ./Delete", x: 757, y: 241, jskey: 0x6E },
     0x64: { name: "Non-US Keyboard \|" },
     0x65: { name: "Application Key", x: 458, y: 241, wid: 41, jskey: 0x93 },
@@ -181,22 +181,22 @@ var keycaps = {
     0xA2: { name: "Keyboard Clear/Again" },
     0xA3: { name: "Keyboard CrSel/Props" },
     0xA4: { name: "Keyboard ExSel" },
-    0xE0: { name: "Keyboard Left Control", x: 5, y: 242, wid: 41, cx:91, cy: 244, cwid: 41, jskey: 0x11, jsloc: 1 },  // jsloc 1=left
-    0xE1: { name: "Keyboard Left Shift", x: 5, y: 205, wid: 69, cx: 5, cy: 244, cwid: 41, jskey: 0x10, jsloc: 1 },    // jsloc 1=left
-    0xE2: { name: "Keyboard Left Alt", x: 95, y: 242, wid: 41, cx: 178, cy: 244, cwid: 41, jskey: 0x12, jsloc: 1 },   // jsloc 1=left
-    0xE3: { name: "Keyboard Left GUI", x: 50, y: 242, wid: 41, cx: 264, cy: 244, cwid: 41, jskey: 0x5B },
-    0xE4: { name: "Keyboard Right Control", x: 504, y: 242, wid: 41, cx: 134, cy: 244, cwid: 41, jskey: 0x11, jsloc: 2 }, // jsloc 2=right
-    0xE5: { name: "Keyboard Right Shift", x: 453, y: 205, wid: 91, cx: 47, cy: 244, cwid: 41, jskey: 0x10, jsloc: 2 },// jsloc 2=right
-    0xE6: { name: "Keyboard Right Alt", x: 368, y: 242, wid: 41, cx: 221, cy: 244, cwid: 41, jskey: 0x12, jsloc: 2 }, // jsloc 2=right
-	0xE7: { name: "Keyboard Right GUI", x: 413, y: 242, wid: 41, cx: 306, cy: 244, cwid: 41, jskey: 0x5C },
+    0xE0: { name: "Keyboard Left Control", x: 5, y: 242, wid: 41, cx:91, cy: 281, cwid: 41, jskey: 0x11, jsloc: 1 },  // jsloc 1=left
+    0xE1: { name: "Keyboard Left Shift", x: 5, y: 205, wid: 69, cx: 5, cy: 281, cwid: 41, jskey: 0x10, jsloc: 1 },    // jsloc 1=left
+    0xE2: { name: "Keyboard Left Alt", x: 95, y: 242, wid: 41, cx: 178, cy: 281, cwid: 41, jskey: 0x12, jsloc: 1 },   // jsloc 1=left
+    0xE3: { name: "Keyboard Left GUI", x: 50, y: 242, wid: 41, cx: 264, cy: 281, cwid: 41, jskey: 0x5B },
+    0xE4: { name: "Keyboard Right Control", x: 504, y: 242, wid: 41, cx: 134, cy: 281, cwid: 41, jskey: 0x11, jsloc: 2 }, // jsloc 2=right
+    0xE5: { name: "Keyboard Right Shift", x: 453, y: 205, wid: 91, cx: 47, cy: 281, cwid: 41, jskey: 0x10, jsloc: 2 },// jsloc 2=right
+    0xE6: { name: "Keyboard Right Alt", x: 368, y: 242, wid: 41, cx: 221, cy: 281, cwid: 41, jskey: 0x12, jsloc: 2 }, // jsloc 2=right
+	0xE7: { name: "Keyboard Right GUI", x: 413, y: 242, wid: 41, cx: 306, cy: 281, cwid: 41, jskey: 0x5C },
 	"missing": { name: "", x: 566, y: 281, wid: 41, ht: 31 },
 };
 
 // key caps for the special media keys on the keyboard
 var mediaKeycaps = {
-	0xE2: { name: "Media Mute", x: 791, y: 42 },
-	0xE9: { name: "Media Volume Up", x: 722, y: 42 },
-	0xEA: { name: "Media Volume Down", x: 753, y: 42 },
+	0xE2: { name: "Media Mute", x: 791, y: 42, jskey: 173 },
+	0xE9: { name: "Media Volume Up", x: 722, y: 42, jskey: 174 },
+	0xEA: { name: "Media Volume Down", x: 753, y: 42, jskey: 175 },
 	0xB5: { name: "Media Next Track", x: 753, y: 4 },
 	0xB6: { name: "Media Previous Track", x: 722, y: 4 },
 	0xB7: { name: "Media Stop" },
