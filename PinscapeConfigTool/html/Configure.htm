@@ -2190,10 +2190,10 @@ var shiftKeyMap = {
 // Standard VP key usage, indexed by "type.keyCodeInHex" (e.g., 2.1E = keyboard "1").
 // We rebuild this during initialization to index in decimal (2.30 = "1").  Hex is
 // more convenient for typing in the entries, while decimal is more convenient for
-// looking them up.  We could probably just as well dispense with the "2." and just
+// looking them up.  We could probably just as well dispense with the "2." and 
 // assume that only keyboard keys have standard VP usages, which is currently the
-// case, but we use the type code anyway for the sake of future-proofing, just in
-// case VP ever adopts standard usages for other input methods (e.g., joystick
+// case.  But we include the type code anyway for the sake of future-proofing, just
+// in case VP ever adopts standard usages for other input methods (e.g., joystick
 // buttons).
 var vpUsage = {
     "2.1E": "Start Game",
