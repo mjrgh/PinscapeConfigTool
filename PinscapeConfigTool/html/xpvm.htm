@@ -3,45 +3,122 @@
 <head>
    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Using a virtual machine for the Firmware Update</title>
+   <title>Setting up a new board with Windows 8 or later</title>
 </head>
 <body>
 <h1>
-   Using a virtual machine for the firmware update
+   Setting up a new board with Windows 8 or later
 </h1>
 
 <div>
 
    <p>
-      Yes, I know how crazy it is that you have to find an obsolete
-      Windows machine to update a brand new KL25Z.
-      Believe me, I wish there were another way,
-      but I've searched extensively, and there doesn't seem to be one.
-      And I <i>really</i> wish they'd just fix this at the factory, but
-      as of mid-2016 they're still shipping this moldy old firmware.
-      So we seem to be stuck with this "old Windows" requirement.
+      Yes, I know how crazy it is that you have to find an old
+      Windows machine to update a brand new KL25Z.  Unfortunately, the
+	  factory firmware installed on new KL25Z boards was written when
+	  Windows 7 was current, and Microsoft made changes in Windows 8
+	  that are incompatible with that old firmware.
    </p>
 
    <p>
-      If you really, truly can't find an XP or Win 7 machine anywhere,
-      it's possible, though not easy, to use a <b>virtual machine</b> (VM)
-      version of XP or Win 7 running <b>within</b> your <b>current</b> Windows system.
-      This doesn't require replacing the OS on your machine, or installing
-      another OS alongside it on a new partition or anything like that.
-      Instead, you use special software to run the old OS "virtually".
-      That means it runs inside a window on your current Windows system.
+	  The easiest way to deal with this is to find an old machine
+	  running Windows 7 or XP.  But if that's out of the question for
+	  you, there are two alternatives.  Both require some extra work,
+	  but they'll let you do the upgrade with your existing machine.
    </p>
+
+   <h2>Option 1: Tweak your system</h2>
+
    <p>
-      And happily, there's free software (legitimately free and legal)
-      available that lets you do this.
+	  The firmware incompatibility in Windows 8+ comes from new
+	  disk indexing services that Microsoft added in Windows 8.
+	  When you plug in a USB disk, Windows automatically writes
+	  some information to the disk to support search indexing.
+	  These automatic writes confuse the old KL25Z firmware, because it's
+	  programmed to assume that all write operations are new firmware
+	  downloads.  It misinterprets the search indexing writes, and this
+	  makes any subsequent firmware download fail.
    </p>
 
    <p>
-      The downside of the virtual machine procedure is that it's 
-      complex and time-consuming.  I'll try to explain it below as best
-      I can, but there are parts you'll have to figure out for yourself.
-      Please consider this a last resort.  If you really have no other
-      options, though, read on.
+	  One way to solve this is to change your system settings
+	  to disable the new Windows search services that create the
+	  problem.
+   </p>
+
+   <p>
+	  This method was first described (as far as I know) by
+	  Erich Styger on his <a target="_blank" href="https://mcuoneclipse.com/2016/08/01/bricking_and_recovering_opensda_boards_in_windows_8_and_10/">MCU on Eclipse blog</a>.
+	  Please see that article for a more thorough explanation.
+   </p>
+
+   <p>Here are the steps:</p>
+
+   <ul>
+	  <li>Disable removable devices from library search:
+	  <ul>
+		 <li>If you have a PRO version of Windows:
+		 <ul>
+			<li>Press Windows+R
+			<li>Type gpedit.msc into the box and press return
+			<li>Navigate to Computer Configuration &gt; Administrative Templates &gt;
+			Windows Components &gt; Search &gt; Do not allow locations on removable drives to be added to libraries
+			<li>Enable the setting (which, in standard Microsoft fashion, disables the feature)
+		 </ul>
+
+		 <li>If you have a non-Pro Windows version:
+		 <ul>
+			<li>Press Windows+S
+			<li>Type regedit into the search box - <b>don't</b> press return
+			<li>A match for <b>regedit</b> should appear; right-click it and select <b>Run as Administrator</b>
+			<li>Navigate to HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search
+			<li>Set the item DisableRemovableDriveIndexing to value 1
+		 </ul>
+	  </ul>
+
+	  <li>Disable search services:
+	  <ul>
+		 <li>Press Windows+S
+		 <li>Type services into the box
+		 <li>Select "View local services"
+		 <li>Find "Storage Service" in the list; right-click it and select Stop
+		 <li>Find "Windows Search" in the list; right-click it and select Stop
+	  </ul>
+   </ul>
+
+   <p>
+	  Now you're ready to attempt the firmware upgrade on the KL25Z.
+	  However, note that the steps above don't entirely solve the problem:
+	  they just give you some extra time, but hopefully enough that you'll
+	  be able to complete the upgrade.
+   </p>
+
+   <p>
+	  The upgrade itself works just like in the main instructions, with
+	  the slight change that you have to do it as quickly as possible.
+
+   <ul>
+	  <li>Hold down the Reset button on the KL25Z and plug in the programming port
+	  <li>Release the Reset button
+	  <li>Drag and drop the firmware upgrade onto the KL25Z
+	  <li>As soon as the copy process finishes, unplug the USB
+   </ul>
+
+   <p>You can now verify the upgrade.  Plug the programming port back in (without
+	  pressing the Reset button).   The KL25Z thumb drive should appear.  Open the
+	  file SDA_INFO.HTM.  Check that the reported firmware version matches what you
+	  just downloaded.
+   </p>
+
+   <h2>Option 2: Run XP or Win 7 in a virtual machine</h2>
+
+   <p>
+	  If you don't want to make the changes to your system settings
+	  described above, or you can't get that approach to work, you can
+	  solve the upgrade problem by running a <b>virtual</b> copy of
+	  XP or Windows 7 on your existing operating system.  This approach
+	  is fairly complicated, but it doesn't require any changes to your
+	  system settings and doesn't require any special timing.
    </p>
 
    <p>
