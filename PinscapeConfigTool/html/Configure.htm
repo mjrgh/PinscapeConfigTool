@@ -2600,29 +2600,69 @@ $(function() {
     // click the "unused" button
     $("#unusedBtn").click(function(ev) {
 	// make the button unused (type 0)
-	selectButton("0", 0, true);
+	selectButton("0", 0, false);
 	ev.preventDefault();
+
+	// also turn night mode off for this key
+	nightModeClick("off");
+
+	// done with the key dialog
+	dismissKeyDlg();
     });
 
     // click the "night mode" button in the key selector dialog
     $("#nightModeBtn").click(function(ev) {
+	nightModeClick("toggle");
+	ev.preventDefault();
+	dismissKeyDlg();
+    });
+
+    // Turn night mode on, off, or toggle for the given button.
+    //
+    // newState = "on"     - set this as the night mode button unconditionally
+    //            "off"    - turn off night mode if it's set to this button
+    //            "toggle" - set this as the night mode button if it's not already;
+    //                       turn night mode off if it's currently the night mode button
+    function nightModeClick(newState)
+    {
+	// get the button we're clicking on, and note if it's a shifted button
 	var idx = dlgkey.data("idx"), xidx = dlgkey.data("xidx");
 	var btn = idx || xidx;
 	var shift = !!xidx;
+
+	// get the current night mode button setting
 	var fld = $("#nightModeButtonNo");
 	var ck = $("#nightModeButtonShift input");
-	if (fld.val() == btn && ck.prop("checked") == shift) {
+
+	// note if this button is currently the night mode button
+	var oldState = (fld.val() == btn && ck.prop("checked") == shift);
+
+	// figure the new state
+	if (newState == "off")
+	{
+	    // turn off night mode only if this is the night mode button currently
+	    if (!oldState)
+		newState = "nop";
+	}
+	else if (newState == "toggle")
+	{
+	    // reverse the current state
+	    newState = oldState ? "off" : "on";
+	}
+
+	// Apply the new state.  Note that 'newState' could be "nop",
+	// meaning that we're not making any changes.
+	if (newState == "off") {
 	    ck.prop("checked", shift);
 	    fld.val(0).change();
 	    $(this).removeClass("selected");
 	}
-	else {
+	else if (newState == "on") {
 	    ck.prop("checked", shift);
 	    fld.val(btn).change();
 	    $(this).addClass("selected");
 	}
-	ev.preventDefault();
-    });
+    }
     
     // on clicking any key mapping, display the key selector popup
     $(".keymapping, .keyNightMode").click(function(ev) {
