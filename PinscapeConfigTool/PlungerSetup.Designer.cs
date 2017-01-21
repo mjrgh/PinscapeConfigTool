@@ -52,7 +52,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnStopSave = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerRefresh = new System.Windows.Forms.Timer(this.components);
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -268,11 +268,11 @@
             this.btnStopSave.Visible = false;
             this.btnStopSave.Click += new System.EventHandler(this.btnStopSave_Click);
             // 
-            // timer1
+            // timerRefresh
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 20;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timerRefresh.Enabled = true;
+            this.timerRefresh.Interval = 20;
+            this.timerRefresh.Tick += new System.EventHandler(this.timerRefresh_Tick);
             // 
             // PlungerSetup
             // 
@@ -338,6 +338,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnStopSave;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timerRefresh;
     }
 }

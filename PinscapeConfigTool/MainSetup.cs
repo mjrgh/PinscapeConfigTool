@@ -106,6 +106,20 @@ namespace PinscapeConfigTool
                 ShowJoystickViewer(devId);
                 e.Cancel = true;
             }
+
+            // check for the special TV ON Tester path
+            if (e.Url.AbsolutePath.EndsWith("/TvOnTester"))
+            {
+                ShowTvOnTester(devId);
+                e.Cancel = true;
+            }
+
+            // check for the button tester path
+            if (e.Url.AbsolutePath.EndsWith("/ButtonTester"))
+            {
+                ShowButtonTester(devId);
+                e.Cancel = true;
+            }
         }
 
         // show the plunger pixel viewer window
@@ -119,7 +133,11 @@ namespace PinscapeConfigTool
                 PlungerWindowOpen = true;
 
                 // show the plunger dialog
-                (new PlungerSetup(dev)).ShowDialog();
+                PlungerSetup dlg = new PlungerSetup(dev);
+                dlg.ShowDialog();
+
+                // done with the dialog
+                dlg.Dispose();
 
                 // window is now closed
                 PlungerWindowOpen = false;
@@ -137,10 +155,51 @@ namespace PinscapeConfigTool
                 JoystickViewerOpen = true;
 
                 // show the window
-                (new JoystickViewer(dev)).ShowDialog();
+                JoystickViewer dlg = new JoystickViewer(dev);
+                dlg.ShowDialog();
+
+                // done with the dialog
+                dlg.Dispose();
 
                 // the window is now closed
                 JoystickViewerOpen = false;
+            }
+        }
+
+        // show the TV ON tester
+        bool TvOnTesterOpen = false;
+        void ShowTvOnTester(String devname)
+        {
+            DeviceInfo dev = GetDeviceByCPUID(devname);
+            if (dev != null)
+            {
+                // note that the window is open
+                TvOnTesterOpen = true;
+
+                // show the window
+                TvOnTester dlg = new TvOnTester(dev);
+                dlg.ShowDialog();
+
+                // dispose of the dialog
+                dlg.Dispose();
+
+                // the window is now closed
+                TvOnTesterOpen = false;
+            }
+        }
+
+        // button tester
+        bool ButtonTesterOpen = false;
+        void ShowButtonTester(String devname)
+        {
+            DeviceInfo dev = GetDeviceByCPUID(devname);
+            if (dev != null)
+            {
+                ButtonTesterOpen = true;
+                ButtonStatus dlg = new ButtonStatus(dev);
+                dlg.ShowDialog();
+                dlg.Dispose();
+                ButtonTesterOpen = false;
             }
         }
 
@@ -431,7 +490,7 @@ namespace PinscapeConfigTool
             "10 TLC5940 {nchips:$B,SIN:$P,SCLK:$P,XLAT:$P,BLANK:$P,GSCLK:$P}",
             "11 HC595 {nchips:$B,SIN:$P,SCLK:$P,LATCH:$P,ENA:$P}",
             "12 disconnectRebootTime $B",
-            "13 plungerCal {zero:$W,max:$W,tRelease:$B}",
+            "13 plungerCal {zero:$W,max:$W,tRelease:$B,calibrated:$B}",
             "14 expansionBoards {type:$B,version:$B,ext0:$B,ext1:$B,ext2:$B}",
             "15 nightMode {button:$B,flags:$B,output:$B}",
             "16 shiftButton $B",
@@ -439,46 +498,6 @@ namespace PinscapeConfigTool
             "254[] buttons {pin:$P,keytype:$B,keycode:$B,flags:$B}",
             "255[] outputs {port:$o,flags:$B}"
         };
-
-        // Convert a USB pin ID byte to a string pin name
-        String WireToPinName(int n)
-        {
-            // special value 0xFF means NC (not connected)
-            if (n == 0xFF)
-                return "NC";
-
-            // the high 3 bits are the port name (A-E = 0-4)
-            char port = (char)('A' + ((n >> 5) & 0x07));
-
-            // the low 5 bits are the pin number
-            int pin = n & 0x1F;
-
-            // if the port name is invalid, return NC
-            if (port > 'E')
-                return "NC";
-
-            // build the name - PT<port><pin>
-            return "PT" + port + pin;
-        }
-
-        // Convert a pin name to a USB wire byte
-        byte PinNameToWire(String name)
-        {
-            // NC is special - maps to 0xFF
-            if (name == "NC")
-                return 0xff;
-
-            // otherwise, parse the PT<port><pin>
-            Match m = Regex.Match(name, @"PT([A-E])(\d\d?)");
-            if (m.Success)
-            {
-                return (byte)(
-                    ((m.Groups[1].Value.ToCharArray()[0] - 'A') << 5)
-                    | (int.Parse(m.Groups[2].Value) & 0x1F));
-            }
-            else
-                return 0xFF;
-        }
 
         // Scripting callback interface.  This lets the javascript in
         // the web browser control to call back into the C# application
@@ -500,6 +519,18 @@ namespace PinscapeConfigTool
             public void ShowPlungerWindow(String devname)
             {
                 form.ShowPlungerWindow(devname);
+            }
+
+            // show the TV ON tester
+            public void ShowTvOnTester(String devname)
+            {
+                form.ShowTvOnTester(devname);
+            }
+
+            // show the button tester
+            public void ShowButtonTester(String devname)
+            {
+                form.ShowButtonTester(devname);
             }
 
             // get the WebControl version string
@@ -612,8 +643,8 @@ namespace PinscapeConfigTool
             // check for updates to the device list
             public bool CheckForDeviceUpdates()
             {
-                // if a plunger setup window or joystick viweer is open, disable updates
-                if (form.PlungerWindowOpen || form.JoystickViewerOpen)
+                // if any of the special viewer/test windows are open, skip the update check
+                if (form.PlungerWindowOpen || form.JoystickViewerOpen || form.TvOnTesterOpen || form.ButtonTesterOpen)
                     return false;
 
                 // get the new device list
@@ -685,6 +716,15 @@ namespace PinscapeConfigTool
                 if (dev == null)
                     return null;
 
+                // get the configuration report
+                DeviceInfo.ConfigReport cfg = dev.GetConfigReport();
+                String configInfo = "";
+                if (cfg != null)
+                {
+                    configInfo = String.Format(", NumOutputs: {0}", cfg.numOutputs)
+                        + String.Format(", FreeHeapBytes: {0}", cfg.freeHeapBytes);
+                }
+
                 // return the basic info from the device list entry
                 return "({"
                     + String.Format("PinscapeUnitNum: {0}, LedWizUnitNum: {1}, CPUID: \"{2}\", BuildID: \"{3}\", ",
@@ -698,6 +738,8 @@ namespace PinscapeConfigTool
                     + String.Format("PlungerEnabled: {0}, JoystickEnabled: {1}",
                         dev.PlungerEnabled ? 1 : 0,
                         dev.JoystickEnabled ? 1 : 0)
+
+                    + configInfo
 
                     + "})";
             }
@@ -1599,7 +1641,7 @@ namespace PinscapeConfigTool
 
                         case "P":
                             // PORT - port name from ID byte
-                            ret = "\"" + form.WireToPinName(buf[idx]) + "\"";
+                            ret = "\"" + DeviceInfo.WireToPinName(buf[idx]) + "\"";
                             idx += 1;
                             break;
 
@@ -1621,7 +1663,7 @@ namespace PinscapeConfigTool
                                 case 1:
                                 case 2:
                                     // GPIO port - it's a pin name
-                                    pin = "\"" + form.WireToPinName(buf[idx + 1]) + "\"";
+                                    pin = "\"" + DeviceInfo.WireToPinName(buf[idx + 1]) + "\"";
                                     break;
 
                                 default:

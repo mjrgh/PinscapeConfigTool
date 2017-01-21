@@ -21,7 +21,11 @@ namespace PinscapeConfigTool
             // show the dialog only if the user hasn't previously checked
             // the box to hide it
             if (Program.options.ValueOrDefault(optionKey) != "Hide")
-                (new AdviceDialog(optionKey, message)).ShowDialog();
+            {
+                AdviceDialog dlg = new AdviceDialog(optionKey, message);
+                dlg.ShowDialog();
+                dlg.Dispose();
+            }
         }
 
         // Restore all dialogs marked as hidden in the options

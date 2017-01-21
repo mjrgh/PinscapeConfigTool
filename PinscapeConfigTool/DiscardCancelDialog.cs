@@ -23,7 +23,9 @@ namespace PinscapeConfigTool
         {
             DiscardCancelDialog dlg = new DiscardCancelDialog(msg, buttons);
             dlg.ShowDialog();
-            return dlg.DialogResult;
+            DialogResult result = dlg.DialogResult;
+            dlg.Dispose();
+            return result;
         }
 
         public DiscardCancelDialog(String msg, String buttons)

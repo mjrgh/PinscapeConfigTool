@@ -187,6 +187,19 @@ $(function()
 				     + "\" title=\"View live USB joystick input\">"
 				     + "<img src=\"tbJoystick.png\"><br>Joystick</a> ";
 
+		// TV ON tester
+		var tvOnButton = "";
+		if (d.TvOnEnabled)
+		    tvOnButton = "<a class=\"tbButton\" href=\"http://ps/TvOnTester?ID=" + d.CPUID
+				 + "\" title=\"Test the TV ON relay\">"
+				 + "<img src=\"tbTVON.png\"><br>TV Relay</a>";
+
+		// button tester
+		var buttonTesterButton =
+		    "<a class=\"tbButton\" href=\"http://ps/ButtonTester?ID=" + d.CPUID
+		    + "\" title=\"Test input button wiring\">"
+		    + "<img src=\"tbButton.png\"><br>Buttons</a>";
+
 		// output tester - TO DO
 		var outputTesterButton = "";
 		//outputTesterButton = "<a class=\"tbButton\" href=\"outputTester.png?ID=" + d.CPUID
@@ -233,6 +246,8 @@ $(function()
 			   +        plungerButton
 			   +        joystickButton
 			   +        outputTesterButton
+			   +        tvOnButton
+			   +        buttonTesterButton
 			   +     "</div>"
 			   +  "</div>"
 			   + "</div>"

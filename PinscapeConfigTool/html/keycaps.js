@@ -15,6 +15,12 @@
 // wid,ht       -> width & height of keyboard layout keycap; default is 30,31
 // cx,cy        -> left top offset of alternate keycap to display in settings list
 // cwid,cht     -> width & height of alternate keycap image; default is 30,31
+//
+// jskey        -> javascript key code
+// jsloc        -> javascript key location, for keys with multiple instances
+//                 (such as left/right modifier keys and keypad keys):
+//                 0=main keyboard, 1=left, 2=right, 3=keypad
+// vkey         -> Windows virtual key code, when different from the jskey
 var keycaps = {
     0x00: { name: "[Invalid key code]" },
     0x01: { name: "Keyboard ErrorRollOver" },
@@ -104,7 +110,7 @@ var keycaps = {
     0x55: { name: "Keypad *", x: 756, y: 94, jskey: 0x6A },
     0x56: { name: "Keypad -", x: 792, y: 94, jskey: 0x6D },
     0x57: { name: "Keypad +", x: 792, y: 131, ht: 66, cx: 749, cy: 278, jskey: 0x6B },
-    0x58: { name: "Keypad Enter", x: 791, y: 204, ht: 66, cx: 717, cy: 278, jskey: 0x0D, jsloc: 3 }, // loc e=keypad
+    0x58: { name: "Keypad Enter", x: 791, y: 204, ht: 66, cx: 717, cy: 278, jskey: 0x0D, jsloc: 3, vkey: 0x100D }, // loc 3=keypad
     0x59: { name: "Keypad 1/End", x: 682, y: 204, jskey: 0x61 },
     0x5A: { name: "Keypad 2/Down Arrow", x: 720, y: 204, jskey: 0x62 },
     0x5B: { name: "Keypad 3/Page Down", x: 757, y: 204, jskey: 0x63 },
@@ -117,7 +123,7 @@ var keycaps = {
     0x62: { name: "Keypad 0/Insert", x: 683, y: 241, wid: 68, cx: 684, cy: 278, jskey: 0x60 },
     0x63: { name: "Keypad ./Delete", x: 757, y: 241, jskey: 0x6E },
     0x64: { name: "Non-US Keyboard \|" },
-    0x65: { name: "Application Key", x: 458, y: 241, wid: 41, jskey: 0x93 },
+    0x65: { name: "Application Key", x: 458, y: 241, wid: 41, jskey: 0x93, vkey: 0x5d },
     0x66: { name: "Keyboard Power" },
     0x67: { name: "Keypad =" },
     0x68: { name: "Keyboard F13", x: 77, y: 4, jskey: 0x7C },
@@ -181,13 +187,13 @@ var keycaps = {
     0xA2: { name: "Keyboard Clear/Again" },
     0xA3: { name: "Keyboard CrSel/Props" },
     0xA4: { name: "Keyboard ExSel" },
-    0xE0: { name: "Keyboard Left Control", x: 5, y: 242, wid: 41, cx:91, cy: 281, cwid: 41, jskey: 0x11, jsloc: 1 },  // jsloc 1=left
-    0xE1: { name: "Keyboard Left Shift", x: 5, y: 205, wid: 69, cx: 5, cy: 281, cwid: 41, jskey: 0x10, jsloc: 1 },    // jsloc 1=left
-    0xE2: { name: "Keyboard Left Alt", x: 95, y: 242, wid: 41, cx: 178, cy: 281, cwid: 41, jskey: 0x12, jsloc: 1 },   // jsloc 1=left
+    0xE0: { name: "Keyboard Left Control", x: 5, y: 242, wid: 41, cx:91, cy: 281, cwid: 41, jskey: 0x11, jsloc: 1, vkey: 0xA2 },  // jsloc 1=left
+    0xE1: { name: "Keyboard Left Shift", x: 5, y: 205, wid: 69, cx: 5, cy: 281, cwid: 41, jskey: 0x10, jsloc: 1, vkey: 0xA0 },    // jsloc 1=left
+    0xE2: { name: "Keyboard Left Alt", x: 95, y: 242, wid: 41, cx: 178, cy: 281, cwid: 41, jskey: 0x12, jsloc: 1, vkey: 0xA4 },   // jsloc 1=left
     0xE3: { name: "Keyboard Left GUI", x: 50, y: 242, wid: 41, cx: 264, cy: 281, cwid: 41, jskey: 0x5B },
-    0xE4: { name: "Keyboard Right Control", x: 504, y: 242, wid: 41, cx: 134, cy: 281, cwid: 41, jskey: 0x11, jsloc: 2 }, // jsloc 2=right
-    0xE5: { name: "Keyboard Right Shift", x: 453, y: 205, wid: 91, cx: 47, cy: 281, cwid: 41, jskey: 0x10, jsloc: 2 },// jsloc 2=right
-    0xE6: { name: "Keyboard Right Alt", x: 368, y: 242, wid: 41, cx: 221, cy: 281, cwid: 41, jskey: 0x12, jsloc: 2 }, // jsloc 2=right
+    0xE4: { name: "Keyboard Right Control", x: 504, y: 242, wid: 41, cx: 134, cy: 281, cwid: 41, jskey: 0x11, jsloc: 2, vkey: 0xA3 }, // jsloc 2=right
+    0xE5: { name: "Keyboard Right Shift", x: 453, y: 205, wid: 91, cx: 47, cy: 281, cwid: 41, jskey: 0x10, jsloc: 2, vkey: 0xA1 },// jsloc 2=right
+    0xE6: { name: "Keyboard Right Alt", x: 368, y: 242, wid: 41, cx: 221, cy: 281, cwid: 41, jskey: 0x12, jsloc: 2, vkey: 0xA5 }, // jsloc 2=right
 	0xE7: { name: "Keyboard Right GUI", x: 413, y: 242, wid: 41, cx: 306, cy: 281, cwid: 41, jskey: 0x5C },
 	"missing": { name: "", x: 566, y: 281, wid: 41, ht: 31 },
 };
@@ -197,8 +203,8 @@ var mediaKeycaps = {
 	0xE2: { name: "Media Mute", x: 791, y: 42, jskey: 173 },
 	0xE9: { name: "Media Volume Up", x: 722, y: 42, jskey: 174 },
 	0xEA: { name: "Media Volume Down", x: 753, y: 42, jskey: 175 },
-	0xB5: { name: "Media Next Track", x: 753, y: 4 },
-	0xB6: { name: "Media Previous Track", x: 722, y: 4 },
-	0xB7: { name: "Media Stop" },
-	0xCD: { name: "Media Play/Pause", x: 791, y: 4 }
+	0xB5: { name: "Media Next Track", x: 753, y: 4, vkey: 0xB0 },
+	0xB6: { name: "Media Previous Track", x: 722, y: 4, vkey: 0xB1 },
+	0xB7: { name: "Media Stop", vkey: 0xB2 },
+	0xCD: { name: "Media Play/Pause", x: 791, y: 4, vkey: 0xB3 }
 };

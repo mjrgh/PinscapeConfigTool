@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Keycaps To C#</title>
+</head>
+<body>
+
+<div id="keycaps">
+</div>
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script src="keycaps.js"></script>
+<script type="text/javascript">
+
+$(function()
+{
+    function hex(i) { i = +i; return (i < 16 ? "0" : "") + i.toString(16).toUpperCase(); }
+	var par = $("#keycaps");
+    var write = function(array, key, val) {
+        var vk = val.vkey || (val.jsloc == 2 || val.jsloc == 3 ? 0x1000 | val.jskey : val.jskey);
+	    if (/\d+/.test(key) && (val.x || val.y) && vk) {
+            key = parseInt(key);
+			par.append($("<div>").text(
+				"InitKeyCap(" + array + ", "
+                + "0x" + hex(key) + ", "
+				+ "0x" + hex(vk) + ", "
+				+ "\"" + val.name.replace(/"/, "\\\"") + "\", "
+				+ val.x + ", " + val.y + ", "
+				+ (val.wid || 30) + ", " + (val.ht || 31) + ", "
+				+ (val.cx || val.x) + ", " + (val.cy || val.y) + ", "
+				+ (val.cwid || val.wid || 30) + ", " + (val.cht || val.ht || 31) + ");"));
+        }
+    };
+	$.each(keycaps, function(key, val) { write("keyCaps", key, val); });
+    $.each(mediaKeycaps, function(key, val) { write("mediaCaps", key, val); });
+});
+
+</script>

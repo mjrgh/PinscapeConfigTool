@@ -135,17 +135,17 @@ var gpioPins = [
 			      + "Using this port will supersede the green LED's normal status "
 			      + "display function." },
     { name: "PTC0",  adc: "0.14" },
-    // { name: "PTC1",  pwm: "0.0", adc: "0.15" }, // omitted - reserved by mbed platform for real-time clock input
-    { name: "PTC2",  pwm: "0.1", adc: "0.11" },
+    // { name: "PTC1",  pwm: "0.0", adc: "0.15", idc: "1.SCL" }, // omitted - reserved by mbed platform for real-time clock input
+    { name: "PTC2",  pwm: "0.1", adc: "0.11", idc: "1.SDA" },
     { name: "PTC3",  pwm: "0.2" },
     { name: "PTC4",  pwm: "0.3" },
     { name: "PTC5",  spi: "SCLK" },
     { name: "PTC6",  spi: "MOSI" },
     { name: "PTC7",  spi: "MISO" },
-    { name: "PTC8",  pwm: "0.4" },
-    { name: "PTC9",  pwm: "0.5" },
-    { name: "PTC10"  },
-    { name: "PTC11"  },
+    { name: "PTC8",  pwm: "0.4", i2c: "0.SCL" },
+    { name: "PTC9",  pwm: "0.5", i2c: "0.SDA" },
+    { name: "PTC10", i2c: "1.SCL"  },
+    { name: "PTC11", i2c: "1.SDA"  },
     { name: "PTC12"  },
     { name: "PTC13"  },
     { name: "PTC16"  },
@@ -161,8 +161,8 @@ var gpioPins = [
     { name: "PTD5",  pwm: "0.5", adc: "0.6b" },
     { name: "PTD6",  adc: "0.7b" },
     { name: "PTD7"   },
-    { name: "PTE0"   },
-    { name: "PTE1"   },
+    { name: "PTE0",  i2c: "1.SDA" },
+    { name: "PTE1",  i2c: "1.SCL" },
     { name: "PTE2"   },
     { name: "PTE3"   },
     { name: "PTE4"   },
@@ -587,6 +587,9 @@ function forEachHeaderPin(header, func)
    <p>
       <b>Configuration settings for KL25Z CPU ID
       <span id="CPUID">unknown</span></b>
+   </p>
+   <p id="heapInfo" style="display: none;">
+      Memory used: <span id="usedHeapBytes">Unknown</span>/16K bytes (<span id="freeHeapBytes">Unknown</span> bytes free)
    </p>
 
 
@@ -1459,6 +1462,9 @@ $("#txtRebootTime").change(function() {
       <div>
 	 <div>
 	    <label><input id="tvOnEnabled" type="checkbox">Enabled</label>
+	    <span style="margin-left: 2em;" id="tvOnTestButton">
+	       <a href="#" id="btnTvOnTest" class="button">Test</a>
+	    </span>
 	 </div>
 	 <div id="tvOnPins">
 	    <table class="inputs">
@@ -1503,10 +1509,36 @@ $("#txtRebootTime").change(function() {
 $("#tvOnEnabled").change(function(ev) {
     showTvOn($(this).prop("checked"), !!ev.originalEvent);
 });
+$("#btnTvOnTest").click(function(ev)
+{
+    // don't open the link
+    ev.preventDefault();
+
+    // check for pin changes
+    function pin(sel) { var p = $(sel).val(); return p == "Not Connected" ? "NC" : p; }
+    if (pin("#tvStatus .pinval") != config.TVon.statusPin
+	|| pin("#tvLatch .pinval") != config.TVon.latchPin
+	|| pin("#tvRelay .pinval") != config.TVon.relayPin)
+    {
+	if (!window.external.YesNoDialog(
+	    "You've made changes to the TV ON setup that you haven't "
+	    + "programmed into the KL25Z yet. The tester window will reflect "
+	    + "the current device settings, not your new unsaved changes. "
+	    + "If you want to test your new settings, click \"Program KL25Z\" "
+	    + "before proceeding to the tester window."
+	    + "\r\n\r\n"
+	    + "Do you want to open the tester anyway?"))
+	    return;
+    }
+
+    // show the dialog
+    window.external.ShowTvOnTester(CPUID);
+});
 function showTvOn(show, scroll)
 {
     // show the pin selectors
     slideToggle($("#tvOnPins"), show, 250, scroll);
+    $("#tvOnTestButton").toggle(show);
     $("#tvOnPins .pinselect").data("active", show);
 
     // if it's enabled, and we don't have pin selections, set the defaults
@@ -1624,7 +1656,7 @@ function showTvOn(show, scroll)
 	 <select id="plungerType" style="margin-left: 1em;">
 	    <option value="0">None</option>
 	    <option value="1">TSL1410R</option>
-	    <option value="3">TSL1412R</option>
+	    <option value="3">TSL1412S</option>
 	    <option value="5">Potentiometer</option>
 	 </select>
 	 <span style="margin-left: 2em;" id="plungerSensorButton">
@@ -1802,7 +1834,7 @@ function setPlungerPinFactoryDefaults(prvPlungerType)
     }
 }
 
-$("#plungerSensorButton").click(function(ev) {
+$("#btnPlungerCal").click(function(ev) {
     // don't actually open the link
     ev.preventDefault();
     
@@ -2042,6 +2074,10 @@ $("#zbPort").change(function(ev) {
       pin or key assignment to change a setting.
 
       <div>
+	 <a href="#" id="btnButtonTest" class="button">Test Buttons</a>
+      </div>
+
+      <div>
 	 <img src="ShiftButton.png" style="vertical-align: middle;">
 	 <b>Shift button number:</b> <input type="text" id="shiftButton" size="4">
 	 <a href="#" class="shower">What's this?</a>
@@ -2082,6 +2118,33 @@ $("#zbPort").change(function(ev) {
    <script type="text/javascript" src="keycaps.js"></script>
 
    <script>
+
+
+// show the button tester
+$("#btnButtonTest").click(function(ev)
+{
+    ev.preventDefault();
+    var cfgMem = normalizeConfig(configFromUI());
+    var cfgDev = normalizeConfig(config);
+    if (!valEq(cfgMem.buttons, cfgDev.buttons)
+	|| !valEq(cfgMem.xbuttons, cfgDev.xbuttons)
+	|| cfgMem.shiftButton != cfgDev.shiftButton)
+    {
+	if (!window.external.YesNoDialog(
+	    "You've made changes to the button settings that you haven't "
+	    + "programmed into the KL25Z yet. The tester window will reflect "
+	    + "the current device settings, not your new unsaved changes. "
+	    + "If you want to test your new settings, click \"Program KL25Z\" "
+	    + "before proceeding to the tester window."
+	    + "\r\n\r\n"
+	    + "Do you want to open the tester anyway?"))
+	    return;
+    }
+
+    // show the dialog
+    window.external.ShowButtonTester(CPUID);
+});
+
 
 // Button row updater.  We group updates to avoid updating
 // the same row repeatedly when performing a task that affects
@@ -2650,6 +2713,15 @@ $(function() {
 	    newState = oldState ? "off" : "on";
 	}
 
+	// don't allow a shifted night mode button if in switch mode
+	var toggleMode = ($("#nightModeOptions input:radio[name=nightModeButtonType]:checked").val() == 1);
+	if (newState == "on" && shift && !toggleMode)
+	{
+	    alert("Night Mode can't be assigned to a shifted button when "
+		  + "the on/off switch mode is used.");
+	    return;
+	}
+
 	// Apply the new state.  Note that 'newState' could be "nop",
 	// meaning that we're not making any changes.
 	if (newState == "off") {
@@ -3156,9 +3228,12 @@ function showHideNightModeButtonShift()
 {
     // the night mode button can only be on a shifted button if the shift
     // button is enabled AND the night mode button is in toggle mode
-    $("#nightModeButtonShift").toggle(
-	$("#shiftButton").val() != 0
-	&& $("#nightModeOptions input:radio[name=nightModeButtonType]:checked").val() == 1);
+    var toggleMode = ($("#nightModeOptions input:radio[name=nightModeButtonType]:checked").val() == 1);
+    $("#nightModeButtonShift").toggle($("#shiftButton").val() != 0 && toggleMode);
+
+    // un-check the shift button if it's no longer valid
+    if (!toggleMode)
+	$("#nightModeButtonShift input").prop("checked", false).change();
 }
       
    </script>
@@ -4497,6 +4572,21 @@ $(function() {
 	// set the CPU ID
 	CPUID = RegExp.$1;
 	$("#CPUID").text(CPUID);
+
+	// get the device info
+	function formatCommas(s) { return s.toString().replace(/(\d)(\d\d\d)$/, "$1,$2"); }
+	function formatByteSize(s)
+	{
+	    if (s < 1024) return formatCommas(s);
+	    if (s < 10*1024) return (s/1024).toFixed(1).toString() + "K bytes";
+	    return Math.round(s/1024) + "K bytes";
+	}
+	var devInfo = eval(window.external.GetDeviceInfo(CPUID) || { FreeHeapBytes: 0 });
+	if (devInfo.FreeHeapBytes) {
+	    $("#usedHeapBytes").text(formatByteSize(16*1024 - devInfo.FreeHeapBytes));
+	    $("#freeHeapBytes").text(formatCommas(devInfo.FreeHeapBytes));
+	    $("#heapInfo").show();
+	}
 
 	// loop until we get the configuration or the user cancels
 	for (;;)
@@ -6530,7 +6620,7 @@ function configFunctionSetup()
           },
 	  fromUI: function(v) {
 	      var v = 0;
-	      if ($("input:radio[name=nightButtonModeType]:checked").val() == 2) v |= 0x01;  // switch mode (2) -> flag 0x01
+	      if ($("input:radio[name=nightModeButtonType]:checked").val() == 2) v |= 0x01;  // switch mode (2) -> flag 0x01
 	      if (!(v & 0x01) && $("#nightModeButtonShift input").prop("checked")) v |= 0x02; // shift button -> flag 0x02
 	      return v;
           }

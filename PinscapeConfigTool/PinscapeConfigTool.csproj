@@ -81,6 +81,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButtonStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ButtonStatus.Designer.cs">
+      <DependentUpon>ButtonStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="CollectionUtils.cs" />
     <Compile Include="AutoUpdater.cs" />
     <Compile Include="AdviceDialog.cs">
@@ -101,7 +107,14 @@
     <Compile Include="JoystickViewer.Designer.cs">
       <DependentUpon>JoystickViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="KL25ZPinDisplay.cs" />
     <Compile Include="StringUtils.cs" />
+    <Compile Include="TvOnTester.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TvOnTester.Designer.cs">
+      <DependentUpon>TvOnTester.cs</DependentUpon>
+    </Compile>
     <Compile Include="VersionInfo.cs" />
     <Compile Include="Downloader.cs" />
     <Compile Include="DeviceInfo.cs" />
@@ -135,6 +148,9 @@
     <EmbeddedResource Include="AdviceDialog.resx">
       <DependentUpon>AdviceDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ButtonStatus.resx">
+      <DependentUpon>ButtonStatus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DiscardCancelDialog.resx">
       <DependentUpon>DiscardCancelDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -165,6 +181,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="TvOnTester.resx">
+      <DependentUpon>TvOnTester.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -192,6 +211,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="h1TvOn.png" />
     <Content Include="html\ActiveLowOff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -220,7 +240,16 @@
     <Content Include="html\GammaOn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="html\h1button.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="html\h1DOF.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\h1TvOn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\HelpButtonTester.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\HelpKeyAssignments.htm">
@@ -229,10 +258,31 @@
     <Content Include="html\HelpPulseKey.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\HelpTvOnTester.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\homeIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\jskeySmallOff.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\jskeySmallOn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\kbSmall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\keycaps.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\kl25zPinsSmaller-Callout-left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\kl25zPinsSmaller-Callout-right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\kl25zPinsSmaller.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\mainBoardIn.png">
@@ -275,7 +325,13 @@
     <Content Include="html\ShiftButtonHere.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\ShiftButtonSmall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\tbBackupRestore.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\tbButton.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\tbJoystick.png">
@@ -288,6 +344,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\tbSettings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\tbTVON.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\tbUpdateFirmware.png">

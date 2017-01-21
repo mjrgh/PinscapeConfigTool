@@ -186,12 +186,15 @@
             // 
             // btnLogging
             // 
-            this.btnLogging.Location = new System.Drawing.Point(663, 198);
+            this.btnLogging.AutoSize = true;
+            this.btnLogging.BackColor = System.Drawing.SystemColors.Window;
+            this.btnLogging.Location = new System.Drawing.Point(663, 196);
             this.btnLogging.Name = "btnLogging";
-            this.btnLogging.Size = new System.Drawing.Size(75, 23);
+            this.btnLogging.Padding = new System.Windows.Forms.Padding(2);
+            this.btnLogging.Size = new System.Drawing.Size(75, 27);
             this.btnLogging.TabIndex = 35;
             this.btnLogging.Text = "&Capture...";
-            this.btnLogging.UseVisualStyleBackColor = true;
+            this.btnLogging.UseVisualStyleBackColor = false;
             this.btnLogging.Click += new System.EventHandler(this.btnLogging_Click);
             // 
             // lblBottomMarker
@@ -221,6 +224,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(750, 228);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblBottomMarker);
@@ -244,6 +248,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "JoystickViewer";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Pinscape Setup";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.JoystickViewer_FormClosed);
             this.Shown += new System.EventHandler(this.JoystickViewer_Shown);

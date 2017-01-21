@@ -161,6 +161,38 @@ public class DeviceInfo
         return ok;
     }
 
+    // Get the config report
+    public class ConfigReport
+    {
+        public ConfigReport(byte[] buf)
+        {
+            configured = (buf[12] & 0x01) != 0;
+            psUnitNo = (buf[5] | (buf[6] << 8)) + 1;
+            numOutputs = buf[3] | (buf[4] << 8);
+            plungerZero = buf[7] | (buf[8] << 8);
+            plungerMax = buf[9] | (buf[10] << 8);
+            plungerTime = buf[11];
+            freeHeapBytes = buf[13] | (buf[14] << 8);
+        }
+
+        public bool configured;     // a saved configuration has been loaded; 
+                                    // if this is false, factory defaults are in effect
+        public int psUnitNo;        // Pinscape unit number, 1-16
+        public int numOutputs;      // number of feedabck device outputs
+        public int plungerZero;     // plunger calibration zero point
+        public int plungerMax;      // plunger calibration maximum
+        public int plungerTime;     // plunger release time, milliseconds
+        public int freeHeapBytes;   // number of heap memory bytes available
+    }
+    public ConfigReport GetConfigReport()
+    {
+        byte[] buf = SpecialRequest(4, new byte[] { }, (r) => r[1] == 0 && r[2] == 0x88);
+        if (buf != null)
+            return new ConfigReport(buf);
+        else
+            return null;
+    }
+
     // Create a copy of a device info object from a given source object.
     // The new object has its own independent file handle to the device's
     // control protocol interface endpoint.  This is useful when a separate
@@ -174,6 +206,7 @@ public class DeviceInfo
         this.version = d.version;
         this.PlungerEnabled = d.PlungerEnabled;
         this.JoystickEnabled = d.JoystickEnabled;
+        this.TvOnEnabled = d.TvOnEnabled;
         this.CPUID = d.CPUID;
         this.LedWizUnitNo = d.LedWizUnitNo;
         this.PinscapeUnitNo = d.PinscapeUnitNo;
@@ -190,6 +223,7 @@ public class DeviceInfo
         this.version = version;
         this.PlungerEnabled = true;
         this.JoystickEnabled = false;
+        this.TvOnEnabled = false;
         this.fp = OpenFile();
 
         // presume invalid
@@ -235,6 +269,19 @@ public class DeviceInfo
                
             // free the preparsed data
             HIDImports.HidD_FreePreparsedData(ppdata);
+        }
+
+        // Ask about the TV ON feature.  This is config variable 9; the
+        // results are: [0] power status input pin; [1] latch output pin;
+        // [2] relay trigger pin; [3,4] delay time in 10ms increments.
+        // This is enabled only if all pins are assigned and the delay
+        // is non-zero.
+        if ((buf = QueryConfigVar(9)) != null)
+        {
+            int delay = buf[3] | (buf[4] << 8);
+            this.TvOnEnabled =
+                (buf[0] != 0xFF && buf[1] != 0xFF && buf[2] != 0xFF
+                && delay != 0);
         }
 
         // figure the LedWiz unit number
@@ -301,7 +348,7 @@ public class DeviceInfo
     private NativeOverlapped ov;
     public byte[] ReadUSB()
     {
-        // try reading a few times, in case we lose the connection brieflyl
+        // try reading a few times, in case we lose the connection briefly
         for (int tries = 0; tries < 3; ++tries)
         {
             // set up a non-blocking ("overlapped") read
@@ -526,6 +573,46 @@ public class DeviceInfo
         return SetConfigVar(new byte[] { varID, arrIdx }.Concat(data));
     }
 
+    // Convert a USB pin ID byte to a string pin name
+    static public String WireToPinName(int n)
+    {
+        // special value 0xFF means NC (not connected)
+        if (n == 0xFF)
+            return "NC";
+
+        // the high 3 bits are the port name (A-E = 0-4)
+        char port = (char)('A' + ((n >> 5) & 0x07));
+
+        // the low 5 bits are the pin number
+        int pin = n & 0x1F;
+
+        // if the port name is invalid, return NC
+        if (port > 'E')
+            return "NC";
+
+        // build the name - PT<port><pin>
+        return "PT" + port + pin;
+    }
+
+    // Convert a pin name to a USB wire byte
+    static public byte PinNameToWire(String name)
+    {
+        // NC is special - maps to 0xFF
+        if (name == "NC")
+            return 0xff;
+
+        // otherwise, parse the PT<port><pin>
+        Match m = Regex.Match(name, @"PT([A-E])(\d\d?)");
+        if (m.Success)
+        {
+            return (byte)(
+                ((m.Groups[1].Value.ToCharArray()[0] - 'A') << 5)
+                | (int.Parse(m.Groups[2].Value) & 0x1F));
+        }
+        else
+            return 0xFF;
+    }
+
     // query the CPU ID
     public String QueryCPUID()
     {
@@ -651,6 +738,7 @@ public class DeviceInfo
     public int PinscapeUnitNo;
     public bool PlungerEnabled;
     public bool JoystickEnabled;
+    public bool TvOnEnabled;
     public bool isValid;
     public string CPUID;
     public string OpenSDAID;

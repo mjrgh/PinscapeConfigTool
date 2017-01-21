@@ -58,6 +58,9 @@ namespace PinscapeConfigTool
             int calMax = this.calMax;
             int calZero = this.calZero;
             bool calMode = this.calMode;
+            String t1 = txtInfo_text;
+            String t2 = txtInfo2_text;
+            String t3 = txtInfo3_text;
             mutex.ReleaseMutex();
 
             // fill the background with gray when done fetching pixels
@@ -157,9 +160,9 @@ namespace PinscapeConfigTool
             }
 
             // update the statistics text
-            txtInfo.Text = txtInfo_text;
-            txtInfo2.Text = txtInfo2_text;
-            txtInfo3.Text = txtInfo3_text;
+            txtInfo.Text = t1;
+            txtInfo2.Text = t2;
+            txtInfo3.Text = t3;
         }
         DateTime flashTime = DateTime.Now;
         bool calModeColor;
@@ -690,7 +693,7 @@ namespace PinscapeConfigTool
             closePixFile = true;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void timerRefresh_Tick(object sender, EventArgs e)
         {
             // invalidate the visual display so we redraw it with the new data
             exposure.Invalidate();
