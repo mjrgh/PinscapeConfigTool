@@ -41,6 +41,7 @@ namespace PinscapeConfigTool
         }
 
         static String[] statusMsg = new String[]{
+            "Unknown",
             "PSU2 Power is on",
             "PSU2 Power is off",
             "PSU2 Power is off",
@@ -54,7 +55,7 @@ namespace PinscapeConfigTool
             if (buf != null)
             {
                 // get the current TV ON timer status
-                int status = (buf[0] >> 2) & 0x07;
+                int status = (buf[1] >> 2) & 0x07;
                 lblStatus.Text = (status < statusMsg.Length ?
                     statusMsg[status] : "Invalid");
             }
@@ -64,6 +65,7 @@ namespace PinscapeConfigTool
         {
             // send the TV ON relay manual control request (11 + 0=off/1=on)
             dev.SpecialRequest(11, new byte[] { (byte)(ckRelayOn.Checked ? 1 : 0) });
+            ckRelayOn.BackColor = ckRelayOn.Checked ? Color.Yellow : SystemColors.Window;
         }
 
         private void btnRelayPulse_Click(object sender, EventArgs e)

@@ -18,7 +18,7 @@ namespace PinscapeConfigTool
         public PlungerSetup(DeviceInfo dev)
         {
             InitializeComponent();
-            this.dev = dev;
+            this.dev = new DeviceInfo(dev);
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -67,42 +67,38 @@ namespace PinscapeConfigTool
             g.FillRectangle(Brushes.DarkGray, 0, 0, wid, ht);
 
             // create a drawing surface for the pixels and position display
-            Bitmap bitmap = new Bitmap(posScale != 0 ? posScale : 4096, ht);
-            Graphics gbitmap = Graphics.FromImage(bitmap);
-            
-            // if we have pixels to display, display them
-            if (pix != null && npix != 0 && !calMode)
+            using (Bitmap bitmap = new Bitmap(posScale != 0 ? posScale : 4096, ht))
             {
-                // create a brush for drawing the grays
-                SolidBrush graybrush = new SolidBrush(Color.FromArgb(0, 0, 0));
+                Graphics gbitmap = Graphics.FromImage(bitmap);
 
-                // draw the pixels onto the bitmap Graphics object
-                for (int i = 0; i < npix; ++i)
+                // if we have pixels to display, display them
+                if (pix != null && npix != 0 && !calMode)
                 {
-                    byte lum = mypix[i];
-                    graybrush.Color = Color.FromArgb(lum, lum, lum);
-                    gbitmap.FillRectangle(graybrush, i, 0, i, ht);
+                    // create a brush for drawing the grays
+                    using (SolidBrush graybrush = new SolidBrush(Color.FromArgb(0, 0, 0)))
+                    {
+                        // draw the pixels onto the bitmap Graphics object
+                        for (int i = 0; i < npix; ++i)
+                        {
+                            byte lum = mypix[i];
+                            graybrush.Color = Color.FromArgb(lum, lum, lum);
+                            gbitmap.FillRectangle(graybrush, i, 0, i, ht);
+                        }
+                    }
                 }
 
-                // dispose of the gray brush to avoid typing up GDI resources
-                graybrush.Dispose();
+                // superimpose a green bar showing the plunger position
+                if (pos != 0xFFFF)
+                {
+                    if (dir == 1)
+                        gbitmap.FillRectangle(Brushes.Green, pos, ht * 3 / 4, posScale, ht);
+                    else
+                        gbitmap.FillRectangle(Brushes.Green, pos - npix, ht * 3 / 4, posScale, ht);
+                }
+
+                // stretch the bitmap onto the control area
+                g.DrawImage(bitmap, 0, 0, wid, ht);
             }
-
-            // superimpose a green bar showing the plunger position
-            if (pos != 0xFFFF)
-            {
-                if (dir == 1)
-                    gbitmap.FillRectangle(Brushes.Green, pos, ht * 3 / 4, posScale, ht);
-                else
-                    gbitmap.FillRectangle(Brushes.Green, pos - npix, ht * 3 / 4, posScale, ht);
-            }
-
-            // stretch the bitmap onto the control area
-            g.DrawImage(bitmap, 0, 0, wid, ht);
-
-            // done with the bitmap
-            gbitmap.Dispose();
-            bitmap.Dispose();
 
             // draw arrows at the calibration points, if known
             DrawCalArrow(g, calZero, "(Park)", posScale, dir, Brushes.Magenta,
@@ -226,7 +222,13 @@ namespace PinscapeConfigTool
 
         private void Form3_FormClosed(object sender, FormClosedEventArgs e)
         {
+            dev.Dispose();
+        }
+
+        private void PlungerSetup_FormClosing(object sender, FormClosingEventArgs e)
+        {
             done = true;
+            thread.Join();
         }
 
         // pixel data snapshot, for writing to a capture file
@@ -254,270 +256,271 @@ namespace PinscapeConfigTool
         {
             // create a clone of the device record to get a private handle
             // for the thread
-            DeviceInfo tdev = new DeviceInfo(dev);
-
-            // set up a list to hold captured pixel frames
-            List<PixFrame> capturedFrames = new List<PixFrame>();
-
-            // close out the pixel file
-            Action ClosePixFile = () =>
+            using (DeviceInfo tdev = new DeviceInfo(dev))
             {
-                try
+                // set up a list to hold captured pixel frames
+                List<PixFrame> capturedFrames = new List<PixFrame>();
+
+                // close out the pixel file
+                Action ClosePixFile = () =>
                 {
-                    // write the remaining frames and close the file
-                    capturedFrames.ForEach(frame => frame.Write(pixFile));
-                }
-                catch (Exception)
-                {
-                }
-                try
-                {
-                    // done - close the file and forget it
-                    pixFile.Close();
-                }
-                catch (Exception)
-                {
-                }
-                pixFile = null;
-
-                // clear the frame capture list
-                capturedFrames.Clear();
-            };
-
-            // thread start time
-            DateTime t0Thread = DateTime.Now;
-
-            // note the start time for the current iteration
-            DateTime t0 = DateTime.Now;
-
-            while (!done)
-            {
-                // If we're not the foreground application, don't update the pixel
-                // display.  This avoids saturating the USB connection while we're
-                // running in the background.
-                if (!Program.IsInForeground())
-                {
-                    Thread.Sleep(250);
-                    continue;
-                }
-                
-                // request a plunger sensor status report
-                byte[] buf = tdev.SpecialRequest(3, new byte[] { pixFlags, 0 },
-                    (r) => { return r[1] == 0xff && r[2] == 0x87 && r[3] == 0; });
-
-                // decode the reply
-                if (buf != null)
-                {
-                    //   bytes 4:5      -> number of pixels
-                    //   bytes 6:7      -> plunger position (0000..FFFF scale)
-                    //   byte  8        -> flags: 
-                    //                      0x01 = standard orientation
-                    //                      0x02 = reversed orientation
-                    //                      0x04 = calibration in progress
-                    //                      0x08 = error reading position
-                    //   bytes 9:10:11  -> average sensor scan time in 10us units
-                    //   bytes 12:13:14 -> image processing time for this scan in 10us units
-
-                    // read the pixel count
-                    int newnpix = buf[4] + (buf[5] << 8);
-
-                    // the position is reported in terms of the pixel count if this is an
-                    // imaging sensor; if not, it's reported on the generic joystick axis
-                    // scale (0..4095)
-                    int posScale = (newnpix != 0 ? newnpix : 4096);
-                    
-                    // read the edge position
-                    int edgePos = buf[6] + (buf[7] << 8);
-
-                    // read the orientation
-                    orientation = 
-                        (buf[8] & 0x01) != 0 ? 1 :
-                        (buf[8] & 0x02) != 0 ? -1 :
-                        0;
-
-                    // check for calibraiton mode
-                    bool calMode = (buf[8] & 0x04) != 0;
-
-                    // read the average scan time, converting from the 10us units
-                    // in the report to milliseconds (10us = 0.01ms -> 1ms = 100 units)
-                    long t = buf[9] + ((long)buf[10] << 8) + ((long)buf[11] << 16);
-                    avgScanTime = t / 100.0;
-
-                    // read the image processing and convert to milliseconds
-                    t = buf[12] + ((long)buf[13] << 8) + ((long)buf[14] << 16);
-                    processingTime = t / 100.0;
-
-                    // read the pixel reports if not in calibration mode
-                    byte[] newpix = new byte[newnpix];
-                    if (!calMode && newnpix != 0)
+                    try
                     {
-                        for (int j = newnpix / 10 + 100; j > 0 && !done; --j)
+                        // write the remaining frames and close the file
+                        capturedFrames.ForEach(frame => frame.Write(pixFile));
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    try
+                    {
+                        // done - close the file and forget it
+                        pixFile.Close();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    pixFile = null;
+
+                    // clear the frame capture list
+                    capturedFrames.Clear();
+                };
+
+                // thread start time
+                DateTime t0Thread = DateTime.Now;
+
+                // note the start time for the current iteration
+                DateTime t0 = DateTime.Now;
+
+                while (!done)
+                {
+                    // If we're not the foreground application, don't update the pixel
+                    // display.  This avoids saturating the USB connection while we're
+                    // running in the background.
+                    //if (!Program.IsInForeground())
+                    //{
+                    //    Thread.Sleep(250);
+                    //    continue;
+                    //}
+
+                    // request a plunger sensor status report
+                    byte[] buf = tdev.SpecialRequest(3, new byte[] { pixFlags, 0 },
+                        (r) => { return r[1] == 0xff && r[2] == 0x87 && r[3] == 0; });
+
+                    // decode the reply
+                    if (buf != null)
+                    {
+                        //   bytes 4:5      -> number of pixels
+                        //   bytes 6:7      -> plunger position (0000..FFFF scale)
+                        //   byte  8        -> flags: 
+                        //                      0x01 = standard orientation
+                        //                      0x02 = reversed orientation
+                        //                      0x04 = calibration in progress
+                        //                      0x08 = error reading position
+                        //   bytes 9:10:11  -> average sensor scan time in 10us units
+                        //   bytes 12:13:14 -> image processing time for this scan in 10us units
+
+                        // read the pixel count
+                        int newnpix = buf[4] + (buf[5] << 8);
+
+                        // the position is reported in terms of the pixel count if this is an
+                        // imaging sensor; if not, it's reported on the generic joystick axis
+                        // scale (0..4095)
+                        int posScale = (newnpix != 0 ? newnpix : 4096);
+
+                        // read the edge position
+                        int edgePos = buf[6] + (buf[7] << 8);
+
+                        // read the orientation
+                        orientation =
+                            (buf[8] & 0x01) != 0 ? 1 :
+                            (buf[8] & 0x02) != 0 ? -1 :
+                            0;
+
+                        // check for calibraiton mode
+                        bool calMode = (buf[8] & 0x04) != 0;
+
+                        // read the average scan time, converting from the 10us units
+                        // in the report to milliseconds (10us = 0.01ms -> 1ms = 100 units)
+                        long t = buf[9] + ((long)buf[10] << 8) + ((long)buf[11] << 16);
+                        avgScanTime = t / 100.0;
+
+                        // read the image processing and convert to milliseconds
+                        t = buf[12] + ((long)buf[13] << 8) + ((long)buf[14] << 16);
+                        processingTime = t / 100.0;
+
+                        // read the pixel reports if not in calibration mode
+                        byte[] newpix = new byte[newnpix];
+                        if (!calMode && newnpix != 0)
                         {
-                            // read a report
-                            buf = tdev.ReadUSB();
-
-                            // only consider reports that are in the special exposure report format
-                            if (buf != null && (buf[2] & 0xF8) == 0x80)
+                            for (int j = newnpix / 10 + 100; j > 0 && !done; --j)
                             {
-                                // figure the starting index of the current batch
-                                int idx = (((int)buf[2] & 0x7) << 8) | (int)buf[1];
+                                // read a report
+                                buf = tdev.ReadUSB();
 
-                                // Store this batch
-                                for (int k = 3; k < buf.Length && idx < newnpix; k += 1)
-                                    newpix[idx++] = buf[k];
+                                // only consider reports that are in the special exposure report format
+                                if (buf != null && (buf[2] & 0xF8) == 0x80)
+                                {
+                                    // figure the starting index of the current batch
+                                    int idx = (((int)buf[2] & 0x7) << 8) | (int)buf[1];
 
-                                // If this is the last batch of pixels, we're done.
-                                if (idx >= newnpix)
-                                    j = 1;
+                                    // Store this batch
+                                    for (int k = 3; k < buf.Length && idx < newnpix; k += 1)
+                                        newpix[idx++] = buf[k];
+
+                                    // If this is the last batch of pixels, we're done.
+                                    if (idx >= newnpix)
+                                        j = 1;
+                                }
                             }
                         }
-                    }
 
-                    // If a pixel file is open, and we have a pixel buffer, save the pixels
-                    // to our capture list (don't write the file quite yet - we'll defer
-                    // that until we're done, to avoid slowing down the capture)
-                    if (pixFile != null && npix != 0)
-                    {
-                        // add it to the pixel list
-                        capturedFrames.Add(new PixFrame(
-                            (DateTime.Now - t0Thread).TotalMilliseconds, pix, edgePos));
-
-                        // if we have more than 100 frames, flush the file now to avoid
-                        // taking up too much memory
-                        if (capturedFrames.Count > 100)
+                        // If a pixel file is open, and we have a pixel buffer, save the pixels
+                        // to our capture list (don't write the file quite yet - we'll defer
+                        // that until we're done, to avoid slowing down the capture)
+                        if (pixFile != null && npix != 0)
                         {
-                            try
+                            // add it to the pixel list
+                            capturedFrames.Add(new PixFrame(
+                                (DateTime.Now - t0Thread).TotalMilliseconds, pix, edgePos));
+
+                            // if we have more than 100 frames, flush the file now to avoid
+                            // taking up too much memory
+                            if (capturedFrames.Count > 100)
                             {
-                                // write the remaining frames and close the file
-                                capturedFrames.ForEach(frame => frame.Write(pixFile));
+                                try
+                                {
+                                    // write the remaining frames and close the file
+                                    capturedFrames.ForEach(frame => frame.Write(pixFile));
+                                }
+                                catch (Exception)
+                                {
+                                }
+                                capturedFrames.Clear();
                             }
-                            catch (Exception)
-                            {
-                            }
-                            capturedFrames.Clear();
+
+                            // if it hasn't been 60ms since the last visual update, skip
+                            // this visual update and just do another file capture, so that
+                            // we capture file data more quickly
+                            if ((DateTime.Now - t0).TotalMilliseconds < 60.0)
+                                continue;
                         }
 
-                        // if it hasn't been 60ms since the last visual update, skip
-                        // this visual update and just do another file capture, so that
-                        // we capture file data more quickly
-                        if ((DateTime.Now - t0).TotalMilliseconds < 60.0)
-                            continue;                            
+                        // query the calibration data (special request 9 = query config
+                        // variable, variable ID 15 = plunger calibration data)
+                        int calMax = -1, calZero = -1, tRelease = -1;
+                        byte[] reply = tdev.QueryConfigVar(13);
+                        if (reply != null)
+                        {
+                            // decode the variables
+                            calZero = (int)reply[0] + ((int)reply[1] << 8);
+                            calMax = (int)reply[2] + ((int)reply[3] << 8);
+                            tRelease = (int)reply[4];
+
+                            // The calibration ranges are in terms of the 0x0000..0xFFFF
+                            // scale of the raw sensor readings.  Rescale to the reported
+                            // pixel scale.
+                            calZero = (int)Math.Round(calZero / 65535.0 * posScale);
+                            calMax = (int)Math.Round(calMax / 65535.0 * posScale);
+                        }
+
+                        // figure the statistics
+                        byte pixMin = 0xFF, pixMax = 0x00;
+                        int numSat = 0, numZero = 0;
+                        for (int j = 0; j < newnpix; ++j)
+                        {
+                            byte p = newpix[j];
+                            if (p == 0)
+                                ++numZero;
+                            if (p == 0xff)
+                                ++numSat;
+                            if (p < pixMin)
+                                pixMin = p;
+                            if (p > pixMax)
+                                pixMax = p;
+                        }
+
+                        // lock the mutex while updating shared data
+                        mutex.WaitOne();
+
+                        // copy the new pixel list to the drawing copy
+                        npix = newnpix;
+                        pix = newpix;
+                        this.calMax = calMax;
+                        this.calZero = calZero;
+                        this.tRelease = tRelease;
+                        this.edgePos = edgePos;
+                        this.posScale = posScale;
+                        this.calMode = calMode;
+
+                        // Update the sensor scan time information
+                        String times = String.Format(
+                            "Average sensor scan time: {0} ms, Curent frame processing time: {1} ms",
+                            avgScanTime, processingTime);
+
+                        // update statistics according to sensor type (imaging or non-imaging)
+                        if (newnpix != 0)
+                        {
+                            // Imaging sensor type
+
+                            // line 1 - pixel array information and position
+                            txtInfo_text = String.Format(
+                                "Pixels: {0}, Orientation: {1}, Edge pos: {2}, Release time: {3} ms",
+                                newnpix,
+                                orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                edgePos == 0xFFFF ? "Not detected" : edgePos.ToString(),
+                                tRelease);
+
+                            // line 2 - brightness range
+                            txtInfo2_text = String.Format("Brightness Min: {0}, Max: {1}, % Saturated: {2}, % Zero: {3}",
+                                    pixMin, pixMax, (int)Math.Round(numSat * 100.0 / newnpix),
+                                    (int)Math.Round(numZero * 100.0 / npix));
+
+                            // line 3 - scan time
+                            txtInfo3_text = times;
+                        }
+                        else
+                        {
+                            // Non-imaging sensor type
+
+                            // line 1 - position
+                            txtInfo_text = String.Format(
+                                "Plunger position: {0}, Orientation: {1}, Release time: {2} ms",
+                                edgePos == 0xFFFF ? "Unknown" : edgePos.ToString() + "/" + (posScale - 1),
+                                orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                tRelease);
+
+                            // line 2 - scan time
+                            txtInfo2_text = times;
+
+                            // line 3 - unused
+                            txtInfo3_text = "";
+                        }
+
+
+                        // done updating
+                        mutex.ReleaseMutex();
+
+                        // Wait about 30ms between requests.  This provides a good refresh
+                        // rate in the UI (about 60fps, similar to video playback) but
+                        // avoids flooding the USB connection with requests.
+                        double dt = (DateTime.Now - t0).TotalMilliseconds;
+                        if (dt < 30.0)
+                            Thread.Sleep(30 - (int)dt);
+
+                        // set the new iteration start time
+                        t0 = DateTime.Now;
                     }
 
-                    // query the calibration data (special request 9 = query config
-                    // variable, variable ID 15 = plunger calibration data)
-                    int calMax = -1, calZero = -1, tRelease = -1;
-                    byte[] reply = tdev.QueryConfigVar(13);
-                    if (reply != null)
-                    { 
-                        // decode the variables
-                        calZero = (int)reply[0] + ((int)reply[1] << 8);
-                        calMax = (int)reply[2] + ((int)reply[3] << 8);
-                        tRelease = (int)reply[4];
-
-                        // The calibration ranges are in terms of the 0x0000..0xFFFF
-                        // scale of the raw sensor readings.  Rescale to the reported
-                        // pixel scale.
-                        calZero = (int)Math.Round(calZero/65535.0 * posScale);
-                        calMax = (int)Math.Round(calMax / 65535.0 * posScale);
-                    }
-
-                    // figure the statistics
-                    byte pixMin = 0xFF, pixMax = 0x00;
-                    int numSat = 0, numZero = 0;
-                    for (int j = 0; j < newnpix; ++j)
-                    {
-                        byte p = newpix[j];
-                        if (p == 0)
-                            ++numZero;
-                        if (p == 0xff)
-                            ++numSat;
-                        if (p < pixMin)
-                            pixMin = p;
-                        if (p > pixMax)
-                            pixMax = p;
-                    }
-
-                    // lock the mutex while updating shared data
-                    mutex.WaitOne();
-
-                    // copy the new pixel list to the drawing copy
-                    npix = newnpix;
-                    pix = newpix;
-                    this.calMax = calMax;
-                    this.calZero = calZero;
-                    this.tRelease = tRelease;
-                    this.edgePos = edgePos;
-                    this.posScale = posScale;
-                    this.calMode = calMode;
-
-                    // Update the sensor scan time information
-                    String times = String.Format(
-                        "Average sensor scan time: {0} ms, Curent frame processing time: {1} ms",
-                        avgScanTime, processingTime);
-
-                    // update statistics according to sensor type (imaging or non-imaging)
-                    if (newnpix != 0)
-                    {
-                        // Imaging sensor type
-
-                        // line 1 - pixel array information and position
-                        txtInfo_text = String.Format(
-                            "Pixels: {0}, Orientation: {1}, Edge pos: {2}, Release time: {3} ms",
-                            newnpix,
-                            orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
-                            edgePos == 0xFFFF ? "Not detected" : edgePos.ToString(),
-                            tRelease);
-
-                        // line 2 - brightness range
-                        txtInfo2_text = String.Format("Brightness Min: {0}, Max: {1}, % Saturated: {2}, % Zero: {3}",
-                                pixMin, pixMax, (int)Math.Round(numSat * 100.0 / newnpix),
-                                (int)Math.Round(numZero * 100.0 / npix));
-
-                        // line 3 - scan time
-                        txtInfo3_text = times;
-                    }
-                    else
-                    {
-                        // Non-imaging sensor type
-
-                        // line 1 - position
-                        txtInfo_text = String.Format(
-                            "Plunger position: {0}, Orientation: {1}, Release time: {2} ms",
-                            edgePos == 0xFFFF ? "Unknown" : edgePos.ToString() + "/" + (posScale - 1),
-                            orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
-                            tRelease);
-
-                        // line 2 - scan time
-                        txtInfo2_text = times;
-
-                        // line 3 - unused
-                        txtInfo3_text = "";
-                    }
-
-
-                    // done updating
-                    mutex.ReleaseMutex();
-
-                    // Wait about 30ms between requests.  This provides a good refresh
-                    // rate in the UI (about 60fps, similar to video playback) but
-                    // avoids flooding the USB connection with requests.
-                    double dt = (DateTime.Now - t0).TotalMilliseconds;
-                    if (dt < 30.0)
-                        Thread.Sleep(30 - (int)dt);
-
-                    // set the new iteration start time
-                    t0 = DateTime.Now;
+                    // if the user asked us to close out the pixel file, do so
+                    if (closePixFile && pixFile != null)
+                        ClosePixFile();
                 }
-            
-                // if the user asked us to close out the pixel file, do so
-                if (closePixFile && pixFile != null)
+
+                // if there's a pixel file, close it before we exit
+                if (pixFile != null)
                     ClosePixFile();
             }
-
-            // if there's a pixel file, close it before we exit
-            if (pixFile != null)
-                ClosePixFile();
         }
 
         private void btnCal_Click(object sender, EventArgs e)
@@ -698,5 +701,6 @@ namespace PinscapeConfigTool
             // invalidate the visual display so we redraw it with the new data
             exposure.Invalidate();
         }
+
    }
 }

@@ -16,7 +16,7 @@ $(function()
     function hex(i) { i = +i; return (i < 16 ? "0" : "") + i.toString(16).toUpperCase(); }
 	var par = $("#keycaps");
     var write = function(array, key, val) {
-        var vk = val.vkey || (val.jsloc == 2 || val.jsloc == 3 ? 0x1000 | val.jskey : val.jskey);
+        var vk = val.vkey || (val.jsloc == 2 || val.jsloc == 3 ? 0x1000 | val.jskey : val.jskey) || val.specialCaseKey;
 	    if (/\d+/.test(key) && (val.x || val.y) && vk) {
             key = parseInt(key);
 			par.append($("<div>").text(

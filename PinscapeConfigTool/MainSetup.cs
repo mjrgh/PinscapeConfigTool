@@ -25,19 +25,10 @@ namespace PinscapeConfigTool
         public MainSetup()
         {
             InitializeComponent();
-
-            // set up the browser object and navigate to our main menu page
-            webBrowser1.AllowWebBrowserDrop = false;
-            webBrowser1.IsWebBrowserContextMenuEnabled = false;
-            webBrowser1.WebBrowserShortcutsEnabled = false;
-            webBrowser1.Navigate("file:///" + Path.Combine(Program.programDir, "html/Top.htm"));
+            InitNavTab();
 
             // we want status reports from the worker thread
             bgworkerDownload.WorkerReportsProgress = true;
-
-            // set up our browser scripting callback interface
-            ifc = new ScriptInterface(this);
-            webBrowser1.ObjectForScripting = ifc;
 
             // set up the background worker to check for .bin file updates
             if (Program.options["CheckForDownloads"].ToUpper().StartsWith("Y"))
@@ -50,6 +41,45 @@ namespace PinscapeConfigTool
                 downloadStatusObj = "({message:\"Auto download is disabled\", done: true})";
                 SendDownloadStatusUpdate();
             }
+        }
+
+        private void MainSetup_Load(object sender, EventArgs e)
+        {
+            // set up our browser scripting callback interface
+            ifc = new ScriptInterface(this);
+            webBrowser1.ObjectForScripting = ifc;
+        }
+
+        private void MainSetup_Shown(object sender, EventArgs e)
+        {
+            // set up the browser object and navigate to our main menu page
+            webBrowser1.Navigate("file:///" + Path.Combine(Program.programDir, "html/Top.htm"));
+            webBrowser1.AllowWebBrowserDrop = false;
+            webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            webBrowser1.WebBrowserShortcutsEnabled = false;
+
+            // check the WebBrowser control version
+            Version vsn = webBrowser1.Version;
+            if (vsn.Major < 11)
+            {
+                AdviceDialog.Show(
+                    "IEVersionWarning",
+                    "It looks like you have an older version of IE installed (IE " + vsn.Major
+                    + "). THIS PROGRAM MIGHT NOT WORK PROPERLY ON YOUR SYSTEM unless you update "
+                    + "to IE 11 or newer.  If you encounter any \"Script Error\" message boxes, "
+                    + "you'll need to update. "
+                    + "\r\n\r\n"
+                    + "You can update IE through Windows Update or by downloading the latest "
+                    + "version from the Microsoft Web site.  Note that the update is required "
+                    + "even if you never use IE for Web browsing, because IE contains system "
+                    + "components that this program uses internally.");
+            }
+
+            AdviceDialog.Show(
+                "DOFNotice",
+                "If you're using DOF (DirectOutput Framework), please make sure you have "
+                + "the latest version. Click the DOF Update link in the Miscellaneous "
+                + "section on the main page for pointers to the latest versions.");
         }
 
         // our downloader
@@ -87,38 +117,30 @@ namespace PinscapeConfigTool
             SendDownloadStatusUpdate();
         }
 
+        delegate void Shower(String devId);
+        Dictionary<String, Shower> navTab = new Dictionary<String, Shower>();
+        void InitNavTab()
+        {
+            navTab.Add("PlungerConfig", ShowPlungerWindow);
+            navTab.Add("JoystickViewer", ShowJoystickViewer);
+            navTab.Add("TvOnTester", ShowTvOnTester);
+            navTab.Add("ButtonTester", ShowButtonTester);
+            navTab.Add("OutputTester", ShowOutputTester);
+        }
+
         private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
             // look up the device if the query string has an ID= field
             Match m = Regex.Match(e.Url.Query, @"\WID=([\da-fA-F\-]+)");
             String devId = m.Success ? m.Groups[1].Value : null;
 
-            // check for the special PlungerConfig path
-            if (e.Url.AbsolutePath.EndsWith("/PlungerConfig"))
+            // check for dialog URLs
+            String lastEle = e.Url.Segments.Last();
+            if (devId != null && navTab.ContainsKey(lastEle))
             {
-                ShowPlungerWindow(devId);
+                navTab[lastEle](devId);
                 e.Cancel = true;
-            }
-
-            // check for the special JoystickViewer path
-            if (e.Url.AbsolutePath.EndsWith("/JoystickViewer"))
-            {
-                ShowJoystickViewer(devId);
-                e.Cancel = true;
-            }
-
-            // check for the special TV ON Tester path
-            if (e.Url.AbsolutePath.EndsWith("/TvOnTester"))
-            {
-                ShowTvOnTester(devId);
-                e.Cancel = true;
-            }
-
-            // check for the button tester path
-            if (e.Url.AbsolutePath.EndsWith("/ButtonTester"))
-            {
-                ShowButtonTester(devId);
-                e.Cancel = true;
+                return;
             }
         }
 
@@ -200,6 +222,21 @@ namespace PinscapeConfigTool
                 dlg.ShowDialog();
                 dlg.Dispose();
                 ButtonTesterOpen = false;
+            }
+        }
+
+        // output tester
+        bool OutputTesterOpen = false;
+        void ShowOutputTester(String devname)
+        {
+            DeviceInfo dev = GetDeviceByCPUID(devname);
+            if (dev != null)
+            {
+                OutputTesterOpen = true;
+                OutputTester dlg = new OutputTester(dev);
+                dlg.ShowDialog();
+                dlg.Dispose();
+                OutputTesterOpen = false;
             }
         }
 
@@ -533,6 +570,12 @@ namespace PinscapeConfigTool
                 form.ShowButtonTester(devname);
             }
 
+            // show the output tester
+            public void ShowOutputTester(String devname)
+            {
+                form.ShowOutputTester(devname);
+            }
+
             // get the WebControl version string
             public String WebControlVersion()
             {
@@ -610,8 +653,8 @@ namespace PinscapeConfigTool
                         + String.Format("OpenSDAID: \"{0}\", USBVersion:{1}, PlungerEnabled: {2}, ",
                             d.OpenSDAID, d.version, d.PlungerEnabled ? 1 : 0)
 
-                        + String.Format("JoystickEnabled: {0}, ", 
-                            d.JoystickEnabled ? 1 : 0)
+                        + String.Format("JoystickEnabled: {0}, ", d.JoystickEnabled ? 1 : 0)
+                        + String.Format("TvOnEnabled: {0}, ", d.TvOnEnabled ? 1 : 0)
 
                         + String.Format("USBVendorID: \"{0:X4}\", USBProductID: \"{1:X4}\"",
                             d.vendorID, d.productID)
@@ -644,7 +687,9 @@ namespace PinscapeConfigTool
             public bool CheckForDeviceUpdates()
             {
                 // if any of the special viewer/test windows are open, skip the update check
-                if (form.PlungerWindowOpen || form.JoystickViewerOpen || form.TvOnTesterOpen || form.ButtonTesterOpen)
+                if (form.PlungerWindowOpen || form.JoystickViewerOpen 
+                    || form.TvOnTesterOpen || form.ButtonTesterOpen 
+                    || form.OutputTesterOpen)
                     return false;
 
                 // get the new device list
@@ -653,11 +698,18 @@ namespace PinscapeConfigTool
                 // compare it
                 if (form.devlist == null || !form.devlist.SequenceEqual(newDevList, new DeviceInfo.Comparer()))
                 {
+                    // it's different - replace our old list with the new one and tell the caller
+                    // we found changes
                     form.devlist = newDevList;
                     return true;
                 }
                 else
+                {
+                    // no changes - dispose of the new list (so that we don't keep file handles
+                    // open unnecessarily) and tell the caller there are no changes
+                    newDevList.ForEach(d => d.Dispose());
                     return false;
+                }
             }
 
             // open the documents folder in Windows Explorer
@@ -855,14 +907,27 @@ namespace PinscapeConfigTool
                 return dict.ContainsKey(sdaid) ? dict[sdaid] : null;
             }
 
-            // Install firmware
-            public String InstallFirmware(String sdaPath, string binFile)
+            // Install firmware.  
+            //
+            // If cpuidForBackup is provided, we use it load the saved config backup for 
+            // the device and patch the data into the firwmare in the host-loaded config
+            // area.  Pass null to use the device's factory defaults.
+            public String InstallFirmware(String sdaPath, string binFile, string cpuidForBackup)
             {
                 // get the SDA ID from the drive
                 String sdaid = ReadSDAID(sdaPath);
                 if (sdaid == null)
                     return "({status:\"error\",message:\"Unable to read OpenSDA ID from programming port drive ("
                         + sdaPath.JSStringify() + ". This might not be an OpenSDA drive.\"})";
+
+                // If we're going to apply a backup of the config data, load the backup
+                List<VarData> configVars = null;
+                if (cpuidForBackup != null)
+                {
+                    string cfgErr = ReadConfigFile(cpuidForBackup, "backup", out configVars);
+                    if (cfgErr != null)
+                        return cfgErr;
+                }
 
                 // Parse the OpenSDA ID.  It's of the form XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXX;
                 // parse the hex digit pairs into consecutive bytes.
@@ -896,6 +961,46 @@ namespace PinscapeConfigTool
                 // patch the OpenSDA ID into the byte array
                 for (int i = 0; i < sdabytes.Length; ++i)
                     filebytes[idx + i] = sdabytes[i];
+
+                // If we have config data, look for the host-loaded config area so we can
+                // patch it in.
+                bool configStored = false;
+                if (configVars != null)
+                {
+                    // look for the area signature
+                    pat = Encoding.ASCII.GetBytes("///Pinscape.HostLoadedConfig//");
+                    idx = filebytes.IndexOf(pat);
+                    if (idx >= 0)
+                    {
+                        // Found it.  Get the available data area size - that's in the
+                        // two bytes following the signature.
+                        idx += 30;
+                        int areaLen = filebytes[idx] | (filebytes[idx + 1] << 8);
+                        idx += 2;
+
+                        // make sure we have room for all variables - each takes 8 bytes
+                        if (areaLen > configVars.Count * 8)
+                        {
+                            // patch in the variables
+                            configVars.ForEach(v =>
+                            {
+                                int ofs = idx;
+                                filebytes[ofs++] = 66;            // Set Config Variable command ID
+                                filebytes[ofs++] = v.varID;       // variable ID
+                                if (v.arrIdx != 0)                // array variables have a non-zero index
+                                    filebytes[ofs++] = v.arrIdx;  // ...so store it if present
+                                for (int j = 0; j < v.data.Length ; ++j)   // store the data bytes
+                                    filebytes[ofs++] = v.data[j];
+
+                                // advance to the next block - always 8 bytes
+                                idx += 8;
+                            });
+
+                            // we've successfully stored the config data
+                            configStored = true;
+                        }
+                    }
+                }
 
                 // clear the cached device list - we'll need to re-fetch the SDA information
                 // after the update
@@ -942,19 +1047,19 @@ namespace PinscapeConfigTool
                     // KL25Z has some special code that's explicitly designed to recognize the
                     // sequence of device I/O calls that result from a Windows desktop copy, and
                     // that regular low-level Win32 file I/O calls don't trigger this special
-                    // sequence the device is looking for.  There are some explicit but vague
-                    // references to this sort of "magic" in a couple of Q&A exchanges from the
-                    // developers on the Freescale site - in particular, the fix for the notorious
-                    // Windows 8 incompatibility in the factory boot loader firmware was said to
-                    // be related to some file writing that Explorer does in 8+, and involved
-                    // putting in special code to ignore certain writes.  I'm guessing that 
-                    // the Win 8 fix is responsible for the observed flaky behavior, by mistaking 
-                    // some of our legitimate writes for the stray desktop writes that the fix 
-                    // is meant to ignore.  There's probably some magic sequence of Win32 file
-                    // calls that we could make to impersonate the desktop, but the easiest and
-                    // most reliable way to do this is to actually invoke the desktop to do
-                    // the copy.  That way we're certain to get the exact sequence of operations 
-                    // that the virtual disk software is looking for, now and in the future.
+                    // sequence the device is looking for.  There are some vague references to 
+                    // this sort of "magic" in a couple of Q&A exchanges from the developers on
+                    // the Freescale site.  In particular, the notorious Win 8+ incompatibility
+                    // in the older factory boot loader firmware is supposed to be related to 
+                    // the search index files that Windows creates on newly attached drives in
+                    // Win 8+.  The fix was probably to make sure that a Shell copy operation
+                    // was triggering the writes rather than something else, by looking for
+                    // some distinctive pattern of file system calls.  I'm sure we could figure
+                    // out what that distinctive pattern is via the kernel debugger, but given
+                    // that the whole point of the SDA code is probably to detect Shell copy 
+                    // operations, the correct solution is to actually do a Shell copy.  And
+                    // happily, that solution isn't just correct, but is also fairly easy,
+                    // since Microsoft was good enough to expose Shell copying as an API.
                     //
                     // Note that showing the UI isn't necessarily required for the magic call
                     // sequence (although it might be), but I'm using it anyway because it adds
@@ -974,6 +1079,7 @@ namespace PinscapeConfigTool
 
                 // success
                 return "({status:\"ok\","
+                    + "configStored:" + (configStored ? "true" : "false") + ","
                     + "message:\"Firmware file " + binFile.JSStringify()
                     + " installed onto " + sdaPath.JSStringify()
                     + " (OpenSDA ID " + sdaid.JSStringify() + ")\"})";
@@ -1218,9 +1324,9 @@ namespace PinscapeConfigTool
             // variable data loaded from file
             struct VarData
             {
-                public byte varID;
-                public byte arrIdx;
-                public byte[] data;
+                public byte varID;      // variable ID
+                public byte arrIdx;     // array index; 0 for a scalar variable
+                public byte[] data;     // value, in wire format
             };
  
             // Restore the device config settings from a file.
@@ -1697,6 +1803,37 @@ namespace PinscapeConfigTool
                     + "Date:\"" + VersionInfo.BuildDate.ToString("yyyy-MM-dd") + "\""
                     + "})";
             }
+
+            public String GetDiagnosticCounters(String cpuid)
+            {
+                DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
+                if (dev != null)
+                {
+                    List<String> v = new List<String>();
+                    v.Add("mainLoopIterTime:" + GetDiagnosticCounter(dev, 1));
+                    v.Add("mainLoopMsgTime:" + GetDiagnosticCounter(dev, 2));
+                    v.Add("pwmUpdateTime:" + GetDiagnosticCounter(dev, 3));
+                    v.Add("lwFlashUpdateTime:" + GetDiagnosticCounter(dev, 4));
+                    v.Add("plungerScanTime:" + GetDiagnosticCounter(dev, 30));
+
+                    List<String> l = new List<String>();
+                    for (int i = 0; i < 12; ++i)
+                        l.Add(GetDiagnosticCounter(dev, (byte)(i + 5)).ToString());
+                    v.Add("mainLoopIterCheckpt:[" + String.Join(",", l) + "]");
+
+                    return "({" + String.Join(",", v.ToArray()) + "})";
+                }
+                return "";
+            }
+
+            private int GetDiagnosticCounter(DeviceInfo dev, byte n)
+            {
+                byte[] buf = dev.QueryConfigVar(220, n);
+                if (buf != null)
+                    return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 16);
+                else
+                    return 0;
+            }
         };
 
         // our script interface object
@@ -1710,30 +1847,5 @@ namespace PinscapeConfigTool
                 e.Cancel = true;
         }
 
-        private void MainSetup_Shown(object sender, EventArgs e)
-        {
-            // check the WebBrowser control version
-            Version vsn = webBrowser1.Version;
-            if (vsn.Major < 11)
-            {
-                AdviceDialog.Show(
-                    "IEVersionWarning",
-                    "It looks like you have an older version of IE installed (IE " + vsn.Major 
-                    + "). THIS PROGRAM MIGHT NOT WORK PROPERLY ON YOUR SYSTEM unless you update "
-                    + "to IE 11 or newer.  If you encounter any \"Script Error\" message boxes, "
-                    + "you'll need to update. "
-                    + "\r\n\r\n"
-                    + "You can update IE through Windows Update or by downloading the latest "
-                    + "version from the Microsoft Web site.  Note that the update is required "
-                    + "even if you never use IE for Web browsing, because IE contains system "
-                    + "components that this program uses internally.");
-            }
-
-            AdviceDialog.Show(
-                "DOFNotice",
-                "If you're using DOF (DirectOutput Framework), please make sure you have "
-                + "the latest version. Click the DOF Update link in the Miscellaneous "
-                + "section on the main page for pointers to the latest versions.");
-        }
     }
 }

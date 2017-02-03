@@ -33,18 +33,20 @@ namespace NightMode
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            foreach (DeviceInfo dev in DeviceInfo.FindDevices())
-                AddDev(dev);
+            ScanDevices();
         }
 
         private ListItem AddDev(DeviceInfo dev)
         {
+            // set up the new item and add it to the list
             String txt = "Pinscape unit #" + dev.PinscapeUnitNo;
             if (dev.LedWizUnitNo != 0)
                 txt += " (LedWiz #" + dev.LedWizUnitNo + ")";
             ListItem i = new ListItem(txt, dev);
-            checkedListBox1.Items.Add(i);
+            int idx = checkedListBox1.Items.Add(i);
             curList.Add(i);
+
+            // return the new item index
             return i;
         }
 
@@ -53,40 +55,43 @@ namespace NightMode
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (IsInForeground())
+                ScanDevices();
+        }
+
+        private void ScanDevices()
+        {
+            // get the new device list
+            List<DeviceInfo> newList = DeviceInfo.FindDevices();
+
+            // add any devices that aren't present, and update the checkbox status
+            foreach (DeviceInfo dev in newList)
             {
-                // get the new device list
-                List<DeviceInfo> newList = DeviceInfo.FindDevices();
+                // if the device isn't in the list, add it
+                ListItem li = curList.Find(l => l.dev.PinscapeUnitNo == dev.PinscapeUnitNo);
+                if (li == null)
+                    li = AddDev(dev);
 
-                // add any devices that aren't present, and update the checkbox status
-                foreach (DeviceInfo dev in newList)
+                // update the checkbox status
+                byte[] buf = dev.ReadStatusReport();
+                if (buf != null)
                 {
-                    // if the device isn't in the list, add it
-                    ListItem li = curList.Find(l => l.dev.PinscapeUnitNo == dev.PinscapeUnitNo);
-                    if (li == null)
-                        li = AddDev(dev);
-
-                    // update the checkbox status
-                    byte[] buf = dev.ReadStatusReport();
-                    if (buf != null)
-                    {
-                        bool nightMode = (buf[1] & 0x02) != 0;
-                        checkedListBox1.SetItemChecked(checkedListBox1.Items.IndexOf(li), nightMode);
-                    }
+                    bool nightMode = (buf[1] & 0x02) != 0;
+                    checkedListBox1.SetItemChecked(checkedListBox1.Items.IndexOf(li), nightMode);
                 }
+            }
 
-                // remove any devices that are no longer present
-                List<ListItem> delList = new List<ListItem>();
-                foreach (ListItem l in curList)
-                {
-                    if (newList.Find(d => d.PinscapeUnitNo == l.dev.PinscapeUnitNo) == null)
-                        delList.Add(l);
-                }
+            // remove any devices that are no longer present
+            List<ListItem> delList = new List<ListItem>();
+            foreach (ListItem l in curList)
+            {
+                if (newList.Find(d => d.PinscapeUnitNo == l.dev.PinscapeUnitNo) == null)
+                    delList.Add(l);
+            }
 
-                foreach (ListItem l in delList)
-                {
-                    checkedListBox1.Items.Remove(l);
-                    curList.Remove(l);
-                }
+            foreach (ListItem l in delList)
+            {
+                checkedListBox1.Items.Remove(l);
+                curList.Remove(l);
             }
         }
 
@@ -120,6 +125,19 @@ namespace NightMode
         {
             ListItem item = checkedListBox1.Items[e.Index] as ListItem;
             item.dev.SpecialRequest(8, new byte[] { (byte)(e.NewValue == CheckState.Checked ? 0x01 : 0x00) });
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            checkedListBox1.Width = ClientRectangle.Width - lstboxMarginX;
+            checkedListBox1.Height = ClientRectangle.Height - lstboxMarginY;
+        }
+
+        int lstboxMarginX, lstboxMarginY;
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            lstboxMarginX = ClientRectangle.Width - checkedListBox1.Width;
+            lstboxMarginY = ClientRectangle.Height - checkedListBox1.Height;
         }
 
     }

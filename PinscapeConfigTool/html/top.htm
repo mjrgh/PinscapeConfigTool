@@ -202,9 +202,9 @@ $(function()
 
 		// output tester - TO DO
 		var outputTesterButton = "";
-		//outputTesterButton = "<a class=\"tbButton\" href=\"outputTester.png?ID=" + d.CPUID
-		//		     + "\" title=\"Test output ports\">"
-		//		     + "<img src=\"tbOutputTester.png\"><br>Outputs</a> ";
+		outputTesterButton = "<a class=\"tbButton\" href=\"http://ps/OutputTester?ID=" + d.CPUID
+				     + "\" title=\"Test output ports\">"
+				     + "<img src=\"tbOutputTester.png\"><br>Outputs</a> ";
 
 		// note if there's an LedWiz unit number
 		var ledWizUnit, altLedWizUnit;
@@ -229,6 +229,10 @@ $(function()
 			   + ledWizUnit
 			   + " | CPU ID " + d.CPUID
 			   + " | Firmware " + d.BuildID
+			   + "<div class=\"diagnosticData\" data-cpuid=\"" + d.CPUID + "\" style=\"display:none;\">"
+			   +    "<span></span>"
+			   +    "<a href='#'>Refresh</a>"
+			   + "</div>"
 			   + "<div>"
 			   +   "<div>"
 			   +     "<div class=\"devBtnGroup\">"
@@ -245,9 +249,9 @@ $(function()
 			   +     "<div class=\"devBtnGroup\">"
 			   +        plungerButton
 			   +        joystickButton
-			   +        outputTesterButton
 			   +        tvOnButton
 			   +        buttonTesterButton
+			   +        outputTesterButton
 			   +     "</div>"
 			   +  "</div>"
 			   + "</div>"
@@ -297,6 +301,15 @@ $(function()
 	    var href = $(this).attr("href");
 	    setTimeout(function() { window.navigate(href); }, 25);
 	});
+
+	// set up the diagnostics refresh buttons
+	$(".diagnosticData a").click(function(ev) {
+	    ev.preventDefault();
+	    getDiagnostics($(this).parents(".diagnosticData"));
+	});
+
+	// load diagnostics for each item
+	$(".diagnosticData").each(function() { getDiagnostics($(this)); });
     };
 
     // get the current device list
@@ -348,7 +361,32 @@ $(function()
 	window.external.RestoreHiddenDialogs();
 	alert("All of the hidden dialogs have been restored.");
     });
-    
+
+    // load/refresh the diagnostic data for a device
+    function getDiagnostics(div)
+    {
+	div.hide();
+	diagData = window.external.GetDiagnosticCounters(div.data("cpuid"));
+	if (diagData != null && diagData != "")
+	{
+	    diagData = eval(diagData);
+	    if (diagData.mainLoopIterTime)
+	    {
+		div.find("span").html(
+		    "Main loop iteration time: " + diagData.mainLoopIterTime + "us<br>"
+		    + "Main loop checkpoints: "
+		    +    $.map(diagData.mainLoopIterCheckpt, function(ele, idx) {
+		             return "[" + idx + "] " + ele + "us"
+	                 }).join(", ") + "<br>"
+		    + "Incoming message processing time: " + diagData.mainLoopMsgTime + "us<br>"
+		    + "PWM update time: " + diagData.pwmUpdateTime + "us<br>"
+		    + "LedWiz flash update time: " + diagData.lwFlashUpdateTime + "us<br>"
+		    + "Plunger scan time: " + diagData.plungerScanTime + "us<br>");
+		div.show();
+	    }
+	}
+    }
+
     // Show the initial device list.  Force an update in case we've made configuration
     // changes since we cached the list.
     showDevList(getDeviceList(true));
@@ -362,7 +400,7 @@ $(function()
 	// problematic if another app is trying to use the joystick input,
 	// since our query messages go through the joystick interface and
 	// generated joystick data that looks random to unaware apps.
-	if (window.external.IsInForeground())
+//	if (window.external.IsInForeground())
 	{
 	    // check for a new list, and redraw if there are changes
 	    if (window.external.CheckForDeviceUpdates())

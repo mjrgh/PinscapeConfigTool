@@ -59,6 +59,36 @@ namespace PinscapeConfigTool
             jsOff = new Bitmap("html\\jskeySmallOff.png");
         }
 
+        bool disposed = false;
+        private void ButtonStatus_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (disposed)
+                return;
+
+            picKl25z.Dispose(); picKl25z = null;
+            kbImage.Dispose(); kbImage = null;
+            jsImage.Dispose(); jsImage = null;
+            jsOn.Dispose(); jsOn = null;
+            jsOff.Dispose(); jsOff = null;
+
+            kbPic.Image.Dispose(); kbPic.Image = null;
+
+            foreach (Control panel in btnListPanel.Controls)
+            {
+                foreach (Control chi in panel.Controls)
+                {
+                    PictureBox pb = chi as PictureBox;
+                    if (pb != null && pb.Image != null)
+                    {
+                        pb.Image.Dispose();
+                        pb.Image = null;
+                    }
+                }
+            }
+
+            disposed = true;
+        }
+
         // our Pinscape device handle
         DeviceInfo dev;
 
@@ -103,9 +133,16 @@ namespace PinscapeConfigTool
             Dictionary<int, KeyCap> dict, int usbkey, uint vkey, String name,
             int x, int y, int wid, int ht, int cx, int cy, int cwid, int cht)
         {
+            // create the key cap and add it to the dictionary for the device key code mapping
             KeyCap kc = new KeyCap(usbkey, vkey, name, x, y, wid, ht, cx, cy, cwid, cht);
             dict.Add(usbkey, kc);
-            vkeyCaps.Add(vkey, kc);
+            
+            // If it's not already in the Windows vkey mapping dictionary, add it.  Note that
+            // some keys have device mappings in both the regular keyboard keys and media keys,
+            // but the Windows vkey system unifies them both in one namespace, so we only need
+            // one version of the key cap for the Windows mapping.
+            if (!vkeyCaps.ContainsKey(vkey))
+                vkeyCaps.Add(vkey, kc);
         }
 
         // status labels
@@ -118,8 +155,8 @@ namespace PinscapeConfigTool
         float kbPicScale;
 
         int icon1MarginX;
-        int bar2MarginY;
-        int btnMarginY, btnSpacingX;
+        int btnMarginX, btnSpacingX;
+        int bottomPanelMarginY;
         private void ButtonStatus_Load(object sender, EventArgs e)
         {
             // load the small on-screen keyboard image
@@ -135,9 +172,9 @@ namespace PinscapeConfigTool
             // note layout items for resizing purposes
             int w = ClientRectangle.Width, h = ClientRectangle.Height;
             icon1MarginX = w - icon1.Right;
-            bar2MarginY = h - bar2.Top;
-            btnMarginY = h - btnHelp.Top;
+            btnMarginX = w - btnClose.Right;
             btnSpacingX = btnClose.Left - btnHelp.Right;
+            bottomPanelMarginY = h - bottomPanel.Top;
 
             // start with the prototype row
             Panel btnPanel = btnPanel1;
@@ -149,12 +186,25 @@ namespace PinscapeConfigTool
             PictureBox btnShift = btnShift1;
 
             // row copying functions
+            Func<Panel, Panel> CopyPanel = (p) =>
+            {
+                Panel n = new Panel();
+                btnListPanel.Controls.Add(n);
+                n.Left = p.Left;
+                n.Top = p.Top + p.Height;
+                n.Width = p.Width;
+                n.Height = p.Height;
+                return n;
+            };
             Func<Label, Label> CopyLabel = (l) =>
             {
                 Label n = new Label();
                 btnPanel.Controls.Add(n);
-                n.AutoSize = true;
+                n.AutoSize = false;
+                n.TextAlign = ContentAlignment.MiddleCenter;
                 n.Left = l.Left;
+                n.Width = l.Width;
+                n.Height = l.Height;
                 n.Top = l.Top;
                 n.Font = l.Font;
                 n.Padding = l.Padding;
@@ -168,15 +218,6 @@ namespace PinscapeConfigTool
                 n.Width = p.Width;
                 n.Height = p.Height;
                 n.SizeMode = PictureBoxSizeMode.StretchImage;
-                return n;
-            };
-            Func<Panel, Panel> CopyPanel = (p) => {
-                Panel n = new Panel();
-                btnListPanel.Controls.Add(n);
-                n.Left = p.Left;
-                n.Top = p.Top + p.Height;
-                n.Width = p.Width;
-                n.Height = p.Height;
                 return n;
             };
 
@@ -325,12 +366,12 @@ namespace PinscapeConfigTool
             bar2.Width = w + 1;
             bar3.Width = w - bar3.Left;
             bar4.Width = w - bar4.Left;
-            bar2.Top = h - bar2MarginY;
             icon1.Left = w - icon1MarginX - icon1.Width;
-            btnHelp.Left = (w - (btnClose.Right - btnHelp.Left)) / 2;
-            btnClose.Left = btnHelp.Right + btnSpacingX;
-            btnHelp.Top = btnClose.Top = h - btnMarginY;
-            btnListPanel.Height = bar2.Top - btnListPanel.Top + 1;
+            btnClose.Left = w - btnMarginX - btnClose.Width;
+            btnHelp.Left = btnClose.Left - btnSpacingX - btnHelp.Width;
+            bottomPanel.Top = h - bottomPanelMarginY;
+            bottomPanel.Width = w;
+            btnListPanel.Height = bottomPanel.Top - btnListPanel.Top + 1;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -436,15 +477,17 @@ namespace PinscapeConfigTool
         private void kbPic_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            Pen pen = new Pen(Color.Red, 4);
-            int x = 0, y = 0;
-            foreach (uint vk in keysDown.Keys)
+            using (Pen pen = new Pen(Color.Red, 4))
             {
-                if (vkeyCaps.ContainsKey(vk))
+                int x = 0, y = 0;
+                foreach (uint vk in keysDown.Keys)
                 {
-                    KeyCap kc = vkeyCaps[vk];
-                    g.DrawRectangle(pen, x + kc.x * kbPicScale, y + kc.y * kbPicScale, 
-                        kc.wid * kbPicScale + 4, kc.ht * kbPicScale + 4);
+                    if (vkeyCaps.ContainsKey(vk))
+                    {
+                        KeyCap kc = vkeyCaps[vk];
+                        g.DrawRectangle(pen, x + kc.x * kbPicScale, y + kc.y * kbPicScale,
+                            kc.wid * kbPicScale + 4, kc.ht * kbPicScale + 4);
+                    }
                 }
             }
         }
@@ -630,12 +673,6 @@ namespace PinscapeConfigTool
             btnListPanel.Focus();
         }
 
-        // show the highlighted pins
-        private void picKl25z_Paint(object sender, PaintEventArgs e)
-        {
-            pinDisplay.Paint(e);
-        }
-
         // pin display
         KL25ZPinDisplay pinDisplay;
 
@@ -752,6 +789,9 @@ namespace PinscapeConfigTool
             InitKeyCap(keyCaps, 0x71, 0x85, "Keyboard F22", 446, 4, 30, 31, 446, 4, 30, 31);
             InitKeyCap(keyCaps, 0x72, 0x86, "Keyboard F23", 482, 4, 30, 31, 482, 4, 30, 31);
             InitKeyCap(keyCaps, 0x73, 0x87, "Keyboard F24", 520, 4, 30, 31, 520, 4, 30, 31);
+            InitKeyCap(keyCaps, 0x7F, 0xAD, "Keyboard Mute", 791, 42, 30, 31, 791, 42, 30, 31);
+            InitKeyCap(keyCaps, 0x80, 0xAF, "Keyboard Volume Up", 722, 42, 30, 31, 722, 42, 30, 31);
+            InitKeyCap(keyCaps, 0x81, 0xAE, "Keyboard Volume Down", 753, 42, 30, 31, 753, 42, 30, 31);
             InitKeyCap(keyCaps, 0xE0, 0xA2, "Keyboard Left Control", 5, 242, 41, 31, 91, 281, 41, 31);
             InitKeyCap(keyCaps, 0xE1, 0xA0, "Keyboard Left Shift", 5, 205, 69, 31, 5, 281, 41, 31);
             InitKeyCap(keyCaps, 0xE2, 0xA4, "Keyboard Left Alt", 95, 242, 41, 31, 178, 281, 41, 31);
@@ -764,8 +804,8 @@ namespace PinscapeConfigTool
             InitKeyCap(mediaCaps, 0xB6, 0xB1, "Media Previous Track", 722, 4, 30, 31, 722, 4, 30, 31);
             InitKeyCap(mediaCaps, 0xCD, 0xB3, "Media Play/Pause", 791, 4, 30, 31, 791, 4, 30, 31);
             InitKeyCap(mediaCaps, 0xE2, 0xAD, "Media Mute", 791, 42, 30, 31, 791, 42, 30, 31);
-            InitKeyCap(mediaCaps, 0xE9, 0xAE, "Media Volume Up", 722, 42, 30, 31, 722, 42, 30, 31);
-            InitKeyCap(mediaCaps, 0xEA, 0xAF, "Media Volume Down", 753, 42, 30, 31, 753, 42, 30, 31);
+            InitKeyCap(mediaCaps, 0xE9, 0xAF, "Media Volume Up", 722, 42, 30, 31, 722, 42, 30, 31);
+            InitKeyCap(mediaCaps, 0xEA, 0xAE, "Media Volume Down", 753, 42, 30, 31, 753, 42, 30, 31);
         }
 
     }

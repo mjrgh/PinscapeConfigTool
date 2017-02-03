@@ -1179,3 +1179,8 @@ option {
 	display: none !important;
     }
 }
+
+.diagnosticData {
+	font-size: 80%;
+	margin-left: 1em;
+}

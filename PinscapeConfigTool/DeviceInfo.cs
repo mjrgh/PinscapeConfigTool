@@ -12,7 +12,7 @@ using CollectionUtils;
 
 // Pinscape Controller device information.  This represents one connected
 // KL25Z controller device.
-public class DeviceInfo
+public class DeviceInfo : IDisposable
 {
     public class Comparer: IEqualityComparer<DeviceInfo>
     {
@@ -29,10 +29,35 @@ public class DeviceInfo
         }
     }
 
+    ~DeviceInfo()
+    {
+        Dispose(false);
+    }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+            evov.Dispose();
+
+        if (fp != IntPtr.Zero && fp.ToInt32() != -1)
+        {
+            HIDImports.CloseHandle(fp);
+            fp = IntPtr.Zero;
+        }
+    }
+
+    public static List<String> findDeviceDebugInfo = new List<String>();
+
     // Get a list of connected Pinscape Controller devices
     public delegate void FindDeviceCallback(DeviceInfo dev, IntPtr hDeviceInfoSet, ref HIDImports.SP_DEVINFO_DATA devInfoData);
     public static List<DeviceInfo> FindDevices(FindDeviceCallback callback = null)
     {
+        findDeviceDebugInfo.Clear();
+        
         // set up an empty return list
         List<DeviceInfo> devices = new List<DeviceInfo>();
 
@@ -54,6 +79,8 @@ public class DeviceInfo
             UInt32 size = 0;
             HIDImports.SetupDiGetDeviceInterfaceDetail(hdev, ref diData, IntPtr.Zero, 0, out size, IntPtr.Zero);
 
+            String debugInfo = "#" + i + " (" + hdev.ToString() + ")";
+
             // now actually read the detail data structure
             HIDImports.SP_DEVICE_INTERFACE_DETAIL_DATA diDetail = new HIDImports.SP_DEVICE_INTERFACE_DETAIL_DATA();
             diDetail.cbSize = (IntPtr.Size == 8) ? (uint)8 : (uint)5;
@@ -61,21 +88,30 @@ public class DeviceInfo
             devInfoData.cbSize = Marshal.SizeOf(devInfoData);
             if (HIDImports.SetupDiGetDeviceInterfaceDetail(hdev, ref diData, ref diDetail, size, out size, out devInfoData))
             {
+                debugInfo += " path=" + diDetail.DevicePath;
+
                 // create a file handle to access the device
                 IntPtr fp = HIDImports.CreateFile(
                     diDetail.DevicePath, HIDImports.GENERIC_READ_WRITE, HIDImports.SHARE_READ_WRITE,
                     IntPtr.Zero, HIDImports.OPEN_EXISTING, 0, IntPtr.Zero);
 
+                debugInfo += " fp=" + fp.ToString();
+
                 // read the attributes
+                Thread.Sleep(1);
                 HIDImports.HIDD_ATTRIBUTES attrs = new HIDImports.HIDD_ATTRIBUTES();
                 attrs.Size = Marshal.SizeOf(attrs);
                 if (HIDImports.HidD_GetAttributes(fp, ref attrs))
                 {
-                    // read the product name string
+                    // Read the product name string.  Note that 
                     String name = "<not available>";
-                    byte[] nameBuf = new byte[128];
-                    if (HIDImports.HidD_GetProductString(fp, nameBuf, 128))
+                    byte[] nameBuf = new byte[256];
+                    if (HIDImports.HidD_GetProductString(fp, nameBuf, 256))
                         name = System.Text.Encoding.Unicode.GetString(nameBuf).TrimEnd('\0');
+                    else
+                        debugInfo += " [GetProductString failed]";
+
+                    debugInfo += " productString=\"" + name + "\"";
 
                     // if the vendor and product ID match an LedWiz, and the
                     // product name contains "pinscape", it's one of ours
@@ -85,6 +121,8 @@ public class DeviceInfo
                         && (di = DeviceInfo.Create(
                             diDetail.DevicePath, name, attrs.VendorID, attrs.ProductID, attrs.VersionNumber)) != null)
                     {
+                        debugInfo += " [device added]";
+
                         // add the device to our list
                         devices.Add(di);
 
@@ -102,11 +140,17 @@ public class DeviceInfo
                         + ", name " + name);
 #endif
                 }
+                else
+                    debugInfo += " [GetAttributes failed]";
 
                 // done with the file handle
                 if (fp.ToInt32() != 0 && fp.ToInt32() != -1)
                     HIDImports.CloseHandle(fp);
             }
+            else
+                debugInfo += " [GetDeviceInterfaceDetail failed]";
+
+            findDeviceDebugInfo.Add(debugInfo);
         }
 
         // done with the device info list
@@ -166,12 +210,12 @@ public class DeviceInfo
     {
         public ConfigReport(byte[] buf)
         {
-            configured = (buf[12] & 0x01) != 0;
-            psUnitNo = (buf[5] | (buf[6] << 8)) + 1;
             numOutputs = buf[3] | (buf[4] << 8);
+            psUnitNo = (buf[5] | (buf[6] << 8)) + 1;
             plungerZero = buf[7] | (buf[8] << 8);
             plungerMax = buf[9] | (buf[10] << 8);
             plungerTime = buf[11];
+            configured = (buf[12] & 0x01) != 0;
             freeHeapBytes = buf[13] | (buf[14] << 8);
         }
 
@@ -207,9 +251,15 @@ public class DeviceInfo
         this.PlungerEnabled = d.PlungerEnabled;
         this.JoystickEnabled = d.JoystickEnabled;
         this.TvOnEnabled = d.TvOnEnabled;
+        this.isValid = d.isValid;
         this.CPUID = d.CPUID;
+        this.OpenSDAID = d.OpenSDAID;
+        this.BuildDD = d.BuildDD;
+        this.BuildTT = d.BuildTT;
+        this.BuildID = d.BuildID;
         this.LedWizUnitNo = d.LedWizUnitNo;
         this.PinscapeUnitNo = d.PinscapeUnitNo;
+        this.inputReportLength = d.inputReportLength;
         this.fp = OpenFile();
     }
 
@@ -221,24 +271,20 @@ public class DeviceInfo
         this.vendorID = (ushort)vendorID;
         this.productID = (ushort)productID;        
         this.version = version;
-        this.PlungerEnabled = true;
-        this.JoystickEnabled = false;
-        this.TvOnEnabled = false;
+        
+        // set some defaults
+        PlungerEnabled = true;
+        JoystickEnabled = false;
+        TvOnEnabled = false;
+
+        // open the USB interface 
         this.fp = OpenFile();
 
-        // presume invalid
-        this.isValid = false;
-
-        // read a status report
-        byte[] buf = ReadUSB();
-        if (buf != null)
-        {
-            // successfully read a report - mark it as valid
-            isValid = true;
-
-            // parse the reponse
-            this.PlungerEnabled = (buf[1] & 0x01) != 0;
-        }
+        // presume valid
+        isValid = true;
+        
+        // assume the maximum input (device to host) report length
+        inputReportLength = 65;
 
         // Check the HID interface to see if the HID Usage type is 
         // type 4, for Joystick.  If so, the joystick interface is
@@ -255,20 +301,47 @@ public class DeviceInfo
             // our private status and query interface.
             HIDImports.HIDP_CAPS caps;
             HIDImports.HidP_GetCaps(ppdata, out caps);
-            if (caps.UsagePage == 1 && caps.Usage == 4)
+            bool isJoystick = caps.UsagePage == 1 && caps.Usage == 4;
+            bool isPrivate = caps.UsagePage == 1 && caps.Usage == 1;
+            if (isJoystick)
                 this.JoystickEnabled = true;
 
-            // If the usage is page 1, usage 6, it's a keyboard interface.
-            // This type of interface will be exposed alongside the joystick
-            // or private interface if any keyboard input is enabled.   Ignore
-            // the keyboard interface, since it doesn't accept any control
-            // commands - those are strictly for the LedWiz output endpoint
-            // that's associated with the joystick or private interface.
-            if (caps.UsagePage == 1 && caps.Usage == 6)
+            // Only count this as a control interface if it's the joystick
+            // interface or the private interface.  The device can expose
+            // other interfaces for device-to-host inputs only, such as a
+            // keyboard interface and a media key interface.  Also ignore
+            // it if it doesn't accept output reports (host-to-device),
+            // as indicated by a zero output report length.
+            if (!(isJoystick || isPrivate) || caps.OutputReportByteLength == 0)
                 isValid = false;
-               
+
+            // remember the input report (device to host) length
+            inputReportLength = caps.InputReportByteLength;
+
             // free the preparsed data
             HIDImports.HidD_FreePreparsedData(ppdata);
+        }
+        else
+        {
+            // couldn't get the HID caps - mark as invalid
+            isValid = false;
+        }
+
+        // if it looks like a valid interface so far, try reading a status report
+        byte[] buf;
+        if (isValid)
+        {
+            buf = ReadUSB();
+            if (buf != null)
+            {
+                // parse the reponse
+                this.PlungerEnabled = (buf[1] & 0x01) != 0;
+            }
+            else
+            {
+                // couldn't read a report - mark it as invalid
+                isValid = false;
+            }
         }
 
         // Ask about the TV ON feature.  This is config variable 9; the
@@ -276,7 +349,7 @@ public class DeviceInfo
         // [2] relay trigger pin; [3,4] delay time in 10ms increments.
         // This is enabled only if all pins are assigned and the delay
         // is non-zero.
-        if ((buf = QueryConfigVar(9)) != null)
+        if (isValid && (buf = QueryConfigVar(9)) != null)
         {
             int delay = buf[3] | (buf[4] << 8);
             this.TvOnEnabled =
@@ -316,6 +389,10 @@ public class DeviceInfo
         return name + " (Pinscape unit " + PinscapeUnitNo + "/LedWiz unit " + LedWizUnitNo + ")";
     }
 
+    // nativate overlapped object, and event handle to access it
+    private NativeOverlapped ov;
+    private EventWaitHandle evov = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.AutoReset);
+
     // clear out the USB input buffer
     public void FlushReadUSB()
     {
@@ -323,19 +400,18 @@ public class DeviceInfo
         DateTime t0 = DateTime.Now;
 
         // wait until a read would block
+        uint rptLen = inputReportLength;
         while ((DateTime.Now - t0).TotalMilliseconds < 100)
         {
             // set up a non-blocking read
-            const int rptLen = 15;
             byte[] buf = new byte[rptLen];
             buf[0] = 0x00;
-            EventWaitHandle ev = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.AutoReset);
             ov.OffsetLow = ov.OffsetHigh = 0;
-            ov.EventHandle = ev.SafeWaitHandle.DangerousGetHandle();
+            ov.EventHandle = evov.SafeWaitHandle.DangerousGetHandle();
             HIDImports.ReadFile(fp, buf, rptLen, IntPtr.Zero, ref ov);
 
             // check to see if it's ready immediately
-            if (!ev.WaitOne(0))
+            if (!evov.WaitOne(0))
             {
                 // Not ready - we'd have to wait to do a read, so the
                 // buffer is empty.  Cancel the read and return.
@@ -345,28 +421,26 @@ public class DeviceInfo
         }
     }
 
-    private NativeOverlapped ov;
     public byte[] ReadUSB()
     {
         // try reading a few times, in case we lose the connection briefly
+        uint rptLen = inputReportLength;
         for (int tries = 0; tries < 3; ++tries)
         {
             // set up a non-blocking ("overlapped") read
-            const int rptLen = 15;
             byte[] buf = new byte[rptLen];
             buf[0] = 0x00;
-            EventWaitHandle ev = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.AutoReset);
             ov.OffsetLow = ov.OffsetHigh = 0;
-            ov.EventHandle = ev.SafeWaitHandle.DangerousGetHandle();
+            ov.EventHandle = evov.SafeWaitHandle.DangerousGetHandle();
             HIDImports.ReadFile(fp, buf, rptLen, IntPtr.Zero, ref ov);
-            
+
             // Wait briefly for the read to complete.  But don't wait forever - we might
             // be talking to a device interface that doesn't provide the type of status
             // report we're looking for, in which case we don't want to get stuck waiting
             // for something that will never happen.  If this is indeed the controller
             // interface we're interested in, it will respond within a few milliseconds
             // with our status report.
-            if (ev.WaitOne(100))
+            if (evov.WaitOne(100))
             {
                 // The read completed successfully!  Get the result.
                 UInt32 readLen;
@@ -447,6 +521,29 @@ public class DeviceInfo
             new System.ComponentModel.Win32Exception(errno).Message, errno);
     }
 
+    // read a status report
+    public byte[] ReadStatusReport()
+    {
+        // flush any buffered reports so we get real-time status
+        FlushReadUSB();
+
+        // read reports until we get a status report
+        for (int i = 0; i < 32; ++i)
+        {
+            // read a report
+            byte[] buf = ReadUSB();
+            if (buf == null)
+                return null;
+
+            // if it's a status report, the high bit of byte 2 will be clear
+            if ((buf[2] & 0x80) == 0)
+                return buf;
+        }
+
+        // we didn't get a status report after several tries, so give up
+        return null;
+    }
+
     // report ID for sending commands to the Pinscape unit
     const int CMD_REPORT_ID = 0;
 
@@ -505,7 +602,7 @@ public class DeviceInfo
             {
                 // read a reply
                 byte[] r = ReadUSB();
-                if (match(r))
+                if (r != null && match(r))
                     return r;
             }
         }
@@ -686,13 +783,12 @@ public class DeviceInfo
             // write the data - the file handle is in overlapped mode, so we have to do 
             // this as an overlapped write with an OVERLAPPED structure and an event to
             // monitor for completion
-            EventWaitHandle ev = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.AutoReset);
             ov.OffsetLow = ov.OffsetHigh = 0;
-            ov.EventHandle = ev.SafeWaitHandle.DangerousGetHandle();
+            ov.EventHandle = evov.SafeWaitHandle.DangerousGetHandle();
             HIDImports.WriteFile(fp, buf, (uint)buf.Length, IntPtr.Zero, ref ov);
 
             // wait briefly for the write to complete
-            if (ev.WaitOne(250))
+            if (evov.WaitOne(250))
             {
                 // successful completion - get the result
                 UInt32 actual;
@@ -744,4 +840,5 @@ public class DeviceInfo
     public string OpenSDAID;
     public int BuildDD, BuildTT;
     public string BuildID;
+    public uint inputReportLength;
 }

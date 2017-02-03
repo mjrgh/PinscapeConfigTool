@@ -17,7 +17,7 @@ namespace PinscapeConfigTool
     {
         public JoystickViewer(DeviceInfo dev)
         {
-            this.dev = dev;
+            this.dev = new DeviceInfo(dev);
             InitializeComponent();
         }
 
@@ -29,6 +29,9 @@ namespace PinscapeConfigTool
 
         // current joystick position from the background thread
         int x, y, z;
+
+        // current joystick button state
+        uint jsButtons = 0;
 
         // log entries pending addition to the UI, and mutex to protect them
         List<String> log = new List<String>();
@@ -60,44 +63,61 @@ namespace PinscapeConfigTool
 
         private void JoystickViewer_FormClosed(object sender, FormClosedEventArgs e)
         {
+            // dispose of bitmaps
+            jsOn.Dispose(); jsOn = null;
+            jsOff.Dispose(); jsOff = null;
+
             // tell the background thread to terminate
             done = true;
+
+            // dispose of the device object
+            dev.Dispose();
         }
 
         // updater thread
         void Updater()
         {
-            // loop until done
-            while (!done)
+            // get a private copy of the device for the thread
+            using (DeviceInfo tdev = new DeviceInfo(dev))
             {
-                // read input from the USB interface
-                byte[] buf = dev.ReadUSB();
-
-                // if it's not a regular status report, skip it
-                if (buf == null || (buf[2] & 0x80) != 0)
-                    continue;
-
-                // Read the X, Y, and Z coordinates from the report.  These are
-                // 16-bit signed values.
-                x = (int)(Int16)(buf[9] + (buf[10] << 8));
-                y = (int)(Int16)(buf[11] + (buf[12] << 8));
-                z = (int)(Int16)(buf[13] + (buf[14] << 8));
-
-                // if logging keys, add to the log
-                if (logging)
+                // loop until done
+                while (!done)
                 {
-                    logMutex.WaitOne();
-                    log.Add(x + "\t" + y + "\t" + z + "\t" + (DateTime.Now - t0).TotalMilliseconds + "ms");
-                    logMutex.ReleaseMutex();
-                    logged = true;
-                }
-                else if (logged)
-                {
-                    // add a blank line after each run of log entries
-                    logMutex.WaitOne();
-                    log.Add("");
-                    logMutex.ReleaseMutex();
-                    logged = false;
+                    // check about every 10ms
+                    Thread.Sleep(10);
+
+                    // read input from the USB interface
+                    byte[] buf = tdev.ReadUSB();
+
+                    // if it's not a regular status report, skip it
+                    if (buf == null || (buf[2] & 0x80) != 0)
+                        continue;
+
+                    // Read the X, Y, and Z coordinates from the report.  These are
+                    // 16-bit signed values.
+                    x = (int)(Int16)(buf[9] + (buf[10] << 8));
+                    y = (int)(Int16)(buf[11] + (buf[12] << 8));
+                    z = (int)(Int16)(buf[13] + (buf[14] << 8));
+
+                    // read the button state
+                    jsButtons = (uint)(buf[5] | (buf[6] << 8) | (buf[7] << 16) | (buf[8] << 24));
+
+                    // if logging keys, add to the log
+                    if (logging)
+                    {
+                        logMutex.WaitOne();
+                        log.Add(x + "\t" + y + "\t" + z + "\t" + (DateTime.Now - t0).TotalMilliseconds + "ms");
+                        logMutex.ReleaseMutex();
+                        logged = true;
+                    }
+                    else if (logged)
+                    {
+                        // add a blank line after each run of log entries
+                        logMutex.WaitOne();
+                        log.Add("");
+                        logMutex.ReleaseMutex();
+                        logged = false;
+                    }
                 }
             }
         }
@@ -217,6 +237,59 @@ namespace PinscapeConfigTool
             // update the viewer
             lblAccel.Invalidate();
             lblPlunger.Invalidate();
+            jsKeyState.Invalidate();
+        }
+
+        Image jsOn = new Bitmap("html\\jskeySmallOn.png");
+        Image jsOff = new Bitmap("html\\jskeySmallOff.png");
+        private void jsKeyState_Paint(object sender, PaintEventArgs e)
+        {
+            StringFormat centerText = new StringFormat();
+            centerText.Alignment = StringAlignment.Center;
+            centerText.LineAlignment = StringAlignment.Center;
+
+            int wid = jsOn.Width, ht = jsOn.Height;
+            int padding = 3;
+
+            Graphics g = e.Graphics;
+            int row = 0, col = 0;
+            Rectangle src = new Rectangle(0, 0, wid, ht);
+            Font font = SystemFonts.MenuFont;
+            for (int i = 0; i < 32; ++i)
+            {
+                // get the status
+                bool on = (jsButtons & (1 << i)) != 0;
+
+                // figure the position of this button image
+                int x = padding + col * (wid + padding);
+                int y = padding + row * (ht + padding);
+
+                // draw the ON or OFF image
+                Rectangle dst = new Rectangle(x, y, wid, ht);
+                g.DrawImage(on ? jsOn : jsOff, dst, src, GraphicsUnit.Pixel);
+
+                // draw the button number
+                String num = (i + 1).ToString();
+                g.MeasureString(num, font);
+                g.DrawString(num, font, on ? Brushes.White : Brushes.Gray, new Point(x + wid / 2, y + ht / 2), centerText);
+
+                // on to the next column
+                if (++col > 15)
+                {
+                    col = 0;
+                    ++row;
+                }
+            }
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            (new Help("HelpJoystickViewer.htm")).Show();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

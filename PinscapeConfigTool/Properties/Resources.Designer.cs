@@ -73,6 +73,16 @@ namespace PinscapeConfigTool.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap h1OutputTester {
+            get {
+                object obj = ResourceManager.GetObject("h1OutputTester", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap infoIcon {
             get {
                 object obj = ResourceManager.GetObject("infoIcon", resourceCulture);
@@ -96,6 +106,16 @@ namespace PinscapeConfigTool.Properties {
         internal static System.Drawing.Bitmap kl25zPins {
             get {
                 object obj = ResourceManager.GetObject("kl25zPins", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nightModeSmall {
+            get {
+                object obj = ResourceManager.GetObject("nightModeSmall", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

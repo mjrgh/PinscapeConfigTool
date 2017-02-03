@@ -154,7 +154,7 @@
       <div id="restoreError">
 	 Restoring settings from <span class="backupFilename"></span>...
       </div>
-      <div>
+      <div id="restoreMessage">
 	 Settings restored
       </div>
    </div>
@@ -213,6 +213,10 @@ $(function()
 	$("#BuildID").text(info.BuildID);
 	$("#OpenSDAID").text(OpenSDAID || "Unknown");
     }
+
+    // presume the firmware won't be patched with config data using the
+    // host-loaded config mechanism in the newer (Feb 2017) firmware
+    var configStored = false;
 
     // step entry procedures
     var steps = {
@@ -490,10 +494,15 @@ $(function()
 		
 		setTimeout(function()
 		{
-		    var stat = eval(window.external.InstallFirmware(OpenSDADrive, binToInstall));
+		    var stat = eval(window.external.InstallFirmware(OpenSDADrive, binToInstall, CPUID));
 		    if (stat.status == "ok")
+		    {
+			// success - note if we stored the config, and proceed to the next step
+			configStored = stat.configStored;
 			nextStep();
-		    else {
+		    }
+		    else
+		    {
 			div.html(
 			    "<div>Firmware install failed: " + stat.message.htmlify() + "</div>"
 			    + "<div><a href='#' id='retryFirmware'>Try again</a>");
@@ -535,6 +544,16 @@ $(function()
 	    setTimeout(doRestore, 0);
 	    function doRestore()
 	    {
+		// if we restored settings using the host-loaded configuration, skip
+		// this step
+		if (configStored)
+		{
+		    $("#restoreMessage").html(
+			"Settings restored (embedded in firmware binary)");
+		    nextStep();
+		    return;
+		}
+    
 		// restore the settings
 		var stat = eval(window.external.RestoreDeviceConfig(CPUID, "backup"));
 		if (stat.status == "ok") {

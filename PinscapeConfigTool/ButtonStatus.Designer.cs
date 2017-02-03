@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.label5 = new System.Windows.Forms.Label();
-            this.icon1 = new System.Windows.Forms.Label();
             this.bar1 = new System.Windows.Forms.Label();
             this.bar2 = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
@@ -50,22 +49,25 @@
             this.lblShifted = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.kbPic = new System.Windows.Forms.PictureBox();
             this.bar3 = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.jsKeyState = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.bar4 = new System.Windows.Forms.Label();
             this.picKl25z = new System.Windows.Forms.PictureBox();
+            this.jsKeyState = new System.Windows.Forms.PictureBox();
+            this.kbPic = new System.Windows.Forms.PictureBox();
+            this.icon1 = new System.Windows.Forms.Label();
+            this.bottomPanel = new System.Windows.Forms.Panel();
             this.btnListPanel.SuspendLayout();
             this.btnPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnShift1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnKey1b)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnKey1a)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kbPic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.jsKeyState)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picKl25z)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.jsKeyState)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kbPic)).BeginInit();
+            this.bottomPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // label5
@@ -78,14 +80,6 @@
             this.label5.TabIndex = 23;
             this.label5.Text = "Button Tester";
             // 
-            // icon1
-            // 
-            this.icon1.Image = global::PinscapeConfigTool.Resources.h1button;
-            this.icon1.Location = new System.Drawing.Point(670, 3);
-            this.icon1.Name = "icon1";
-            this.icon1.Size = new System.Drawing.Size(34, 39);
-            this.icon1.TabIndex = 22;
-            // 
             // bar1
             // 
             this.bar1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -97,7 +91,7 @@
             // bar2
             // 
             this.bar2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.bar2.Location = new System.Drawing.Point(-1, 597);
+            this.bar2.Location = new System.Drawing.Point(3, 0);
             this.bar2.Name = "bar2";
             this.bar2.Size = new System.Drawing.Size(725, 2);
             this.bar2.TabIndex = 24;
@@ -112,7 +106,7 @@
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHelp.ForeColor = System.Drawing.Color.Purple;
-            this.btnHelp.Location = new System.Drawing.Point(268, 608);
+            this.btnHelp.Location = new System.Drawing.Point(525, 10);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(84, 27);
             this.btnHelp.TabIndex = 26;
@@ -130,7 +124,7 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.ForeColor = System.Drawing.Color.Purple;
-            this.btnClose.Location = new System.Drawing.Point(358, 608);
+            this.btnClose.Location = new System.Drawing.Point(615, 10);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(91, 27);
             this.btnClose.TabIndex = 25;
@@ -140,32 +134,32 @@
             // 
             // btnNum1
             // 
-            this.btnNum1.AutoSize = true;
-            this.btnNum1.Location = new System.Drawing.Point(15, 13);
+            this.btnNum1.Location = new System.Drawing.Point(9, 13);
             this.btnNum1.Name = "btnNum1";
-            this.btnNum1.Size = new System.Drawing.Size(13, 13);
+            this.btnNum1.Size = new System.Drawing.Size(34, 13);
             this.btnNum1.TabIndex = 27;
             this.btnNum1.Text = "1";
+            this.btnNum1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnPort1
             // 
-            this.btnPort1.AutoSize = true;
-            this.btnPort1.Location = new System.Drawing.Point(65, 13);
+            this.btnPort1.Location = new System.Drawing.Point(52, 13);
             this.btnPort1.Name = "btnPort1";
-            this.btnPort1.Size = new System.Drawing.Size(33, 13);
+            this.btnPort1.Size = new System.Drawing.Size(61, 13);
             this.btnPort1.TabIndex = 28;
             this.btnPort1.Text = "None";
+            this.btnPort1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnState1
             // 
-            this.btnState1.AutoSize = true;
             this.btnState1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnState1.Location = new System.Drawing.Point(251, 10);
+            this.btnState1.Location = new System.Drawing.Point(240, 10);
             this.btnState1.Name = "btnState1";
             this.btnState1.Padding = new System.Windows.Forms.Padding(3);
-            this.btnState1.Size = new System.Drawing.Size(30, 19);
+            this.btnState1.Size = new System.Drawing.Size(59, 19);
             this.btnState1.TabIndex = 29;
             this.btnState1.Text = "Off";
+            this.btnState1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnListPanel
             // 
@@ -282,18 +276,6 @@
             this.label7.Size = new System.Drawing.Size(1, 35);
             this.label7.TabIndex = 36;
             // 
-            // kbPic
-            // 
-            this.kbPic.BackColor = System.Drawing.SystemColors.Window;
-            this.kbPic.InitialImage = null;
-            this.kbPic.Location = new System.Drawing.Point(336, 68);
-            this.kbPic.Name = "kbPic";
-            this.kbPic.Padding = new System.Windows.Forms.Padding(2);
-            this.kbPic.Size = new System.Drawing.Size(375, 128);
-            this.kbPic.TabIndex = 37;
-            this.kbPic.TabStop = false;
-            this.kbPic.Paint += new System.Windows.Forms.PaintEventHandler(this.kbPic_Paint);
-            // 
             // bar3
             // 
             this.bar3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -301,17 +283,6 @@
             this.bar3.Name = "bar3";
             this.bar3.Size = new System.Drawing.Size(394, 1);
             this.bar3.TabIndex = 38;
-            // 
-            // jsKeyState
-            // 
-            this.jsKeyState.BackColor = System.Drawing.SystemColors.Window;
-            this.jsKeyState.InitialImage = null;
-            this.jsKeyState.Location = new System.Drawing.Point(336, 224);
-            this.jsKeyState.Name = "jsKeyState";
-            this.jsKeyState.Size = new System.Drawing.Size(375, 50);
-            this.jsKeyState.TabIndex = 39;
-            this.jsKeyState.TabStop = false;
-            this.jsKeyState.Paint += new System.Windows.Forms.PaintEventHandler(this.jsKeyState_Paint);
             // 
             // label8
             // 
@@ -346,7 +317,47 @@
             this.picKl25z.Size = new System.Drawing.Size(202, 310);
             this.picKl25z.TabIndex = 43;
             this.picKl25z.TabStop = false;
-            this.picKl25z.Paint += new System.Windows.Forms.PaintEventHandler(this.picKl25z_Paint);
+            // 
+            // jsKeyState
+            // 
+            this.jsKeyState.BackColor = System.Drawing.SystemColors.Window;
+            this.jsKeyState.InitialImage = null;
+            this.jsKeyState.Location = new System.Drawing.Point(336, 224);
+            this.jsKeyState.Name = "jsKeyState";
+            this.jsKeyState.Size = new System.Drawing.Size(375, 50);
+            this.jsKeyState.TabIndex = 39;
+            this.jsKeyState.TabStop = false;
+            this.jsKeyState.Paint += new System.Windows.Forms.PaintEventHandler(this.jsKeyState_Paint);
+            // 
+            // kbPic
+            // 
+            this.kbPic.BackColor = System.Drawing.SystemColors.Window;
+            this.kbPic.InitialImage = null;
+            this.kbPic.Location = new System.Drawing.Point(336, 68);
+            this.kbPic.Name = "kbPic";
+            this.kbPic.Padding = new System.Windows.Forms.Padding(2);
+            this.kbPic.Size = new System.Drawing.Size(375, 128);
+            this.kbPic.TabIndex = 37;
+            this.kbPic.TabStop = false;
+            this.kbPic.Paint += new System.Windows.Forms.PaintEventHandler(this.kbPic_Paint);
+            // 
+            // icon1
+            // 
+            this.icon1.Image = global::PinscapeConfigTool.Resources.h1button;
+            this.icon1.Location = new System.Drawing.Point(670, 3);
+            this.icon1.Name = "icon1";
+            this.icon1.Size = new System.Drawing.Size(34, 39);
+            this.icon1.TabIndex = 22;
+            // 
+            // bottomPanel
+            // 
+            this.bottomPanel.Controls.Add(this.btnHelp);
+            this.bottomPanel.Controls.Add(this.btnClose);
+            this.bottomPanel.Controls.Add(this.bar2);
+            this.bottomPanel.Location = new System.Drawing.Point(0, 598);
+            this.bottomPanel.Name = "bottomPanel";
+            this.bottomPanel.Size = new System.Drawing.Size(717, 46);
+            this.bottomPanel.TabIndex = 34;
             // 
             // ButtonStatus
             // 
@@ -354,6 +365,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(716, 643);
+            this.Controls.Add(this.bottomPanel);
             this.Controls.Add(this.picKl25z);
             this.Controls.Add(this.bar4);
             this.Controls.Add(this.label4);
@@ -362,32 +374,31 @@
             this.Controls.Add(this.bar3);
             this.Controls.Add(this.kbPic);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.bar2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lblShifted);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnListPanel);
-            this.Controls.Add(this.btnHelp);
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.icon1);
             this.Controls.Add(this.bar1);
             this.Name = "ButtonStatus";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Button Tester";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ButtonStatus_FormClosed);
             this.Load += new System.EventHandler(this.ButtonStatus_Load);
             this.Resize += new System.EventHandler(this.ButtonStatus_Resize);
             this.btnListPanel.ResumeLayout(false);
             this.btnPanel1.ResumeLayout(false);
-            this.btnPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnShift1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnKey1b)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnKey1a)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kbPic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.jsKeyState)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picKl25z)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.jsKeyState)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kbPic)).EndInit();
+            this.bottomPanel.ResumeLayout(false);
+            this.bottomPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -424,5 +435,6 @@
         private System.Windows.Forms.Label bar4;
         private System.Windows.Forms.PictureBox picKl25z;
         private System.Windows.Forms.Panel btnPanel1;
+        private System.Windows.Forms.Panel bottomPanel;
     }
 }

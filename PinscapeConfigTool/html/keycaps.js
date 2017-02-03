@@ -149,9 +149,9 @@ var keycaps = {
     0x7C: { name: "Keyboard Copy" },
     0x7D: { name: "Keyboard Paste" },
     0x7E: { name: "Keyboard Find" },
-    0x7F: { name: "Keyboard Mute", x: 791, y: 42 },
-    0x80: { name: "Keyboard Volume Up", x: 722, y: 42 },
-    0x81: { name: "Keyboard Volume Down", x: 753, y: 42 },
+    0x7F: { name: "Keyboard Mute", x: 791, y: 42, vkey: 0xAD },
+    0x80: { name: "Keyboard Volume Up", x: 722, y: 42, vkey: 0xAF },
+    0x81: { name: "Keyboard Volume Down", x: 753, y: 42, vkey: 0xAE },
     0x82: { name: "Keyboard Locking Caps Lock" },
     0x83: { name: "Keyboard Locking Num Lock" },
     0x84: { name: "Keyboard Locking Scroll Lock" },
@@ -200,9 +200,9 @@ var keycaps = {
 
 // key caps for the special media keys on the keyboard
 var mediaKeycaps = {
-	0xE2: { name: "Media Mute", x: 791, y: 42, jskey: 173 },
-	0xE9: { name: "Media Volume Up", x: 722, y: 42, jskey: 174 },
-	0xEA: { name: "Media Volume Down", x: 753, y: 42, jskey: 175 },
+	0xE2: { name: "Media Mute", x: 791, y: 42, jskey: 173, vkey: 0xAD },
+	0xE9: { name: "Media Volume Up", x: 722, y: 42, jskey: 175, vkey: 0xAF },
+	0xEA: { name: "Media Volume Down", x: 753, y: 42, jskey: 174, vkey: 0xAE },
 	0xB5: { name: "Media Next Track", x: 753, y: 4, vkey: 0xB0 },
 	0xB6: { name: "Media Previous Track", x: 722, y: 4, vkey: 0xB1 },
 	0xB7: { name: "Media Stop", vkey: 0xB2 },

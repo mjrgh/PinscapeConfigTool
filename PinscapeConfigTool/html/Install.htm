@@ -392,7 +392,7 @@ $(function()
 
 		setTimeout(function()
 		{
-		    var stat = eval(window.external.InstallFirmware(OpenSDADrive, binToInstall));
+		    var stat = eval(window.external.InstallFirmware(OpenSDADrive, binToInstall, null));
 		    if (stat.status == "ok")
 			nextStep();
 		    else {

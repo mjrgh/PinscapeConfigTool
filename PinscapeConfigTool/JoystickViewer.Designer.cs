@@ -49,6 +49,11 @@
             this.lblBottomMarker = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.jsKeyState = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnHelp = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.jsKeyState)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -107,7 +112,7 @@
             // 
             // lblXY
             // 
-            this.lblXY.Location = new System.Drawing.Point(19, 203);
+            this.lblXY.Location = new System.Drawing.Point(19, 199);
             this.lblXY.Name = "lblXY";
             this.lblXY.Size = new System.Drawing.Size(97, 13);
             this.lblXY.TabIndex = 27;
@@ -116,7 +121,7 @@
             // 
             // lblZ
             // 
-            this.lblZ.Location = new System.Drawing.Point(409, 203);
+            this.lblZ.Location = new System.Drawing.Point(409, 199);
             this.lblZ.Name = "lblZ";
             this.lblZ.Size = new System.Drawing.Size(57, 13);
             this.lblZ.TabIndex = 28;
@@ -136,14 +141,14 @@
             // lblTextBoxBar
             // 
             this.lblTextBoxBar.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblTextBoxBar.Location = new System.Drawing.Point(-10, 228);
+            this.lblTextBoxBar.Location = new System.Drawing.Point(-10, 308);
             this.lblTextBoxBar.Name = "lblTextBoxBar";
             this.lblTextBoxBar.Size = new System.Drawing.Size(770, 1);
             this.lblTextBoxBar.TabIndex = 32;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 260);
+            this.textBox1.Location = new System.Drawing.Point(12, 340);
             this.textBox1.MaxLength = 1000000;
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -161,7 +166,7 @@
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Image = global::PinscapeConfigTool.Properties.Resources.saveIcon;
-            this.btnSave.Location = new System.Drawing.Point(706, 260);
+            this.btnSave.Location = new System.Drawing.Point(706, 337);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(32, 32);
             this.btnSave.TabIndex = 34;
@@ -188,10 +193,13 @@
             // 
             this.btnLogging.AutoSize = true;
             this.btnLogging.BackColor = System.Drawing.SystemColors.Window;
-            this.btnLogging.Location = new System.Drawing.Point(663, 196);
+            this.btnLogging.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogging.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLogging.ForeColor = System.Drawing.Color.Purple;
+            this.btnLogging.Location = new System.Drawing.Point(498, 264);
             this.btnLogging.Name = "btnLogging";
             this.btnLogging.Padding = new System.Windows.Forms.Padding(2);
-            this.btnLogging.Size = new System.Drawing.Size(75, 27);
+            this.btnLogging.Size = new System.Drawing.Size(77, 31);
             this.btnLogging.TabIndex = 35;
             this.btnLogging.Text = "&Capture...";
             this.btnLogging.UseVisualStyleBackColor = false;
@@ -200,7 +208,7 @@
             // lblBottomMarker
             // 
             this.lblBottomMarker.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblBottomMarker.Location = new System.Drawing.Point(-1, 592);
+            this.lblBottomMarker.Location = new System.Drawing.Point(-1, 672);
             this.lblBottomMarker.Name = "lblBottomMarker";
             this.lblBottomMarker.Size = new System.Drawing.Size(770, 1);
             this.lblBottomMarker.TabIndex = 36;
@@ -208,7 +216,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 238);
+            this.label5.Location = new System.Drawing.Point(9, 324);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(224, 13);
             this.label5.TabIndex = 37;
@@ -220,12 +228,68 @@
             this.timer2.Interval = 20;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // jsKeyState
+            // 
+            this.jsKeyState.BackColor = System.Drawing.SystemColors.Window;
+            this.jsKeyState.InitialImage = null;
+            this.jsKeyState.Location = new System.Drawing.Point(12, 245);
+            this.jsKeyState.Name = "jsKeyState";
+            this.jsKeyState.Size = new System.Drawing.Size(375, 50);
+            this.jsKeyState.TabIndex = 40;
+            this.jsKeyState.TabStop = false;
+            this.jsKeyState.Paint += new System.Windows.Forms.PaintEventHandler(this.jsKeyState_Paint);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(9, 229);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 41;
+            this.label6.Text = "Buttons";
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.AutoSize = true;
+            this.btnHelp.BackColor = System.Drawing.SystemColors.Window;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHelp.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnHelp.ForeColor = System.Drawing.Color.Purple;
+            this.btnHelp.Location = new System.Drawing.Point(581, 264);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Padding = new System.Windows.Forms.Padding(2);
+            this.btnHelp.Size = new System.Drawing.Size(75, 31);
+            this.btnHelp.TabIndex = 42;
+            this.btnHelp.Text = "Help";
+            this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.AutoSize = true;
+            this.btnClose.BackColor = System.Drawing.SystemColors.Window;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.Purple;
+            this.btnClose.Location = new System.Drawing.Point(662, 264);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Padding = new System.Windows.Forms.Padding(2);
+            this.btnClose.Size = new System.Drawing.Size(75, 31);
+            this.btnClose.TabIndex = 43;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // JoystickViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(750, 228);
+            this.ClientSize = new System.Drawing.Size(750, 307);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnHelp);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.jsKeyState);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblBottomMarker);
             this.Controls.Add(this.btnLogging);
@@ -253,6 +317,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.JoystickViewer_FormClosed);
             this.Shown += new System.EventHandler(this.JoystickViewer_Shown);
             this.Resize += new System.EventHandler(this.JoystickViewer_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this.jsKeyState)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,5 +344,9 @@
         private System.Windows.Forms.Label lblBottomMarker;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.PictureBox jsKeyState;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Button btnClose;
     }
 }

@@ -75,7 +75,7 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.ForeColor = System.Drawing.Color.Purple;
-            this.btnClose.Location = new System.Drawing.Point(276, 432);
+            this.btnClose.Location = new System.Drawing.Point(448, 432);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(91, 27);
             this.btnClose.TabIndex = 1;
@@ -141,7 +141,7 @@
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHelp.ForeColor = System.Drawing.Color.Purple;
-            this.btnHelp.Location = new System.Drawing.Point(186, 432);
+            this.btnHelp.Location = new System.Drawing.Point(358, 432);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(84, 27);
             this.btnHelp.TabIndex = 11;
@@ -305,6 +305,7 @@
             this.Name = "PlungerSetup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Pinscape Setup";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlungerSetup_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form3_FormClosed);
             this.Load += new System.EventHandler(this.Form3_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PlungerSetup_KeyPress);

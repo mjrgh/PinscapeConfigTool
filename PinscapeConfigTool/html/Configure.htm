@@ -588,9 +588,20 @@ function forEachHeaderPin(header, func)
       <b>Configuration settings for KL25Z CPU ID
       <span id="CPUID">unknown</span></b>
    </p>
-   <p id="heapInfo" style="display: none;">
-      Memory used: <span id="usedHeapBytes">Unknown</span>/16K bytes (<span id="freeHeapBytes">Unknown</span> bytes free)
-   </p>
+   <div id="heapInfo" style="display: none;">
+      Memory used: <span id="usedHeapBytes">Unknown</span> of 16K bytes (<span id="freeHeapBytes">Unknown</span> bytes free)
+      <a href="#" class="shower">Explain</a>
+      <div class="hider">
+	 This shows the total RAM usage on the KL25Z for your current configuration.
+	 The memory configuration is mostly static, determined during initialization
+	 shortly after the device boots, so you shouldn't see much if any fluctuation
+	 during normal use.  It will only change when you add or remove features via
+	 the settings below, and will only update when you actually program the new
+	 settings.  Because most memory is pre-allocated, the firmware doesn't need
+	 much free memory to run; this figure is here mostly for diagnostics, and to
+	 give you an idea of how much headroom you have if you want to add new features.
+      </div>
+   </div>
 
 
    <!--  Hardware setup  ----------------------------------------------------->
@@ -822,8 +833,8 @@ var expansionBoardFactoryConfig = {
 	20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
 	21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
 	22: { pin: "PTD6",  keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
-	23: { pin: "PTD7",  keytype: 2, keycode: 0x81, flags: 0 },  // Windows master volume down
-	24: { pin: "PTE1",  keytype: 2, keycode: 0x80, flags: 0 }   // Windows master volume up
+	23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
+	24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
     },
     outputs: {
 	// Map the first 16 ports to the flashers & strobe on TLC5940 #1.
@@ -2108,7 +2119,7 @@ $("#zbPort").change(function(ev) {
 	 </table>
       </div>
       <div id="buttonTabStretchNote">
-	 <i><b>Note:</b> the firmware currently installed supports up to
+	 <i><b>Note:</b> your current firmware version supports up to
 	    <span id="buttonTabMaxNote">0</span> physical buttons.  New rows
 	    will be added to the table above as you fill in more values, up
 	    to the limit.</i>
@@ -3252,6 +3263,10 @@ function showHideNightModeButtonShift()
       For each port, you can select the physical output pin that the port is wired to.
 
       <div>
+	 <a href="#" id="btnOutputTest" class="button">Test Outputs</a>
+      </div>
+
+      <div>
 	 <table id="outputTab">
 	    <tr>
 	       <th></th>
@@ -3269,6 +3284,30 @@ function showHideNightModeButtonShift()
    </div>
 
    <script>
+
+// show the button tester
+$("#btnOutputTest").click(function(ev)
+{
+    ev.preventDefault();
+    var cfgMem = normalizeConfig(configFromUI());
+    var cfgDev = normalizeConfig(config);
+    if (!valEq(cfgMem.outputs, cfgDev.outputs))
+    {
+	if (!window.external.YesNoDialog(
+	    "You've made changes to the output port settings that you haven't "
+	    + "programmed into the KL25Z yet. The tester window will reflect "
+	    + "the current device settings, not your new unsaved changes. "
+	    + "If you want to test your new settings, click \"Program KL25Z\" "
+	    + "before proceeding to the tester window."
+	    + "\r\n\r\n"
+	    + "Do you want to open the tester anyway?"))
+	    return;
+    }
+
+    // show the dialog
+    window.external.ShowOutputTester(CPUID);
+});
+
 
 // Set up the output port table
 $(function() {

@@ -60,6 +60,7 @@
             this.Name = "MainSetup";
             this.Text = "Pinscape Setup";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainSetup_FormClosing);
+            this.Load += new System.EventHandler(this.MainSetup_Load);
             this.Shown += new System.EventHandler(this.MainSetup_Shown);
             this.ResumeLayout(false);
 

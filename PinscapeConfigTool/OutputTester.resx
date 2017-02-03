@@ -117,41 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="h1plunger" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\h1plunger.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProgramIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\ProgramIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crosshairs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\crosshairs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ArrowUpRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>ArrowUpRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ArrowDownRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>ArrowDownRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ArrowDownGreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>ArrowDownGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="h1TvOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>h1TvOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ArrowUpPurple" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>ArrowUpPurple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ArrowDownPurple" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>ArrowDownPurple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="h1button" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>html\h1button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ArrowUpGreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>ArrowUpGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="h1OutputTester" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>html\h1OutputTester.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <metadata name="updateTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="icon1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+        rkJggg==
+</value>
   </data>
 </root>

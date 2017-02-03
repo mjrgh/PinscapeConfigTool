@@ -104,12 +104,17 @@
             // ckRelayOn
             // 
             this.ckRelayOn.Appearance = System.Windows.Forms.Appearance.Button;
-            this.ckRelayOn.AutoSize = true;
-            this.ckRelayOn.Location = new System.Drawing.Point(337, 92);
+            this.ckRelayOn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.ckRelayOn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Yellow;
+            this.ckRelayOn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ckRelayOn.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ckRelayOn.ForeColor = System.Drawing.Color.Purple;
+            this.ckRelayOn.Location = new System.Drawing.Point(381, 92);
             this.ckRelayOn.Name = "ckRelayOn";
-            this.ckRelayOn.Size = new System.Drawing.Size(61, 23);
+            this.ckRelayOn.Size = new System.Drawing.Size(92, 26);
             this.ckRelayOn.TabIndex = 27;
             this.ckRelayOn.Text = "Relay On";
+            this.ckRelayOn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckRelayOn.UseVisualStyleBackColor = true;
             this.ckRelayOn.CheckedChanged += new System.EventHandler(this.ckRelayOn_CheckedChanged);
             // 
@@ -123,7 +128,7 @@
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHelp.ForeColor = System.Drawing.Color.Purple;
-            this.btnHelp.Location = new System.Drawing.Point(152, 226);
+            this.btnHelp.Location = new System.Drawing.Point(297, 228);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(84, 27);
             this.btnHelp.TabIndex = 29;
@@ -141,7 +146,7 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.ForeColor = System.Drawing.Color.Purple;
-            this.btnClose.Location = new System.Drawing.Point(242, 226);
+            this.btnClose.Location = new System.Drawing.Point(387, 228);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(91, 27);
             this.btnClose.TabIndex = 28;
@@ -159,11 +164,16 @@
             // 
             // btnRelayPulse
             // 
-            this.btnRelayPulse.Location = new System.Drawing.Point(330, 128);
+            this.btnRelayPulse.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnRelayPulse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Yellow;
+            this.btnRelayPulse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRelayPulse.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRelayPulse.ForeColor = System.Drawing.Color.Purple;
+            this.btnRelayPulse.Location = new System.Drawing.Point(381, 128);
             this.btnRelayPulse.Name = "btnRelayPulse";
-            this.btnRelayPulse.Size = new System.Drawing.Size(75, 23);
+            this.btnRelayPulse.Size = new System.Drawing.Size(92, 26);
             this.btnRelayPulse.TabIndex = 31;
-            this.btnRelayPulse.Text = "Pulse";
+            this.btnRelayPulse.Text = "Pulse Relay";
             this.btnRelayPulse.UseVisualStyleBackColor = true;
             this.btnRelayPulse.Click += new System.EventHandler(this.btnRelayPulse_Click);
             // 
@@ -239,6 +249,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "TvOnTester";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "TvOnTester";

@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace PinscapeConfigTool
 {
-    class KL25ZPinDisplay
+    class KL25ZPinDisplay : IDisposable
     {
         // Instatiate the object during the containing form's Load handler
         public KL25ZPinDisplay(PictureBox pic)
@@ -31,11 +31,28 @@ namespace PinscapeConfigTool
             // set up the mouse event handlers
             pic.MouseMove += MouseMove;
             pic.MouseLeave += MouseLeave;
+            pic.Paint += Paint;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        protected void Dispose(bool disposing)
+        {
+            if (disposing && !disposed)
+            {
+                disposed = true;
+                pic.Image.Dispose(); pic.Image = null;
+                calloutLeft.Dispose(); calloutLeft = null;
+                calloutRight.Dispose(); calloutRight = null;
+            }
+        }
+        bool disposed = false;
 
         // Handle a paint event for the control.  The form's xxx_Paint()
         // event handler should simply delegate the call to us.
-        public void Paint(PaintEventArgs e)
+        public void Paint(object sender, PaintEventArgs e)
         {
             // draw highlighted pins
             Graphics g = e.Graphics;
