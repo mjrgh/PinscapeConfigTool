@@ -400,7 +400,7 @@ $(function()
 	// problematic if another app is trying to use the joystick input,
 	// since our query messages go through the joystick interface and
 	// generated joystick data that looks random to unaware apps.
-//	if (window.external.IsInForeground())
+	if (window.external.IsInForeground())
 	{
 	    // check for a new list, and redraw if there are changes
 	    if (window.external.CheckForDeviceUpdates())

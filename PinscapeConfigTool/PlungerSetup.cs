@@ -297,11 +297,11 @@ namespace PinscapeConfigTool
                     // If we're not the foreground application, don't update the pixel
                     // display.  This avoids saturating the USB connection while we're
                     // running in the background.
-                    //if (!Program.IsInForeground())
-                    //{
-                    //    Thread.Sleep(250);
-                    //    continue;
-                    //}
+                    if (!Program.IsInForeground())
+                    {
+                        Thread.Sleep(250);
+                        continue;
+                    }
 
                     // request a plunger sensor status report
                     byte[] buf = tdev.SpecialRequest(3, new byte[] { pixFlags, 0 },

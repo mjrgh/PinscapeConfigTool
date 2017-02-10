@@ -101,6 +101,12 @@
     <Compile Include="DiscardCancelDialog.Designer.cs">
       <DependentUpon>DiscardCancelDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExceptionMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExceptionMessageBox.Designer.cs">
+      <DependentUpon>ExceptionMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="JoystickViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DiscardCancelDialog.resx">
       <DependentUpon>DiscardCancelDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExceptionMessageBox.resx">
+      <DependentUpon>ExceptionMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="JoystickViewer.resx">
       <DependentUpon>JoystickViewer.cs</DependentUpon>
@@ -281,6 +290,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\homeIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\interruptin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\irRemote.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\jskeySmallOff.png">

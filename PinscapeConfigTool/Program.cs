@@ -64,7 +64,7 @@ namespace PinscapeConfigTool
 
                 // get the options file path, in our Application Data folder
                 optfile = Path.Combine(
-                    GetSpecialFolder(Environment.SpecialFolder.ApplicationData, @"Pinscape\Controller"), 
+                    GetSpecialFolder(Environment.SpecialFolder.ApplicationData, @"Pinscape\Controller"),
                     "options.txt");
 
                 // set default options, then load the options file
@@ -80,7 +80,9 @@ namespace PinscapeConfigTool
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                ExceptionMessageBox emb = new ExceptionMessageBox(e);
+                emb.ShowDialog();
+                emb.Dispose();
             }
 
             // write any changes to the options file

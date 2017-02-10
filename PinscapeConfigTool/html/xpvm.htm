@@ -27,23 +27,26 @@
 	  but they'll let you do the upgrade with your existing machine.
    </p>
 
-   <h2>Option 1: Tweak your system</h2>
+   <h2>Option 1: Tweak your Win 8/10 system</h2>
 
    <p>
-	  The firmware incompatibility in Windows 8+ comes from new
-	  disk indexing services that Microsoft added in Windows 8.
-	  When you plug in a USB disk, Windows automatically writes
-	  some information to the disk to support search indexing.
-	  These automatic writes confuse the old KL25Z firmware, because it's
-	  programmed to assume that all write operations are new firmware
-	  downloads.  It misinterprets the search indexing writes, and this
-	  makes any subsequent firmware download fail.
+	  The firmware incompatibility in Windows 8+ apparently is due to
+	  disk search features that Microsoft added in Windows 8.
+	  When you plug in a USB disk, Windows automatically writes to the
+	  disk to create a hidden search index file.  The older KL25Z
+	  boot loader mistakes the hidden file for an attempt to download
+	  new firmware onto the device; but since it's not a valid firmware
+	  download, the boot loader goes into an error mode and refuses to
+	  listen to any more requests.  This blocks any subsequent attempts
+	  to download legitimate firmware files.
    </p>
 
    <p>
-	  One way to solve this is to change your system settings
-	  to disable the new Windows search services that create the
-	  problem.
+	  One way to solve this is to change your Windows system settings
+	  to disable the new indexing service that causes
+	  all the trouble.  This requires messing around in the
+	  bowels of Windows, so if RegEdit makes you queasy, you might
+	  want to skip this approach and try a different option.
    </p>
 
    <p>
@@ -55,9 +58,9 @@
    <p>Here are the steps:</p>
 
    <ul>
-	  <li>Disable removable devices from library search:
+	  <li>Disable removable devices for Windows library search:
 	  <ul>
-		 <li>If you have a PRO version of Windows:
+		 <li>If you have a "Professional" version of Windows:
 		 <ul>
 			<li>Press Windows+R
 			<li>Type gpedit.msc into the box and press return
@@ -66,7 +69,7 @@
 			<li>Enable the setting (which, in standard Microsoft fashion, disables the feature)
 		 </ul>
 
-		 <li>If you have a non-Pro Windows version:
+		 <li>If you have a "Home" version of Windows:
 		 <ul>
 			<li>Press Windows+S
 			<li>Type regedit into the search box - <b>don't</b> press return
@@ -88,14 +91,16 @@
 
    <p>
 	  Now you're ready to attempt the firmware upgrade on the KL25Z.
-	  However, note that the steps above don't entirely solve the problem:
-	  they just give you some extra time, but hopefully enough that you'll
-	  be able to complete the upgrade.
+	  Be warned, though: you have to do the file copy <b>as quickly as possible</b>
+	  after plugging in the KL25Z.  Apparently, the steps above prevent
+	  Windows from writing the drive right after you plug it in, but Windows
+	  might still try to do a write if you leave the drive plugged in long
+	  enough.  So you should try to move quickly.
    </p>
 
    <p>
-	  The upgrade itself works just like in the main instructions, with
-	  the slight change that you have to do it as quickly as possible.
+	  Other than this race against time, the upgrade itself works just like
+	  in the main instructions.
 
    <ul>
 	  <li>Hold down the Reset button on the KL25Z and plug in the programming port

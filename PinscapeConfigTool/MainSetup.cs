@@ -26,21 +26,6 @@ namespace PinscapeConfigTool
         {
             InitializeComponent();
             InitNavTab();
-
-            // we want status reports from the worker thread
-            bgworkerDownload.WorkerReportsProgress = true;
-
-            // set up the background worker to check for .bin file updates
-            if (Program.options["CheckForDownloads"].ToUpper().StartsWith("Y"))
-            {
-                // start an update check
-                StartUpdateCheck();
-            }
-            else
-            {
-                downloadStatusObj = "({message:\"Auto download is disabled\", done: true})";
-                SendDownloadStatusUpdate();
-            }
         }
 
         private void MainSetup_Load(object sender, EventArgs e)
@@ -52,12 +37,6 @@ namespace PinscapeConfigTool
 
         private void MainSetup_Shown(object sender, EventArgs e)
         {
-            // set up the browser object and navigate to our main menu page
-            webBrowser1.Navigate("file:///" + Path.Combine(Program.programDir, "html/Top.htm"));
-            webBrowser1.AllowWebBrowserDrop = false;
-            webBrowser1.IsWebBrowserContextMenuEnabled = false;
-            webBrowser1.WebBrowserShortcutsEnabled = false;
-
             // check the WebBrowser control version
             Version vsn = webBrowser1.Version;
             if (vsn.Major < 11)
@@ -80,6 +59,27 @@ namespace PinscapeConfigTool
                 "If you're using DOF (DirectOutput Framework), please make sure you have "
                 + "the latest version. Click the DOF Update link in the Miscellaneous "
                 + "section on the main page for pointers to the latest versions.");
+
+            // we want status reports from the worker thread
+            bgworkerDownload.WorkerReportsProgress = true;
+
+            // set up the background worker to check for .bin file updates
+            if (Program.options["CheckForDownloads"].ToUpper().StartsWith("Y"))
+            {
+                // start an update check
+                StartUpdateCheck();
+            }
+            else
+            {
+                downloadStatusObj = "({message:\"Auto download is disabled\", done: true})";
+                SendDownloadStatusUpdate();
+            }
+
+            // set up the browser object and navigate to our main menu page
+            webBrowser1.Navigate("file:///" + Path.Combine(Program.programDir, "html/Top.htm"));
+            webBrowser1.AllowWebBrowserDrop = false;
+            webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            webBrowser1.WebBrowserShortcutsEnabled = false;
         }
 
         // our downloader
@@ -251,7 +251,8 @@ namespace PinscapeConfigTool
         // send the download status to the WebBrowser javascript handler
         void SendDownloadStatusUpdate()
         {
-            webBrowser1.Document.InvokeScript("downloadStatus", new Object[] { downloadStatusObj });
+            if (webBrowser1.Document != null)
+                webBrowser1.Document.InvokeScript("downloadStatus", new Object[] { downloadStatusObj });
         }
 
         void StartUpdateCheck()

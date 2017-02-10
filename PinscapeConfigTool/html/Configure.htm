@@ -108,14 +108,14 @@ var ConfigSource = {
 // table wrong.
 //
 var gpioPins = [
-    { name: "PTA1",  pwm: "2.0" },
-    { name: "PTA2",  pwm: "2.1" },
-    { name: "PTA4",  pwm: "0.1" },
-    { name: "PTA5",  pwm: "0.2" },
-    { name: "PTA12", pwm: "1.0" },
-    { name: "PTA13", pwm: "1.1" },
-    { name: "PTA16"  },
-    { name: "PTA17"  },
+    { name: "PTA1",  pwm: "2.0", interrupt: true },
+    { name: "PTA2",  pwm: "2.1", interrupt: true },
+    { name: "PTA4",  pwm: "0.1", interrupt: true },
+    { name: "PTA5",  pwm: "0.2", interrupt: true },
+    { name: "PTA12", pwm: "1.0", interrupt: true },
+    { name: "PTA13", pwm: "1.1", interrupt: true },
+    { name: "PTA16", interrupt: true  },
+    { name: "PTA17", interrupt: true  },
     { name: "PTB0",  pwm: "1.0", adc: "0.8" },
     { name: "PTB1",  pwm: "1.1", adc: "0.9" },
     { name: "PTB2",  pwm: "2.0", adc: "0.12" },
@@ -150,17 +150,18 @@ var gpioPins = [
     { name: "PTC13"  },
     { name: "PTC16"  },
     { name: "PTC17"  },
-    { name: "PTD0",  pwm: "0.0" },
-    { name: "PTD1",  pwm: "0.1", adc: "0.5b", spi: "SCLK", onBoardLED: 3, remarks: "Blue on-board LED",
+    { name: "PTD0",  pwm: "0.0", interrupt: true },
+    { name: "PTD1",  pwm: "0.1", adc: "0.5b", spi: "SCLK", onBoardLED: 3, interrupt: true,
+                     remarks: "Blue on-board LED",
 		     warning: "This port is hard-wired on the KL25Z to the blue on-board LED. "
 		              + "You can use this port for other purposes, but doing so will "
 			      + "supersede the blue LED's normal status display function." },
-    { name: "PTD2",  pwm: "0.2", spi: "MOSI" },
-    { name: "PTD3",  pwm: "0.3", spi: "MISO" },
-    { name: "PTD4",  pwm: "0.4" },
-    { name: "PTD5",  pwm: "0.5", adc: "0.6b" },
-    { name: "PTD6",  adc: "0.7b" },
-    { name: "PTD7"   },
+    { name: "PTD2",  pwm: "0.2", spi: "MOSI", interrupt: true },
+    { name: "PTD3",  pwm: "0.3", spi: "MISO", interrupt: true },
+    { name: "PTD4",  pwm: "0.4", interrupt: true },
+    { name: "PTD5",  pwm: "0.5", adc: "0.6b", interrupt: true },
+    { name: "PTD6",  adc: "0.7b", interrupt: true },
+    { name: "PTD7",  interrupt: true},
     { name: "PTE0",  i2c: "1.SDA" },
     { name: "PTE1",  i2c: "1.SCL" },
     { name: "PTE2"   },
@@ -1468,7 +1469,6 @@ $("#txtRebootTime").change(function() {
       <b>TV ON switch.</b>  If one or more of your monitors needs to be turned
       on manually every time you power up your cabinet, you can use this feature
       to switch them on automatically.  See the Build Guide for wiring instructions.
-      <i>Coming soon: Turn TVs on through an IR remote control transmitter.</i>
 
       <div>
 	 <div>
@@ -1569,6 +1569,46 @@ function showTvOn(show, scroll)
 }
    </script>
 
+
+   <!-- IR Remote Control -------------------------------------------------->
+<!--
+   <hr>
+
+   <div>
+      <img src="irRemote.png" class="sectionIcon">
+      <b>IR Remote Control.</b>  You can attach an IR LED to the controller
+      to transmit remote control commands to your cabinet TVs or other
+      devices, and you can also connect an IR sensor to let the controller
+      learn the commands to use, just like a universal remote control.
+      This works with the TV ON command to transmit power-on commands to
+      your TVs when the system starts up.  See the Build Guide for details
+      on the components required and how to connect them.
+
+      <div id="irRemotePins">
+	 <table class="inputs">
+	    <tr class="expBoardPin">
+	       <td class="pinlabel">IR LED (transmitter) pin:</td>
+		  <td>
+		     <span class="pinselect" id="irTransmitter"
+		       data-cfg="IRC.ledPin" data-gpiotype="pwm extern"
+		       data-desc="IR LED transmitter output pin" data-default="PTC9">
+		     </span>
+		  </td>
+	       </tr>
+	       <tr class="expBoardPin">
+		  <td class="pinlabel">IR receiver input pin:</td>
+		  <td>
+		     <span class="pinselect" id="irReceiver"
+		       data-cfg="IRC.receiverPin" data-gpiotype="interrupt-in extern"
+		       data-desc="IR remote control receiver input pin" data-default="PTA13">
+		     </span>
+		  </td>
+	       </tr>
+	    </table>
+      </div>
+
+   </div>
+-->
 
    <!-- joystick enable ---------------------------------------------------->
    <hr>
@@ -4358,6 +4398,10 @@ $("#printButton").click(function(ev) {
 	    <img src="digitalin.png"><br>
 	    Digital In
 	 </div>
+	 <div id="pinTypeInterruptIn" data-page="gpioSelector" data-filter="interrupt-in">
+	    <img src="interruptin.png"><br>
+	    Interrupt In
+	 </div>
 	 <div id="pinType5940Out" data-page="tlc5940Selector" data-pintype="3">
 	    <img src="tlc5940out.png"><br>
 	    TLC5940 Out
@@ -5808,8 +5852,8 @@ $(function() {
 	//
 	// 'gpiotype' is a string array giving the type of pin we're
 	// selecting.  The first element must be one of the KL25Z GPIO
-	// page keywords: dig-in, dig-out, pwm, adc, spi-mosi, or
-	// spi-sclk.
+	// page keywords: dig-in, dig-out, pwm, adc, interrupt-in,
+	// spi-mosi, or spi-sclk.
 	//
 	// Additional elements specify modifiers:
 	//
@@ -5823,10 +5867,11 @@ $(function() {
 	    // build a list of pin filters according to the pin type
 	    var pinFilter = function(p, name) { return true; };
 	    var primary = {
-		"dig-in": function(p) { return p; },	     // all pins can be used as digital inputs
-		"dig-out": function(p) { return p; },     // ... or digital outputs
-		"adc": function(p) { return p && p.adc; },
-		"pwm": function(p) { return p && p.pwm; },
+		"dig-in": function(p) { return p; },	     // All pins can be used as digital inputs
+		"dig-out": function(p) { return p; },        // ... or digital outputs.
+		"adc": function(p) { return p && p.adc; },   // Other features are available on a subset of pins
+		"pwm": function(p) { return p && p.pwm; },   // with no apparent pattern, so we use attributes to
+		"interrupt-in": function { return p && p.interrupt },     // flag which features each pin supports.
 		"spi-mosi": function(p) { return p && p.spi == "MOSI"; },
 		"spi-sclk": function(p) { return p && p.spi == "SCLK"; }
 	    };
