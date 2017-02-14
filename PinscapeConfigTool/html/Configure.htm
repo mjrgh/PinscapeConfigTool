@@ -5871,7 +5871,7 @@ $(function() {
 		"dig-out": function(p) { return p; },        // ... or digital outputs.
 		"adc": function(p) { return p && p.adc; },   // Other features are available on a subset of pins
 		"pwm": function(p) { return p && p.pwm; },   // with no apparent pattern, so we use attributes to
-		"interrupt-in": function { return p && p.interrupt },     // flag which features each pin supports.
+		"interrupt-in": function(p) { return p && p.interrupt; },    // flag which features each pin supports.
 		"spi-mosi": function(p) { return p && p.spi == "MOSI"; },
 		"spi-sclk": function(p) { return p && p.spi == "SCLK"; }
 	    };
