@@ -143,6 +143,16 @@ namespace PinscapeConfigTool {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap h1IR {
+            get {
+                object obj = ResourceManager.GetObject("h1IR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap h1OutputTester {
             get {
                 object obj = ResourceManager.GetObject("h1OutputTester", resourceCulture);

@@ -194,15 +194,34 @@ public class DeviceInfo : IDisposable
         // show a wait cursor while writing
         Cursor.Current = Cursors.WaitCursor;
 
-        // save updates and reboot the KL25Z; wait a second on the
-        // reboot to allow time for pending USB messages to finish
-        bool ok = SpecialRequest(6, new byte[] { 1 });
+        // Save updates and reboot the KL25Z.  Tell the device to wait
+        // a second after completing the write before it reboots, to
+        // allow time for pending USB messages to finish, and to allow
+        // for a few status updates after the save showing the "config
+        // save succeeded" bit in the status.
+        FlushReadUSB();
+        if (SpecialRequest(6, new byte[] { 1 }))
+        {
+            // We successful sent the request, but we don't know yet if
+            // the save actually succeeded.  The device tells us that a
+            // save was successful by setting bit 0x40 in the regular
+            // status report status byte, so watch for such a message.
+            // Only wait a few seconds, though; if the save fails, the
+            // device will reboot without ever sending the success report.
+            DateTime t0 = DateTime.Now;
+            while ((DateTime.Now - t0).TotalMilliseconds < 3000)
+            {
+                // read a status report and check for bit 0x40 ("config
+                // save succeeded") in the status byte
+                byte[] buf = ReadStatusReport();
+                if (buf != null && (buf[1] & 0x40) != 0)
+                    return true;
+            }
+        }
 
-        // wait a second on our end to allow the device to reboot
-        Thread.Sleep(1250);
-
-        // return the result
-        return ok;
+        // we failed to send the request, or we didn't hear back 
+        // from the device that it was successful
+        return false;
     }
 
     // Get the config report
@@ -216,13 +235,19 @@ public class DeviceInfo : IDisposable
             plungerMax = buf[9] | (buf[10] << 8);
             plungerTime = buf[11];
             configured = (buf[12] & 0x01) != 0;
+            sbxpbx = (buf[12] & 0x02) != 0;
+            accelFeatures = (buf[12] & 0x04) != 0;
             freeHeapBytes = buf[13] | (buf[14] << 8);
         }
 
         public bool configured;     // a saved configuration has been loaded; 
                                     // if this is false, factory defaults are in effect
+        public bool sbxpbx;         // SBX/PBX extended commands supported
+        public bool accelFeatures;  // accelerometer customization features supported
+                                    // (adjustable dynamic range, auto centering on/off,
+                                    // adjustable auto centering time)
         public int psUnitNo;        // Pinscape unit number, 1-16
-        public int numOutputs;      // number of feedabck device outputs
+        public int numOutputs;      // number of configured (in-use) feedback device outputs
         public int plungerZero;     // plunger calibration zero point
         public int plungerMax;      // plunger calibration maximum
         public int plungerTime;     // plunger release time, milliseconds
@@ -302,7 +327,7 @@ public class DeviceInfo : IDisposable
             HIDImports.HIDP_CAPS caps;
             HIDImports.HidP_GetCaps(ppdata, out caps);
             bool isJoystick = caps.UsagePage == 1 && caps.Usage == 4;
-            bool isPrivate = caps.UsagePage == 1 && caps.Usage == 1;
+            bool isPrivate = caps.UsagePage == 1 && caps.Usage == 0;
             if (isJoystick)
                 this.JoystickEnabled = true;
 

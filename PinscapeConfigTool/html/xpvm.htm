@@ -21,32 +21,38 @@
    </p>
 
    <p>
+	  <b>Once you complete the upgrade, the KL25Z will work with
+	  Windows 8 and later.</b>  But it's a catch-22, because you can't
+      perform the upgrade that makes it work with Windows 8 or 10 from
+	  Windows 8 or 10!
+   </p>
+
+   <p>
 	  The easiest way to deal with this is to find an old machine
-	  running Windows 7 or XP.  But if that's out of the question for
-	  you, there are two alternatives.  Both require some extra work,
+	  running Windows 7 or XP.  But if there's no way you can do that,
+	  there are two solutions.  Both require some extra work,
 	  but they'll let you do the upgrade with your existing machine.
    </p>
 
    <h2>Option 1: Tweak your Win 8/10 system</h2>
 
    <p>
-	  The firmware incompatibility in Windows 8+ apparently is due to
+	  The firmware incompatibility in Windows 8+ is related to the
 	  disk search features that Microsoft added in Windows 8.
 	  When you plug in a USB disk, Windows automatically writes to the
 	  disk to create a hidden search index file.  The older KL25Z
-	  boot loader mistakes the hidden file for an attempt to download
-	  new firmware onto the device; but since it's not a valid firmware
-	  download, the boot loader goes into an error mode and refuses to
-	  listen to any more requests.  This blocks any subsequent attempts
-	  to download legitimate firmware files.
+	  boot loader mistakes this for an attempt to install new firmware
+	  onto the device.  But since the index file isn't a valid firmware
+	  file, the boot loader rejects it, which puts it in an error mode
+	  where it refuses to accept any more requests.  This blocks any
+	  subsequent attempts to download legitimate firmware files.
    </p>
 
    <p>
-	  One way to solve this is to change your Windows system settings
-	  to disable the new indexing service that causes
-	  all the trouble.  This requires messing around in the
-	  bowels of Windows, so if RegEdit makes you queasy, you might
-	  want to skip this approach and try a different option.
+	  One way to solve this is to disable the Windows search indexing
+	  service that causes the trouble.  This requires messing around
+	  with your Windows system settings, so if RegEdit makes you queasy,
+	  you might want to skip this approach and try a different option.
    </p>
 
    <p>

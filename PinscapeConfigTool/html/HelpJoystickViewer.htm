@@ -22,13 +22,34 @@
 	  software when reading from the joystick.
    </p>
 
+   <h2>Accelerometer</h2>
    <p>
-	  The accelerometer input should automatically zero itself after
-	  about ten seconds if you let the KL25Z sit still.  You never
-	  have to calibrate it manually, since it zeroes itself in its
-	  current position any time it's stationary for a while.
+	  The crosshairs show the readings from the KL25Z's on-board
+	  accelerometer.  This senses the motion of the device, so we
+	  use it in pinball emulators to sense when you "nudge" the
+	  cabinet.  If you observe the crosshairs as you move and nudge
+	  the device, you'll see how it responds to cabinet motion.
+   </p>
+   <p>
+	  The device also picks up any incline of the board, since
+	  gravity is a type of acceleration.  If you have "auto-centering"
+	  enabled in the setup, the firmware automatically cancels out
+	  the incline by zeroing the readings after the board has been
+	  sitting still for a few seconds.  You can adjust the timing
+	  of the automatic centering.
+   </p>
+   <p>The automatic centering is useful because we want the accelerometer
+	  to report zero acceleration whenever the cabinet is sitting still.
+	  Any non-zero acceleration will show up in the pinball simulation
+	  as an influence on the ball.  We only want this type of influence
+	  to appear in response to nudges and other cabinet motion.
+   </p>
+   <p>
+	  If you disabled auto-centering in the setup, you can click the
+	  "Center Now" button to zero the accelerometer manually.
    </p>
 
+   <h2>Plunger</h2>
    <p>
 	  The plunger readings shown here take into account the
 	  calibration.  If the plunger is calibrated properly, the
@@ -40,6 +61,7 @@
 	  the calibration process from the Plunger Setup window.
    </p>
 
+   <h2>Joystick buttons</h2>
    <p>
 	  The buttons displayed here are the "mapped" joystick buttons.
 	  These aren't exactly the same as the physical buttons wired
@@ -59,6 +81,7 @@
 	  the hardware level.
    </p>
 
+   <h2>Capture</h2>
    <p>
 	  The "Capture" option lets you collect readings from the
 	  accelerometer and plunger inputs and save the collected data

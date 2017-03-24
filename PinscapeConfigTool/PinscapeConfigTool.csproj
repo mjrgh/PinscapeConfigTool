@@ -120,12 +120,24 @@
     <Compile Include="OutputTester.Designer.cs">
       <DependentUpon>OutputTester.cs</DependentUpon>
     </Compile>
+    <Compile Include="IRLearn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IRLearn.Designer.cs">
+      <DependentUpon>IRLearn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StringUtils.cs" />
+    <Compile Include="TextViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextViewer.Designer.cs">
+      <DependentUpon>TextViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="TvOnTester.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +187,10 @@
     <EmbeddedResource Include="OutputTester.resx">
       <DependentUpon>OutputTester.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="IRLearn.resx">
+      <DependentUpon>IRLearn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="PlungerSetup.resx">
       <DependentUpon>PlungerSetup.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -198,6 +214,9 @@
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextViewer.resx">
+      <DependentUpon>TextViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TvOnTester.resx">
       <DependentUpon>TvOnTester.cs</DependentUpon>
@@ -268,10 +287,17 @@
     <None Include="html\h1OutputTester.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="html\h1IR.png" />
     <Content Include="html\h1TvOn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\HelpButtonTester.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\HelpIR.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\HelpIRLearn.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\HelpJoystickViewer.htm">
@@ -286,6 +312,9 @@
     <Content Include="html\HelpPulseKey.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\HelpShiftButton.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\HelpTvOnTester.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -295,7 +324,22 @@
     <Content Include="html\interruptin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\irButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\irButtonOff.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\irLearn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\irTestSending.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\irRemote.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\irTestButton.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\jskeySmallOff.png">
@@ -334,10 +378,16 @@
     <Content Include="html\nightModeOn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\nightModeWayOff.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\NoisyOff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\NoisyOn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\noKey.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\powerBoardOut.png">
@@ -357,6 +407,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\ShiftButtonHere.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\ShiftButtonHereFaint.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\ShiftButtonSmall.png">
@@ -387,6 +440,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\troubleshoot.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\tvOnButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\tvOnButtonOff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\virtualOutSmall.png">

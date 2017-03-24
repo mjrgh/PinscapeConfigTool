@@ -22,13 +22,14 @@
    <h2><img src="NoisyOn.png"> Noisy Port</h2>
 
    <p>
-      Set this option for ports that control noise-making devices, such as solenoids
-      and motors.
+      Set this option for ports that you're using to control noise-making devices,
+	  such as solenoids and motors.
    </p>
 
    <p>
-      Each port marked with this flag will be <b>deactivated</b> when Night Mode
-      is engaged.  These ports will operate only when Night Mode isn't in use.
+      Each port marked with this flag will be deactivated when Night Mode
+      is engaged.  These ports will operate only in "Day Mode", 
+	  when Night Mode is off.
    </p>
 
    <p>
@@ -60,18 +61,13 @@
    <p>
       The gamma correction option is only available for ports with PWM capability,
       because it only affects intermediate intensity levels between fully off
-      and fully on.  The ends of the curve - 0% and 100% brightness - are 
-      the same with or without gamma correction.  This means that you can't
-      gamma-correct digital-only ports, such as Digital GPIO ports, 74HC595 outputs,
-      and chime board outputs.
+      and fully on.  Gamma correction isn't an option on digital-only ports,
+	  such as Digital GPIO ports, 74HC595 outputs, and chime board outputs,
+	  since these ports can't vary their intensities.
    </p>
 
    <p>
-      To keep things simple, the controller uses a fixed gamma of 2.8.  Even
-      though the ideal gamma does vary a little from one device to the next,
-      and can even be affected by other variables (e.g., ambient lighting),
-      the fixed 2.8 gamma should work well enough for most lighting devices,
-      and should at least be an improvement over purely linear brightness.
+      To keep things simple, the controller uses a fixed gamma of 2.8.
    </p>
 
    <h2><img src="ActiveLowOn.png"> Active Low</h2>

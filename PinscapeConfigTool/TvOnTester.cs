@@ -46,7 +46,8 @@ namespace PinscapeConfigTool
             "PSU2 Power is off",
             "PSU2 Power is off",
             "TV ON delay timer running",
-            "Pulsing TV ON relay"
+            "Pulsing TV ON relay",
+            "Sending TV ON IR signals"
         };
         private void statusTimer_Tick(object sender, EventArgs e)
         {

@@ -3,9 +3,11 @@
 // The "shower" and "hider" elements must be children of
 // the same parent.
 $(function() {
-	$(".shower").click(function(ev) {
+	$(".shower").click(function(ev)
+	{
 		// hide myself (the "show" button)
-		$(this).css("display", "none");
+		var shower = $(this);
+		shower.hide();
 
 		// get the hider - the .hider element from the nearest enclosing
 		// parent who has one
@@ -13,6 +15,17 @@ $(function() {
 
 		// slide it open
 		slideOpen(d, ev.originalEvent ? 250 : 0, true);
+
+		if (!shower.hasClass("noReHide") && d.find(".reHideButton").length == 0) {
+			var rehider = $("<a href=\"#\" class=\"reHideButton\">Hide these details</a>")
+						  .click(function(ev) {
+				ev.preventDefault();
+				shower.show();
+				slideClosed(d, 250);
+				rehider.detach();
+			});
+			d.append(rehider);
+		}
 
 		// don't process the href click
 		ev.preventDefault();		
@@ -325,7 +338,14 @@ function getScrollBarWidth()
 //            "cancel" means the user manually canceled via a dialog option
 //    message: string with displayable result message
 //  }
-function showCallResult(res)
+//
+// 'handler' is an optional set of custom handlers.  This is a hash,
+// keyed by status string ("ok", "error", etc), with values as functions
+// taking the parsed result object as argument.
+//
+// Returns the parsed result object.
+// 
+function showCallResult(res, handler)
 {
 	// evaluate the string into a javascript object, and apply a default
 	var o = (typeof res == "string" ? eval(res) : res);
@@ -333,12 +353,15 @@ function showCallResult(res)
 		o = { status: "error", message: "Unrecognized response: " + res };
 
 	// show an appropriate message
-	var handler = {
+	var defHandler = {
 		"cancel": function() { },   // user canceled - no more feedback required
 		"error": function() { alert("An error occurred: " + o.message); },
-		"ok": function() { alert(o.message); }
+		"ok": function() { if (o.message) alert(o.message); }
 	};
-	(handler[o.status] || function() { alert("Unknown result status: " + o.status); })();
+	var func = (handler && handler[o.status])
+			   || defHandler[o.status]
+			   || function() { alert("Unknown result status: " + o.status); };
+	func(o);
 
 	// return the parsed object
 	return o;

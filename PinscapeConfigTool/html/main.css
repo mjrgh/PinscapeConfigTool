@@ -265,7 +265,7 @@ div.devlistitem > div {
     padding: 1ex 1em;
     font-size: 8pt;
     font-weight: bold;
-    cursor: default;
+    cursor: pointer;
     min-width: 13ex;
 }
 .iconWithTitle > img {
@@ -293,6 +293,10 @@ hr {
 
 .shower {
     padding-left: 2em;
+}
+
+.reHideButton {
+	padding-left: 2em;
 }
 
 table.radio {
@@ -351,6 +355,54 @@ div.twocol > div:last-child {
 
 div.indented {
     margin-left: 2em;
+}
+
+#IRCommandSelector {
+    margin: 0px;
+    position: absolute;
+	display: inline-block;
+}
+#IRCommandSelector > div {
+    margin: 0px auto;
+    padding: 0px;
+}
+#IRCommandSelector > div > div:first-child {
+	margin: 0px;
+	padding: 0px;
+	height: 8em;
+}
+#IRCommandList {
+	position: absolute;
+	display: inline-block;
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	background: #ffffff;
+	border: 1px solid #e0e0e0;
+	box-shadow: 2px 2px 10px #808080;
+	overflow-y: auto;
+}
+#IRCommandList div {
+	white-space: nowrap;
+	padding: 1ex 2em;
+	margin: 0px;
+	cursor: default;
+}
+#IRCommandList div:hover {
+	background: #0000ff;
+	color: #ffffff;
+}
+#IRCommandList .IRidx {
+}
+#IRCommandList .IRCode {
+	padding: 0px 1em;
+}
+#IRCommandList .IRDesc {
+}
+#IRCommandList .IRCheck {
+	display: inline-block;
+	width: 2em;
+	text-align: center;
 }
 
 #keySelector {
@@ -457,7 +509,7 @@ div.indented {
     height: 32px;
     background: url(jskey.png) -32px 0px no-repeat;
     text-align: center;
-    cursor: default;
+    cursor: pointer;
 }
 .jsBtn:hover {
     background-position: -64px 0px;
@@ -469,11 +521,16 @@ div.indented {
     color: #ffffff;
 }
 
-.pinselect {
-    cursor: default;
+#autoCenterRadioButtons > div {
+	margin: .5ex 2em;
 }
-.outPortPin, .dispPinName, .dispKeyName {
-    cursor: default;
+
+
+.pinselect, .expBoardAlt {
+    cursor: pointer;
+}
+.outPortPin, .dispPinName {
+	cursor: pointer;
 }
 
 #pinSelector {
@@ -516,7 +573,7 @@ div.indented {
     border-left: 1px solid #b0b0b0;
     overflow-y: auto;
     font-size: 8pt;
-    cursor: default;
+    cursor: pointer;
 }
 #pinTypeSelector img {
     border-radius: 4px;
@@ -759,6 +816,7 @@ div.chipNo.header {
     border: 1px solid #e0e0e0;
     border-radius: 2px;
     font: 9pt Arial;
+	cursor: pointer;
 }
 .pinwarn {
     visibility: hidden;
@@ -875,25 +933,45 @@ option {
 #buttonTab td.buttonCol {
     white-space: nowrap;
 }
-.shiftRow .buttonCol.shifted .keymapping {
-    display: none;
+.shiftRow .buttonCol.shifted {
+	visibility: hidden;
 }
 
-.buttonCol.nightMode .keyNightMode {
+#buttonTab td.buttonCol.shifted {
+	border-left: 1px dotted #808080;
+}
+
+.buttonCol .keyNightMode {
+    background: url(nightModeWayOff.png) no-repeat;
     display: inline-block;
     height: 24px;
     width: 24px;
-    background: url(nightModeSmall.png) no-repeat;
     margin-left: 4px;
+	cursor: pointer;
+}
+.buttonCol .keyNightMode:hover {
+    background: url(nightModeOff.png) no-repeat;
+}
+.buttonCol.nightMode .keyNightMode {
+    background: url(nightModeSmall.png) no-repeat;
 }
 
+.keymappingContainer {
+    display: inline-block;
+	width: 42px;
+	text-align: center;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
 .keymapping {
     display: inline-block;
+	width: 42px;
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
     background: 0px 0px no-repeat;
-    cursor: default;
+    cursor: pointer;
 }
 .keymapping.asKey, .keymapping.asMediaKey {
     background-image: url(kb.png);
@@ -904,9 +982,6 @@ option {
 }
 .keymapping.asNone {
     background-image: url(unusedButton.png);
-}
-.buttonCol.nightMode .keymapping.asNone {
-    display: none;
 }
 .keymapping.asJoystickButton {
     background-image: url(joystickButton.png);
@@ -921,16 +996,113 @@ option {
     line-height: normal;
 }
 
+#irCommands {
+	padding-top: 2em;
+}
+
+#irCommandTab td {
+	vertical-align: middle;
+	text-align: center;
+	white-space: nowrap;
+	padding: 0px 1em;
+}
+#irCommandTab td.irCode {
+	padding-right: 0px;
+}
+#irCommandTab td.irCodeCtls {
+	padding-left: 0px;
+}
+
+#irCommandTab .irLearn, #irCommandTab .irTest {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	border-radius: 3px;
+	cursor: pointer;
+	border: 1px solid transparent;
+	background: center center no-repeat;
+}
+#irCommandTab .irLearn:hover, #irCommandTab .irTest:hover {
+	border: 1px solid #00b0ff;
+	background-color: #ffff00;
+}
+
+#irCommandTab .irLearn {
+	background-image: url("irLearn.png");
+}
+#irCommandTab .irTest {
+	background-image: url("irTestButton.png");
+}
+#irCommandTab .irTest.sending {
+	background-image: url("irTestSending.png");
+	border: 1px solid #ff0000;
+}
+
+#irCommandTab .irTVON {
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	background: url("tvOnButtonOff.png") center center no-repeat;
+	border-radius: 3px;
+	border: 1px solid transparent;
+	cursor: pointer;
+}
+#irCommandTab .irTVON:hover, #irCommandTab .irTVON.active {
+	background-image: url("tvOnButton.png");
+}
+#irCommandTab .irTVON:hover {
+	border: 1px solid #00b0ff;
+	background-color: #ffff00;
+}
+
+#irCommandTab .irCode input.error {
+	background-color: #ffd0d0;
+}
+
+#buttonTab .keyIR {
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 0px;
+	margin: 0px;
+	cursor: pointer;
+	width: 28px;
+}
+#buttonTab .keyIR .label {
+	display: table-cell;
+	box-sizing: border-box;
+	background: url(irButtonOff.png) center center no-repeat;
+	height: 28px;
+	width: 28px;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 115%;
+	font-weight: bold;
+}
+#buttonTab .keyIR .label.active, #buttonTab .keyIR .label:hover {
+	background: url(irButton.png) center center no-repeat;
+}
+
 #buttonTab td.keyusage, #buttonTab th.keyusage {
     text-align: left;
     padding: 0px;
     padding-left: 1ex;
+	white-space: nowrap;
 }
 #buttonTab td.keyflags {
     padding: 0px;
 }
+#buttonTab td.keyflags img {
+	cursor: pointer;
+}
 #buttonTab td.keyremarks {
     padding: 0px;
+}
+#buttonTab .pinselect {
+	white-space: nowrap;
+}
+#buttonTab td {
+	vertical-align: middle;
 }
 
 .shiftCol span {
@@ -940,6 +1112,9 @@ option {
 }
 .shiftRow .shiftCol span, .shiftRow .shiftCol span:hover {
     background: url(ShiftButton.png) no-repeat;
+}
+.shiftCol span {
+    background: url(ShiftButtonHereFaint.png) no-repeat;
 }
 .shiftCol span:hover {
     background: url(ShiftButtonHere.png) no-repeat;
@@ -975,6 +1150,7 @@ option {
 }
 #outputTab td.outPortOptions img {
     padding: 0px 2px;
+	cursor: pointer;
 }
 #outputTab td.rowControls {
     padding: 0px;
@@ -1071,7 +1247,7 @@ option {
     border: 2px solid #e8e8e8;
     border-radius: 8px;
     box-shadow: 2px 2px 10px #404040;
-    cursor: default;
+    cursor: pointer;
 }
 .bigButton img {
     margin: 1em 0px;

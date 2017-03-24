@@ -53,6 +53,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.linkCenter = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.jsKeyState)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,7 +87,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 182);
+            this.label2.Location = new System.Drawing.Point(19, 174);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 13);
             this.label2.TabIndex = 24;
@@ -112,7 +113,7 @@
             // 
             // lblXY
             // 
-            this.lblXY.Location = new System.Drawing.Point(19, 199);
+            this.lblXY.Location = new System.Drawing.Point(19, 192);
             this.lblXY.Name = "lblXY";
             this.lblXY.Size = new System.Drawing.Size(97, 13);
             this.lblXY.TabIndex = 27;
@@ -141,7 +142,7 @@
             // lblTextBoxBar
             // 
             this.lblTextBoxBar.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblTextBoxBar.Location = new System.Drawing.Point(-10, 308);
+            this.lblTextBoxBar.Location = new System.Drawing.Point(-10, 313);
             this.lblTextBoxBar.Name = "lblTextBoxBar";
             this.lblTextBoxBar.Size = new System.Drawing.Size(770, 1);
             this.lblTextBoxBar.TabIndex = 32;
@@ -196,7 +197,7 @@
             this.btnLogging.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogging.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnLogging.ForeColor = System.Drawing.Color.Purple;
-            this.btnLogging.Location = new System.Drawing.Point(498, 264);
+            this.btnLogging.Location = new System.Drawing.Point(498, 261);
             this.btnLogging.Name = "btnLogging";
             this.btnLogging.Padding = new System.Windows.Forms.Padding(2);
             this.btnLogging.Size = new System.Drawing.Size(77, 31);
@@ -232,7 +233,7 @@
             // 
             this.jsKeyState.BackColor = System.Drawing.SystemColors.Window;
             this.jsKeyState.InitialImage = null;
-            this.jsKeyState.Location = new System.Drawing.Point(12, 245);
+            this.jsKeyState.Location = new System.Drawing.Point(12, 243);
             this.jsKeyState.Name = "jsKeyState";
             this.jsKeyState.Size = new System.Drawing.Size(375, 50);
             this.jsKeyState.TabIndex = 40;
@@ -242,7 +243,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 229);
+            this.label6.Location = new System.Drawing.Point(9, 227);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(43, 13);
             this.label6.TabIndex = 41;
@@ -255,7 +256,7 @@
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnHelp.ForeColor = System.Drawing.Color.Purple;
-            this.btnHelp.Location = new System.Drawing.Point(581, 264);
+            this.btnHelp.Location = new System.Drawing.Point(581, 261);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Padding = new System.Windows.Forms.Padding(2);
             this.btnHelp.Size = new System.Drawing.Size(75, 31);
@@ -271,7 +272,7 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnClose.ForeColor = System.Drawing.Color.Purple;
-            this.btnClose.Location = new System.Drawing.Point(662, 264);
+            this.btnClose.Location = new System.Drawing.Point(662, 261);
             this.btnClose.Name = "btnClose";
             this.btnClose.Padding = new System.Windows.Forms.Padding(2);
             this.btnClose.Size = new System.Drawing.Size(75, 31);
@@ -280,12 +281,24 @@
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // linkCenter
+            // 
+            this.linkCenter.AutoSize = true;
+            this.linkCenter.Location = new System.Drawing.Point(36, 209);
+            this.linkCenter.Name = "linkCenter";
+            this.linkCenter.Size = new System.Drawing.Size(63, 13);
+            this.linkCenter.TabIndex = 44;
+            this.linkCenter.TabStop = true;
+            this.linkCenter.Text = "Center Now";
+            this.linkCenter.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkCenter_LinkClicked);
+            // 
             // JoystickViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(750, 307);
+            this.ClientSize = new System.Drawing.Size(750, 301);
+            this.Controls.Add(this.linkCenter);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.label6);
@@ -348,5 +361,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.LinkLabel linkCenter;
     }
 }

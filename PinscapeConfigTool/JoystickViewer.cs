@@ -59,6 +59,12 @@ namespace PinscapeConfigTool
             Thread th = new Thread(Updater);
             done = false;
             th.Start();
+
+            // hide the Center Now button if the new accelerometer
+            // features aren't present in the firmware
+            DeviceInfo.ConfigReport cfg = dev.GetConfigReport();
+            if (cfg != null && !cfg.accelFeatures)
+                linkCenter.Visible = false;
         }
 
         private void JoystickViewer_FormClosed(object sender, FormClosedEventArgs e)
@@ -273,7 +279,7 @@ namespace PinscapeConfigTool
                 g.MeasureString(num, font);
                 g.DrawString(num, font, on ? Brushes.White : Brushes.Gray, new Point(x + wid / 2, y + ht / 2), centerText);
 
-                // on to the next column
+                // on to the next column 
                 if (++col > 15)
                 {
                     col = 0;
@@ -290,6 +296,11 @@ namespace PinscapeConfigTool
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void linkCenter_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            dev.SpecialRequest(14);
         }
     }
 }

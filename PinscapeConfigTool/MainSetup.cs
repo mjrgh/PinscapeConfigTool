@@ -210,7 +210,7 @@ namespace PinscapeConfigTool
             }
         }
 
-        // button tester
+        // show the button tester
         bool ButtonTesterOpen = false;
         void ShowButtonTester(String devname)
         {
@@ -225,7 +225,7 @@ namespace PinscapeConfigTool
             }
         }
 
-        // output tester
+        // show the output tester
         bool OutputTesterOpen = false;
         void ShowOutputTester(String devname)
         {
@@ -238,6 +238,32 @@ namespace PinscapeConfigTool
                 dlg.Dispose();
                 OutputTesterOpen = false;
             }
+        }
+
+        // show the IR learning window
+        bool IRLearnOpen = false;
+        String ShowIRLearn(String devname)
+        {
+            DeviceInfo dev = GetDeviceByCPUID(devname);
+            String result = null;
+            if (dev != null)
+            {
+                // run the dialog
+                IRLearnOpen = true;
+                IRLearn dlg = new IRLearn(dev);
+                dlg.ShowDialog();
+
+                // get the result, if any
+                if (dlg.result != null)
+                    result = dlg.result.ToString();
+
+                // done with the dialog
+                dlg.Dispose();
+                IRLearnOpen = false;
+            }
+
+            // return the command result
+            return result;
         }
 
         // Current download status.  This is a string encoding a javascript object in
@@ -494,7 +520,11 @@ namespace PinscapeConfigTool
         //
         //   $B  -> Byte: message unsigned byte <-> javascript int
         //
-        //   $W  -> Word: message byte+byte (little-endian unsigned) <-> javascript int
+        //   $W  -> Word: message byte+byte (little-endian unsigned) <->
+        //          javascript int
+        //
+        //   $D  -> DWord: message byte+byte+byte+byte (little-endian unsigned)
+        //          <-> javascript int
         //
         //   $P  -> Pin: messsage GPIO pin ID byte <-> javascript Pin Name string.
         //          The pin ID byte is encoded with the port number [0-4 for
@@ -519,7 +549,7 @@ namespace PinscapeConfigTool
             "1 USBID {vendor:$W,product:$W}",
             "2 pinscapeID $B",
             "3 joystickEnabled $B" ,
-            "4 accelOrientation $B",
+            "4 accelerometer {orientation:$B,dynamicRange:$B,autoCenterMode:$B}",
             "5 plungerType $B",
             "6 plungerPins {a:$P,b:$P,c:$P,d:$P}",
             "7 calButtonPins {enabled:$B,button:$P,led:$P}",
@@ -531,9 +561,13 @@ namespace PinscapeConfigTool
             "13 plungerCal {zero:$W,max:$W,tRelease:$B,calibrated:$B}",
             "14 expansionBoards {type:$B,version:$B,ext0:$B,ext1:$B,ext2:$B}",
             "15 nightMode {button:$B,flags:$B,output:$B}",
-            "16 shiftButton $B",
-            "253[] xbuttons {keytype:$B,keycode:$B}",
-            "254[] buttons {pin:$P,keytype:$B,keycode:$B,flags:$B}",
+            "16 shiftButton {index:$B,mode:$B}",
+            "17 IRRemote {sensorPin:$P,ledPin:$P}",
+            "250[] IRCode3 {codeHi:$D}",
+            "251[] IRCode2 {protocol:$B,codeLo:$D}",
+            "252[] IRCode1 {flags:$B,keytype:$B,keycode:$B}",
+            "253[] xbuttons {keytype:$B,keycode:$B,IRCommand:$B}",
+            "254[] buttons {pin:$P,keytype:$B,keycode:$B,flags:$B,IRCommand:$B}",
             "255[] outputs {port:$o,flags:$B}"
         };
 
@@ -559,6 +593,12 @@ namespace PinscapeConfigTool
                 form.ShowPlungerWindow(devname);
             }
 
+            // show the joystick viewer
+            public void ShowJoystickViewer(String devname)
+            {
+                form.ShowJoystickViewer(devname);
+            }
+
             // show the TV ON tester
             public void ShowTvOnTester(String devname)
             {
@@ -575,6 +615,12 @@ namespace PinscapeConfigTool
             public void ShowOutputTester(String devname)
             {
                 form.ShowOutputTester(devname);
+            }
+
+            // show the IR learning window
+            public String ShowIRLearn(String devname)
+            {
+                return form.ShowIRLearn(devname);
             }
 
             // get the WebControl version string
@@ -689,8 +735,8 @@ namespace PinscapeConfigTool
             {
                 // if any of the special viewer/test windows are open, skip the update check
                 if (form.PlungerWindowOpen || form.JoystickViewerOpen 
-                    || form.TvOnTesterOpen || form.ButtonTesterOpen 
-                    || form.OutputTesterOpen)
+                    || form.TvOnTesterOpen || form.ButtonTesterOpen || form.OutputTesterOpen
+                    || form.IRLearnOpen)
                     return false;
 
                 // get the new device list
@@ -774,21 +820,23 @@ namespace PinscapeConfigTool
                 String configInfo = "";
                 if (cfg != null)
                 {
-                    configInfo = String.Format(", NumOutputs: {0}", cfg.numOutputs)
-                        + String.Format(", FreeHeapBytes: {0}", cfg.freeHeapBytes);
+                    configInfo = String.Format(@",""NumOutputs"":{0}", cfg.numOutputs)
+                        + String.Format(@",""FreeHeapBytes"":{0}", cfg.freeHeapBytes)
+                        + String.Format(@",""SBXPBX"": {0}", cfg.sbxpbx ? "true" : "false")
+                        + String.Format(@",""AccelFeatures"": {0}", cfg.accelFeatures ? "true" : "false");
                 }
 
                 // return the basic info from the device list entry
                 return "({"
-                    + String.Format("PinscapeUnitNum: {0}, LedWizUnitNum: {1}, CPUID: \"{2}\", BuildID: \"{3}\", ",
+                    + String.Format(@"""PinscapeUnitNum"":{0}, ""LedWizUnitNum"": {1}, ""CPUID"": ""{2}"", ""BuildID"": ""{3}"", ",
                         dev.PinscapeUnitNo, 
                         dev.LedWizUnitNo, 
                         dev.CPUID, 
                         FormatBuildID(dev.BuildID))
 
-                    + String.Format("OpenSDAID: \"{0}\", ", dev.OpenSDAID)
+                    + String.Format(@"""OpenSDAID"": ""{0}"", ", dev.OpenSDAID)
 
-                    + String.Format("PlungerEnabled: {0}, JoystickEnabled: {1}",
+                    + String.Format(@"""PlungerEnabled"": {0}, ""JoystickEnabled"": {1}",
                         dev.PlungerEnabled ? 1 : 0,
                         dev.JoystickEnabled ? 1 : 0)
 
@@ -923,9 +971,10 @@ namespace PinscapeConfigTool
 
                 // If we're going to apply a backup of the config data, load the backup
                 List<VarData> configVars = null;
+                String xconfig = null;
                 if (cpuidForBackup != null)
                 {
-                    string cfgErr = ReadConfigFile(cpuidForBackup, "backup", out configVars);
+                    string cfgErr = ReadConfigFile(cpuidForBackup, "backup", out configVars, out xconfig);
                     if (cfgErr != null)
                         return cfgErr;
                 }
@@ -1078,6 +1127,10 @@ namespace PinscapeConfigTool
                     return "({status:\"error\",message:\"Error writing firmware file: " + ex.Message.JSStringify() + "\"})";
                 }
 
+                // make the xconfig data active, if present
+                if (xconfig != null)
+                    PutDeviceXConfig(cpuidForBackup, xconfig);
+
                 // success
                 return "({status:\"ok\","
                     + "configStored:" + (configStored ? "true" : "false") + ","
@@ -1174,7 +1227,7 @@ namespace PinscapeConfigTool
                 }
 
                 // save the data to a file
-                return WriteConfigFile(vars, dev, null, mode);
+                return WriteConfigFile(dev, null, mode, vars, GetDeviceXConfig(cpuid));
             }
 
             // Write settings to a file.  The variables are specified in the
@@ -1197,7 +1250,8 @@ namespace PinscapeConfigTool
             // 'comments' is a string containing comment text to add to the file; this is
             // added at the start of the file, after the standard header comments.  This can
             // be null.  Multiple lines can be provided by separating lines with \n.
-            public String WriteConfigFile(String cpuid, String comments, String mode, String vardata)
+            public String WriteConfigFile(String cpuid, String comments, String mode, 
+                String vardata, String xconfig)
             {
                 // get the device information, if a CPUID was provided
                 DeviceInfo dev = (cpuid != null && cpuid != "" ? form.GetDeviceByCPUID(cpuid) : null);
@@ -1208,7 +1262,9 @@ namespace PinscapeConfigTool
                     vars.Add(v.Split(' ').ToList().Select(b => (byte)int.Parse(b)).ToArray()));
 
                 // save the list to a file
-                return WriteConfigFile(vars, dev, comments != null ? comments.Split('\n') : null, mode);
+                return WriteConfigFile(
+                    dev, comments != null ? comments.Split('\n') : null, mode,
+                    vars, xconfig);
             }
 
             // Save configuration variables to a file.  The variables are specified as a list
@@ -1216,7 +1272,8 @@ namespace PinscapeConfigTool
             // device via USB: the first byte is the variable ID, and the rest is the variable
             // data.  For an array variable, the second byte is the array index.  Returns a
             // javavscript status object (encoded as a string) in our usual format.
-            private String WriteConfigFile(List<byte[]> vars, DeviceInfo dev, String[] comments, String mode)
+            private String WriteConfigFile(DeviceInfo dev, String[] comments, String mode,
+                List<byte[]> vars, String xconfig)
             {
                 // "backup" mode isn't allowed if we don't have a device - switch browse mode
                 if (mode == "backup" && dev == null)
@@ -1302,6 +1359,10 @@ namespace PinscapeConfigTool
                                 }
                             }
                         }
+
+                        // write the xconfig data, if present
+                        if (xconfig != null)
+                            f.WriteLine("###XCONFIG=" + Regex.Replace(xconfig, "[\r\n]", " "));
                     }
                     finally
                     {
@@ -1342,7 +1403,8 @@ namespace PinscapeConfigTool
 
                 // read the file
                 List<VarData> vars;
-                String status = ReadConfigFile(cpuid, mode, out vars);
+                String xconfig;
+                String status = ReadConfigFile(cpuid, mode, out vars, out xconfig);
 
                 // if that failed, return the error information
                 if (status != null)
@@ -1364,6 +1426,10 @@ namespace PinscapeConfigTool
                 // since we're rebooting, flush the device list
                 form.devlist = null;
 
+                // make the new xconfig active
+                if (xconfig != null)
+                    PutDeviceXConfig(cpuid, xconfig);
+
                 // success
                 return "({status:\"ok\",message:\"The configuration was successfully restored to the KL25Z.\"})";
             }
@@ -1377,7 +1443,8 @@ namespace PinscapeConfigTool
             {
                 // start by loading the file into a VarData list
                 List<VarData> vars;
-                String result = ReadConfigFile(cpuid, mode, out vars);
+                String xconfig;
+                String result = ReadConfigFile(cpuid, mode, out vars, out xconfig);
                 
                 // if that failed, return the status
                 if (result != null)
@@ -1441,18 +1508,25 @@ namespace PinscapeConfigTool
                 // build the data entries into an object
                 String jsConfig = "{" + String.Join(",", jsdata) + "}";
 
+                // use an empty object if we didn't get any xconfig data
+                if (xconfig == null)
+                    xconfig = "{ }";
+
                 // wrap the result in a successful status object
-                return "({status:\"ok\",config:" + jsConfig + "})";
+                return "({status:\"ok\",config:" + jsConfig + ",xconfig:" + xconfig + "})";
             }
 
-            // Read configuration variables from a file.  On success, fills in 'vars' with
-            // a list of VarData elements describing the variables read from the file,
-            // and returns null.  On error, returns a javascript-encoded status object
-            // with the error information, following our usual conventions.
-            private String ReadConfigFile(String cpuid, String mode, out List<VarData> vars)
+            // Read configuration variables from a file.  On success, fills in 'vars' 
+            // with a list of VarData elements describing the variables read from the 
+            // file, fills in 'xconfig' with the external configuration data from the
+            // file, and returns null.  On error, returns a javascript-encoded status 
+            // object with the error information, following our usual conventions.
+            private String ReadConfigFile(String cpuid, String mode, 
+                out List<VarData> vars, out String xconfig)
             {
                 // presume we won't have anything to return
                 vars = null;
+                xconfig = null;
                 
                 // if no CPU ID was passed in, we can't use "backup" mode, since that
                 // mode requires a CPU ID to use as the basis of the filename
@@ -1499,12 +1573,21 @@ namespace PinscapeConfigTool
                             if (l == null)
                                 break;
 
+                            // check for the xconfig data - this looks like a comment so
+                            // that older versions will simply ignore it
+                            Match m = Regex.Match(l, @"^\s*###XCONFIG=(.*)$");
+                            if (m.Success)
+                            {
+                                xconfig = m.Groups[1].Value;
+                                continue;
+                            }
+
                             // skip comments
                             if (Regex.IsMatch(l, @"^\s*#|^\s*$"))
                                 continue;
 
                             // parse the line
-                            Match m = Regex.Match(l, @"^\s*(\d+)\s*(\[\s*(\d+)\s*\]\s*)?:(\s*\d+)+\s*$");
+                            m = Regex.Match(l, @"^\s*(\d+)\s*(\[\s*(\d+)\s*\]\s*)?:(\s*\d+)+\s*$");
                             if (!m.Success)
                                 return "({status:\"error\",message:\"Incorrect syntax at line " + lineno + "\"})";
 
@@ -1586,6 +1669,14 @@ namespace PinscapeConfigTool
                 // set up a list for the output
                 List<String> ret = new List<String>();
 
+                // query the number of scalar and array config variables supported
+                // in the device firmware
+                byte[] buf = dev.QueryConfigVar(0);
+                if (buf == null)
+                    return null;
+                byte nScalar = buf[0];
+                byte nArray = buf[1];
+
                 // grab each variable
                 foreach (String d in form.configVarDesc)
                 {
@@ -1596,14 +1687,18 @@ namespace PinscapeConfigTool
                     Match m = Regex.Match(v[0], @"(\d+)\[\]");
                     if (m.Success)
                     {
-                        // It's an array variable.  Set up a list to hold the 
-                        // array elements.
+                        // It's an array variable.  Get the variable ID.  Skip
+                        // it if it's out of range.
+                        byte vid = byte.Parse(m.Groups[1].Value);
+                        if (vid < 256 - nArray)
+                            continue;
+                        
+                        // set up a list to hold the array elements
                         List<String> arr = new List<String>();
 
                         // Query the array size from the device.  The array size 
                         // is obtained by querying this variable with index == 0.
-                        byte vid = byte.Parse(m.Groups[1].Value);
-                        byte[] buf = dev.QueryConfigVar(vid, 0);
+                        buf = dev.QueryConfigVar(vid, 0);
                         if (buf == null)
                             return null;
 
@@ -1635,16 +1730,22 @@ namespace PinscapeConfigTool
                                 for (++i; i <= maxIdx; ++i)
                                     arr.Add(ConfigVarToJS(buf, vid, i, i.ToString(), v[2]));
                             }
-
-                            // turn the array into an object string and add it to the results
-                            ret.Add(v[1] + ":{" + String.Join(",", arr) + "}");
                         }
+
+                        // turn the array into an object string and add it to the results
+                        ret.Add(v[1] + ":{" + String.Join(",", arr) + "}");
                     }
                     else
                     {
-                        // scalar - retrieve the data from the device
+                        // scalar - get the variable ID
                         byte vid = Byte.Parse(v[0]);
-                        byte[] buf = dev.QueryConfigVar(vid);
+
+                        // skip it if it's not present on the device
+                        if (vid > nScalar)
+                            continue;
+
+                        // retrieve the data from the device
+                        buf = dev.QueryConfigVar(vid);
                         if (buf == null)
                             return null;
 
@@ -1661,6 +1762,45 @@ namespace PinscapeConfigTool
             public String GetConfigVarDescs()
             {
                 return String.Join("|", form.configVarDesc);
+            }
+
+            // Get the external configuration (xconfig) for a given device.
+            // The xconfig is additional config data that's stored locally
+            // in the PC file system rather than on the device.  This is used
+            // for settings that aren't needed at run-time and take up too
+            // much space to be practical to store on the device, such as
+            // descriptive strings for output ports and stored IR commands.
+            //
+            // The data to and from the UI window is in JSON format.  We
+            // simply store the JSON data as a text file with a name based
+            // on the CPU ID.
+            public String GetDeviceXConfig(String CPUID)
+            {
+                // try loading the file
+                try
+                {
+                    return File.ReadAllText(Path.Combine(Program.dlFolder, CPUID + ".xconfig"));
+                }
+                catch
+                {
+                    return "{ }";
+                }
+            }
+
+            // Write the external configuration (xconfig) for a given device.
+            public String PutDeviceXConfig(String CPUID, String xc)
+            {
+                try
+                {
+                    File.WriteAllText(Path.Combine(Program.dlFolder, CPUID + ".xconfig"), xc);
+                    return @"({status:""ok"",message:""External config data saved.""})";
+                }
+                catch (Exception e)
+                {
+                    return @"({status:""error"",message:""An error occurred saving the "
+                        + @"external config data in the local file system. (File error: "
+                        + e.Message + @")""})";
+                }
             }
 
             // Put the device configuration.  The new configuration variable list
@@ -1726,7 +1866,10 @@ namespace PinscapeConfigTool
             {
                 // translate the format string:
                 //    $W  -> 16-bit word
-                //    $Bn -> 8-bit byte
+                //    $D  -> 32-bit dword
+                //    $B  -> 8-bit byte
+                //    $P  -> port, as a GPIO pin number
+                //    $o  -> output port: port type code and port number
                 int idx = 0;
                 format = Regex.Replace(format, @"\$(.)", delegate(Match m)
                 {
@@ -1734,6 +1877,15 @@ namespace PinscapeConfigTool
                     String ch = m.Groups[1].Value;
                     switch (ch)
                     {
+                        case "D":
+                            // DWORD - 32-bit unsigned int from little-endian byte[4]
+                            ret = (buf[idx] 
+                                + (buf[idx + 1] << 8) 
+                                + (buf[idx + 2] << 16)
+                                + (buf[idx + 3] << 24)).ToString();
+                            idx += 4;
+                            break;
+
                         case "W":
                             // WORD - 16-bit unsigned int from little-endian byte[2]
                             ret = (buf[idx] + (buf[idx + 1] << 8)).ToString();
@@ -1834,6 +1986,44 @@ namespace PinscapeConfigTool
                     return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 16);
                 else
                     return 0;
+            }
+
+            // Send an IR command.  The code is in our printable format:
+            // protocol.flags.code, all parts as hex numbers.
+            public String SendIRCommand(String cpuid, String code)
+            {
+                // look up the device
+                DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
+                if (dev == null)
+                    return "({status:\"error\",message:\"The device doesn't appear to be connected.\"})";
+
+                // parse the code
+                Match m = Regex.Match(code, @"(?i)([0-9a-f]+)\.([0-9a-f]+)\.([0-9a-f]+)");
+                if (!m.Success)
+                    return "({status:\"error\",message:\"The IR code isn't formatted correctly. "
+                        + "Use Protocol.Flags.Code, with each portion as a hex number.\"})";
+
+                // pull out the sections
+                int protocol = int.Parse(m.Groups[1].Value, System.Globalization.NumberStyles.HexNumber);
+                int flags = int.Parse(m.Groups[2].Value, System.Globalization.NumberStyles.HexNumber);
+                UInt64 cmd = UInt64.Parse(m.Groups[3].Value, System.Globalization.NumberStyles.HexNumber);
+
+                // Send the two-part USB message.  Special request 15 sets up the 
+                // protocol, flags, and low 32 bits of the command code.  Request
+                // 16 fills out the high 32 bits and executes the command.
+                dev.SpecialRequest(15, new byte[]{ 
+                    (byte)protocol, (byte)flags, 
+                    (byte)(cmd & 0xff), (byte)((cmd >> 8) & 0xff), 
+                    (byte)((cmd >> 16) & 0xff), (byte)((cmd >> 24) & 0xff)
+                });
+
+                dev.SpecialRequest(16, new byte[]{
+                    (byte)((cmd >> 32) & 0xff), (byte)((cmd >> 40) & 0xff),
+                    (byte)((cmd >> 48) & 0xff), (byte)((cmd >> 56) & 0xff)
+                });
+
+                // success
+                return "({status:\"ok\",message:\"The IR command was sent.\"})";
             }
         };
 
