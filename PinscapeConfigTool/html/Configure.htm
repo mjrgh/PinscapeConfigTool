@@ -2243,6 +2243,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
             <option value="1">TSL1410R</option>
             <option value="3">TSL1412S</option>
             <option value="5">Potentiometer</option>
+            <option value="6">AEDR-8300</option>
          </select>
          <span style="margin-left: 2em;" id="plungerSensorButton">
             <a href="#" id="btnPlungerCal" class="button">Live Sensor View</a>
@@ -2333,6 +2334,45 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                GND to pin 6.
             </div>
          </div>
+
+         <div id="plungerPinsQuad">
+            <div class="expBoardPin">
+               <b>Quadrature sensor pin assignments:</b>
+               <div class="indented">
+                  <table class="inputs">
+                     <tr>
+                        <td class="pinlabel">Channel A:</td>
+                        <td>
+                           <span class="pinselect" id="quadrature_CHA"
+                              data-cfg="plungerPins.a" data-gpiotype="interrupt-in extern"
+                             data-desc="Quadrature Sensor Channel A" data-default="PTD0">
+                           </span>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="pinlabel">Channel B:</td>
+                        <td>
+                           <span class="pinselect" id="quadrature_CHB"
+                             data-cfg="plungerPins.b" data-gpiotype="interrupt-in extern"
+                             data-desc="Quadrature Sensor Channel B" data-default="PTD5">
+                           </span>
+                        </td>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+            <div class="expBoardAlt">
+               Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
+               <ul>
+                  <li>Channel A (CHA) to pin 3
+                  <li>Channel B (CHB) to pin 4
+                  <li>Sensor 3.3V to pin 5 (if required)
+                  <li>Sensor GND to pin 6
+                  <li>Sensor 5V to pin 7 (if required)
+               </ul>
+            </div>
+         </div>
+
       </div>
    </div>
 
@@ -2342,7 +2382,8 @@ var plungerTypeValid = false;
 $("#plungerType").change(function(ev)
 {
     // deactivate all pin groups until we know which ones we're activating
-    $("#plungerPinsTSL .pinselect, #plungerPinsPot .pinselect").data({"active": false, "save": false});
+    $("#plungerPinsTSL .pinselect, #plungerPinsPot .pinselect, #plungerPinsQuad .pinselect").data(
+        {"active": false, "save": false});
 
     // show or hide the ZB Launch Ball and calibration button sections
     var newvis = ($(this).val() != 0);
@@ -2356,7 +2397,7 @@ $("#plungerType").change(function(ev)
     plungerTypeValid = true;
 
     // show the appropriate section
-    var all = $("#plungerPinsTSL, #plungerPinsPot");
+    var all = $("#plungerPinsTSL, #plungerPinsPot, #plungerPinsQuad");
     var typ = +$(this).val();
     switch (typ)
     {
@@ -2378,6 +2419,12 @@ $("#plungerType").change(function(ev)
         // Potentiometer
         slideRadio($("#plungerPinsPot"), all, 250, false);
         $("#plungerPinsPot .pinselect").data("active", true).data("save", true);
+        break;
+
+    case 6:
+        // Quadrature sensor
+        slideRadio($("#plungerPinsQuad"), all, 250, false);
+        $("#plungerPinsQuad .pinselect").data("active", true).data("save", true);
         break;
     }
 
@@ -5265,7 +5312,7 @@ function valEq(a, b)
         // check that all properties of a are in b
         for (var p in a) {
             if (!(p in b)) {
-                // alert("p not in b: " + p); // [debug]
+                //alert("p not in b: " + p); // [debug]
                 return false;
             }
         }
@@ -5273,7 +5320,7 @@ function valEq(a, b)
         // all a.p are in b; now check that all b.p equal a.p
         for (var p in b) {
             if (!(p in a) || !valEq(a[p], b[p])) {
-                // alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
+                //alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
                 return false;
             }
         }
@@ -7099,6 +7146,8 @@ function normalizeConfig(config)
         delete config.outputs.count;
 
     // set "Not Connected" values for unused plunger sensor fields
+    if (!config.plungerPins)
+        config.plungerPins = { };
     switch (config.plungerType)
     {
     case 0:
@@ -7118,6 +7167,12 @@ function normalizeConfig(config)
     case 5:
         // Potentiometer - pins b, c, and d are unused
         config.plungerPins.b = "NC";
+        config.plungerPins.c = "NC";
+        config.plungerPins.d = "NC";
+        break;
+
+    case 6:
+        // AEDR-8300 quadrature sensor - pins c and d are unused
         config.plungerPins.c = "NC";
         config.plungerPins.d = "NC";
         break;
