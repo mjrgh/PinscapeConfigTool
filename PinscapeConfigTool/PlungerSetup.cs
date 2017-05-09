@@ -21,12 +21,127 @@ namespace PinscapeConfigTool
             this.dev = new DeviceInfo(dev);
         }
 
-        private void Form3_Load(object sender, EventArgs e)
+        private void PlungerSetup_Load(object sender, EventArgs e)
         {
+            // get the plunger type
+            byte[] buf = dev.QueryConfigVar(5);
+            if (buf != null)
+            {
+                // remember the type
+                plungerType = buf[0];
+
+                // note the characteristics
+                switch (plungerType)
+                {
+                    case PlungerTypeTSL1410R:
+                    case PlungerTypeTSL1412R:
+                        // pixel edge detection sensors
+                        pixelSensor = true;
+                        edgeSensor = true;
+                        break;
+
+                    case PlungerTypeAEDR8300:
+                        //relativeSensor = true;
+                        break;
+
+                    case PlungerTypeTSL1410CL:
+                        pixelSensor = true;
+                        barCodeSensor = true;
+                        break;
+
+                    case PlungerTypeVL6180X:
+                        //distanceSensor = true;
+                        break;
+                }
+            }
+
+            // check to see if the firmware has jitter filtering capability
+            if ((buf = dev.QueryConfigVar(0)) != null && buf[0] >= 19)
+            {
+                // set the jitter filter control bounds
+                txtJitterWindow.Minimum = 0;
+                txtJitterWindow.Maximum = 65535;
+
+                // read the jitter filter setting
+                if ((cfgVar19 = buf = dev.QueryConfigVar(19)) != null)
+                {
+                    jitterWindow = origJitterWindow = buf[0] | (buf[1] << 8);
+                    txtJitterWindow.Value = jitterWindow;
+                }
+            }
+            else
+            {
+                // no jitter filtering capability - hide that section
+                int h = pnlJitter.Height;
+                pnlBottom.Top -= h;
+                pnlBarCode.Top -= h;
+                Height -= h;
+                pnlJitter.Visible = false;
+            }
+
+            // show the bar code section only for bar code sensors
+            if (barCodeSensor && (cfgVar20 = buf = dev.QueryConfigVar(20)) != null)
+            {
+                // read the current offset setting
+                cfgBarCodeOffset = origBarCodeOffset =buf[0] | (buf[1] << 8);
+                txtBarCodeOffset.Value = cfgBarCodeOffset;
+            }
+            else
+            {
+                // not a bar code sensor - hide the bar code section
+                int h = pnlBarCode.Height;
+                pnlBottom.Top -= h;
+                Height -= h;
+                pnlBarCode.Visible = false;
+            }
+
             // start the exposure reader thread
             done = false;
             thread = new Thread(this.ExposureThread);
             thread.Start();
+        }
+
+        private void PlungerSetup_Shown(object sender, EventArgs e)
+        {
+        }
+
+        // plunger type - plunger type code as defined in the USB protocol
+        byte plungerType = PlungerTypeNone;
+
+        // plunger types currently supported
+        const byte PlungerTypeNone = 0;             // no plunger installed
+        const byte PlungerTypeTSL1410R = 1;         // TSL1410R, edge detection
+        const byte PlungerTypeTSL1412R = 3;         // TSL1412R, edge detection
+        const byte PlungerTypePot = 5;              // potentiometer or other analog voltage sensor
+        const byte PlungerTypeAEDR8300 = 6;         // AEDR8300 75lpi optical quadrature
+        const byte PlungerTypeTSL1410CL = 8;        // TSL1410CL, bar code positioning
+        const byte PlungerTypeVL6180X = 9;          // VL6180X time-of-flight distance sensor
+
+        // Plunger characteristics
+        bool edgeSensor = false;                    // edge-detection sensor
+        bool pixelSensor = false;                   // image sensor
+        bool barCodeSensor = false;                 // sensor reads a bar code
+        //bool relativeSensor = false;              // sensor uses relative positioning (e.g., quadrature) (not currently used)
+        //bool distanceSensor = false;              // non-contact distance measurement sensor
+
+        // current and original jitter window values, and QueryConfigVar results
+        int jitterWindow = 0;
+        int origJitterWindow = 0;
+        byte[] cfgVar19 = null;
+
+        // current and original bar code offset config values
+        int cfgBarCodeOffset = 0;
+        int origBarCodeOffset = 0;
+        byte[] cfgVar20 = null;
+
+        struct BarCodeInfo
+        {
+            public int nBits;           // number of bits in code
+            public int codeType;        // code type: 1=Gray code with Manchester pixel coding
+            public int startOfs;        // starting pixel offset
+            public int pixPerBit;       // pixel width of each bit
+            public int raw;             // raw bar code bits
+            public int mask;            // mask of successfully decoded bits
         }
 
         private void exposure_Paint(object sender, PaintEventArgs e)
@@ -38,8 +153,9 @@ namespace PinscapeConfigTool
             // get the gdi handle for drawing onto the control
             Graphics g = e.Graphics;
 
-            // for debugging - fill the background with red while waiting for the new pixels
-            g.FillRectangle(Brushes.Red, new Rectangle(0, 0, wid, ht));
+            // fill the background with gray
+            using (Brush dkgray = new SolidBrush(Color.DarkGray))
+                g.FillRectangle(dkgray, 0, 0, wid, ht);
 
             // get a private copy of the current pixel array (serializing
             // access via the mutex, since the device reader thread can
@@ -51,90 +167,307 @@ namespace PinscapeConfigTool
                 mypix = new byte[pix.Length];
                 pix.CopyTo(mypix, 0);
             }
-            int pos = edgePos;
+            int pos = reportedPos;
             int posScale = this.posScale;
             int dir = orientation;
             int npix = this.npix;
             int calMax = this.calMax;
             int calZero = this.calZero;
             bool calMode = this.calMode;
+            int jfHi = this.jfHi;
+            int jfLo = this.jfLo;
+            int axcTime = this.axcTime;
+            int rawPos = this.rawPos;
+            BarCodeInfo barcode = this.barcode;
             String t1 = txtInfo_text;
             String t2 = txtInfo2_text;
             String t3 = txtInfo3_text;
             mutex.ReleaseMutex();
 
-            // fill the background with gray when done fetching pixels
-            g.FillRectangle(Brushes.DarkGray, 0, 0, wid, ht);
+            // update the jitter filter units label
+            String units =
+                pixelSensor & edgeSensor ? "Pixels" :
+                barCodeSensor ? "Bar code stops" :
+                "Native device units";
+            lblJitterUnits.Text = "(" + units + ", 0 to " + posScale + "; use 0 to disable)";
 
-            // create a drawing surface for the pixels and position display
-            using (Bitmap bitmap = new Bitmap(posScale != 0 ? posScale : 4096, ht))
+            // Figure the pixel-to-luminance mapping.  By default, this is
+            // just a linear mapping from raw pixel brightness levels to 
+            // grayscale levels.  If enhanced contrast is selected, we
+            // scale the raw pixels to exaggerate the contrast by pulling
+            // pixels near the low end of the raw pixel histogram to zero 
+            // brightness in the on-screen rendering, pulling the high 
+            // end of the histogram to maximum brightness on-screen, and
+            // scaling everything in between for the stretched scale.
+            byte[] lum = new byte[256];
+            if (enhanceContrast)
             {
-                Graphics gbitmap = Graphics.FromImage(bitmap);
+                // make a histogram of the brightness levels
+                int[] hist = new int[256];
+                mypix.ForEach(b => hist[b]++);
 
-                // if we have pixels to display, display them
-                if (pix != null && npix != 0 && !calMode)
+                // Find the min and max brightness levels, discarding the
+                // two at each extreme as outliers
+                int bmin = 0, bmax = 255;
+                for (int i = 0, n = 0; i < 256; ++i)
                 {
-                    // create a brush for drawing the grays
-                    using (SolidBrush graybrush = new SolidBrush(Color.FromArgb(0, 0, 0)))
+                    if (hist[i] != 0 && ++n > 2)
                     {
-                        // draw the pixels onto the bitmap Graphics object
-                        for (int i = 0; i < npix; ++i)
-                        {
-                            byte lum = mypix[i];
-                            graybrush.Color = Color.FromArgb(lum, lum, lum);
-                            gbitmap.FillRectangle(graybrush, i, 0, i, ht);
-                        }
+                        bmin = i;
+                        break;
+                    }
+                }
+                for (int i = 255, n = 0; i >= 0; --i)
+                {
+                    if (hist[i] != 0 && ++n > 2)
+                    {
+                        bmax = i;
+                        break;
                     }
                 }
 
-                // superimpose a green bar showing the plunger position
-                if (pos != 0xFFFF)
-                {
-                    if (dir == 1)
-                        gbitmap.FillRectangle(Brushes.Green, pos, ht * 3 / 4, posScale, ht);
-                    else
-                        gbitmap.FillRectangle(Brushes.Green, pos - npix, ht * 3 / 4, posScale, ht);
-                }
+                // now populate the luminance map with brightnesses scaled
+                // between the two extremes
+                for (int i = 0; i < bmin; ++i)
+                    lum[i] = 0;
+                double gray = 0.0;
+                double inc = bmin >= bmax ? 0 : 256.0 / (bmax - bmin);
+                for (int i = bmin; i < bmax; ++i, gray += inc)
+                    lum[i] = (byte)Math.Round(gray);
+                for (int i = bmax; i < 256; ++i)
+                    lum[i] = 255;
+            }
+            else
+            {
+                // no contrast enhancement - draw pixels at gray levels directly
+                // from the sensor
+                for (int i = 0; i < 256; ++i)
+                    lum[i] = (byte)i;
+            }
 
-                // stretch the bitmap onto the control area
-                g.DrawImage(bitmap, 0, 0, wid, ht);
+            // Draw the pixels.  For a large sensor, draw the pixels first
+            // onto a full-sized bitmap, then rescale it onto the window.
+            // For a small sensor, draw the pixels directly into the window.
+            if (npix > wid)
+            {
+                // Large sensor.
+                // The sensor is larger than the on-screen display area.
+                // Create a memory bitmap exactly as wide as the sensor,
+                // draw the pixels one-to-one, then rescale the result
+                // into the window.
+                int bmwid = npix != 0 ? npix : 4096;
+                using (Bitmap bitmap = new Bitmap(bmwid, ht))
+                {
+                    using (Graphics gbitmap = Graphics.FromImage(bitmap))
+                    {
+                        // if we have pixels to display, display them
+                        if (mypix != null && npix != 0 && !calMode)
+                        {
+                            // draw the pixels onto the bitmap Graphics object
+                            for (int i = 0; i < npix; ++i)
+                            {
+                                byte gray = lum[mypix[i]];
+                                using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
+                                    gbitmap.FillRectangle(br, i, 0, i, ht);
+                            }
+                        }
+
+                        // stretch the bitmap onto the control area
+                        g.DrawImage(bitmap, 0, 0, wid, ht);
+                    }
+                }
+            }
+            else
+            {
+                // Small sensor.
+                // The sensor is no larger than the on-screen display area.
+                // Do the pixel scaling directly to minimize blur.
+
+                // figure the scaling factor (display pixels per sensor pixel)
+                float s = (float)wid / npix;
+                float x = 0;
+                for (int i = 0 ; i < npix ; ++i, x += s)
+                {
+                    byte gray = lum[mypix[i]];
+                    using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
+                        g.FillRectangle(br, x, 0, s, ht);
+                }
+            }
+
+            // draw the bar code visualization if appropriate
+            if (barCodeSensor && mypix != null)
+            {
+                // get the scaling factor to map sensor pixel positions to 'g' coordinates
+                float gx = (float)wid / npix;
+
+                using (Brush red = new SolidBrush(Color.Red), 
+                    dkred = new SolidBrush(Color.DarkRed), 
+                    pink = new SolidBrush(Color.Pink))
+                {
+                    // draw each bar
+                    StringFormat sf = new StringFormat();
+                    sf.Alignment = StringAlignment.Center;
+                    sf.LineAlignment = StringAlignment.Far;
+                    int barht = 10;
+                    int bitwid = barcode.pixPerBit;
+                    for (int i = barcode.nBits - 1, x = barcode.startOfs; i >= 0; --i, x += bitwid)
+                    {
+                        // get this item
+                        int x0 = x, x1 = x0 + bitwid / 2, x2 = x0 + bitwid;
+                        if (x0 >= 0)
+                        {
+                            // Get the bit value and validity
+                            int bitval = (barcode.raw >> i) & 1;
+                            bool bitok = ((barcode.mask >> i) & 1) == 1;
+
+                            // draw the edge of the bar
+                            g.FillRectangle(red, x0 * gx, 0, 1, ht);
+
+                            // draw the half-bits if valid
+                            if (bitok)
+                            {
+                                g.FillRectangle(bitval == 0 ? dkred : pink, x0 * gx, ht / 2, bitwid / 2 * gx, barht);
+                                g.FillRectangle(bitval == 1 ? dkred : pink, x1 * gx, ht / 2, bitwid / 2 * gx, barht);
+                            }
+
+                            // show the interpretation
+                            using (Font barBitFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold))
+                                g.DrawString(bitok ? bitval.ToString() : "?", barBitFont, red, x1 * gx, ht / 2 + barht, sf);
+                        }
+                    }
+
+                    // mark the right end of the code
+                    int barEnd = barcode.startOfs + (bitwid * barcode.nBits);
+                    g.FillRectangle(red, barEnd * gx, 0, 1, ht);
+                }
+            }
+
+            // superimpose a green bar showing the plunger position
+            if (pos != 0xFFFF)
+            {
+                using (Brush green = new SolidBrush(Color.Green))
+                {
+                    // rescale from the position scale to the bitmap width
+                    float gpos = pos * (float)wid / posScale;
+
+                    // draw on the left side for reversed orientation (-1), 
+                    // otherwise on the right side
+                    int y = ht*3/4, rht = ht - y;
+                    if (dir == -1)
+                        g.FillRectangle(green, 0, y, gpos, rht);
+                    else
+                        g.FillRectangle(green, gpos, y, wid - gpos, rht);
+                }
             }
 
             // draw arrows at the calibration points, if known
-            DrawCalArrow(g, calZero, "(Park)", posScale, dir, Brushes.Magenta,
-                PinscapeConfigTool.Resources.ArrowUpPurple, PinscapeConfigTool.Resources.ArrowDownPurple);
-            DrawCalArrow(g, calMax, "(Max)", posScale, dir, Brushes.Red,
-                PinscapeConfigTool.Resources.ArrowUpRed, PinscapeConfigTool.Resources.ArrowDownRed);
+            using (Brush magenta = new SolidBrush(Color.Magenta), red = new SolidBrush(Color.Red))
+            {
+                using (Bitmap upPurple = PinscapeConfigTool.Resources.ArrowUpPurple,
+                    upRed = PinscapeConfigTool.Resources.ArrowUpRed,
+                    downPurple = PinscapeConfigTool.Resources.ArrowDownPurple,
+                    downRed = PinscapeConfigTool.Resources.ArrowDownRed)
+                {
+                    DrawCalArrow(g, calZero, "(Park)", posScale, dir, magenta, upPurple, downPurple);
+                    DrawCalArrow(g, calMax, "(Max)", posScale, dir, red, upRed, downRed);
+                }
+            }
+
+            // superimpose the jitter window, if known
+            if (jfLo != jfHi)
+            {
+                using (Brush ltgreen = new SolidBrush(Color.LightGreen),
+                    green = new SolidBrush(Color.Green),
+                    red = new SolidBrush(Color.Red),
+                    ltgray = new SolidBrush(Color.LightGray))
+                {
+                    // rescale from the position scale to the bitmap 
+                    int lo = (int)Math.Round((double)jfLo / posScale * wid);
+                    int hi = (int)Math.Round((double)jfHi / posScale * wid);
+                    int rp = (int)Math.Round((double)rawPos / posScale * wid);
+
+                    // mirror the coordinates if using reversed orientation
+                    if (dir == -1)
+                    {
+                        lo = wid - lo;
+                        hi = wid - hi;
+                    }
+                    if (lo > hi)
+                    {
+                        int tmp = lo;
+                        lo = hi;
+                        hi = tmp;
+                    }
+
+                    // figure the jitter window area over the end of the bar
+                    int y = ht * 3 / 4 - 1, rht = (ht - y);
+
+                    // draw a line at the raw position if known
+                    if (rawPos >= jfLo && rawPos <= jfHi)
+                        g.FillRectangle(red, rp - 1, y + 1, 2, rht - 2);
+
+                    // outline the jitter window
+                    using (Pen plg = new Pen(Color.LightGreen, 2))
+                        g.DrawRectangle(plg, lo, y, hi - lo - 2, rht - 2);
+
+                    // label it
+                    String msg1 = "Jitter Window ";
+                    String msg2 = String.Format("(Raw={0})", rawPos);
+                    using (Font font = SystemFonts.DefaultFont)
+                    {
+                        SizeF sz1 = g.MeasureString(msg1, font);
+                        SizeF sz2 = g.MeasureString(msg2, font);
+                        float w = sz1.Width + sz2.Width;
+                        float left = (lo + hi - w) / 2;
+                        float top = y - sz1.Height - 2;
+                        if (left + w > wid - 5)
+                            left = wid - 5 - w;
+                        if (left < 5)
+                            left = 5;
+
+                        GraphicsExtension.FillRoundedRectangle(
+                            g, ltgray, left, top, w, sz1.Height, 2);
+                        g.DrawString(msg1, font, green, left, top);
+                        g.DrawString(msg2, font, red, left + sz1.Width, top);
+                    }
+                }
+            }
 
             // show the plunger position on top of the green bar
             if (pos != 0xFFFF)
             {
                 String msg = pos.ToString();
-                Font font = SystemFonts.DefaultFont;
-                Size sz = g.MeasureString(msg, font).ToSize();
-                Brush br = Brushes.White;
-                int xTxt = (int)Math.Round((float)pos / posScale * wid);
-                int yTxt = ht * 3 / 4 + (ht / 4 - sz.Height) / 2;
-                if (dir == 1)
+                using (Font font = SystemFonts.DefaultFont)
                 {
-                    if (xTxt + 2 + sz.Width < wid)
-                        g.DrawString(msg, font, br, xTxt + 2, yTxt);
-                    else
+                    Size sz = g.MeasureString(msg, font).ToSize();
+                    using (Brush white = new SolidBrush(Color.White),
+                        green = new SolidBrush(Color.Green),
+                        ltgray = new SolidBrush(Color.LightGray))
                     {
-                        GraphicsExtension.FillRoundedRectangle(
-                            g, Brushes.LightGray, xTxt - sz.Width - 2, yTxt, sz.Width, sz.Height, 2);
-                        g.DrawString(msg, font, Brushes.Green, xTxt - sz.Width - 2, yTxt);
-                    }
-                }
-                else
-                {
-                    if (xTxt - sz.Width - 2 > 0)
-                        g.DrawString(msg, font, br, xTxt - sz.Width - 2, yTxt);
-                    else
-                    {
-                        GraphicsExtension.FillRoundedRectangle(
-                            g, Brushes.LightGray, xTxt + 2, yTxt, sz.Width, sz.Height, 2);
-                        g.DrawString(msg, font, Brushes.Green, xTxt + 2, yTxt);
+                        int xTxt = (int)Math.Round((float)pos / posScale * wid);
+                        int yTxt = ht * 3 / 4 + (ht / 4 - sz.Height) / 2;
+                        if (dir == 1)
+                        {
+                            if (xTxt + 2 + sz.Width < wid)
+                                g.DrawString(msg, font, white, xTxt + 2, yTxt);
+                            else
+                            {
+                                GraphicsExtension.FillRoundedRectangle(
+                                    g, ltgray, xTxt - sz.Width - 2, yTxt, sz.Width, sz.Height, 2);
+                                g.DrawString(msg, font, green, xTxt - sz.Width - 2, yTxt);
+                            }
+                        }
+                        else
+                        {
+                            if (xTxt - sz.Width - 2 > 0)
+                                g.DrawString(msg, font, white, xTxt - sz.Width - 2, yTxt);
+                            else
+                            {
+                                GraphicsExtension.FillRoundedRectangle(
+                                    g, ltgray, xTxt + 2, yTxt, sz.Width, sz.Height, 2);
+                                g.DrawString(msg, font, green, xTxt + 2, yTxt);
+                            }
+                        }
                     }
                 }
             }
@@ -149,16 +482,20 @@ namespace PinscapeConfigTool
                     flashTime = DateTime.Now;
                 }
                 String msg = "CALIBRATING";
-                Font font = SystemFonts.CaptionFont;
-                Size sz = g.MeasureString(msg, font).ToSize();
-                Brush br = calModeColor ? Brushes.Purple : Brushes.Blue;
-                g.DrawString(msg, font, br, (wid - sz.Width) / 2, (ht - sz.Height) / 2);
+                using (Font font = SystemFonts.CaptionFont)
+                {
+                    Size sz = g.MeasureString(msg, font).ToSize();
+                    using (Brush br = new SolidBrush(calModeColor ? Color.Purple : Color.Blue))
+                        g.DrawString(msg, font, br, (wid - sz.Width) / 2, (ht - sz.Height) / 2);
+                }
             }
 
             // update the statistics text
             txtInfo.Text = t1;
             txtInfo2.Text = t2;
             txtInfo3.Text = t3;
+            GC.Collect(); return;// $$$
+
         }
         DateTime flashTime = DateTime.Now;
         bool calModeColor;
@@ -176,9 +513,6 @@ namespace PinscapeConfigTool
                 // figure the drawing position - mirror it if the orientation is reversed
                 int drawpos = (dir == -1 ? posScale - pos : pos);
                 
-                // get a suitable font
-                Font font = SystemFonts.DefaultFont;
-
                 // figure the arrow position
                 int xArrow = (int)Math.Round((float)drawpos / posScale * wid - arrowDown.Width / 2);
 
@@ -192,11 +526,16 @@ namespace PinscapeConfigTool
                 String msg = pos.ToString();
                 if (caption != null)
                     msg += " " + caption;
-                Size sz = g.MeasureString(msg, font).ToSize();
-                int x = xArrow + (drawpos < posScale / 2 ? arrowDown.Width + 2 : - sz.Width - 2);
-                int y = (arrowDown.Height - sz.Height) / 2;
-                GraphicsExtension.FillRoundedRectangle(g, Brushes.LightGray, x, y, sz.Width, sz.Height, 2);
-                g.DrawString(msg, font, br, x, y);
+
+                using (Font font = SystemFonts.DefaultFont)
+                {
+                    Size sz = g.MeasureString(msg, font).ToSize();
+                    int x = xArrow + (drawpos < posScale / 2 ? arrowDown.Width + 2 : -sz.Width - 2);
+                    int y = (arrowDown.Height - sz.Height) / 2;
+                    using (Brush ltgray = new SolidBrush(Color.LightGray))
+                        GraphicsExtension.FillRoundedRectangle(g, ltgray, x, y, sz.Width, sz.Height, 2);
+                    g.DrawString(msg, font, br, x, y);
+                }
             }
         }
 
@@ -220,15 +559,83 @@ namespace PinscapeConfigTool
             215, 218, 220, 223, 225, 228, 231, 233, 236, 239, 241, 244, 247, 249, 252, 255
         };
 
-        private void Form3_FormClosed(object sender, FormClosedEventArgs e)
+        private void PlungerSetup_FormClosed(object sender, FormClosedEventArgs e)
         {
-            dev.Dispose();
+            if (dev != null)
+            {
+                dev.Dispose();
+                dev = null;
+            }
         }
 
         private void PlungerSetup_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // wait for the image reader thread to end
             done = true;
             thread.Join();
+
+            // check for updated config settings
+            List<String> msg = new List<String>();
+            if (jitterWindow != origJitterWindow)
+                msg.Add("jitter filter");
+            if (cfgBarCodeOffset != origBarCodeOffset)
+                msg.Add("bar code offset");
+
+            // ask if they'd like to save jitter filter changes
+            if (msg.Count != 0)
+            {
+                if (MessageBox.Show("You've changed the " + msg.SerialJoin() + " settings."
+                    + " Would you like to save the new setting" + (msg.Count > 1 ? "s" : "")
+                    + " on the device?",
+                    "Pinscape Config Tool", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    // Yes, save - send the updated settings to the device
+                    if (jitterWindow != origJitterWindow)
+                        SendJitterWindow(jitterWindow);
+                    if (cfgBarCodeOffset != origBarCodeOffset)
+                        SendBarCodeOffset(cfgBarCodeOffset);
+
+                    // Save the update to flash.  Note that there's no need to reboot 
+                    // the device, as the plunger variables we update take effect immediately 
+                    // without a reboot.
+                    dev.SaveConfig(false);
+                }
+                else
+                {
+                    // Restore the old settings.  There's no need to write anything to
+                    // flash, since we've only changed it in the device RAM so far.
+                    if (jitterWindow != origJitterWindow)
+                        SendJitterWindow(origJitterWindow);
+                    if (cfgBarCodeOffset != origBarCodeOffset)
+                        SendBarCodeOffset(origBarCodeOffset);
+                }
+            }
+        }
+
+        // update the jitter filter setting on the device
+        void SendJitterWindow(int val)
+        {
+            // update the config var 19 buffer - use the old buffer so that we
+            // retain the original values of any other data in the buffer that
+            // we don't currently parse (in case of newer firmware)
+            cfgVar19[0] = (byte)(val & 0xff);
+            cfgVar19[1] = (byte)((val >> 8) & 0xff);
+
+            // update it on the device
+            dev.SetConfigVar(19, cfgVar19);
+        }
+
+        // update the bar code offset setting on the device
+        void SendBarCodeOffset(int val)
+        {
+            // update the config var 20 buffer - use the old buffer so that we
+            // retain the original values of any other data in the buffer that
+            // we don't currently parse (in case of newer firmware)
+            cfgVar20[0] = (byte)(val & 0xff);
+            cfgVar20[1] = (byte)((val >> 8) & 0xff);
+
+            // update it on the device
+            dev.SetConfigVar(20, cfgVar20);
         }
 
         // pixel data snapshot, for writing to a capture file
@@ -304,7 +711,7 @@ namespace PinscapeConfigTool
                     }
 
                     // request a plunger sensor status report
-                    byte[] buf = tdev.SpecialRequest(3, new byte[] { pixFlags, 0 },
+                    byte[] buf = tdev.SpecialRequest(3, new byte[] { pixFlags, 6 },
                         (r) => { return r[1] == 0xff && r[2] == 0x87 && r[3] == 0; });
 
                     // decode the reply
@@ -316,9 +723,11 @@ namespace PinscapeConfigTool
                         //                      0x01 = standard orientation
                         //                      0x02 = reversed orientation
                         //                      0x04 = calibration in progress
-                        //                      0x08 = error reading position
                         //   bytes 9:10:11  -> average sensor scan time in 10us units
                         //   bytes 12:13:14 -> image processing time for this scan in 10us units
+
+                        // get the flags
+                        int flags = buf[8];
 
                         // read the pixel count
                         int newnpix = buf[4] + (buf[5] << 8);
@@ -328,17 +737,17 @@ namespace PinscapeConfigTool
                         // scale (0..4095)
                         int posScale = (newnpix != 0 ? newnpix : 4096);
 
-                        // read the edge position
-                        int edgePos = buf[6] + (buf[7] << 8);
+                        // get the reported position
+                        int reportedPos = buf[6] + (buf[7] << 8);
 
                         // read the orientation
                         orientation =
-                            (buf[8] & 0x01) != 0 ? 1 :
-                            (buf[8] & 0x02) != 0 ? -1 :
+                            (flags & 0x01) != 0 ? 1 :
+                            (flags & 0x02) != 0 ? -1 :
                             0;
 
-                        // check for calibraiton mode
-                        bool calMode = (buf[8] & 0x04) != 0;
+                        // check for calibration mode
+                        bool calMode = (flags & 0x04) != 0;
 
                         // read the average scan time, converting from the 10us units
                         // in the report to milliseconds (10us = 0.01ms -> 1ms = 100 units)
@@ -349,29 +758,109 @@ namespace PinscapeConfigTool
                         t = buf[12] + ((long)buf[13] << 8) + ((long)buf[14] << 16);
                         processingTime = t / 100.0;
 
-                        // read the pixel reports if not in calibration mode
+                        // jitter filter bounds and raw position will come in the 
+                        // second report, if present
+                        int jfLo = -1, jfHi = -1;
+                        int rawPos = -1;
+                        int axcTime = 0;
+
+                        // Check for a second header report.  This report is optional
+                        // and is only sent by newer firmware versions, so it might
+                        // not be there at all.
+                        if ((buf = tdev.ReadUSB()) != null
+                            && buf[1] == 0xff && buf[2] == 0x87 && buf[3] == 1)
+                        {
+                            // It's the second header report
+
+                            // Get the native position scale.  This tells us the
+                            // actual position scale the device uses, which overrides
+                            // our earlier assumption that it's equal to the pixel array 
+                            // size for an image sensor or the joystick scale for non-
+                            // image sensors.
+                            posScale = buf[4] | (buf[5] << 8);
+
+                            // get the jitter filter window bounds
+                            jfLo = buf[6] | (buf[7] << 8);
+                            jfHi = buf[8] | (buf[9] << 8);
+
+                            // get the raw position
+                            rawPos = buf[10] | (buf[11] << 8);
+
+                            // get the auto-exposure time
+                            axcTime = buf[12] | (buf[13] << 8);
+
+                            // consume the report
+                            buf = null;
+                        }
+
+                        // Check for a bar code header report.  This is another optional
+                        // header, sent only when using a bar code sensor type.
+                        if ((buf = tdev.ReadUSB()) != null
+                            && buf[1] == 0xff && buf[2] == 0x87 && buf[3] == 2)
+                        {
+                            // It's the bar code report - decode it
+                            barcode.nBits = buf[4];
+                            barcode.codeType = buf[5];
+                            barcode.startOfs = buf[6] | (buf[7] << 8);
+                            barcode.pixPerBit = buf[8];
+                            barcode.raw = buf[9] | (buf[10] << 8);
+                            barcode.mask = buf[11] | (buf[12] << 8);
+
+                            // consume the report
+                            buf = null;
+                        }
+
+                        // read the pixel reports if it's an imaging sensor and
+                        // we're not in calibration mode
                         byte[] newpix = new byte[newnpix];
                         if (!calMode && newnpix != 0)
                         {
+                            // Figure the expected number of reports, assuming 10 pixels
+                            // per report, but add some extra padding in case of interleaved 
+                            // reports of other types.  The loop bounds are just to ensure
+                            // that we don't get stuck if we don't get the expected reports;
+                            // if everything goes smoothly, we'll be able to tell when we're
+                            // actually done, because each report tells us where it is in
+                            // the pixel array.
                             for (int j = newnpix / 10 + 100; j > 0 && !done; --j)
                             {
-                                // read a report
-                                buf = tdev.ReadUSB();
+                                // read a report if we don't have one already queued up
+                                if (buf == null)
+                                    buf = tdev.ReadUSB();
 
-                                // only consider reports that are in the special exposure report format
+                                // Only consider reports that are in the special exposure report 
+                                // format.
                                 if (buf != null && (buf[2] & 0xF8) == 0x80)
                                 {
-                                    // figure the starting index of the current batch
+                                    // Figure the starting index of the current batch.  If the
+                                    // index is 0x7FF == 2047, it's an extra header report.  We
+                                    // already parsed the known types above, but future versions
+                                    // of the firmware might add new ones that we don't know
+                                    // about in this config tool version, so simply ignore any
+                                    // we didn't already parse.
                                     int idx = (((int)buf[2] & 0x7) << 8) | (int)buf[1];
+                                    if (idx == 0x7FF)
+                                    {
+                                        // It's an extra header we don't recognize.  Skip it,
+                                        // and don't count it against the report limit, since
+                                        // it's a valid plunger status report even if it's not
+                                        // one we recognize specifically.
+                                        ++j;
+                                    }
+                                    else
+                                    {
+                                        // Store this batch
+                                        for (int k = 3; k < buf.Length && idx < newnpix; k += 1)
+                                            newpix[idx++] = buf[k];
 
-                                    // Store this batch
-                                    for (int k = 3; k < buf.Length && idx < newnpix; k += 1)
-                                        newpix[idx++] = buf[k];
-
-                                    // If this is the last batch of pixels, we're done.
-                                    if (idx >= newnpix)
-                                        j = 1;
+                                        // If this is the last batch of pixels, we're done.
+                                        if (idx >= newnpix)
+                                            j = 1;
+                                    }
                                 }
+
+                                // we've consumed this report
+                                buf = null;
                             }
                         }
 
@@ -382,7 +871,7 @@ namespace PinscapeConfigTool
                         {
                             // add it to the pixel list
                             capturedFrames.Add(new PixFrame(
-                                (DateTime.Now - t0Thread).TotalMilliseconds, pix, edgePos));
+                                (DateTime.Now - t0Thread).TotalMilliseconds, pix, reportedPos));
 
                             // if we have more than 100 frames, flush the file now to avoid
                             // taking up too much memory
@@ -443,15 +932,19 @@ namespace PinscapeConfigTool
                         // lock the mutex while updating shared data
                         mutex.WaitOne();
 
-                        // copy the new pixel list to the drawing copy
+                        // copy the new pixel list and other data to the drawing copy
                         npix = newnpix;
                         pix = newpix;
                         this.calMax = calMax;
                         this.calZero = calZero;
                         this.tRelease = tRelease;
-                        this.edgePos = edgePos;
+                        this.reportedPos = reportedPos;
                         this.posScale = posScale;
                         this.calMode = calMode;
+                        this.jfHi = jfHi;
+                        this.jfLo = jfLo;
+                        this.axcTime = axcTime;
+                        this.rawPos = rawPos;
 
                         // Update the sensor scan time information
                         String times = String.Format(
@@ -464,17 +957,40 @@ namespace PinscapeConfigTool
                             // Imaging sensor type
 
                             // line 1 - pixel array information and position
-                            txtInfo_text = String.Format(
-                                "Pixels: {0}, Orientation: {1}, Edge pos: {2}, Release time: {3} ms",
-                                newnpix,
-                                orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
-                                edgePos == 0xFFFF ? "Not detected" : edgePos.ToString(),
-                                tRelease);
+                            if (edgeSensor)
+                            {
+                                txtInfo_text = String.Format(
+                                    "Pixels: {0}, Orientation: {1}, Edge pos: {2}, Release time: {3} ms",
+                                    newnpix,
+                                    orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                    reportedPos == 0xFFFF ? "Not detected" : reportedPos.ToString(),
+                                    tRelease);
+                            }
+                            else if (barCodeSensor)
+                            {
+                                txtInfo_text = String.Format(
+                                    "Pixels: {0}, Plunger position: {1}, Release time: {2} ms",
+                                    newnpix,
+                                    reportedPos == 0xFFFF ? "Not detected" : reportedPos.ToString(),
+                                    tRelease);
+                            }
+                            else
+                            {
+                                txtInfo_text = String.Format(
+                                    "Pixels: {0}, Orientation: {1}, Plunger pos: {2}, Release time: {3} ms",
+                                    newnpix,
+                                    orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                    reportedPos == 0xFFFF ? "Not detected" : reportedPos.ToString(),
+                                    tRelease);
+                            }
 
                             // line 2 - brightness range
                             txtInfo2_text = String.Format("Brightness Min: {0}, Max: {1}, % Saturated: {2}, % Zero: {3}",
                                     pixMin, pixMax, (int)Math.Round(numSat * 100.0 / newnpix),
                                     (int)Math.Round(numZero * 100.0 / npix));
+
+                            if (axcTime > 0)
+                                txtInfo2_text += ", Auto-exposure time " + axcTime + "us";
 
                             // line 3 - scan time
                             txtInfo3_text = times;
@@ -486,7 +1002,7 @@ namespace PinscapeConfigTool
                             // line 1 - position
                             txtInfo_text = String.Format(
                                 "Plunger position: {0}, Orientation: {1}, Release time: {2} ms",
-                                edgePos == 0xFFFF ? "Unknown" : edgePos.ToString() + "/" + (posScale - 1),
+                                reportedPos == 0xFFFF ? "Unknown" : reportedPos.ToString() + "/" + (posScale - 1),
                                 orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
                                 tRelease);
 
@@ -579,12 +1095,17 @@ namespace PinscapeConfigTool
             // update the calibration mode
             UpdateCalMode();
 
-            // show or hide the pixel-related controls according to whether this
-            // is an imaging or non-imaging sensor
-            bool show = (npix != 0);
-            rbHiRes.Visible = show;
-            rbLowRes.Visible = show;
-            btnSave.Visible = (!btnStopSave.Visible && show);
+            // Show or hide the pixel-related controls according to whether this
+            // is an imaging or non-imaging sensor.  For imaging sensors, only
+            // show the resolution controls for large sensors (>=512 pixels).
+            // Note that the native scale is the relevant metric rather than
+            // the number of pixels in the captured image, since we might be
+            // showing the image at reduced resolution.
+            bool showResCtls = (pixelSensor && posScale >= 512);
+            rbHiRes.Visible = showResCtls;
+            rbLowRes.Visible = showResCtls;
+            ckEnhance.Visible = pixelSensor;
+            btnSave.Visible = (!btnStopSave.Visible && pixelSensor);
 
             // if we've finished closing the pixel capture file, show the Save button
             if (closePixFile && pixFile == null)
@@ -607,13 +1128,18 @@ namespace PinscapeConfigTool
         String txtInfo_text;          // pixel statistics text
         String txtInfo2_text;         // statistics text line 2
         String txtInfo3_text;         // statistics text line 3
-        int edgePos = 0xffff;         // detected edge pos in current image
+        int reportedPos = 0xffff;     // plunger position reported from device in current frame
+        int rawPos = -1;              // raw position reported (might differ from reported position due to filtering)
         int posScale = 0;             // scale for the position - number of pixels for an image sensor, or 
                                       // the generic scale (4096) for other sensor types
         int orientation = 0;          // detected sensor orientation (1 = normal, -1 = reversed, 0 = unknown)
         double avgScanTime = -1.0;    // average sensor scan time
         double processingTime = -1.0; // frame processing time
+        int axcTime = 0;              // auto-exposure time in microseconds
         bool calMode = false;         // sensor calibration in progress on device
+        bool enhanceContrast = false; // show enhanced contrast in sensor view
+        int jfLo = -1, jfHi = -1;     // bounds of current jitter filter window on the device, if known
+        BarCodeInfo barcode;          // bar code descriptor
 
         // Pixel capture file.  The foreground UI thread opens the file when the user 
         // clicks the Save button, and the background thread writes pixels to the file
@@ -632,7 +1158,7 @@ namespace PinscapeConfigTool
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            ActiveForm.Close();
+            Close();
         }
 
         private void adjustPixFlags(object rb, byte bit)
@@ -656,7 +1182,7 @@ namespace PinscapeConfigTool
         private void PlungerSetup_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
-                ActiveForm.Close();
+                Close();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -700,6 +1226,32 @@ namespace PinscapeConfigTool
         {
             // invalidate the visual display so we redraw it with the new data
             exposure.Invalidate();
+        }
+
+        private void ckEnhance_CheckedChanged(object sender, EventArgs e)
+        {
+            enhanceContrast = ckEnhance.Checked;
+        }
+
+        private void txtJitterWindow_ValueChanged(object sender, EventArgs e)
+        {
+            // if the window value has changed, send the update to the device
+            int v = (int)txtJitterWindow.Value;
+            if (v != jitterWindow)
+            {
+                jitterWindow = v;
+                SendJitterWindow(v);
+            }
+        }
+
+        private void txtBarCodeOffset_ValueChanged(object sender, EventArgs e)
+        {
+            int v = (int)txtBarCodeOffset.Value;
+            if (v != cfgBarCodeOffset)
+            {
+                cfgBarCodeOffset = v;
+                SendBarCodeOffset(v);
+            }
         }
 
    }

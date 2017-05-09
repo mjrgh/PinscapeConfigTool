@@ -67,11 +67,15 @@ namespace PinscapeConfigTool
                 linkCenter.Visible = false;
         }
 
+        Font menuFont = SystemFonts.MenuFont;
+
         private void JoystickViewer_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // dispose of bitmaps
+            // dispose of GDI resources
             jsOn.Dispose(); jsOn = null;
             jsOff.Dispose(); jsOff = null;
+            crosshairs.Dispose(); crosshairs = null;
+            menuFont.Dispose();
 
             // tell the background thread to terminate
             done = true;
@@ -89,8 +93,11 @@ namespace PinscapeConfigTool
                 // loop until done
                 while (!done)
                 {
-                    // check about every 10ms
+                    // pause 10ms between checks
                     Thread.Sleep(10);
+
+                    // catch up to real time on the input
+                    tdev.FlushReadUSB();
 
                     // read input from the USB interface
                     byte[] buf = tdev.ReadUSB();
@@ -260,7 +267,7 @@ namespace PinscapeConfigTool
             Graphics g = e.Graphics;
             int row = 0, col = 0;
             Rectangle src = new Rectangle(0, 0, wid, ht);
-            Font font = SystemFonts.MenuFont;
+            Font font = menuFont;
             for (int i = 0; i < 32; ++i)
             {
                 // get the status

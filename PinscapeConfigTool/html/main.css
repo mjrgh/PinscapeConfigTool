@@ -256,6 +256,12 @@ div.devlistitem > div {
     border-left: 8px solid #00ff00;
 }
 
+.firmwareUpdateNotice {
+	display: none;
+	color: #008000;
+	font-weight: bold;
+}
+
 .iconWithTitle {
     white-space: nowrap;
     display: inline-block;
@@ -674,7 +680,7 @@ div.chipNo.header {
 #kl25zPinImg > img {
     padding: 8px 32px;
 }
-#tlc5940Selector .pinimage > img, #hc595Selector .pinimage > img {
+#tlc5940Selector .pinimage > img, #hc595Selector .pinimage > img, #tlc59116Selector .pinimage > img {
     padding: 4px 32px;
 }
 #mainBoardDigitalOutputSelector .pinimage > img,
@@ -745,7 +751,7 @@ div.chipNo.header {
 #kl25zPinImg .pinButton {
     background-image: url(pinSprite.png);
 }
-#tlc5940Selector .pinButton {
+#tlc5940Selector .pinButton, #tlc59116Selector .pinButton {
     background-image: url(pinSprite5940.png);
 }
 #hc595Selector .pinButton {
@@ -759,7 +765,7 @@ div.chipNo.header {
 
 .pinButton.enabled {
 }
-#tlc5940Selector .pinButton {
+#tlc5940Selector .pinButton, #tlc59116Selector .pinButton {
     width: 10px;
     height: 16px;
 }
@@ -1359,4 +1365,36 @@ option {
 .diagnosticData {
 	font-size: 80%;
 	margin-left: 1em;
+}
+
+#plungerPinGroup > div {
+	margin: 0px;
+}
+
+#tlc59116_chipsEnabled {
+	display: table;
+}
+#tlc59116_chipsEnabled > div {
+	display: table-row;
+}
+#tlc59116_chipsEnabled label {
+	display: table-cell;
+	padding: 0px 1em;
+	white-space: nowrap;
+}
+
+#programUpdateNotice {
+	display: none;
+	line-height: 1.5;
+	border-radius: 8px;
+	background: #008000;
+	color: #ffffff;
+	font-weight: bold;
+	padding: 1em;
+}
+#programUpdateNotice a {
+	color: #a0a0ff;
+}
+#programUpdateNotice a:hover {
+	color: #ffa0ff;
 }

@@ -18,6 +18,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using Microsoft.VisualBasic.FileIO;
 
+
 namespace PinscapeConfigTool
 {
     public partial class MainSetup : Form
@@ -155,11 +156,8 @@ namespace PinscapeConfigTool
                 PlungerWindowOpen = true;
 
                 // show the plunger dialog
-                PlungerSetup dlg = new PlungerSetup(dev);
-                dlg.ShowDialog();
-
-                // done with the dialog
-                dlg.Dispose();
+                using (PlungerSetup dlg = new PlungerSetup(dev))
+                    dlg.ShowDialog();
 
                 // window is now closed
                 PlungerWindowOpen = false;
@@ -177,11 +175,8 @@ namespace PinscapeConfigTool
                 JoystickViewerOpen = true;
 
                 // show the window
-                JoystickViewer dlg = new JoystickViewer(dev);
-                dlg.ShowDialog();
-
-                // done with the dialog
-                dlg.Dispose();
+                using (JoystickViewer dlg = new JoystickViewer(dev))
+                    dlg.ShowDialog();
 
                 // the window is now closed
                 JoystickViewerOpen = false;
@@ -199,11 +194,8 @@ namespace PinscapeConfigTool
                 TvOnTesterOpen = true;
 
                 // show the window
-                TvOnTester dlg = new TvOnTester(dev);
-                dlg.ShowDialog();
-
-                // dispose of the dialog
-                dlg.Dispose();
+                using (TvOnTester dlg = new TvOnTester(dev))
+                    dlg.ShowDialog();
 
                 // the window is now closed
                 TvOnTesterOpen = false;
@@ -218,9 +210,8 @@ namespace PinscapeConfigTool
             if (dev != null)
             {
                 ButtonTesterOpen = true;
-                ButtonStatus dlg = new ButtonStatus(dev);
-                dlg.ShowDialog();
-                dlg.Dispose();
+                using (ButtonStatus dlg = new ButtonStatus(dev))
+                    dlg.ShowDialog();
                 ButtonTesterOpen = false;
             }
         }
@@ -233,9 +224,8 @@ namespace PinscapeConfigTool
             if (dev != null)
             {
                 OutputTesterOpen = true;
-                OutputTester dlg = new OutputTester(dev);
-                dlg.ShowDialog();
-                dlg.Dispose();
+                using (OutputTester dlg = new OutputTester(dev))
+                    dlg.ShowDialog();
                 OutputTesterOpen = false;
             }
         }
@@ -250,15 +240,17 @@ namespace PinscapeConfigTool
             {
                 // run the dialog
                 IRLearnOpen = true;
-                IRLearn dlg = new IRLearn(dev);
-                dlg.ShowDialog();
+                using (IRLearn dlg = new IRLearn(dev))
+                {
+                    // show the dialog
+                    dlg.ShowDialog();
 
-                // get the result, if any
-                if (dlg.result != null)
-                    result = dlg.result.ToString();
+                    // get the result, if any
+                    if (dlg.result != null)
+                        result = dlg.result.ToString();
+                }
 
                 // done with the dialog
-                dlg.Dispose();
                 IRLearnOpen = false;
             }
 
@@ -422,7 +414,7 @@ namespace PinscapeConfigTool
             // We're done - update the status message to reflect the results.
             if (firmwareResult == Downloader.Status.NoUpdate && setupResult == Downloader.Status.NoUpdate)
             {
-                stat.Progress("<span class=\"upToDate\">The firmware and setup tool are both up-to-date.</span>", true);
+                stat.Progress("<span class=\"upToDate\">No new downloads are available for the setup tool or firmware.</span>", true);
             }
             else
             {
@@ -520,10 +512,10 @@ namespace PinscapeConfigTool
         //
         //   $B  -> Byte: message unsigned byte <-> javascript int
         //
-        //   $W  -> Word: message byte+byte (little-endian unsigned) <->
-        //          javascript int
+        //   $W  -> Word (16 bits): message byte+byte (little-endian unsigned)
+        //          <-> javascript int
         //
-        //   $D  -> DWord: message byte+byte+byte+byte (little-endian unsigned)
+        //   $D  -> DWord (32 bits): message byte+byte+byte+byte (little-endian unsigned)
         //          <-> javascript int
         //
         //   $P  -> Pin: messsage GPIO pin ID byte <-> javascript Pin Name string.
@@ -563,6 +555,10 @@ namespace PinscapeConfigTool
             "15 nightMode {button:$B,flags:$B,output:$B}",
             "16 shiftButton {index:$B,mode:$B}",
             "17 IRRemote {sensorPin:$P,ledPin:$P}",
+            "18 plungerAutoZero {flags:$B,time:$B}",
+            "19 plungerJitterFilter {windowSize:$W}",
+            "20 plungerBarCode {startPix:$W}",
+            "21 TLC59116 {chipMask:$W,SDA:$P,SCL:$P,RESET:$P}",
             "250[] IRCode3 {codeHi:$D}",
             "251[] IRCode2 {protocol:$B,codeLo:$D}",
             "252[] IRCode1 {flags:$B,keytype:$B,keycode:$B}",
@@ -572,11 +568,14 @@ namespace PinscapeConfigTool
         };
 
         // Scripting callback interface.  This lets the javascript in
-        // the web browser control to call back into the C# application
-        // to get information and carry out tasks.  Note that we could
-        // just use the main form object for this, but we use a separate
-        // dedicated object for scripting isolation, so that the javascript 
-        // can't accidentally call any of our own internal functionality.
+        // the web browser control call back into the C# application to
+        // get information and carry out tasks.  Note that we could just
+        // use the main form object for this, but using a separate object
+        // gives us scripting isolation, so that the javascript can't 
+        // accidentally call any of our own internal functionality.
+        // This isn't a security issue, as we only load our own pages
+        // and our own javascript code into the control; it's just to
+        // clarify the interface and avoid coding errors.
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         [System.Runtime.InteropServices.ComVisibleAttribute(true)]
         public class ScriptInterface
@@ -586,6 +585,30 @@ namespace PinscapeConfigTool
                 this.form = form;
             }
             MainSetup form;
+
+            // check for updates to the config tool
+            public bool CheckForProgramUpdates()
+            {
+                return AutoUpdater.Check(false);
+            }
+
+            // install the config tool update
+            public bool InstallProgramUpdate()
+            {
+                // try installing an update
+                if (AutoUpdater.Check(true))
+                {
+                    // installer launched - close the form and tell the
+                    // calling script that the update is under way
+                    form.Close();
+                    return true;
+                }
+                else
+                {
+                    // no update is available
+                    return false;
+                }
+            }
 
             // show the plunger sensor window
             public void ShowPlungerWindow(String devname)
@@ -773,6 +796,21 @@ namespace PinscapeConfigTool
                 foreach (String file in files)
                     arr.Add("\"" + file.JSStringify() + "\"");
                 return "[" + String.Join(",", arr) + "]";
+            }
+
+            // get the latest .bin file
+            public String LatestBinFile()
+            {
+                String latest = null;
+                IEnumerable<String> files = Directory.EnumerateFiles(Program.dlFolder, "Pinscape Controller *.bin");
+                foreach (String file in files)
+                {
+                    if (latest == null || String.Compare(file, latest, true) > 0)
+                        latest = file;
+                }
+
+                // return the latest file we found
+                return latest;
             }
 
             // get/set program options
@@ -1673,7 +1711,9 @@ namespace PinscapeConfigTool
                 // in the device firmware
                 byte[] buf = dev.QueryConfigVar(0);
                 if (buf == null)
-                    return null;
+                    return "({\"error\":\"Error reading variable counts\"})";
+
+                // decode the counts
                 byte nScalar = buf[0];
                 byte nArray = buf[1];
 
@@ -1687,48 +1727,48 @@ namespace PinscapeConfigTool
                     Match m = Regex.Match(v[0], @"(\d+)\[\]");
                     if (m.Success)
                     {
-                        // It's an array variable.  Get the variable ID.  Skip
-                        // it if it's out of range.
-                        byte vid = byte.Parse(m.Groups[1].Value);
-                        if (vid < 256 - nArray)
-                            continue;
-                        
                         // set up a list to hold the array elements
                         List<String> arr = new List<String>();
 
-                        // Query the array size from the device.  The array size 
-                        // is obtained by querying this variable with index == 0.
-                        buf = dev.QueryConfigVar(vid, 0);
-                        if (buf == null)
-                            return null;
-
-                        // read the maximum index
-                        byte maxIdx = buf[0];
-
-                        // process each array element
-                        for (byte i = 1; i <= maxIdx; ++i)
+                        // It's an array variable.  Get the variable ID.  If it's
+                        // not present on the device, simply add an empty array.
+                        byte vid = byte.Parse(m.Groups[1].Value);
+                        if (vid >= 256 - nArray)
                         {
-                            // retrieve this value
-                            buf = dev.QueryConfigVar(vid, i);
+                            // Query the array size from the device.  The array size 
+                            // is obtained by querying this variable with index == 0.
+                            buf = dev.QueryConfigVar(vid, 0);
                             if (buf == null)
-                                return null;
+                                return "({\"error\":\"Error querying array size for var " + vid + "\"})";
 
-                            // add it to the list
-                            arr.Add(ConfigVarToJS(buf, vid, i, i.ToString(), v[2]));
+                            // read the maximum index
+                            byte maxIdx = buf[0];
 
-                            // Special case: If this is the "outputs" array, stop
-                            // when we reach the first disabled output (type==0 in
-                            // first byte of message packet).  The first disabled
-                            // output marks the end of the in-use outputs, even
-                            // though the array size might be larger.  Simply fill
-                            // out the remaining array elements with repeats of the
-                            // disabled output in this case.
-                            if (vid == 255 && buf != null && buf[0] == 0)
+                            // process each array element
+                            for (byte i = 1; i <= maxIdx; ++i)
                             {
-                                // it's the first disabled entry - repeat it for
-                                // the rest of the array
-                                for (++i; i <= maxIdx; ++i)
-                                    arr.Add(ConfigVarToJS(buf, vid, i, i.ToString(), v[2]));
+                                // retrieve this value
+                                buf = dev.QueryConfigVar(vid, i);
+                                if (buf == null)
+                                    return "({\"error\":\"Error retrieving value for var " + vid + "[" + i + "]\"})";
+
+                                // add it to the list
+                                arr.Add(ConfigVarToJS(buf, vid, i, i.ToString(), v[2]));
+
+                                // Special case: If this is the "outputs" array, stop
+                                // when we reach the first disabled output (type==0 in
+                                // first byte of message packet).  The first disabled
+                                // output marks the end of the in-use outputs, even
+                                // though the array size might be larger.  Simply fill
+                                // out the remaining array elements with repeats of the
+                                // disabled output in this case.
+                                if (vid == 255 && buf != null && buf[0] == 0)
+                                {
+                                    // it's the first disabled entry - repeat it for
+                                    // the rest of the array
+                                    for (++i; i <= maxIdx; ++i)
+                                        arr.Add(ConfigVarToJS(buf, vid, i, i.ToString(), v[2]));
+                                }
                             }
                         }
 
@@ -1740,17 +1780,23 @@ namespace PinscapeConfigTool
                         // scalar - get the variable ID
                         byte vid = Byte.Parse(v[0]);
 
-                        // skip it if it's not present on the device
-                        if (vid > nScalar)
-                            continue;
+                        // check if it's present on the device
+                        if (vid <= nScalar)
+                        {
+                            // present - retrieve the data from the device
+                            buf = dev.QueryConfigVar(vid);
+                            if (buf == null)
+                                return "({\"error\":\"Error retrieving value for var " + vid + "\"})";
 
-                        // retrieve the data from the device
-                        buf = dev.QueryConfigVar(vid);
-                        if (buf == null)
-                            return null;
+                            // add it to the list
+                            ret.Add(ConfigVarToJS(buf, vid, 0, v[1], v[2]));
+                        }
+                        else
+                        {
+                            // not present - use defaults
+                            ret.Add(ConfigVarDefaultsToJS(vid, 0, v[1], v[2]));
+                        }
 
-                        // add it to the list
-                        ret.Add(ConfigVarToJS(buf, vid, 0, v[1], v[2]));
                     }
                 }
 
@@ -1949,6 +1995,52 @@ namespace PinscapeConfigTool
                 return varname + ":" + format;
             }
 
+            // Generate default values in javascript format for a configuration variable
+            private String ConfigVarDefaultsToJS(byte varid, byte varidx, String varname, String format)
+            {
+                // translate the format string:
+                //    $W  -> 16-bit word
+                //    $D  -> 32-bit dword
+                //    $B  -> 8-bit byte
+                //    $P  -> port, as a GPIO pin number
+                //    $o  -> output port: port type code and port number
+                format = Regex.Replace(format, @"\$(.)", delegate(Match m)
+                {
+                    String ret = "";
+                    String ch = m.Groups[1].Value;
+                    switch (ch)
+                    {
+                        case "D":   // DWORD - 32-bit unsigned int
+                        case "W":   // WORD - 16-bit unsigned int
+                        case "B":   // BYTE - 8-bit unsigned int
+                            // all integer types default to zero
+                            ret = "0";
+                            break;
+
+                        case "P":
+                            // PORT - GPIO port name from ID byte
+                            // defaults to "NC" (Not Connected)
+                            ret = "\"NC\"";
+                            break;
+
+                        case "o":
+                            // OUTPUT PORT - port type and pin name or number.  Defaults
+                            // to disabled (0).
+                            ret = "{type:0,pin:0}";
+                            break;
+
+                        default:
+                            // substitute the original character
+                            ret = "$" + ch;
+                            break;
+                    }
+                    return ret;
+                });
+
+                // add the name prefix
+                return varname + ":" + format;
+            }
+
             public String GetBuildInfo()
             {
                 return "({"
@@ -2036,6 +2128,17 @@ namespace PinscapeConfigTool
             object result = webBrowser1.Document.InvokeScript("OnCloseWindow");
             if (result != null && result.ToString() == "cancel")
                 e.Cancel = true;
+        }
+
+        private void webBrowser1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.Alt && e.KeyCode == Keys.F4) Close();
+        }
+
+        private void broadcastTimer_Tick(object sender, EventArgs e)
+        {
+            // send our broadcast notification periodically
+            Program.BroadcastNotification(1);
         }
 
     }

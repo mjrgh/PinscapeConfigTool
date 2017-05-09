@@ -28,12 +28,56 @@ namespace PinscapeConfigTool
         private const int STD_OUTPUT_HANDLE = -11;
         private const int MY_CODE_PAGE = 437;
 
+        [DllImport("User32.dll", 
+            EntryPoint = "RegisterWindowMessage", 
+            SetLastError = true,
+            CharSet = CharSet.Auto,
+            CallingConvention = CallingConvention.StdCall)]
+        private static extern UInt32 RegisterWindowMessage(String str);
+
+        [DllImport("User32.dll",
+            EntryPoint = "BroadcastSystemMessage",
+            SetLastError = true,
+            CharSet = CharSet.Auto,
+            CallingConvention = CallingConvention.StdCall)]
+        private static extern UInt32 BroadcastSystemMessage(
+            uint dwFlags,
+            ref uint lpdwRecipients,
+            uint uiMessage,
+            IntPtr wParam,
+            IntPtr lParam
+        );
+        const UInt32 BSF_POSTMESSAGE  = 0x00000010;
+        const UInt32 BSM_APPLICATIONS = 0x00000008;
+
+        // Message ID for broadcast notification
+        static UInt32 notificationMessage;
+
+        // Send our broadcast notification.  wparam indicates the running status:
+        // 1=running, 0=stopping.
+        public static void BroadcastNotification(int wparam)
+        {
+            UInt32 recipients = BSM_APPLICATIONS;
+            BroadcastSystemMessage(BSF_POSTMESSAGE, ref recipients, notificationMessage, new IntPtr(wparam), IntPtr.Zero);
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            // Register our special broadcast message to let cooperating programs
+            // know we're running.  Other software that reads the joystick will
+            // see random garbage when we're running because of the special status
+            // reports in the USB protocol, which are piggybacked on the joystick
+            // interface.  The broadcast notification lets other programs know to
+            // ignore Pinscape joysticks at these times.
+            notificationMessage = RegisterWindowMessage("Pincsape.ConfigTool.Running");
+
+            // send the RUNNING message (wparam = 1)
+            BroadcastNotification(1);
+
             try
             {
 
@@ -58,10 +102,6 @@ namespace PinscapeConfigTool
                 // build the updater ZIP file name
                 updaterZip = Path.Combine(dlFolder, "PinscapeConfigTool.AutoUpdate.zip");
 
-                // run the auto-update check before doing anything else
-                if (AutoUpdater.Check())
-                    return;
-
                 // get the options file path, in our Application Data folder
                 optfile = Path.Combine(
                     GetSpecialFolder(Environment.SpecialFolder.ApplicationData, @"Pinscape\Controller"),
@@ -83,6 +123,11 @@ namespace PinscapeConfigTool
                 ExceptionMessageBox emb = new ExceptionMessageBox(e);
                 emb.ShowDialog();
                 emb.Dispose();
+            }
+            finally
+            {
+                // notify cooperating programs that we're terminating (wparam=0)
+                BroadcastNotification(0);
             }
 
             // write any changes to the options file

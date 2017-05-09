@@ -138,7 +138,7 @@ namespace PinscapeConfigTool
                 {
                     // retrieve this output description
                     buf = dev.QueryConfigVar(255, i);
-                    byte typ = buf[0];  // 0=disabled, 1=GPIO PWM, 2=GPIO Digital, 3=TLC5940, 4=74HC595, 5=virtual
+                    byte typ = buf[0];  // 0=disabled, 1=GPIO PWM, 2=GPIO Digital, 3=TLC5940, 4=74HC595, 5=virtual, 6=TLC59116
                     byte pin = buf[1];  // GPIO pin ID (wire format), or TLC/HC595 pin number
                     bool pwm = false;   // presume it's not a PWM port
                     String klPin = null;  // presume it's not a KL25Z pin
@@ -185,6 +185,15 @@ namespace PinscapeConfigTool
                         case 5:
                             // virtual output
                             pinName = "Virtual";
+                            pwm = true;
+                            break;
+
+                        case 6:
+                            // TLC59116.  These have 16 outputs per chip.  Each chip has a 4-bit
+                            // address (the low 4 bits of its I2C address).  The pin number
+                            // encodes the address in the high 4 bits and the output number in
+                            // the low 4 bits.
+                            pinName = "TLC59116 @" + ((pin >> 4) & 0x0F) + "\r\n" + "OUT" + (pin & 0x0F);
                             pwm = true;
                             break;
                     }

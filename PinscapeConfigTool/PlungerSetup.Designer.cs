@@ -53,7 +53,24 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnStopSave = new System.Windows.Forms.Button();
             this.timerRefresh = new System.Windows.Forms.Timer(this.components);
+            this.ckEnhance = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtJitterWindow = new System.Windows.Forms.NumericUpDown();
+            this.lblJitterUnits = new System.Windows.Forms.Label();
+            this.pnlJitter = new System.Windows.Forms.Panel();
+            this.pnlBottom = new System.Windows.Forms.Panel();
+            this.pnlBarCode = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtBarCodeOffset = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtJitterWindow)).BeginInit();
+            this.pnlJitter.SuspendLayout();
+            this.pnlBottom.SuspendLayout();
+            this.pnlBarCode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBarCodeOffset)).BeginInit();
             this.SuspendLayout();
             // 
             // exposure
@@ -75,10 +92,10 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.ForeColor = System.Drawing.Color.Purple;
-            this.btnClose.Location = new System.Drawing.Point(448, 432);
+            this.btnClose.Location = new System.Drawing.Point(448, 13);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(91, 27);
-            this.btnClose.TabIndex = 1;
+            this.btnClose.Size = new System.Drawing.Size(91, 28);
+            this.btnClose.TabIndex = 4;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -104,7 +121,7 @@
             this.rbHiRes.Location = new System.Drawing.Point(3, 3);
             this.rbHiRes.Name = "rbHiRes";
             this.rbHiRes.Size = new System.Drawing.Size(89, 17);
-            this.rbHiRes.TabIndex = 6;
+            this.rbHiRes.TabIndex = 0;
             this.rbHiRes.TabStop = true;
             this.rbHiRes.Text = "Full resolution";
             this.rbHiRes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -116,7 +133,7 @@
             this.rbLowRes.Location = new System.Drawing.Point(98, 3);
             this.rbLowRes.Name = "rbLowRes";
             this.rbLowRes.Size = new System.Drawing.Size(93, 17);
-            this.rbLowRes.TabIndex = 7;
+            this.rbLowRes.TabIndex = 1;
             this.rbLowRes.Text = "Low resolution";
             this.rbLowRes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbLowRes.UseVisualStyleBackColor = true;
@@ -126,7 +143,7 @@
             // 
             this.panel2.Controls.Add(this.rbHiRes);
             this.panel2.Controls.Add(this.rbLowRes);
-            this.panel2.Location = new System.Drawing.Point(172, 256);
+            this.panel2.Location = new System.Drawing.Point(270, 260);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(209, 23);
             this.panel2.TabIndex = 9;
@@ -141,10 +158,10 @@
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHelp.ForeColor = System.Drawing.Color.Purple;
-            this.btnHelp.Location = new System.Drawing.Point(358, 432);
+            this.btnHelp.Location = new System.Drawing.Point(360, 13);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(84, 27);
-            this.btnHelp.TabIndex = 11;
+            this.btnHelp.Size = new System.Drawing.Size(84, 28);
+            this.btnHelp.TabIndex = 3;
             this.btnHelp.Text = "Help";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
@@ -169,7 +186,7 @@
             this.btnCal.Location = new System.Drawing.Point(12, 345);
             this.btnCal.Name = "btnCal";
             this.btnCal.Size = new System.Drawing.Size(87, 27);
-            this.btnCal.TabIndex = 13;
+            this.btnCal.TabIndex = 2;
             this.btnCal.Text = "Calibrate";
             this.btnCal.UseVisualStyleBackColor = false;
             this.btnCal.Click += new System.EventHandler(this.btnCal_Click);
@@ -185,7 +202,7 @@
             // label3
             // 
             this.label3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label3.Location = new System.Drawing.Point(13, 423);
+            this.label3.Location = new System.Drawing.Point(13, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(526, 2);
             this.label3.TabIndex = 16;
@@ -248,7 +265,7 @@
             this.btnSave.Location = new System.Drawing.Point(508, 252);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(31, 31);
-            this.btnSave.TabIndex = 22;
+            this.btnSave.TabIndex = 1;
             this.toolTip1.SetToolTip(this.btnSave, "Save pixel data to a disk file for analysis");
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -274,26 +291,140 @@
             this.timerRefresh.Interval = 20;
             this.timerRefresh.Tick += new System.EventHandler(this.timerRefresh_Tick);
             // 
+            // ckEnhance
+            // 
+            this.ckEnhance.AutoSize = true;
+            this.ckEnhance.Location = new System.Drawing.Point(16, 266);
+            this.ckEnhance.Name = "ckEnhance";
+            this.ckEnhance.Size = new System.Drawing.Size(110, 17);
+            this.ckEnhance.TabIndex = 0;
+            this.ckEnhance.Text = "Enhance contrast";
+            this.ckEnhance.UseVisualStyleBackColor = true;
+            this.ckEnhance.CheckedChanged += new System.EventHandler(this.ckEnhance_CheckedChanged);
+            // 
+            // label7
+            // 
+            this.label7.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label7.Location = new System.Drawing.Point(13, 1);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(526, 2);
+            this.label7.TabIndex = 24;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 14);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(54, 13);
+            this.label8.TabIndex = 25;
+            this.label8.Text = "Jitter filter:";
+            // 
+            // txtJitterWindow
+            // 
+            this.txtJitterWindow.Location = new System.Drawing.Point(76, 12);
+            this.txtJitterWindow.Name = "txtJitterWindow";
+            this.txtJitterWindow.Size = new System.Drawing.Size(72, 20);
+            this.txtJitterWindow.TabIndex = 26;
+            this.txtJitterWindow.ValueChanged += new System.EventHandler(this.txtJitterWindow_ValueChanged);
+            // 
+            // lblJitterUnits
+            // 
+            this.lblJitterUnits.AutoSize = true;
+            this.lblJitterUnits.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblJitterUnits.Location = new System.Drawing.Point(162, 14);
+            this.lblJitterUnits.Name = "lblJitterUnits";
+            this.lblJitterUnits.Size = new System.Drawing.Size(235, 13);
+            this.lblJitterUnits.TabIndex = 27;
+            this.lblJitterUnits.Text = "(Native device units, 0 to 4095; use 0 to disable)";
+            // 
+            // pnlJitter
+            // 
+            this.pnlJitter.Controls.Add(this.label8);
+            this.pnlJitter.Controls.Add(this.lblJitterUnits);
+            this.pnlJitter.Controls.Add(this.txtJitterWindow);
+            this.pnlJitter.Controls.Add(this.label3);
+            this.pnlJitter.Location = new System.Drawing.Point(0, 426);
+            this.pnlJitter.Name = "pnlJitter";
+            this.pnlJitter.Size = new System.Drawing.Size(556, 44);
+            this.pnlJitter.TabIndex = 28;
+            // 
+            // pnlBottom
+            // 
+            this.pnlBottom.Controls.Add(this.btnHelp);
+            this.pnlBottom.Controls.Add(this.btnClose);
+            this.pnlBottom.Controls.Add(this.label7);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 513);
+            this.pnlBottom.Name = "pnlBottom";
+            this.pnlBottom.Size = new System.Drawing.Size(553, 55);
+            this.pnlBottom.TabIndex = 29;
+            // 
+            // pnlBarCode
+            // 
+            this.pnlBarCode.Controls.Add(this.label9);
+            this.pnlBarCode.Controls.Add(this.label10);
+            this.pnlBarCode.Controls.Add(this.txtBarCodeOffset);
+            this.pnlBarCode.Controls.Add(this.label11);
+            this.pnlBarCode.Location = new System.Drawing.Point(0, 470);
+            this.pnlBarCode.Name = "pnlBarCode";
+            this.pnlBarCode.Size = new System.Drawing.Size(556, 44);
+            this.pnlBarCode.TabIndex = 29;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(16, 14);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(82, 13);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Bar code offset:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(191, 14);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(182, 13);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "Pixel location of left edge of bar code";
+            // 
+            // txtBarCodeOffset
+            // 
+            this.txtBarCodeOffset.Location = new System.Drawing.Point(104, 12);
+            this.txtBarCodeOffset.Name = "txtBarCodeOffset";
+            this.txtBarCodeOffset.Size = new System.Drawing.Size(72, 20);
+            this.txtBarCodeOffset.TabIndex = 26;
+            this.txtBarCodeOffset.ValueChanged += new System.EventHandler(this.txtBarCodeOffset_ValueChanged);
+            // 
+            // label11
+            // 
+            this.label11.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label11.Location = new System.Drawing.Point(13, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(526, 2);
+            this.label11.TabIndex = 16;
+            // 
             // PlungerSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(552, 466);
+            this.ClientSize = new System.Drawing.Size(552, 566);
+            this.Controls.Add(this.pnlBarCode);
+            this.Controls.Add(this.pnlBottom);
+            this.Controls.Add(this.pnlJitter);
+            this.Controls.Add(this.ckEnhance);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblCal);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnCal);
             this.Controls.Add(this.txtInfo3);
-            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.txtInfo2);
             this.Controls.Add(this.txtInfo);
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.exposure);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnStopSave);
@@ -306,11 +437,20 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Pinscape Setup";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlungerSetup_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form3_FormClosed);
-            this.Load += new System.EventHandler(this.Form3_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PlungerSetup_FormClosed);
+            this.Load += new System.EventHandler(this.PlungerSetup_Load);
+            this.Shown += new System.EventHandler(this.PlungerSetup_Shown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PlungerSetup_KeyPress);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtJitterWindow)).EndInit();
+            this.pnlJitter.ResumeLayout(false);
+            this.pnlJitter.PerformLayout();
+            this.pnlBottom.ResumeLayout(false);
+            this.pnlBottom.PerformLayout();
+            this.pnlBarCode.ResumeLayout(false);
+            this.pnlBarCode.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBarCodeOffset)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -340,5 +480,17 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnStopSave;
         private System.Windows.Forms.Timer timerRefresh;
+        private System.Windows.Forms.CheckBox ckEnhance;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown txtJitterWindow;
+        private System.Windows.Forms.Label lblJitterUnits;
+        private System.Windows.Forms.Panel pnlJitter;
+        private System.Windows.Forms.Panel pnlBottom;
+        private System.Windows.Forms.Panel pnlBarCode;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown txtBarCodeOffset;
+        private System.Windows.Forms.Label label11;
     }
 }

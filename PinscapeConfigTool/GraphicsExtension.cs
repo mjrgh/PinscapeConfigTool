@@ -115,23 +115,25 @@ namespace Plasmoid.Extensions
 			finally { path.CloseFigure(); }
 			return path;
 		}
-		public static void DrawRoundedRectangle(
-				this Graphics graphics,
-				Pen pen,
-				float x,
-				float y,
-				float width,
-				float height,
-				float radius,
-				RectangleEdgeFilter filter)
-		{
-			RectangleF rectangle = new RectangleF(x, y, width, height);
-			GraphicsPath path = graphics.GenerateRoundedRectangle(rectangle, radius, filter);
-			SmoothingMode old = graphics.SmoothingMode;
-			graphics.SmoothingMode = SmoothingMode.AntiAlias;
-			graphics.DrawPath(pen, path);
-			graphics.SmoothingMode = old;
-		}
+        public static void DrawRoundedRectangle(
+                this Graphics graphics,
+                Pen pen,
+                float x,
+                float y,
+                float width,
+                float height,
+                float radius,
+                RectangleEdgeFilter filter)
+        {
+            RectangleF rectangle = new RectangleF(x, y, width, height);
+            using (GraphicsPath path = graphics.GenerateRoundedRectangle(rectangle, radius, filter))
+            {
+                SmoothingMode old = graphics.SmoothingMode;
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.DrawPath(pen, path);
+                graphics.SmoothingMode = old;
+            }
+        }
 		public static void DrawRoundedRectangle(
 				this Graphics graphics,
 				Pen pen,
@@ -240,11 +242,13 @@ namespace Plasmoid.Extensions
 				RectangleEdgeFilter filter)
 		{
 			RectangleF rectangle = new RectangleF(x, y, width, height);
-			GraphicsPath path = graphics.GenerateRoundedRectangle(rectangle, radius, filter);
-			SmoothingMode old = graphics.SmoothingMode;
-			graphics.SmoothingMode = SmoothingMode.AntiAlias;
-			graphics.FillPath(brush, path);
-			graphics.SmoothingMode = old;
+            using (GraphicsPath path = graphics.GenerateRoundedRectangle(rectangle, radius, filter))
+            {
+                SmoothingMode old = graphics.SmoothingMode;
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.FillPath(brush, path);
+                graphics.SmoothingMode = old;
+            }
 		}
 		public static void FillRoundedRectangle(
 				this Graphics graphics,

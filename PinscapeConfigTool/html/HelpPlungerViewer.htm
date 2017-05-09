@@ -205,6 +205,32 @@
       scan time and the processing time.
    </p>
 
+
+   <h2>Contrast enhancement</h2>
+
+   <p>
+	  For a pixel-based sensor, click the "Enhance contrast" checkbox
+	  to exaggerate the contrast level in the displayed pixel readout.
+	  This makes the display show the bright pixels brighter than they
+	  really are, and the dark pixels darker than they really are.
+   </p>
+   <p>
+	  This can be helpful when fine-tuning your sensor installation.
+	  The image analysis routines on the KL25Z generally work by
+	  finding the dark and light regions in the image, and the edges
+	  between regions.  Exaggerating the contrast can make this
+	  structure more apparent when the physical light level is relatively
+	  uniform. 
+   </p>
+   <p>
+	  Enhanced contrast is purely a display option.  It doesn't in any
+	  way affect the way the readings are taken from the sensor, or how
+	  the KL25Z processes the readings.  In fact, the KL25Z doesn't even
+	  know you're using the enhanced contrast; the only effect is on
+	  the on-screen display.
+   </p>
+
+
    <h2>Full resolution and low res</h2>
    
    <p>If you're using an image sensor, the <b>Full resolution</b> and
@@ -220,6 +246,66 @@
       controller reads the sensor or reports the plunger position in
       normal pinball play.  It also has no effect even within the dialog
       for non-imaging sensors.
+   </p>
+
+   <h2>Jitter Filter</h2>
+
+   <p>
+	  No measuring device is perfect, including the plunger sensors.
+	  All sensors have some inherent inaccuracies, which means that they
+	  won't always get exactly the same reading twice in a row even when
+	  the plunger itself is sitting perfectly still.
+   </p>
+   <p>
+	  On a virtual cab, we don't merely have to take two readings in
+	  a row:  we have to take readings <i>constantly</i>, tens or
+	  hundreds of times per second.  We want the game to respond immediately
+	  when you move the plunger, so we have to know where it is from
+	  moment to moment.  With such a rapid series of readings, any
+	  inaccuracies in the sensor become apparent on-screen as "jitter",
+	  meaning that the virtual plunger jiggles around slightly even when
+	  the real plunger is sitting perfectly still.
+   </p>
+   <p>
+	  The "jitter filter" is a special feature in the firmware that lets
+	  you filter out this type of random motion to make the on-screen
+	  animation more stable and realistic.  If your on-screen plunger
+	  jitters noticeably, you can use the filter to reduce this.  Some
+	  sensors need this more than others, so you might not need it at all.
+	  If your sensor produces stable animation without the filter,
+	  you're better off keeping the filter disabled.
+   </p>
+   <p>
+	  The filter works by setting a "window" size for random motion.  Any
+	  motion within this window is ignored, so the on-screen plunger will
+	  remain motionless even if the sensor readings are fluctuating within
+	  the boundaries of the window.  The window size is set in terms of the
+	  native units for the sensor, which are the same units shown in the
+	  sensor display in the plunger viewer window.
+   </p>
+   <p>
+	  Larger window sizes produce stronger filtering, but they also
+	  reducing the usable precision of the plunger.  Use the lowest setting that
+	  produces satisfactory results on your machine.  You can disable the filter
+	  entirely by setting the window size to 0 (zero).
+   </p>
+   <p>
+	  To help you set up the filter, the viewer window provides a visualization
+	  of the filter and its effects.  When you enable the filter (by setting a
+	  non-zero window size), the green bar at the bottom of the sensor window
+	  shows the <b>filtered</b> position, which is
+	  what Visual Pinball sees.  You'll also see a light green box at the end of
+	  the bar; this shows you the current bounds of the filter window.  And
+	  within the box, a red line shows you the <b>raw</b> position reading from
+	  the sensor, before the filter was applied.
+   </p>
+   <p>
+	  The goal is to make the filter window just big enough to contain the random
+	  motion, if any, of the raw reading, shown by the red line.  With the plunger at
+	  rest, start with a small filter window setting, and observe the effect for
+	  a little while.  If the red line jiggles around so much that the window has
+	  to keep jumping around to keep up, increase the window size slightly; repeat
+	  until you find a window big enough to contain the random noise.
    </p>
 
 </div>

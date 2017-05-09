@@ -130,5 +130,19 @@ namespace CollectionUtils
             ValueType value;
             return dictionary.TryGetValue(key, out value) ? value : defaultValue;
         }
+
+        // Join a list in serial comma format
+        public static String SerialJoin<T>(this IEnumerable<T> e)
+        {
+            int c = e.Count();
+            if (c == 0)
+                return "";
+            else if (c == 1)
+                return e.ElementAt(0).ToString();
+            else if (c == 2)
+                return e.ElementAt(0).ToString() + " and " + e.ElementAt(1).ToString();
+            else
+                return String.Join(", ", e.ToArray().Slice(0, c - 1).ToList()) + ", and " + e.ElementAt(c - 1);
+        }
     }
 }

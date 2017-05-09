@@ -34,6 +34,9 @@ namespace PinscapeConfigTool
             pic.Paint += Paint;
         }
 
+        Font menuFont = SystemFonts.MenuFont;
+        Font captionFont = SystemFonts.CaptionFont;
+
         public void Dispose()
         {
             Dispose(true);
@@ -46,6 +49,8 @@ namespace PinscapeConfigTool
                 pic.Image.Dispose(); pic.Image = null;
                 calloutLeft.Dispose(); calloutLeft = null;
                 calloutRight.Dispose(); calloutRight = null;
+                captionFont.Dispose(); captionFont = null;
+                menuFont.Dispose(); menuFont = null;
             }
         }
         bool disposed = false;
@@ -90,7 +95,7 @@ namespace PinscapeConfigTool
                 }
 
                 // draw the caption
-                Font font = SystemFonts.MenuFont;
+                Font font = menuFont;
                 Brush brush = Brushes.Black;
                 StringFormat centerText = new StringFormat();
                 centerText.Alignment = StringAlignment.Center;

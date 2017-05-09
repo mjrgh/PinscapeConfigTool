@@ -59,19 +59,24 @@ namespace PinscapeConfigTool
             jsOff = new Bitmap("html\\jskeySmallOff.png");
         }
 
+        Font captionFont = SystemFonts.CaptionFont;
+        Font menuFont = SystemFonts.MenuFont;
+
         bool disposed = false;
         private void ButtonStatus_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (disposed)
                 return;
 
+            // dispose of GDI resources
             picKl25z.Dispose(); picKl25z = null;
             kbImage.Dispose(); kbImage = null;
             jsImage.Dispose(); jsImage = null;
             jsOn.Dispose(); jsOn = null;
             jsOff.Dispose(); jsOff = null;
-
             kbPic.Image.Dispose(); kbPic.Image = null;
+            captionFont.Dispose(); captionFont = null;
+            menuFont.Dispose(); menuFont = null;
 
             foreach (Control panel in btnListPanel.Controls)
             {
@@ -237,7 +242,7 @@ namespace PinscapeConfigTool
                         pic.Image = new Bitmap(jsImage);
                         using (var g = Graphics.FromImage(pic.Image))
                         {
-                            Font font = SystemFonts.CaptionFont;
+                            Font font = captionFont;
                             String num = keyCode.ToString();
                             g.MeasureString(num, font);
                             g.DrawString(num, font, Brushes.White, new Point(jsImage.Height / 2, jsImage.Width / 2), centerText);
@@ -505,7 +510,7 @@ namespace PinscapeConfigTool
             Graphics g = e.Graphics;
             int row = 0, col = 0;
             Rectangle src = new Rectangle(0, 0, wid, ht);
-            Font font = SystemFonts.MenuFont;
+            Font font = menuFont;
             for (int i = 0 ; i < 32 ; ++i)
             {
                 // get the status
@@ -551,6 +556,10 @@ namespace PinscapeConfigTool
                     {
                         keysDown[vk] = true;
                         kbPic.Invalidate();
+
+                        if (keysDown.ContainsKey(VK_F4)
+                            && (keysDown.ContainsKey(VK_LMENU) || keysDown.ContainsKey(VK_RMENU)))
+                            Close();
                     }
                     return true;
 
@@ -616,6 +625,7 @@ namespace PinscapeConfigTool
         const uint VK_PAGEDN = 0x22; // VK_NEXT
         const uint VK_CLEAR = 0x0C;
         const uint VK_ENTER = 0x0D;
+        const uint VK_F4 = 0x73;
         uint MapLeftRightKeys(IntPtr wparam, IntPtr lparam)
         {
             uint vk = (uint)wparam.ToInt32();

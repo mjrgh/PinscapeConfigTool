@@ -15,9 +15,18 @@ namespace PinscapeConfigTool
 {
     class AutoUpdater
     {
-        // Check for an auto-update.  If a new version ZIP file is available
-        // in our download directory, we'll extract the updater executable
-        // and launch it.
+        // Check for an auto-update, optionally installing the update.
+        //
+        // If 'install' is false, we'll check to see if a new update ZIP
+        // been downloaded, and we'll check the version number in the ZIP
+        // to see if it's newer than the running version.  We'll return
+        // true if so, false if not.
+        //
+        // If 'install' is true, and an update is available, we'll extract
+        // the updater executable, launch it, and return true.  The caller
+        // should immediately terminate so that the update can overwrite the
+        // current program files.  If no update is available, we'll simply
+        // return false.
         //
         // The update procedure necessarily involves two .EXE programs, because
         // a single .EXE can't update itself: Windows locks an .EXE file while
@@ -41,10 +50,7 @@ namespace PinscapeConfigTool
         // program, and terminates.  All files are now up to date, so what we
         // end up launching is the new version of the main program.
         //
-        // Returns true if we launch an updater, false if not.  The application
-        // should terminate immediately if we do the launch to allow the updater
-        // to overwrite the application in the install directory.
-        public static bool Check()
+        public static bool Check(bool install)
         {
             // Set up the filename strings:
             //  exename = name of updater executable
@@ -88,22 +94,27 @@ namespace PinscapeConfigTool
                             return false;
                         }
 
-                        // find the auto-updater program
-                        doing = "finding updater";
-                        entry = archive.GetEntry(exename);
+                        // A new update is available.  If the caller wants us to
+                        // launch the installer, proceed.
+                        if (install)
+                        {
+                            // find the auto-updater program
+                            doing = "finding updater";
+                            entry = archive.GetEntry(exename);
 
-                        // extract it to the program fol
-                        doing = "extracting updater";
-                        entry.ExtractToFile(exefile, true);
+                            // extract it to the program fol
+                            doing = "extracting updater";
+                            entry.ExtractToFile(exefile, true);
 
-                        // run it
-                        doing = "launching updater";
-                        Process.Start(exefile,
-                            "\"zip=" + zipfile + "\""
-                            + " \"program=" + Path.Combine(Program.programDir, Program.programFile) + "\""
-                            + " parentpid=" + Process.GetCurrentProcess().Id);
+                            // run it
+                            doing = "launching updater";
+                            Process.Start(exefile,
+                                "\"zip=" + zipfile + "\""
+                                + " \"program=" + Path.Combine(Program.programDir, Program.programFile) + "\""
+                                + " parentpid=" + Process.GetCurrentProcess().Id);
+                        }
 
-                        // tell the caller that we launched the updater
+                        // tell the caller that an update was found
                         return true;
                     }
                 }

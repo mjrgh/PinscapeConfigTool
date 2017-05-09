@@ -41,7 +41,13 @@ public class DeviceInfo : IDisposable
     protected virtual void Dispose(bool disposing)
     {
         if (disposing)
-            evov.Dispose();
+        {
+            if (evov != null)
+            {
+                evov.Dispose();
+                evov = null;
+            }
+        }
 
         if (fp != IntPtr.Zero && fp.ToInt32() != -1)
         {
@@ -186,13 +192,26 @@ public class DeviceInfo : IDisposable
         // filter out non-Pinscape devices via other, better tests later.
         return true;
     }
-
-
-    // Save the device configuration and reboot the KL25Z
+    
+    // save the device configuration and reboot
     public bool SaveConfigAndReboot()
+    {
+        return SaveConfig(true);
+    }
+
+    // Save the device configuration, and optionally reboot the KL25Z
+    public bool SaveConfig(bool reboot)
     {
         // show a wait cursor while writing
         Cursor.Current = Cursors.WaitCursor;
+
+        // get a configuration report
+        ConfigReport cfg = GetConfigReport();
+
+        // set the request flags
+        //   0x01 -> do not reboot (default is to reboot)
+        byte flags = 0;
+        if (!reboot) flags |= 0x01;
 
         // Save updates and reboot the KL25Z.  Tell the device to wait
         // a second after completing the write before it reboots, to
@@ -200,22 +219,34 @@ public class DeviceInfo : IDisposable
         // for a few status updates after the save showing the "config
         // save succeeded" bit in the status.
         FlushReadUSB();
-        if (SpecialRequest(6, new byte[] { 1 }))
+        if (SpecialRequest(6, new byte[] { 1, flags }))
         {
             // We successful sent the request, but we don't know yet if
-            // the save actually succeeded.  The device tells us that a
-            // save was successful by setting bit 0x40 in the regular
-            // status report status byte, so watch for such a message.
-            // Only wait a few seconds, though; if the save fails, the
-            // device will reboot without ever sending the success report.
-            DateTime t0 = DateTime.Now;
-            while ((DateTime.Now - t0).TotalMilliseconds < 3000)
+            // the save actually succeeded.  For newer firmware versions,
+            // the device tells us that a save was successful by setting 
+            // bit 0x40 in the regular status report status byte.  Older
+            // versions didn't have this, so we can't tell.  If the bit
+            // is supported, wait a few seconds to see if we get an OK
+            // report.  Don't wait too long; on failure, the device will
+            // simply either return to normal operation or reboot itself,
+            // so we won't see a negative acknowledgment.
+            if (cfg != null && cfg.flashStatusFeature)
             {
-                // read a status report and check for bit 0x40 ("config
-                // save succeeded") in the status byte
-                byte[] buf = ReadStatusReport();
-                if (buf != null && (buf[1] & 0x40) != 0)
-                    return true;
+                DateTime t0 = DateTime.Now;
+                while ((DateTime.Now - t0).TotalMilliseconds < 3000)
+                {
+                    // read a status report and check for bit 0x40 ("config
+                    // save succeeded") in the status byte
+                    byte[] buf = ReadStatusReport();
+                    if (buf != null && (buf[1] & 0x40) != 0)
+                        return true;
+                }
+            }
+            else
+            {
+                // it's an older firmware version that doesn't report
+                // status; assume success
+                return true;
             }
         }
 
@@ -237,6 +268,7 @@ public class DeviceInfo : IDisposable
             configured = (buf[12] & 0x01) != 0;
             sbxpbx = (buf[12] & 0x02) != 0;
             accelFeatures = (buf[12] & 0x04) != 0;
+            flashStatusFeature = (buf[12] & 0x08) != 0;
             freeHeapBytes = buf[13] | (buf[14] << 8);
         }
 
@@ -246,6 +278,8 @@ public class DeviceInfo : IDisposable
         public bool accelFeatures;  // accelerometer customization features supported
                                     // (adjustable dynamic range, auto centering on/off,
                                     // adjustable auto centering time)
+        public bool flashStatusFeature;  // "flash write ok" status bit is supported in
+                                    // joystick reports
         public int psUnitNo;        // Pinscape unit number, 1-16
         public int numOutputs;      // number of configured (in-use) feedback device outputs
         public int plungerZero;     // plunger calibration zero point
@@ -415,7 +449,6 @@ public class DeviceInfo : IDisposable
     }
 
     // nativate overlapped object, and event handle to access it
-    private NativeOverlapped ov;
     private EventWaitHandle evov = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.AutoReset);
 
     // clear out the USB input buffer
@@ -425,23 +458,51 @@ public class DeviceInfo : IDisposable
         DateTime t0 = DateTime.Now;
 
         // wait until a read would block
-        uint rptLen = inputReportLength;
+        int rptLen = inputReportLength;
         while ((DateTime.Now - t0).TotalMilliseconds < 100)
         {
             // set up a non-blocking read
-            byte[] buf = new byte[rptLen];
-            buf[0] = 0x00;
-            ov.OffsetLow = ov.OffsetHigh = 0;
-            ov.EventHandle = evov.SafeWaitHandle.DangerousGetHandle();
-            HIDImports.ReadFile(fp, buf, rptLen, IntPtr.Zero, ref ov);
-
-            // check to see if it's ready immediately
-            if (!evov.WaitOne(0))
+            IntPtr buf = Marshal.AllocHGlobal(rptLen);
+            try
             {
-                // Not ready - we'd have to wait to do a read, so the
-                // buffer is empty.  Cancel the read and return.
-                HIDImports.CancelIo(fp);
-                return;
+                unsafe
+                {
+                    // set up the overlapped I/O descriptor
+                    Overlapped o = new Overlapped(0, 0, evov.SafeWaitHandle.DangerousGetHandle(), null);
+                    NativeOverlapped* no = o.Pack(null, null);
+
+                    // start the non-blocking read
+                    Marshal.WriteByte(buf, 0);
+                    HIDImports.ReadFile(fp, buf, rptLen, IntPtr.Zero, no);
+
+                    // check to see if it's ready immediately
+                    bool ready = evov.WaitOne(0);
+                    if (ready)
+                    {
+                        // it's ready - complete the read
+                        UInt32 readLen;
+                        int result = HIDImports.GetOverlappedResult(fp, no, out readLen, 0);
+                    }
+                    else
+                    { 
+                        // Not ready - we'd have to wait to do a read, so the
+                        // buffer is empty.  Cancel the read.
+                        HIDImports.CancelIo(fp);
+                    }
+
+                    // done with the overlapped I/O descriptor
+                    Overlapped.Unpack(no);
+                    Overlapped.Free(no);
+
+                    // if there was nothing ready to read, we've cleared out buffered
+                    // inputs, so we're done
+                    if (!ready)
+                        return;
+                }
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(buf);
             }
         }
     }
@@ -449,55 +510,74 @@ public class DeviceInfo : IDisposable
     public byte[] ReadUSB()
     {
         // try reading a few times, in case we lose the connection briefly
-        uint rptLen = inputReportLength;
+        int rptLen = inputReportLength;
         for (int tries = 0; tries < 3; ++tries)
         {
-            // set up a non-blocking ("overlapped") read
-            byte[] buf = new byte[rptLen];
-            buf[0] = 0x00;
-            ov.OffsetLow = ov.OffsetHigh = 0;
-            ov.EventHandle = evov.SafeWaitHandle.DangerousGetHandle();
-            HIDImports.ReadFile(fp, buf, rptLen, IntPtr.Zero, ref ov);
+            unsafe
+            {
+                // set up a non-blocking ("overlapped") read
+                IntPtr buf = Marshal.AllocHGlobal((int)rptLen);
+                try
+                {
+                    Marshal.WriteByte(buf, 0);
+                    Overlapped o = new Overlapped(0, 0, evov.SafeWaitHandle.DangerousGetHandle(), null);
+                    NativeOverlapped* no = o.Pack(null, null);
+                    HIDImports.ReadFile(fp, buf, rptLen, IntPtr.Zero, no);
 
-            // Wait briefly for the read to complete.  But don't wait forever - we might
-            // be talking to a device interface that doesn't provide the type of status
-            // report we're looking for, in which case we don't want to get stuck waiting
-            // for something that will never happen.  If this is indeed the controller
-            // interface we're interested in, it will respond within a few milliseconds
-            // with our status report.
-            if (evov.WaitOne(100))
-            {
-                // The read completed successfully!  Get the result.
-                UInt32 readLen;
-                if (HIDImports.GetOverlappedResult(fp, ref ov, out readLen, 0) == 0)
-                {
-                    // The read failed.  Try re-opening the file handle in case we
-                    // dropped the connection, then re-try the whole read.
-                    TryReopenHandle();
-                    continue;
+                    // Wait briefly for the read to complete.  But don't wait forever - we might
+                    // be talking to a device interface that doesn't provide the type of status
+                    // report we're looking for, in which case we don't want to get stuck waiting
+                    // for something that will never happen.  If this is indeed the controller
+                    // interface we're interested in, it will respond within a few milliseconds
+                    // with our status report.
+                    if (evov.WaitOne(100))
+                    {
+                        // The read completed successfully!  Get the result.
+                        UInt32 readLen;
+                        int result = HIDImports.GetOverlappedResult(fp, no, out readLen, 0);
+
+                        Overlapped.Unpack(no);
+                        Overlapped.Free(no);
+
+                        if (result == 0)
+                        {
+                            // The read failed.  Try re-opening the file handle in case we
+                            // dropped the connection, then re-try the whole read.
+                            TryReopenHandle();
+                            continue;
+                        }
+                        else if (readLen != rptLen)
+                        {
+                            // The read length didn't match what we expected.  This might be
+                            // a different device (not a Pinscape controller) or a different
+                            // version that we don't know how to talk to.  In either case,
+                            // return failure.
+                            return null;
+                        }
+                        else
+                        {
+                            // The read succeed and was the correct size.  Return the data.
+                            byte[] retbuf = new byte[rptLen];
+                            Marshal.Copy(buf, retbuf, 0, rptLen);
+                            return retbuf;
+                        }
+                    }
+                    else
+                    {
+                        // The read timed out.  This must not be our control interface after
+                        // all.  Cancel the read and try reopening the handle.
+                        HIDImports.CancelIo(fp);
+                        Overlapped.Unpack(no);
+                        Overlapped.Free(no);
+                        if (TryReopenHandle())
+                            continue;
+                        return null;
+                    }
                 }
-                else if (readLen != rptLen)
+                finally
                 {
-                    // The read length didn't match what we expected.  This might be
-                    // a different device (not a Pinscape controller) or a different
-                    // version that we don't know how to talk to.  In either case,
-                    // return failure.
-                    return null;
+                    Marshal.FreeHGlobal(buf);
                 }
-                else
-                {
-                    // The read succeed and was the correct size.  Return the data.
-                    return buf;
-                }
-            }
-            else
-            {
-                // The read timed out.  This must not be our control interface after
-                // all.  Cancel the read and try reopening the handle.
-                HIDImports.CancelIo(fp);
-                if (TryReopenHandle())
-                    continue;
-                return null;
             }
         }
 
@@ -525,8 +605,12 @@ public class DeviceInfo : IDisposable
             IntPtr fp2 = OpenFile();
 
             // if that succeeded, replace the old handle with the new one and retry the read
-            if (fp2 != null)
+            if (fp2 != IntPtr.Zero && fp2.ToInt32() != -1)
             {
+                // close the old handle
+                if (fp != IntPtr.Zero && fp.ToInt32() != -1)
+                    HIDImports.CloseHandle(fp);
+
                 // replace the handle
                 fp = fp2;
 
@@ -623,7 +707,7 @@ public class DeviceInfo : IDisposable
         if (WriteUSB(buf))
         {
             // await the reply
-            for (int i = 0 ; i < 4 ; ++i)
+            for (int i = 0 ; i < 16 ; ++i)
             {
                 // read a reply
                 byte[] r = ReadUSB();
@@ -805,43 +889,62 @@ public class DeviceInfo : IDisposable
     {
         for (int tries = 0; tries < 3; ++tries)
         {
-            // write the data - the file handle is in overlapped mode, so we have to do 
-            // this as an overlapped write with an OVERLAPPED structure and an event to
-            // monitor for completion
-            ov.OffsetLow = ov.OffsetHigh = 0;
-            ov.EventHandle = evov.SafeWaitHandle.DangerousGetHandle();
-            HIDImports.WriteFile(fp, buf, (uint)buf.Length, IntPtr.Zero, ref ov);
+            unsafe
+            {
+                // write the data - the file handle is in overlapped mode, so we have to do 
+                // this as an overlapped write with an OVERLAPPED structure and an event to
+                // monitor for completion
+                Overlapped o = new Overlapped(0, 0, evov.SafeWaitHandle.DangerousGetHandle(), null);
+                NativeOverlapped* no = o.Pack(null, null);
+                IntPtr hbuf = Marshal.AllocHGlobal(buf.Length);
+                try
+                {
+                    Marshal.Copy(buf, 0, hbuf, buf.Length);
+                    HIDImports.WriteFile(fp, hbuf, buf.Length, IntPtr.Zero, no);
 
-            // wait briefly for the write to complete
-            if (evov.WaitOne(250))
-            {
-                // successful completion - get the result
-                UInt32 actual;
-                if (HIDImports.GetOverlappedResult(fp, ref ov, out actual, 0) == 0)
-                {
-                    // the write failed - try re-opening the handle and go back
-                    // for another try
-                    TryReopenHandle();
-                    continue;
+                    // wait briefly for the write to complete
+                    if (evov.WaitOne(250))
+                    {
+                        // successful completion - get the result
+                        UInt32 actual;
+                        int result = HIDImports.GetOverlappedResult(fp, no, out actual, 0);
+
+                        Overlapped.Unpack(no);
+                        Overlapped.Free(no);
+
+                        if (result == 0)
+                        {
+                            // the write failed - try re-opening the handle and go back
+                            // for another try
+                            TryReopenHandle();
+                            continue;
+                        }
+                        else if (actual != buf.Length)
+                        {
+                            MessageBox.Show("Error sending request: not all bytes sent");
+                            return false;
+                        }
+                        else
+                        {
+                            // success
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        // The write timed out.  Cancel the write and try reopening the handle.
+                        HIDImports.CancelIo(fp);
+                        Overlapped.Unpack(no);
+                        Overlapped.Free(no);
+                        if (TryReopenHandle())
+                            continue;
+                        return false;
+                    }
                 }
-                else if (actual != buf.Length)
+                finally
                 {
-                    MessageBox.Show("Error sending request: not all bytes sent");
-                    return false;
+                    Marshal.FreeHGlobal(hbuf);
                 }
-                else
-                {
-                    // success
-                    return true;
-                }
-            }
-            else
-            {
-                // The write timed out.  Cancel the write and try reopening the handle.
-                HIDImports.CancelIo(fp);
-                if (TryReopenHandle())
-                    continue;
-                return false;
             }
         }
 
@@ -865,5 +968,5 @@ public class DeviceInfo : IDisposable
     public string OpenSDAID;
     public int BuildDD, BuildTT;
     public string BuildID;
-    public uint inputReportLength;
+    public int inputReportLength;
 }

@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainSetup));
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.bgworkerDownload = new System.ComponentModel.BackgroundWorker();
+            this.broadcastTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -43,11 +45,18 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
+            this.webBrowser1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.webBrowser1_PreviewKeyDown);
             // 
             // bgworkerDownload
             // 
             this.bgworkerDownload.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgworkerDownload_DoWork);
             this.bgworkerDownload.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgworkerDownload_ProgressChanged);
+            // 
+            // broadcastTimer
+            // 
+            this.broadcastTimer.Enabled = true;
+            this.broadcastTimer.Interval = 1000;
+            this.broadcastTimer.Tick += new System.EventHandler(this.broadcastTimer_Tick);
             // 
             // MainSetup
             // 
@@ -70,5 +79,6 @@
 
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.ComponentModel.BackgroundWorker bgworkerDownload;
+        private System.Windows.Forms.Timer broadcastTimer;
     }
 }

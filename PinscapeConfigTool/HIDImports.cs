@@ -358,6 +358,14 @@ public class HIDImports
             ref System.Threading.NativeOverlapped lpOverlapped);
 
     [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    internal unsafe static extern bool WriteFile(
+            IntPtr hFile,
+            IntPtr lpBuffer,
+            Int32 bytesToWrite,
+            IntPtr bytesWritten,
+            System.Threading.NativeOverlapped* lpOverlapped);
+
+    [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     internal static extern bool ReadFile(
             IntPtr hFile,
             byte[] lpBuffer,
@@ -374,13 +382,29 @@ public class HIDImports
             ref System.Threading.NativeOverlapped lpOverlapped);
 
     [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    internal static extern bool ReadFile(
+            IntPtr hFile,
+            IntPtr lpBuffer,
+            UInt32 bytesToRead,
+            IntPtr bytesRead,
+            ref System.Threading.NativeOverlapped lpOverlapped);
+
+    [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    internal unsafe static extern bool ReadFile(
+            IntPtr hFile,
+            IntPtr lpBuffer,
+            Int32 bytesToRead,
+            IntPtr bytesRead,
+            System.Threading.NativeOverlapped* lpOverlapped);
+
+    [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     internal static extern int FlushFileBuffers(
             IntPtr hFile);
 
     [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern int GetOverlappedResult(
+    internal unsafe static extern int GetOverlappedResult(
             IntPtr hFile,
-            ref System.Threading.NativeOverlapped lpOverlapped,
+            System.Threading.NativeOverlapped* lpOverlapped,
             out UInt32 lpNumberOfBytesTransferred,
             Int32 bWait);
 
