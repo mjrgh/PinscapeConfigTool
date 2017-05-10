@@ -1583,15 +1583,32 @@ $("#txtRebootTime").change(function() {
    </div>
 
    <script>
-$("#tvOnEnabled").click(function(ev) {
-    showTvOn($(this).prop("checked"), true, true);
+
+var oldTVOn = { };
+$("#tvOnEnabled").click(function(ev) 
+{
+    // if we're disabling it, set the pins to NC, but save the
+    // current values first in case the user re-enables it
+    var ena = $(this).prop("checked");
+    if (!ena)
+    {
+        function saveAndClear(id) { 
+            oldTVOn[id] = $(id).val(); 
+            $(id).val("Not Connected");
+        }
+        saveAndClear("#tvStatus .pinval");
+        saveAndClear("#tvLatch .pinval");
+        saveAndClear("#tvRelay .pinval");
+    }
+
+    // show or hide the pin assignment fields
+    showTvOn(ena, true, ena);
 });
 $("#tvStatus, #tvLatch, #tvRelay").change(function()
 {
     // if any of these are set, enable the whole feature
     var ena = $("#tvStatus .pinval").val() != "Not Connected"
-              || $("#tvLatch .pinval").val() != "Not Connected"
-              || $("#tvRelay .pinval").val() != "Not Connected";
+              || $("#tvLatch .pinval").val() != "Not Connected";
 
     // If we're newly enabling it, show the details section.
     // Don't hide the section on disabling, though, since the
@@ -1622,7 +1639,7 @@ function showTvOn(show, scroll, setDefs)
         function def(id, def) {
             var ctl = $(id);
             if (ctl.val() == "Not Connected")
-                ctl.val(def).change();
+                ctl.val(oldTVOn[id] || def).change();
         }
         def("#tvStatus .pinval", "PTD2");
         def("#tvLatch .pinval",  "PTE0");
@@ -8180,8 +8197,6 @@ function configFunctionSetup()
         { prop: "plungerAutoZero.time", ctl: "#plungerAutoZeroTime", type: tText, datatype: dNumber },
 
         { prop: "TVon.delay", ctl: "#tvDelay", type: tText, datatype: dNumberScale(100) },
-
-        { prop: "TVon.enabled", ctl: "#tvOnEnabled", type: tCheckbox, toUI: function(v) { return undefined; } },
 
         { prop: "nightMode.button", ctl: "#nightModeButtonNo", type: tText, datatype: dNumber },
         { prop: "nightMode.output", ctl: "#nightModeOutputNo", type: tText, datatype: dNumber },
