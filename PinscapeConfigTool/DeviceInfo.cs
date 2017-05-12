@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
 using System.IO;
-using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Security.Permissions;
 using CollectionUtils;
+using System.Windows.Input;
 
 // Pinscape Controller device information.  This represents one connected
 // KL25Z controller device.
@@ -203,7 +203,7 @@ public class DeviceInfo : IDisposable
     public bool SaveConfig(bool reboot)
     {
         // show a wait cursor while writing
-        Cursor.Current = Cursors.WaitCursor;
+        Mouse.SetCursor(Cursors.Wait);
 
         // get a configuration report
         ConfigReport cfg = GetConfigReport();
@@ -921,7 +921,7 @@ public class DeviceInfo : IDisposable
                         }
                         else if (actual != buf.Length)
                         {
-                            MessageBox.Show("Error sending request: not all bytes sent");
+                            // length is wrong - the write failed
                             return false;
                         }
                         else

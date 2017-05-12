@@ -1931,7 +1931,28 @@ function sizeIRCommandTab(config)
     });
 
     // set the Test button handler
-    $("#irCommandTab .irTest").click(function(ev) {
+    $("#irCommandTab .irTest").click(function(ev)
+    {
+        // check for a change in configuration
+        if (config.IRRemote.ledPin == "NC")
+        {
+            alert("The IR transmitter isn't configured on the device yet. "
+                  + "You'll have to save the IR transmitter pin assignment by "
+                  + "clicking \"Program KL25Z\" before you can send codes.");
+            return;
+        }
+        if (config.IRRemote.ledPin != $("#irTransmitter .pinval").val())
+        {
+            window.external.ShowAdviceDialog(
+                "ReprogrammedIRLEDPin",
+                "You've changed the IR LED pin assignment, but you "
+                + "haven't programmed the KL25Z with the changes yet, so "
+                + "this will send using the old pin assignment. If you want "
+                + "to test with the new pin assignment, save the new pin "
+                + "settings by clicking \"Program KL25Z\" first.");
+        }
+
+        // get try sending the code
         var btn = $(this);
         var code = $(this).parents(".irCommandRow").find(".irCode input:text").val();
         showCallResult(window.external.SendIRCommand(CPUID, code), {
@@ -4431,12 +4452,15 @@ $(function() {
                   +   "<td class=\"outPortRemarks\"></td>"
                   +   "<td class=\"outPortOptions\">"
                   +      "<input class=\"pinflags\" type=\"hidden\">"
+                  +      "<input class=\"flipperLogic\" type=\"hidden\">"
                   +      "<img src=\"NoisyOff.png\" class=\"outPortNoisy\" data-mask=\"2\" "
                   +         "title=\"Noisy device: disable this port when Night Mode is engaged\">"
                   +      "<img src=\"GammaOff.png\" class=\"outPortGamma\" data-mask=\"4\" "
                   +         "title=\"Use gamma correction on this port (suitable for lamps and LEDs)\">"
                   +      "<img src=\"ActiveLowOff.png\" class=\"outPortLow\" data-mask=\"1\" "
                   +         "title=\"Active low port: port connects to ground (0V) when ON\">"
+                  +      "<img src=\"FlipperLogicOff.png\" class=\"outPortFlipperLogic\" data-mask=\"8\" "
+                  +         "title=\"Flipper Logic: reduce port power when held on\">"
                   +   "</td>"
                   +   "<td>"
                   +      "<input class=\"outPortDesc\" type=\"text\" size=\"20\">"
@@ -4494,7 +4518,7 @@ $(function() {
             hdrDisp = pinToJumper(pin);
             pinDisp = pin;
             row.data("gpiotype", "dig-out");
-            opts &= ~4;  // alpha isn't applicable to digital outs
+            opts &= ~(4 | 8);  // gamma and Flipper Logic aren't applicable to digital outs
             break;
 
         case 3: // TLC5940
@@ -4508,15 +4532,15 @@ $(function() {
             locDisp = "74HC595 #" + (Math.floor(pin/8)+1);
             hdrDisp = [15, 1, 2, 3, 4, 5, 6, 7][pin % 8];
             pinDisp = "Out " + (pin % 8);
-            opts &= ~(1 | 4);  // active low and gamma aren't applicable to 74HC595 outputs
-                               // (gamma is disabled because these are inherently digital outs)
+            opts &= ~(1 | 4 | 8);  // active low, gamma, and Flipper Logic aren't applicable to 74HC595 outputs
+                                   // (gamma and Flipper Logic are disabled because these aren't PWM-able)
             break;
 
         case 5: // Virtual
             locDisp = "None";
             hdrDisp = "";
             pinDisp = "";
-            opts &= ~(1 | 2 | 4);  // gamma, active low, noisy aren't applicable to virtual outputs
+            opts &= ~(1 | 2 | 4 | 8); // gamma, active low, noisy, and Flipper Logic aren't applicable to virtual outputs
             break;
 
         case 6: // TLC59116
@@ -4567,12 +4591,124 @@ $(function() {
         });
     });
 
-    // change handlers for the port options icons
-    $("#outputTab .outPortRow .outPortOptions img").click(function(ev) {
+    // click handlers for the port options icons
+    $("#outputTab .outPortRow .outPortOptions img").click(function(ev)
+    {
+        // get the options bit for this icon
         var img = $(this);
         var mask = +img.data("mask");
+
+        // toggle the bit in the hidden options field
         var flagfield = img.parents(".outPortOptions").children(".pinflags");
-        flagfield.val(+flagfield.val() ^ mask).change();
+        var newval = +flagfield.val() ^ mask;
+        flagfield.val(newval).change();
+
+        // if we just turned on Flipper Logic, show the FL setting popup
+        if ((newval & mask) != 0 && mask == 8)
+            showFlipperLogicPopup(img, true);
+    });
+
+    // Show the flipper logic popup
+    var flDialog = $("#flipperLogicPopup");
+    var flIcon = null;
+    function showFlipperLogicPopup(img, clicked)
+    {
+        // show the dialog
+        flDialog.parent().show();
+
+        // remember who opened it
+        flIcon = img;
+
+        // position it next to the image
+        var ofs = img.offset();
+        var dlght = flDialog.outerHeight() + 24;
+        var winht = window.innerHeight - $("#nav").outerHeight();
+        var btnht = img.outerHeight();
+        var scrolly = $("html,body").scrollTop();
+        var y = ofs.top + (btnht - dlght)/2;
+
+        // make sure it's in view
+        if (y + dlght > scrolly + winht)
+            y = scrolly + winht - dlght;
+        if (y < scrolly)
+            y = scrolly;
+
+        // set the position
+        flDialog.css({"top": y + "px", "left": ofs.left + img.innerWidth() + "px"});
+
+        // set the current field values
+        var val = +img.parents(".outPortRow").find(".outPortFlipperLogic").val();
+        $("#flTimeTxt").val(((val >> 4)*50 + 50) + "ms");              // 50ms units, starting at 0=50ms
+        $("#flPowerTxt").val(Math.round((val & 0x0F)*17/2.55) + "%");  // 17-point units on 0..255 scale
+
+        // set the sliders
+        $("#flTimeSlider").slider("value", val >> 4);
+        $("#flPowerSlider").slider("value", val & 0x0F);
+    }
+    function hideFlipperLogicPopup()
+    {
+        // hide the dialog
+        flDialog.parent().hide();
+
+        // store the new settings
+        flIcon.parents(".outPortRow").find(".outPortFlipperLogic").val(
+            ($("#flTimeSlider").slider("value") << 4)
+            | $("#flPowerSlider").slider("value"));
+    }
+
+    // When hovering over a flipper logic icon, bring up the FL settings
+    // popup if the icon is ON.
+    $("#outputTab .outPortFlipperLogic").mouseover(function(ev) {
+        var img = $(this);
+        var flags = +img.parents(".outPortOptions").children(".pinflags").val();
+        if (flags & 8)
+            showFlipperLogicPopup(img, false);
+    });
+
+    // hide the flipper logic popup when moving away from the icon that
+    // opened it
+    flDialog.parent().mousemove(function(ev) {
+        // check to see if the mouse is over the icon
+        var x = ev.pageX, y = ev.pageY;
+        var imgofs = flIcon.offset();
+        if (x < imgofs.left || x > imgofs.left + flIcon.outerWidth()
+            || y < imgofs.top || y > imgofs.top + flIcon.outerHeight())
+        {
+            // it's not over the icon - check if it's over the dialog
+            var dlgofs = flDialog.offset();
+            if (x < dlgofs.left || x > dlgofs.left + flDialog.outerWidth()
+                || y < dlgofs.top || y > dlgofs.top + flDialog.outerHeight())
+            {
+                hideFlipperLogicPopup();
+            }
+        }
+    }).click(function(ev) {
+        // if we're in the opening icon, close the dialog and pass the
+        // click to the icon
+        var x = ev.pageX, y = ev.pageY;
+        var imgofs = flIcon.offset();
+        if (x >= imgofs.left && x <= imgofs.left + flIcon.outerWidth()
+            || y >= imgofs.top && y <= imgofs.top + flIcon.outerHeight())
+        {
+            flIcon.click();
+            hideFlipperLogicPopup();
+        }
+    });
+
+    // don't bubble clicks from within the FL options popup
+    flDialog.click(function(ev) { ev.stopPropagation(); });
+
+    // set up the sliders
+    $("#flTimeSlider, #flPowerSlider").slider({
+        orientation: "vertical",
+        min: 0,
+        max: 15,
+    });
+    $("#flTimeSlider").on("slide", function(ev, ui) {
+        $("#flTimeTxt").val((50 + ui.value*50) + "ms");
+    });
+    $("#flPowerSlider").on("slide", function(ev, ui) {
+        $("#flPowerTxt").val(Math.round(ui.value*17/2.55) + "%");
     });
 
     // insert a row
@@ -5396,6 +5532,27 @@ $("#printButton").click(function(ev) {
 
 </script>
 
+
+<!-- Flipper Logic options popup ---------------------------------------->
+<div class="windowCover">
+   <div id="flipperLogicPopup">
+      <div>
+         Flipper Logic Options
+      </div>
+      <div>
+         <div id="flTime">
+            <div>Initial Time<br>(millseconds)</div>
+            <div id="flTimeSlider"></div>
+            <input type="text" id="flTimeTxt" size="3" readonly></input>
+         </div>
+         <div id="flPower">
+            <div>Hold Power<br>(percentage)</div>
+            <div id="flPowerSlider"></div>
+            <input type="text" id="flPowerTxt" size="3" readonly></input>
+         </div>
+      </div>
+   </div>
+</div>
 
 <!-- Pin and output selector popup -------------------------------------->
 <div class="windowCover">
@@ -8303,6 +8460,7 @@ function configFunctionSetup()
             fields.push({ prop: prop + ".port.type", ctl: self.find(".pintype"), type: tText, datatype: dNumber });
             fields.push({ prop: prop + ".port.pin", ctl: self.find(".pinval"), type: tText });
             fields.push({ prop: prop + ".flags", ctl: self.find(".pinflags"), type: tText, datatype: dNumber });
+            fields.push({ prop: prop + ".flipperLogic", ctl: self.find(".outPortFlipperLogic"), type: tText, datatype: dNumber });
             xfields.push({ prop: prop + ".desc", ctl: self.find(".outPortDesc"), type: tText, datatype: dText });
         }
     });

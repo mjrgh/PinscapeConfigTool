@@ -110,6 +110,116 @@
       it's moot anyway because those boards have their own booster circuits built in.
    </p>
 
+   <h2><img src="FlipperLogicOn.png"> Flipper Logic</h2>
+
+   <p>
+      This option sets special timing and power properties for the port, to protect
+      certain types of coils and solenoids from overheating.  When Flipper Logic
+      is enabled on a port, the controller simulates the way a real pinball
+      machine flipper coil works.  Whenever the PC software turns the port on,
+      the controller gives the port full power briefly, then reduces power to a
+      lower level.  The lower level is maintained as long as the PC software
+      leaves the port on.  The point is to get the full mechanical effect from
+      the device when it's first actuated, by giving it full power initially, but
+      then protect the device from overheating by quickly reducing power to a
+      sustainable level.
+   </p>
+   <p>
+      There's no need to use this option with devices that are designed for
+      long-term activation, such as contactors.  This option is designed
+      for devices that would overheat if left on for long periods at
+      full power.
+   </p>
+   <p>
+      When you click the Flipper Logic icon, a popup box will appear to let
+      you enter two additional parameters:
+   </p>
+
+   <ul>
+      <li>Initial time:  the time limit for the initial burst of
+      full power.  This can range from a minimum of 50ms (1/20 of a second)
+      to 800ms (0.8 seconds), in 50ms increments.  Each time the PC software
+      activates the port, the port gets 100% power until this time expires.
+      (Of course, this is only a maximum, not a minimum: if the PC turns the
+      port off in a shorter time, the port simply turns off immediately.)
+
+      <li>Hold power: the reduced power level given to the port after the
+      initial time expires.  This is a percentage of full power, in
+      approximately 7% increments.
+   </ul>
+
+   <p>
+      The point of this feature is to expand your range of choices
+      for devices to simulate flippers in your virtual cab.  Traditionally,
+      cab builders have been limited to devices like contactors that are
+      able to withstand long periods of activation.  The Flipper Logic
+      option makes it feasible to use more types of devices, since
+      it can greatly reduce the heat load on a device that's left on
+      for a long period.
+   </p>
+   <p>
+      The right settings depend on the individual device, so you'll have
+      to experiment.  The goal is to find the minimum power setting where
+      the device stays mechanically activated - that is, where the plunger
+      or lever stays in the "on" position.  For most devices, you should
+      be able to use the minimum full-power time of 50ms, so you should only
+      have to find the right hold power level.  Start at the lowest hold
+      power level.  Program the KL25Z with the new settings, then go to the
+      output tester and activate the port.  If it stays mechanically activated
+      for a few seconds, you've found the right hold power, so turn off the
+      port and continue with the next step below.  If not, go back to the
+      settings page and try the next higher hold power level, and repeat
+      until you find a working level.
+   </p>
+   <p>
+      There's one more step: you need to verify that the selected hold power
+      setting is safe for the device.  Go to the output tester and turn
+      on the port again.  Carefully monitor the device to make sure it
+      doesn't get hot to the touch.  Warm is okay, but you should be able
+      to touch it without getting burned.  If the device doesn't get hot
+      after about two minutes, it should be fine indefinitely.  That's
+      long enough for the device to reach thermal equilibrium, where
+      it's shedding heat as fast as it's generating it, in which case
+      it shouldn't overheat no matter how long you leave it on.
+   </p>
+   <p>
+      If the device does start getting hot within the first couple
+      of minutes, turn it off immediately to prevent damage.  The device
+      probably isn't suitable for use as a flipper simulator in this case,
+      even with the Flipper Logic option.
+   </p>
+
+   <p>
+      <b>0% hold power:</b>
+      If you set the hold power to 0%, the controller will simply turn the
+      port off entirely after the initial time expires.  This simulates
+      the Pinscape "chime board", which has hardware timers that turn off
+      the ports if they're left on for more than a couple of seconds.
+      This isn't suitable for flippers, since it would generate an "off"
+      feedback effect prematurely, before the player releases the flipper
+      buttons.  But it is perfectly fine for many other types of devices,
+      especially replay knockers and chimes, since the software should
+      never energize these devices for more than a split second in the
+      first place.  It's probably also appropriate for devices simulating
+      bumpers and slingshots.
+   </p>
+   <p>
+      Note that the PC software can still control the intensity of the
+      effect.  During the initial "full power" period, the controller
+      will actually pass through whatever intensity level the PC software
+      specifies.  DOF uses reduced power levels for software noises from
+      solenoids in some cases, and this will still work properly with
+      a Flipper Logic port, since the Pinscape unit will use the DOF
+      intensity level during the initial "full power" period.  During
+      the hold period, the PC can also vary the power, but only below
+      the limit given by the hold power setting.  Any higher power
+      that the PC tries to set during the hold period will be capped
+      at the hold power.  It would be unusual for PC software to do
+      this with a solenoid, since it wouldn't normally create any
+      sort of noticeable effect, but the Pinscape software supports
+      it just in case there's some need for it.
+   </p>
+
 </div>
 
 </body>

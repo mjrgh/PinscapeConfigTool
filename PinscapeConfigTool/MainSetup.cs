@@ -564,7 +564,7 @@ namespace PinscapeConfigTool
             "252[] IRCode1 {flags:$B,keytype:$B,keycode:$B}",
             "253[] xbuttons {keytype:$B,keycode:$B,IRCommand:$B}",
             "254[] buttons {pin:$P,keytype:$B,keycode:$B,flags:$B,IRCommand:$B}",
-            "255[] outputs {port:$o,flags:$B}"
+            "255[] outputs {port:$o,flags:$B,flipperLogic:$B}"
         };
 
         // Scripting callback interface.  This lets the javascript in
@@ -2090,7 +2090,7 @@ namespace PinscapeConfigTool
                     return "({status:\"error\",message:\"The device doesn't appear to be connected.\"})";
 
                 // parse the code
-                Match m = Regex.Match(code, @"(?i)([0-9a-f]+)\.([0-9a-f]+)\.([0-9a-f]+)");
+                Match m = Regex.Match(code ?? "", @"(?i)([0-9a-f]+)\.([0-9a-f]+)\.([0-9a-f]+)");
                 if (!m.Success)
                     return "({status:\"error\",message:\"The IR code isn't formatted correctly. "
                         + "Use Protocol.Flags.Code, with each portion as a hex number.\"})";
