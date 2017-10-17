@@ -1341,10 +1341,10 @@ option {
 #autoUpdateStatus .error {
     color: #ff0000;
 }
-#autoUpdateStatus .upToDate {
+.upToDate {
     color: #008000;
 }
-#autoUpdateStatus .newVersion {
+.newVersion {
     color: #0000ff;
     font-weight: bold;
 }
@@ -1383,7 +1383,8 @@ option {
 	white-space: nowrap;
 }
 
-#programUpdateNotice {
+.programUpdateNotice.headlineBox {
+	margin: 1em 0px;
 	display: none;
 	line-height: 1.5;
 	border-radius: 8px;
@@ -1392,12 +1393,23 @@ option {
 	font-weight: bold;
 	padding: 1em;
 }
-#programUpdateNotice a {
+.programUpdateNotice.headlineBox a {
 	color: #a0a0ff;
 }
-#programUpdateNotice a:hover {
+.programUpdateNotice.headlineBox a:hover {
 	color: #ffa0ff;
 }
+#configToolUpToDate {
+	display: none;
+}
+
+#autoUpdateStatus {
+	margin-bottom: 1ex;
+}
+.programUpdateNotice, #firmwareUpdateNotice, #configToolUpToDate {
+	margin: 1ex 0px;
+}
+
 
 #flipperLogicPopup {
 	position: absolute;
@@ -1421,3 +1433,4 @@ option {
 #flipperLogicPopup #flTimeSlider, #flipperLogicPopup #flPowerSlider {
 	margin: 8px auto;
 }
+

@@ -305,7 +305,7 @@ namespace PinscapeConfigTool
 
             // if successful, check to see if we already have the latest versions
             // of the respective files
-            if (infoResult == Downloader.Status.Success || infoResult == Downloader.Status.NoUpdate)
+            if (infoResult == Downloader.Status.DownloadDone || infoResult == Downloader.Status.NoUpdate)
             {
                 // read the file
                 String bi = File.ReadAllText(Path.Combine(Program.dlFolder, "BuildInfo.txt"));
@@ -342,7 +342,7 @@ namespace PinscapeConfigTool
 
                 // if we successfully downloaded a new file, parse the build timestamp from 
                 // the file contents, the file accordingly
-                if (firmwareResult == Downloader.Status.Success)
+                if (firmwareResult == Downloader.Status.DownloadDone)
                 {
                     // get the full path to the downloaded file
                     String dlfile = Path.Combine(Program.dlFolder, tmpfile);
@@ -414,7 +414,7 @@ namespace PinscapeConfigTool
             // We're done - update the status message to reflect the results.
             if (firmwareResult == Downloader.Status.NoUpdate && setupResult == Downloader.Status.NoUpdate)
             {
-                stat.Progress("<span class=\"upToDate\">No new downloads are available for the setup tool or firmware.</span>", true);
+                stat.Progress("<span class=\"upToDate\">Download check completed.</span>", true, false);
             }
             else
             {
@@ -433,7 +433,7 @@ namespace PinscapeConfigTool
                                 + desc + " is up-to-date"
                                 + "</span>";
 
-                        case Downloader.Status.Success:
+                        case Downloader.Status.DownloadDone:
                             return "<span class=\"newVersion\">"
                                 + "New " + desc + " version downloaded"
                                 + "</span>";
@@ -447,7 +447,7 @@ namespace PinscapeConfigTool
                 stat.Progress(
                     DoneMsg("Firmware", firmwareResult, firmwareError)
                     + "; " + DoneMsg("Setup tool", setupResult, setupError),
-                    true);
+                    true, firmwareResult == Downloader.Status.DownloadDone || setupResult == Downloader.Status.DownloadDone);
             }
         }
 
@@ -457,7 +457,8 @@ namespace PinscapeConfigTool
             DLStatusArgs stat = e.UserState as DLStatusArgs;
             downloadStatusObj = "({"
                 + "message: \"" + stat.htmlMessage.JSStringify() + "\","
-                + "done: " + (stat.done ? "true" : "false")
+                + "done: " + (stat.done ? "true" : "false") + ","
+                + "downloadsFound: " + (stat.downloadsFound ? "true" : "false")
                 + "})";
             SendDownloadStatusUpdate();
         }
@@ -465,13 +466,15 @@ namespace PinscapeConfigTool
         // Status callback object for the downloader
         class DLStatusArgs
         {
-            public DLStatusArgs(String htmlMessage, bool done)
+            public DLStatusArgs(String htmlMessage, bool done, bool downloadsFound)
             {
                 this.htmlMessage = htmlMessage;
                 this.done = done;
+                this.downloadsFound = downloadsFound;
             }
             public String htmlMessage;
             public bool done;
+            public bool downloadsFound;
         }
         class DLStatus : Downloader.IStatus
         {
@@ -480,9 +483,9 @@ namespace PinscapeConfigTool
                 this.main = main;
             }
 
-            public void Progress(String htmlmsg, bool done)
+            public void Progress(String htmlmsg, bool done, bool downloadsFound)
             {
-                main.bgworkerDownload.ReportProgress(0, new DLStatusArgs(htmlmsg, done));
+                main.bgworkerDownload.ReportProgress(0, new DLStatusArgs(htmlmsg, done, downloadsFound));
             }
 
             MainSetup main;
@@ -540,7 +543,7 @@ namespace PinscapeConfigTool
         String[] configVarDesc = new String[]{ 
             "1 USBID {vendor:$W,product:$W}",
             "2 pinscapeID $B",
-            "3 joystickEnabled $B" ,
+            "3 joystick {enabled:$B,axisFormat:$B}", 
             "4 accelerometer {orientation:$B,dynamicRange:$B,autoCenterMode:$B}",
             "5 plungerType $B",
             "6 plungerPins {a:$P,b:$P,c:$P,d:$P}",

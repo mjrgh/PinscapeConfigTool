@@ -24,9 +24,9 @@
       <b>Welcome!  This program helps you set up and configure your
          Pinscape Controller units.</b>
       
-      <div id="programUpdateNotice">
+      <div class="programUpdateNotice headlineBox">
          An updated version of this program is available -
-         <a href="#" id="installProgramUpdate">Install Now</a>
+         <a href="#" class="installProgramUpdate">Install Now</a>
       </div>
    </div>
 
@@ -37,8 +37,9 @@ var latestFirmwareVsn;
 function checkForUpdates()
 {
     // check for updates to the config tool
-    if (window.external.checkForProgramUpdates())
-        $("#programUpdateNotice").show();
+	var ctu = window.external.checkForProgramUpdates();
+	$("div.programUpdateNotice").toggle(ctu);
+	$("#configToolUpToDate").toggle(!ctu);
 
     // get the latest firmware version available
     var bin = window.external.LatestBinFile();
@@ -52,12 +53,14 @@ function checkForUpdates()
 // update firmware notices in the device list
 function updateFirmwareNotices()
 {
+	var updateCount = 0;
     $("#devlist .firmwareUpdateNotice").each(function()
     {
         var self = $(this);
         var curvsn = self.data("curbuildid");
         if (latestFirmwareVsn && latestFirmwareVsn > curvsn)
         {
+			++updateCount;
             self.show();
             self.html("A newer version of the firmware is available (" + latestFirmwareVsn + ") - "
                       + "<a href=\"Update.htm?ID=" + self.data("cpuid")
@@ -66,12 +69,17 @@ function updateFirmwareNotices()
         else
             self.hide();
     });
+
+	if (updateCount == 0)
+		$("#firmwareUpdateNotice span").html("<span class=\"upToDate\">Up to date</span>");
+	else
+		$("#firmwareUpdateNotice span").html("<span class=\"newVersion\">Update available - see the device list above</span>");
 }
 
-$("#installProgramUpdate").click(function(ev) {
+$(".installProgramUpdate").click(function(ev) {
     ev.preventDefault();
     if (!window.external.InstallProgramUpdate()) {
-        $("#programUpdateNotice").html(
+		$(this).parents(".programUpdateNotice").html(
             "Sorry, but an error occurred trying to launch the installer "
             + "update.  You might need to install it manually.  You can "
             + "find the update ZIP file in the "
@@ -147,10 +155,22 @@ $(checkForUpdates);
       </div>
       
       <div id="autoUpdateStatus">
-         Status: <span>Initializing</span>
+		 Download status: <span>Initializing</span>
          <a id="autoUpdateRetry" href="#">Check again</a>
          | <a href="http://www.mjrnet.org/pinscape/swversions.php" target="_blank">Check manually</a>
       </div>
+	  <div class="programUpdateNotice">
+		 Config tool:
+		 <span class="newVersion">
+			Update available - <a href="#" class="installProgramUpdate">Install Now</a>
+		 </span>
+	  </div>
+	  <div id="configToolUpToDate">
+		 Config tool: <span class="upToDate">Up to date</span>
+	  </div>
+	  <div id="firmwareUpdateNotice">
+		 Firmware: <span>Checking</span>
+	  </div>
    </div>
    
    <hr>

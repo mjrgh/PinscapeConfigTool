@@ -186,6 +186,7 @@
             // outBar1
             // 
             this.outBar1.Location = new System.Drawing.Point(152, 3);
+            this.outBar1.Margin = new System.Windows.Forms.Padding(0);
             this.outBar1.Maximum = 255;
             this.outBar1.Name = "outBar1";
             this.outBar1.Size = new System.Drawing.Size(298, 45);

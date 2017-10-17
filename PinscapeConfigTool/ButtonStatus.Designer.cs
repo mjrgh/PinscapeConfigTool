@@ -50,7 +50,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.bar3 = new System.Windows.Forms.Label();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.label8 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.bar4 = new System.Windows.Forms.Label();
@@ -427,7 +426,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.PictureBox kbPic;
         private System.Windows.Forms.Label bar3;
-        private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.PictureBox jsKeyState;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.PictureBox btnShift1;

@@ -117,6 +117,17 @@ namespace PinscapeConfigTool
                 }; 
                 return new EventHandler(h1);
             };
+            Func<int, TrackBar, Label, MouseEventHandler> TrackMouseDown = (port, bar, levelLabel) => {
+                MouseEventHandler h1 = (object s1, MouseEventArgs e1) => {
+                    const int marginLeft = 12, marginRight = 16;
+                    double x = Math.Max(0, e1.X - marginLeft);
+                    double wid = bar.Width - marginLeft - marginRight;
+                    bar.Value = (int)Math.Round(Math.Min(1.0, x/wid) * (bar.Maximum - bar.Minimum) + bar.Minimum);
+                    SetPort(port, bar.Value);
+                    levelLabel.Text = bar.Value.ToString();
+                };
+                return new MouseEventHandler(h1);
+            };
             Func<int, CheckBox, EventHandler> CheckBoxChange = (port, ck) =>
             {
                 EventHandler h1 = (object s1, EventArgs e1) => {
@@ -220,7 +231,10 @@ namespace PinscapeConfigTool
 
                     // set the event handlers
                     if (pwm)
+                    {
                         outBar.ValueChanged += TrackChange(i, outBar, outLevel);
+                        outBar.MouseDown += TrackMouseDown(i, outBar, outLevel);
+                    }
                     else
                         outOnOff.CheckedChanged += CheckBoxChange(i, outOnOff);
 

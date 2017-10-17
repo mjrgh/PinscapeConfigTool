@@ -22,7 +22,7 @@ namespace PinscapeConfigTool
         public interface IStatus 
         {
             // intermediate status report
-            void Progress(String htmlMessage, bool done);
+            void Progress(String htmlMessage, bool done, bool downloadsFound);
         }
 
         public enum Status
@@ -30,7 +30,7 @@ namespace PinscapeConfigTool
             CheckFailed,
             NoUpdate,
             DownloadFailed,
-            Success
+            DownloadDone
         };
 
         // Check for a new version of the given file.  If a new version is available,
@@ -38,7 +38,7 @@ namespace PinscapeConfigTool
         public Status CheckForUpdates(String desc, String url, String localName, IStatus status, out String errmsg)
         {
             // send a status update
-            Action<String> Progress = (String msg) => 
+            Action<String, bool> Progress = (String msg, bool downloadFound) => 
             {
                 // add an implicit "desc: " if it's not there
                 if (msg.IndexOf("{0}") < 0)
@@ -50,11 +50,11 @@ namespace PinscapeConfigTool
                     adesc = adesc.Substring(0, 1).ToUpper() + adesc.Substring(1);
 
                 // format the message
-                status.Progress(String.Format(msg, adesc), false); 
+                status.Progress(String.Format(msg, adesc), false, downloadFound); 
             };
 
             // presume success
-            Status result = Status.Success;
+            Status result = Status.DownloadDone;
             errmsg = null;
 
             // get the full path to the local file and the etag file
@@ -68,7 +68,7 @@ namespace PinscapeConfigTool
             if (File.Exists(etagPath))
             {
                 // update our status
-                Progress("Checking for updates to {0}");
+                Progress("Checking for updates to {0}", false);
                 try
                 {
                     // get the remote file metadata via an HTTP HEAD request
@@ -108,7 +108,7 @@ namespace PinscapeConfigTool
             if (fetch)
             {
                 // update our status
-                Progress("New {0} version available - requesting file");
+                Progress("New {0} version available - requesting file", true);
 
                 // request the remote file contents
                 WebRequest req = WebRequest.Create(url);
@@ -125,7 +125,7 @@ namespace PinscapeConfigTool
                         else if (resp.StatusCode == HttpStatusCode.OK)
                         {
                             // update status
-                            Progress("Downloading new {0} version");
+                            Progress("Downloading new {0} version", true);
 
                             // got it - copy the response stream to the local file
                             Stream streamIn = resp.GetResponseStream();
@@ -167,7 +167,7 @@ namespace PinscapeConfigTool
             }
 
             // update status
-            Progress("{0}: Done");
+            Progress("{0}: Done", fetch);
 
             // return the result
             return result;

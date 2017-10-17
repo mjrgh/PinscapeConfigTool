@@ -1052,7 +1052,7 @@ var expOutPortAlias, expGpioPortAlias;
 (function()
 {
     var o = {
-        "3.15":   "Strobe|PWM Mid Power|Main Board|JP9-2|mainBoardPWMOutputSelector",
+        "3.15":   "Strobe|PWM Mid Power|Main Board|JP9-1|mainBoardPWMOutputSelector",
 
         "3.0":    "Flasher 1R|PWM Mid Power|Main Board|JP11-2|mainBoardPWMOutputSelector",
         "3.1":    "Flasher 1G|PWM Mid Power|Main Board|JP11-4|mainBoardPWMOutputSelector",
@@ -1142,7 +1142,7 @@ var expOutPortAlias, expGpioPortAlias;
         "PTA4":   "74HC595 SCLK|JP5-3",
         "PTA5":   "74HC595 SOUT|JP5-1",
         "PTA12":  "74HC595 LATCH|JP5-5",
-        "PTC8":   "Knocker|JP9-1|Timed Digital",
+        "PTC8":   "Knocker|JP9-2|Timed Digital",
         "PTC4":   "Extender 1|JP12-1",
         "PTC3":   "Extender 2|JP12-2",
         "PTC0":   "Extender 3|JP12-3",
@@ -2136,7 +2136,57 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
          </div>
       </div>
 
+	  <div id="jsAxisFormat">
+		 Joystick axis format: <select id="jsAxisList" style="margin: .5ex 1em .5ex 1em;">
+			<option value="0">X/Y/Z</option>
+			<option value="1">Rx/Ry/Rz</option>
+		 </select>
+		 <a href="#" class="shower">What's this?</a>
+		 <div class="hider">
+			<p>
+			   A real joystick reports the
+			   position of the stick by sending an "X Axis" value for the left/right
+			   position of the stick and a "Y Axis" value for the up/down position.
+			   It can also send a "Z Axis" value to represent another control like a
+			   throttle.  Normally, Pinscape uses these same three axes, by
+			   sending accelerometer readings on the X and Y axes, and plunger
+			   readings on the Z axis.  The USB system has a separate sets of axes
+			   called Rx, Ry, and Rz, which some real joysticks use to report
+			   "rotational" readings (turning the stick).  If you wish, you can
+			   tell Pinscape to report its readings using these extra Rx/Ry/Rz
+			   axes instead of the standard X/Y/Z axes.
+			</p>
+			<p>
+			   You should use the standard X/Y/Z setting by default, since that's
+			   compatible with the most software.  The only reason to change it
+			   is to solve a conflict with another device.  If you have another
+			   joystick in your system that's producing conflicting readings on
+			   the X/Y/Z axes, you might be able to fix it by moving Pinscape
+			   to the Rx/Ry/Rz axes.
+			</p>
+			<p>
+			   <b>Important!</b>  If you change the Pinscape axes, you must also
+			   reconfigure Visual Pinball and any other pinball players to use the
+			   Rx/Ry/Rz axis settings.  Note that this isn't compatible with Future
+			   Pinball, because it can't read Rx/Ry/Rz inputs.  Other software might
+			   have the same limitation.  If it's possible to reconfigure the
+			   <b>other</b> conflicting device to use different axes, that might be
+			   a better option for solving the conflict, since it would let you
+			   continue using the more compatible X/Y/Z axes for Pinscape.
+			</p>
+		 </div>
+	  </div>
+
    </div>
+
+   <script type="text/javascript">
+
+$("#ckJoystick").change(function() {
+	var ena = $(this).prop("checked");
+    slideToggle($("#jsAxisFormat"), ena, loadingConfig ? 0 : 250, false);
+});
+	  
+   </script>
 
 
    <!-- accelerometer settings --------------------------------------------->
@@ -5905,7 +5955,7 @@ function valEq(a, b)
         // if the arrays aren't of equal length, they differ
         var l = a.length;
         if (b.length != l) {
-            //alert("a.length != b.length"); // [debug]
+			// alert("a.length != b.length"); // [debug]
             return false;
         }
 
@@ -5913,7 +5963,7 @@ function valEq(a, b)
         for (var i = 0 ; i < l ; ++i)
         {
             if (!valEq(a[i], b[i])) {
-                //alert("a[" + i + "] != b[" + i + "]"); // [debug]
+				// alert("a[" + i + "] != b[" + i + "]"); // [debug]
                 return false;
             }
         }
@@ -5925,7 +5975,7 @@ function valEq(a, b)
         // check that all properties of a are in b
         for (var p in a) {
             if (!(p in b)) {
-                //alert("p not in b: " + p); // [debug]
+				// alert("p not in b: " + p); // [debug]
                 return false;
             }
         }
@@ -5933,7 +5983,7 @@ function valEq(a, b)
         // all a.p are in b; now check that all b.p equal a.p
         for (var p in b) {
             if (!(p in a) || !valEq(a[p], b[p])) {
-                //alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
+				// alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
                 return false;
             }
         }
@@ -8303,7 +8353,8 @@ function configFunctionSetup()
           fromUI: function(v) { return { vendor: parseInt(v.substr(0, 4), 16), product: parseInt(v.substr(4), 16) }; }
         },
         { prop: "pinscapeID", ctl: "#popPinscapeID", type: tSelect, datatype: dNumber },
-        { prop: "joystickEnabled", ctl: "#ckJoystick", type: tCheckbox },
+        { prop: "joystick.enabled", ctl: "#ckJoystick", type: tCheckbox },
+	    { prop: "joystick.axisFormat", ctl: "#jsAxisList", type: tSelect, datatype: dNumber },
         { prop: "disconnectRebootTime", ctl: "#ckRebootEnable", type: tCheckbox,
           toUI: function(v) { return +v != 0; },
           fromUI: function(v) { return undefined; }
