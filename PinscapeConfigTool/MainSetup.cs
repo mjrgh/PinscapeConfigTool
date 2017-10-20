@@ -559,7 +559,7 @@ namespace PinscapeConfigTool
             "16 shiftButton {index:$B,mode:$B}",
             "17 IRRemote {sensorPin:$P,ledPin:$P}",
             "18 plungerAutoZero {flags:$B,time:$B}",
-            "19 plungerJitterFilter {windowSize:$W}",
+            "19 plungerFilters {jitterWindowSize:$W,reverseOrientation:$B}",
             "20 plungerBarCode {startPix:$W}",
             "21 TLC59116 {chipMask:$W,SDA:$P,SCL:$P,RESET:$P}",
             "250[] IRCode3 {codeHi:$D}",

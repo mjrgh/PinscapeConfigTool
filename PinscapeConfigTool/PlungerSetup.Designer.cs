@@ -65,12 +65,16 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txtBarCodeOffset = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
+            this.pnlReverse = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.ckReverseOrientation = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtJitterWindow)).BeginInit();
             this.pnlJitter.SuspendLayout();
             this.pnlBottom.SuspendLayout();
             this.pnlBarCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtBarCodeOffset)).BeginInit();
+            this.pnlReverse.SuspendLayout();
             this.SuspendLayout();
             // 
             // exposure
@@ -343,7 +347,7 @@
             this.pnlJitter.Controls.Add(this.lblJitterUnits);
             this.pnlJitter.Controls.Add(this.txtJitterWindow);
             this.pnlJitter.Controls.Add(this.label3);
-            this.pnlJitter.Location = new System.Drawing.Point(0, 426);
+            this.pnlJitter.Location = new System.Drawing.Point(0, 470);
             this.pnlJitter.Name = "pnlJitter";
             this.pnlJitter.Size = new System.Drawing.Size(556, 44);
             this.pnlJitter.TabIndex = 28;
@@ -353,7 +357,7 @@
             this.pnlBottom.Controls.Add(this.btnHelp);
             this.pnlBottom.Controls.Add(this.btnClose);
             this.pnlBottom.Controls.Add(this.label7);
-            this.pnlBottom.Location = new System.Drawing.Point(0, 513);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 558);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Size = new System.Drawing.Size(553, 55);
             this.pnlBottom.TabIndex = 29;
@@ -364,7 +368,7 @@
             this.pnlBarCode.Controls.Add(this.label10);
             this.pnlBarCode.Controls.Add(this.txtBarCodeOffset);
             this.pnlBarCode.Controls.Add(this.label11);
-            this.pnlBarCode.Location = new System.Drawing.Point(0, 470);
+            this.pnlBarCode.Location = new System.Drawing.Point(0, 514);
             this.pnlBarCode.Name = "pnlBarCode";
             this.pnlBarCode.Size = new System.Drawing.Size(556, 44);
             this.pnlBarCode.TabIndex = 29;
@@ -404,12 +408,41 @@
             this.label11.Size = new System.Drawing.Size(526, 2);
             this.label11.TabIndex = 16;
             // 
+            // pnlReverse
+            // 
+            this.pnlReverse.Controls.Add(this.ckReverseOrientation);
+            this.pnlReverse.Controls.Add(this.label14);
+            this.pnlReverse.Location = new System.Drawing.Point(0, 426);
+            this.pnlReverse.Name = "pnlReverse";
+            this.pnlReverse.Size = new System.Drawing.Size(556, 44);
+            this.pnlReverse.TabIndex = 29;
+            // 
+            // label14
+            // 
+            this.label14.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label14.Location = new System.Drawing.Point(13, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(526, 2);
+            this.label14.TabIndex = 16;
+            // 
+            // ckReverseOrientation
+            // 
+            this.ckReverseOrientation.AutoSize = true;
+            this.ckReverseOrientation.Location = new System.Drawing.Point(19, 14);
+            this.ckReverseOrientation.Name = "ckReverseOrientation";
+            this.ckReverseOrientation.Size = new System.Drawing.Size(298, 17);
+            this.ckReverseOrientation.TabIndex = 17;
+            this.ckReverseOrientation.Text = "Reverse orientation (acts like the sensor is flipped around)";
+            this.ckReverseOrientation.UseVisualStyleBackColor = true;
+            this.ckReverseOrientation.CheckedChanged += new System.EventHandler(this.ckReverseOrientation_CheckedChanged);
+            // 
             // PlungerSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(552, 566);
+            this.ClientSize = new System.Drawing.Size(552, 611);
+            this.Controls.Add(this.pnlReverse);
             this.Controls.Add(this.pnlBarCode);
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlJitter);
@@ -451,6 +484,8 @@
             this.pnlBarCode.ResumeLayout(false);
             this.pnlBarCode.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtBarCodeOffset)).EndInit();
+            this.pnlReverse.ResumeLayout(false);
+            this.pnlReverse.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -492,5 +527,8 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown txtBarCodeOffset;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Panel pnlReverse;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox ckReverseOrientation;
     }
 }

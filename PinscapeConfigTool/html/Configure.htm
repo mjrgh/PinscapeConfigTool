@@ -2449,11 +2449,11 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                <img src="slidePot.png" style="float: right; margin: 0px 0px 1em 2em;">
                <b>Potentionmeter.</b>  This uses a slide potentiometer,
                which is a variable resistor with a control knob that moves linearly
-               across the length of the device.  We attach the control knob to the
-               plunger so that the two move together.  A potentionmeter's
+               across the length of the device.  Attach the control knob to the
+               plunger so that the knob moves with the plunger.  The pot's
                electrical resistance changes as the knob moves, proportionally to
-               the position, so we can determine the plunger position at any given
-               time by measuring the electrical resistance.
+               the position, so the controller can determine the plunger position 
+               by reading the voltage on the input.
             </div>
             <div class="expBoardPin">
                <b>Pin assignments:</b>
@@ -2746,17 +2746,17 @@ $("#btnPlungerCal").click(function(ev) {
     // check for pin changes
     function pinChanges()
     {
-        switch ($("#plungerType").val())
+        switch (+$("#plungerType").val())
         {
-        case "1":
-        case "3":
-        case "8":
+        case 1:
+        case 3:
+        case 8:
             return $("#tsl_si .pinval").val() != config.plungerPins.a
                 || $("#tsl_clk .pinval").val() != config.plungerPins.b
                 || $("#tsl_ao .pinval").val() != config.plungerPins.c;
 
-        case "5":
-            return $("#pot_ao").text() != config.plungerPins.a;
+        case 5:
+            return $("#pot_ao .pinval").val() != config.plungerPins.a;
 
         case 6:
             return $("#quadrature_CHA .pinval").val() != config.plungerPins.a
@@ -8021,7 +8021,7 @@ function normalizeConfig(config)
     // we don't provide access to several of the plunger variables - these
     // are set through the plunger viewer instead
     delete config.plungerCal;
-    delete config.plungerJitterFilter;
+    delete config.plungerFilters;
     delete config.plungerBarCode;
 
     // if in standalone mode, clear all expansion board fields

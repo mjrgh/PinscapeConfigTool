@@ -73,10 +73,29 @@ namespace PinscapeConfigTool
             {
                 // no jitter filtering capability - hide that section
                 int h = pnlJitter.Height;
-                pnlBottom.Top -= h;
                 pnlBarCode.Top -= h;
+                pnlBottom.Top -= h;
                 Height -= h;
                 pnlJitter.Visible = false;
+            }
+
+            // Check for reverse orientation capability.  To do this, check bit 0x80
+            // of cfgVar19[2].  If this bit is set, the feature is supported.
+            if (cfgVar19 != null && (cfgVar19[2] & 0x80) != 0)
+            {
+                // the feature is enabled - get the current value
+                reverseOrientation = origReverseOrientation = (cfgVar19[2] & 0x01) != 0;
+                ckReverseOrientation.Checked = reverseOrientation;
+            }
+            else
+            {
+                // the feature is diabled - hide that section
+                int h = pnlReverse.Height;
+                pnlJitter.Top -= h;
+                pnlBarCode.Top -= h;
+                pnlBottom.Top -= h;
+                Height -= h;
+                pnlReverse.Visible = false;
             }
 
             // show the bar code section only for bar code sensors
@@ -124,10 +143,16 @@ namespace PinscapeConfigTool
         //bool relativeSensor = false;              // sensor uses relative positioning (e.g., quadrature) (not currently used)
         //bool distanceSensor = false;              // non-contact distance measurement sensor
 
-        // current and original jitter window values, and QueryConfigVar results
+        // QueryConfigVar results for variable 19, plunger filters
+        byte[] cfgVar19 = null;
+
+        // current and original jitter filter values
         int jitterWindow = 0;
         int origJitterWindow = 0;
-        byte[] cfgVar19 = null;
+
+        // current and original orientation reversal filter values
+        bool reverseOrientation = false;
+        bool origReverseOrientation = false;
 
         // current and original bar code offset config values
         int cfgBarCodeOffset = 0;
@@ -578,6 +603,8 @@ namespace PinscapeConfigTool
             List<String> msg = new List<String>();
             if (jitterWindow != origJitterWindow)
                 msg.Add("jitter filter");
+            if (reverseOrientation != origReverseOrientation)
+                msg.Add("reversed orientation");
             if (cfgBarCodeOffset != origBarCodeOffset)
                 msg.Add("bar code offset");
 
@@ -590,8 +617,8 @@ namespace PinscapeConfigTool
                     "Pinscape Config Tool", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     // Yes, save - send the updated settings to the device
-                    if (jitterWindow != origJitterWindow)
-                        SendJitterWindow(jitterWindow);
+                    if (jitterWindow != origJitterWindow || reverseOrientation != origReverseOrientation)
+                        SendFilters(jitterWindow, reverseOrientation);
                     if (cfgBarCodeOffset != origBarCodeOffset)
                         SendBarCodeOffset(cfgBarCodeOffset);
 
@@ -604,22 +631,23 @@ namespace PinscapeConfigTool
                 {
                     // Restore the old settings.  There's no need to write anything to
                     // flash, since we've only changed it in the device RAM so far.
-                    if (jitterWindow != origJitterWindow)
-                        SendJitterWindow(origJitterWindow);
+                    if (jitterWindow != origJitterWindow || reverseOrientation != origReverseOrientation)
+                        SendFilters(origJitterWindow, origReverseOrientation);
                     if (cfgBarCodeOffset != origBarCodeOffset)
                         SendBarCodeOffset(origBarCodeOffset);
                 }
             }
         }
 
-        // update the jitter filter setting on the device
-        void SendJitterWindow(int val)
+        // update the jitter filter and reverse orientation settings on the device
+        void SendFilters(int jitterWindow, bool reverse)
         {
             // update the config var 19 buffer - use the old buffer so that we
             // retain the original values of any other data in the buffer that
             // we don't currently parse (in case of newer firmware)
-            cfgVar19[0] = (byte)(val & 0xff);
-            cfgVar19[1] = (byte)((val >> 8) & 0xff);
+            cfgVar19[0] = (byte)(jitterWindow & 0xff);
+            cfgVar19[1] = (byte)((jitterWindow >> 8) & 0xff);
+            cfgVar19[2] = (byte)((cfgVar19[2] & ~0x01) | (reverse ? 0x01 : 0x00));
 
             // update it on the device
             dev.SetConfigVar(19, cfgVar19);
@@ -1238,10 +1266,14 @@ namespace PinscapeConfigTool
             // if the window value has changed, send the update to the device
             int v = (int)txtJitterWindow.Value;
             if (v != jitterWindow)
-            {
-                jitterWindow = v;
-                SendJitterWindow(v);
-            }
+                SendFilters(jitterWindow = v, reverseOrientation);
+        }
+
+        private void ckReverseOrientation_CheckedChanged(object sender, EventArgs e)
+        {
+            bool v = ckReverseOrientation.Checked;
+            if (v != reverseOrientation)
+                SendFilters(jitterWindow, reverseOrientation = v);
         }
 
         private void txtBarCodeOffset_ValueChanged(object sender, EventArgs e)
