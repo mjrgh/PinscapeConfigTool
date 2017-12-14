@@ -2150,30 +2150,117 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
 			   It can also send a "Z Axis" value to represent another control like a
 			   throttle.  Normally, Pinscape uses these same three axes, by
 			   sending accelerometer readings on the X and Y axes, and plunger
-			   readings on the Z axis.  The USB system has a separate sets of axes
-			   called Rx, Ry, and Rz, which some real joysticks use to report
-			   "rotational" readings (turning the stick).  If you wish, you can
-			   tell Pinscape to report its readings using these extra Rx/Ry/Rz
-			   axes instead of the standard X/Y/Z axes.
+			   readings on the Z axis.  The USB protocol for joysticks also defines
+               a set of "rotational" axes called Rx, Ry, and Rz.  Real joysticks that
+               allow twisting motions report those motions on these "R" axes.
+               If you wish, Pinscape can report its normal readings on the "R" axes
+               in place of the normal X/Y/Z axes.
 			</p>
 			<p>
-			   You should use the standard X/Y/Z setting by default, since that's
-			   compatible with the most software.  The only reason to change it
-			   is to solve a conflict with another device.  If you have another
-			   joystick in your system that's producing conflicting readings on
-			   the X/Y/Z axes, you might be able to fix it by moving Pinscape
-			   to the Rx/Ry/Rz axes.
+               Why would you want to use the "R" axes?  In most cases, you wouldn't;
+               the normal X/Y/Z settings are recommended because they're compatible
+               with most software.  However, the "R" axes can be useful if you have
+               other joysticks in your system that are conflicting with Pinscape.
+               If your other joystick is reporting its input on the normal X/Y/Z
+               axes, and it's creating problems with VP or other software, you 
+               might be able to fix the conflict by telling Pinscape to use the 
+               Rx/Ry/Rz axes instead.
 			</p>
 			<p>
-			   <b>Important!</b>  If you change the Pinscape axes, you must also
-			   reconfigure Visual Pinball and any other pinball players to use the
-			   Rx/Ry/Rz axis settings.  Note that this isn't compatible with Future
-			   Pinball, because it can't read Rx/Ry/Rz inputs.  Other software might
-			   have the same limitation.  If it's possible to reconfigure the
-			   <b>other</b> conflicting device to use different axes, that might be
-			   a better option for solving the conflict, since it would let you
-			   continue using the more compatible X/Y/Z axes for Pinscape.
+			   <b>If you change the Pinscape axes, you also have to reconfigure
+               Visual Pinball and any other pinball players to use the Rx/Ry/Rz 
+               axes.</b>  Future Pinball has no way to read the Rx/Ry/Rz axes,
+               so using these in Pinscape will make it incompatible with FP.
+			   You might run into the same limitation in other software.  Because
+               of the compatibility issues, you might find that it's better to 
+               reconfigure the <b>other</b> joystick that's creating the conflict,
+               if possible, since that would let you continue using the more 
+               compatible X/Y/Z axes for Pinscape.
 			</p>
+		 </div>
+	  </div>
+
+	  <div id="jsReportTiming">
+		 Joystick report interval (milliseconds): <input type="text" size="6" id="jsReportInterval">
+		 <a href="#" class="shower">Explain</a>
+		 <div class="hider">
+			<p>
+			   This lets you set the time between the joystick reports that the
+			   device sends to the PC on the USB connection.  These reports send
+			   current information on the accelerometer readings, plunger position,
+			   and the button-press status for any buttons assigned to the joystick.
+			</p>
+			<p>
+			   Pinscape is capable of sending reports as fast as every 1 to 2
+			   milliseconds.  (The exact speed depends on the type of plunger
+			   sensor and other external hardware you're using.)  But we
+               actually don't want to send reports as fast as we can, because
+               Windows and Visual Pinball can't digest them at that pace.  This
+               setting lets you slow down the reports to a suitable rate 
+               for the PC.
+			</p>
+			<p>
+			   <b>Recommendation:</b> start with an input time of <b>8.333ms</b>
+			   and an "accelerometer stutter" setting of <b>2</b>.  This should
+			   work well on most systems, but it's not necessarily optimal for
+			   everyone, because VP's timing characteristics can vary according
+			   to your PC setup.   You might have to experiment to find the
+			   ideal settings for your system.  After adjusting the timing,
+			   test nudging with VP.  If it seems natural, keep the settings.
+			   If VP's response to nudging seems erratic (for example, it ignores
+			   some nudges, but overreacts to others), try different timings.
+			   It's best to keep the setting in a range from about 5ms to 20ms.
+			   Anything shorter than 5ms will be too fast for Windows to digest
+			   properly, and anything longer than 20ms might produce excessive
+			   latency (games respond slowly to button presses and nudges).
+			</p>
+		 </div>
+	  </div>
+
+	  <div id="accelStutter">
+		 Accelerometer "stutter": <input type="text" size="6" id="accelStutterCount">
+		 <a href="#" class="shower">Explain</a>
+		 <div class="hider">
+			<p>
+			   The "stutter" setting works in connection with the <b>joystick
+			   report interval</b> above to set the interval between accelerometer
+			   reports.  The accelerometer reading is sent as part of the joystick
+			   report, so the base interval between accelerometer readings is exactly
+			   the same as the joystick report interval.  This setting lets you
+			   slow down the accelerometer readings to a multiple of the joystick
+			   interval.
+			</p>
+			<p>
+			   The stutter is the number of times that each physical accelerometer
+			   reading is repeated in sequential joystick reports.  If you set the
+			   stutter to 1, it means that a new reading is sent with every joystick
+			   report sent to the PC.  If you set it to 2, a new reading is sent
+			   with every <b>other</b> report, and the alternating reports simply
+			   repeat the prior reading.  If you set it to 3, a new reading is taken
+			   every three reports.
+			</p>
+			<p>
+			   Why would you want to slow down the accelerometer readings?  Because
+			   VP can't use the readings if they arrive too quickly.  For best
+			   results in VP, readings should only be sent once per video cycle.
+			   If your graphics card is set to a 60Hz refresh rate, the video
+			   cycle is 16.667 milliseconds long, so VP will work best if you send
+			   accelerometer readings every 16.667ms.  However, you might want to
+			   send joystick reports faster than this, so that joystick button
+			   updates are sent closer to real-time.  This is where the stutter
+			   setting comes in: it lets you send joystick reports at a fast
+			   pace for lower button latency, but slow down the accelerometer
+			   readings to accommodate VP's slowness reading them.
+			</p>
+			<p>
+			   <b>Recommendation:</b> start iwth a joystick report interval
+			   of <b>8.333ms</b> and a stutter setting of <b>2</b>.  This will
+			   read the accelerometer at 60Hz, which is usually optimal for
+			   VP, but will send button input updates twice as often, which
+			   might make other programs that use joystick buttons more
+			   responsive.  The optimal timing in VP can vary according to
+			   your PC setup, though, so 
+			</p>			   
 		 </div>
 	  </div>
 
@@ -6060,6 +6147,9 @@ $(function() {
         $("#newAccelFeatures").toggle(!!deviceInfo.AccelFeatures);
         $("#noNewAccelFeatures").toggle(!deviceInfo.AccelFeatures);
 
+		// show the appropriate sections for the joystick report timing features
+		$("#jsReportTiming, #accelStutter").toggle(!!deviceInfo.ReportTimingFeatures);
+
         // loop until we get the configuration or the user cancels
         for (;;)
         {
@@ -8355,6 +8445,8 @@ function configFunctionSetup()
         { prop: "pinscapeID", ctl: "#popPinscapeID", type: tSelect, datatype: dNumber },
         { prop: "joystick.enabled", ctl: "#ckJoystick", type: tCheckbox },
 	    { prop: "joystick.axisFormat", ctl: "#jsAxisList", type: tSelect, datatype: dNumber },
+	    { prop: "joystick.reportInterval", ctl: "#jsReportInterval", type: tText, datatype: dNumberScale(1000) },
+        { prop: "accelerometer.stutter", ctl: "#accelStutterCount", type: tText, datatype: dNumber },
         { prop: "disconnectRebootTime", ctl: "#ckRebootEnable", type: tCheckbox,
           toUI: function(v) { return +v != 0; },
           fromUI: function(v) { return undefined; }

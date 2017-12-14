@@ -543,8 +543,8 @@ namespace PinscapeConfigTool
         String[] configVarDesc = new String[]{ 
             "1 USBID {vendor:$W,product:$W}",
             "2 pinscapeID $B",
-            "3 joystick {enabled:$B,axisFormat:$B}", 
-            "4 accelerometer {orientation:$B,dynamicRange:$B,autoCenterMode:$B}",
+            "3 joystick {enabled:$B,axisFormat:$B,reportInterval:$D}", 
+            "4 accelerometer {orientation:$B,dynamicRange:$B,autoCenterMode:$B,stutter:$B}",
             "5 plungerType $B",
             "6 plungerPins {a:$P,b:$P,c:$P,d:$P}",
             "7 calButtonPins {enabled:$B,button:$P,led:$P}",
@@ -864,7 +864,8 @@ namespace PinscapeConfigTool
                     configInfo = String.Format(@",""NumOutputs"":{0}", cfg.numOutputs)
                         + String.Format(@",""FreeHeapBytes"":{0}", cfg.freeHeapBytes)
                         + String.Format(@",""SBXPBX"": {0}", cfg.sbxpbx ? "true" : "false")
-                        + String.Format(@",""AccelFeatures"": {0}", cfg.accelFeatures ? "true" : "false");
+                        + String.Format(@",""AccelFeatures"": {0}", cfg.accelFeatures ? "true" : "false")
+                        + String.Format(@",""ReportTimingFeatures"": {0}", cfg.reportTimingFeatures ? "true" : "false");
                 }
 
                 // return the basic info from the device list entry

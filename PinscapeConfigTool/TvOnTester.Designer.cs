@@ -252,7 +252,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "TvOnTester";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "TvOnTester";
+            this.Text = "TV ON Tester";
             this.Load += new System.EventHandler(this.TvOnTester_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

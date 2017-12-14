@@ -269,6 +269,7 @@ public class DeviceInfo : IDisposable
             sbxpbx = (buf[12] & 0x02) != 0;
             accelFeatures = (buf[12] & 0x04) != 0;
             flashStatusFeature = (buf[12] & 0x08) != 0;
+            reportTimingFeatures = (buf[12] & 0x10) != 0;
             freeHeapBytes = buf[13] | (buf[14] << 8);
         }
 
@@ -278,6 +279,8 @@ public class DeviceInfo : IDisposable
         public bool accelFeatures;  // accelerometer customization features supported
                                     // (adjustable dynamic range, auto centering on/off,
                                     // adjustable auto centering time)
+        public bool reportTimingFeatures; // joystick report timing features (report interval,
+                                    // accelerometer stutter counter)
         public bool flashStatusFeature;  // "flash write ok" status bit is supported in
                                     // joystick reports
         public int psUnitNo;        // Pinscape unit number, 1-16
