@@ -73,7 +73,7 @@ namespace PinscapeConfigTool
             // reports in the USB protocol, which are piggybacked on the joystick
             // interface.  The broadcast notification lets other programs know to
             // ignore Pinscape joysticks at these times.
-            notificationMessage = RegisterWindowMessage("Pincsape.ConfigTool.Running");
+            notificationMessage = RegisterWindowMessage("Pinscape.ConfigTool.Running");
 
             // send the RUNNING message (wparam = 1)
             BroadcastNotification(1);

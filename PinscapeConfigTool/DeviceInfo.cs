@@ -270,6 +270,7 @@ public class DeviceInfo : IDisposable
             accelFeatures = (buf[12] & 0x04) != 0;
             flashStatusFeature = (buf[12] & 0x08) != 0;
             reportTimingFeatures = (buf[12] & 0x10) != 0;
+            chimeLogicFeatures = (buf[12] & 0x20) != 0;
             freeHeapBytes = buf[13] | (buf[14] << 8);
         }
 
@@ -283,6 +284,7 @@ public class DeviceInfo : IDisposable
                                     // accelerometer stutter counter)
         public bool flashStatusFeature;  // "flash write ok" status bit is supported in
                                     // joystick reports
+        public bool chimeLogicFeatures; // chime logic features enabled
         public int psUnitNo;        // Pinscape unit number, 1-16
         public int numOutputs;      // number of configured (in-use) feedback device outputs
         public int plungerZero;     // plunger calibration zero point
@@ -451,7 +453,7 @@ public class DeviceInfo : IDisposable
         return name + " (Pinscape unit " + PinscapeUnitNo + "/LedWiz unit " + LedWizUnitNo + ")";
     }
 
-    // nativate overlapped object, and event handle to access it
+    // native overlapped object, and event handle to access it
     private EventWaitHandle evov = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.AutoReset);
 
     // clear out the USB input buffer

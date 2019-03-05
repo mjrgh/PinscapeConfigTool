@@ -66,8 +66,8 @@
             this.txtBarCodeOffset = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.pnlReverse = new System.Windows.Forms.Panel();
-            this.label14 = new System.Windows.Forms.Label();
             this.ckReverseOrientation = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtJitterWindow)).BeginInit();
             this.pnlJitter.SuspendLayout();
@@ -417,14 +417,6 @@
             this.pnlReverse.Size = new System.Drawing.Size(556, 44);
             this.pnlReverse.TabIndex = 29;
             // 
-            // label14
-            // 
-            this.label14.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label14.Location = new System.Drawing.Point(13, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(526, 2);
-            this.label14.TabIndex = 16;
-            // 
             // ckReverseOrientation
             // 
             this.ckReverseOrientation.AutoSize = true;
@@ -436,10 +428,18 @@
             this.ckReverseOrientation.UseVisualStyleBackColor = true;
             this.ckReverseOrientation.CheckedChanged += new System.EventHandler(this.ckReverseOrientation_CheckedChanged);
             // 
+            // label14
+            // 
+            this.label14.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label14.Location = new System.Drawing.Point(13, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(526, 2);
+            this.label14.TabIndex = 16;
+            // 
             // PlungerSetup
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(552, 611);
             this.Controls.Add(this.pnlReverse);

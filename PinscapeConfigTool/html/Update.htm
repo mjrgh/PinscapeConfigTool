@@ -431,7 +431,7 @@ $(function()
                 // update the SDA drive list
                 function update()
                 {
-                    var drives = eval(window.external.AllSDADrives());
+                    var drives = eval(window.external.AllSDADrives(false));
                     drives.sort(function(a, b) { return a.path.localeCompare(b.path); });
                     var h = $("#SDADriveList .sdadrive").first();
                     for (var i = 0 ; i < drives.length || h.length ; )

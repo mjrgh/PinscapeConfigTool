@@ -2253,13 +2253,19 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
 			   readings to accommodate VP's slowness reading them.
 			</p>
 			<p>
-			   <b>Recommendation:</b> start iwth a joystick report interval
+			   <b>Recommendation:</b> start with a joystick report interval
 			   of <b>8.333ms</b> and a stutter setting of <b>2</b>.  This will
 			   read the accelerometer at 60Hz, which is usually optimal for
 			   VP, but will send button input updates twice as often, which
 			   might make other programs that use joystick buttons more
 			   responsive.  The optimal timing in VP can vary according to
-			   your PC setup, though, so 
+			   your PC setup, though.  Check your video card refresh rate
+               (use the video card rate, <b>not</b> the monitor's refresh
+               rate).  If it's not 60Hz, choose a report interval close to
+               10ms that divides evenly into the refresh interval, and choose
+               a stutter time equal to the refresh interval divided by the
+               report interval.  If your video card refreshes at 120Hz,
+               for example, use an 8.333ms interval and set stutter to 1.
 			</p>			   
 		 </div>
 	  </div>
@@ -4238,10 +4244,19 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
                     tlc59116Hider = undefined;
                     if ($("#tlc59116_chipsEnabled input:checked").length == 0)
                     {
+                        // enabled - show settings, hide the "disabled" button
                         slideToggle($("#tlc59116Settings"), false, lc ? 0 : 250, false);
                         $("#tlc59116Disabled").show();
                     }
                 }, lc ? 0 : 7500);
+            }
+            else
+            {
+                // If loading the config, hide the "disabled" section.  This isn't
+                // necessary at other times, as we hide it when necessary in the UI
+                // event handlers instead.
+                if (lc)
+                    setTimeout(function() { $("#tlc59116Disabled").hide(); }, 0);
             }
 
             // Adjust the output ports, unless we're loading a config.  Don't
@@ -4598,6 +4613,8 @@ $(function() {
                   +         "title=\"Active low port: port connects to ground (0V) when ON\">"
                   +      "<img src=\"FlipperLogicOff.png\" class=\"outPortFlipperLogic\" data-mask=\"8\" "
                   +         "title=\"Flipper Logic: reduce port power when held on\">"
+                  +      "<img src=\"ChimeLogicOff.png\" class=\"outPortChimeLogic\" data-mask=\"16\" "
+                  +         "title=\"Chime Logic: set minimum and maximum ON times\">"
                   +   "</td>"
                   +   "<td>"
                   +      "<input class=\"outPortDesc\" type=\"text\" size=\"20\">"
@@ -4641,6 +4658,7 @@ $(function() {
         var locDisp = "";
         var hdrDisp = "";
         var opts = 0xff;
+        var isPWM = false;
         switch(typval)
         {
         case 1: // PWM Out (GPIO)
@@ -4648,6 +4666,7 @@ $(function() {
             hdrDisp =  pinToJumper(pin);
             pinDisp = pin;
             row.data("pintype", "pwm");
+            isPWM = true;
             break;
     
         case 2: // Digital Out (GPIO)
@@ -4655,7 +4674,7 @@ $(function() {
             hdrDisp = pinToJumper(pin);
             pinDisp = pin;
             row.data("gpiotype", "dig-out");
-            opts &= ~(4 | 8);  // gamma and Flipper Logic aren't applicable to digital outs
+            opts &= ~(4);  // gamma isn't applicable to digital outs
             break;
 
         case 3: // TLC5940
@@ -4663,14 +4682,15 @@ $(function() {
             hdrDisp = [28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15][pin % 16];
             pinDisp = "Out " + (pin % 16);
             opts &= ~1;        // active low isn't applicable to TLC5940 outputs
+            isPWM = true;
             break;
 
         case 4: // 7HC595
             locDisp = "74HC595 #" + (Math.floor(pin/8)+1);
             hdrDisp = [15, 1, 2, 3, 4, 5, 6, 7][pin % 8];
             pinDisp = "Out " + (pin % 8);
-            opts &= ~(1 | 4 | 8);  // active low, gamma, and Flipper Logic aren't applicable to 74HC595 outputs
-                                   // (gamma and Flipper Logic are disabled because these aren't PWM-able)
+            opts &= ~(1 | 4);  // active low and gamma aren't applicable to 74HC595 outputs
+                               // (gamma is disabled because these aren't PWM-able)
             break;
 
         case 5: // Virtual
@@ -4685,8 +4705,13 @@ $(function() {
             hdrDisp = [6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23][pin & 0x0F];
             pinDisp = "Out " + (pin & 0x0F);
             opts &= ~1;        // active low isn't applicable to TLC59116 outputs
+            isPWM = true;
             break;
         }
+
+        // hide Chime Logic if the device doesn't support it
+        if (deviceInfo && !deviceInfo.ChimeLogicFeatures)
+            opts &= ~16;
 
         // if there's an expansion board alias, apply it
         var alias = outPortAlias[typval + "." + pin];
@@ -4738,27 +4763,35 @@ $(function() {
         // toggle the bit in the hidden options field
         var flagfield = img.parents(".outPortOptions").children(".pinflags");
         var newval = +flagfield.val() ^ mask;
+
+        // flipper logic and chime logic are mutually exclusive
+        if (mask == 8)
+            newval &= ~16;
+        else if (mask == 16)
+            newval &= ~8;
+
+        // update the flags field
         flagfield.val(newval).change();
 
-        // if we just turned on Flipper Logic, show the FL setting popup
-        if ((newval & mask) != 0 && mask == 8)
-            showFlipperLogicPopup(img, true);
+        // if we just turned on Flipper Logic or Chime Logic, show options popup
+        if ((newval & mask) != 0)
+        {
+            if (mask == 8)
+                showFlipperLogicPopup(img, true);
+            else if (mask == 16)
+                showChimeLogicPopup(img, true);
+        }
     });
 
-    // Show the flipper logic popup
-    var flDialog = $("#flipperLogicPopup");
-    var flIcon = null;
-    function showFlipperLogicPopup(img, clicked)
+    // position one of the output port popups (flipper logic, chime logic)
+    function showOutPortPopup(dlg, img)
     {
-        // show the dialog
-        flDialog.parent().show();
-
-        // remember who opened it
-        flIcon = img;
+        // show the dialog element
+        dlg.parent().show();
 
         // position it next to the image
         var ofs = img.offset();
-        var dlght = flDialog.outerHeight() + 24;
+        var dlght = dlg.outerHeight() + 24;
         var winht = window.innerHeight - $("#nav").outerHeight();
         var btnht = img.outerHeight();
         var scrolly = $("html,body").scrollTop();
@@ -4771,26 +4804,101 @@ $(function() {
             y = scrolly;
 
         // set the position
-        flDialog.css({"top": y + "px", "left": ofs.left + img.innerWidth() + "px"});
+        dlg.css({"top": y + "px", "left": ofs.left + img.innerWidth() + "px"});
+    }
+
+    // set up mouse handlers on an output row popup
+    function initOutPortPopupMouseHandlers(dlg, iconHolder, doClose)
+    {
+        dlg.parent().mousemove(function(ev)
+        {
+            var x = ev.pageX, y = ev.pageY;
+            var icon = iconHolder.icon;
+            var imgofs = icon.offset();
+            if (x < imgofs.left || x > imgofs.left + icon.outerWidth()
+                || y < imgofs.top || y > imgofs.top + icon.outerHeight())
+            {
+                // it's not over the icon - check if it's over the dialog
+                var dlgofs = dlg.offset();
+                if (x < dlgofs.left || x > dlgofs.left + dlg.outerWidth()
+                    || y < dlgofs.top || y > dlgofs.top + dlg.outerHeight())
+                {
+                    // it's not over the dialog either - close the dialog
+                    doClose();
+                }
+            }
+        }).click(function(ev)
+        {
+            // if we're in the opening icon, close the dialog and pass the
+            // click to the icon
+            var x = ev.pageX, y = ev.pageY;
+            var icon = iconHolder.icon;
+            var imgofs = icon.offset();
+            if (x >= imgofs.left && x <= imgofs.left + icon.outerWidth()
+                || y >= imgofs.top && y <= imgofs.top + icon.outerHeight())
+            {
+                icon.click();
+                doClose();
+            }
+        });
+    }
+
+    // --------- Flipper Logic popup ----------------------------------------
+
+    // Given the flipper logic parameter value, get the 4-bit parameter value
+    // 50ms units, starting at 0=50ms
+    function flipperLogicTime(param) { return (param + 1) * 50; }
+
+    // Given the flipper logic parameter value, get the hold power as a percentage value
+    // 17-point units on 0..255 scale
+    function flipperLogicPower(param) { return Math.round((param & 0x0F)*17/2.55); }
+
+    // Show the flipper logic popup
+    var flDialog = $("#flipperLogicPopup");
+    var flIcon = { };
+    function showFlipperLogicPopup(img, clicked)
+    {
+        // figure out if it's a digital or PWM-capable output
+        var pintype = +img.parents(".outPortRow").find(".pintype").val();
+        var isPWM = false;
+        switch (pintype)
+        {
+        case 1:   // PWM GPIO
+        case 3:   // TLC5940
+        case 6:   // TLC59116
+            isPWM = true;
+            break;
+        }
+    
+        // show the dialog
+        showOutPortPopup(flDialog, flIcon.icon = img);
+
+        // decode the parameter into time and power components
+        var val = +img.parents(".outPortRow").find(".flipperLogic").val();
+        var timeIndex = (val >> 4) & 0x0F;
+        var powerIndex = val & 0x0F;
 
         // set the current field values
-        var val = +img.parents(".outPortRow").find(".outPortFlipperLogic").val();
-        $("#flTimeTxt").val(((val >> 4)*50 + 50) + "ms");              // 50ms units, starting at 0=50ms
-        $("#flPowerTxt").val(Math.round((val & 0x0F)*17/2.55) + "%");  // 17-point units on 0..255 scale
+        flDialog.find(".flTimeTxt").val(flipperLogicTime(timeIndex) + "ms");
+        flDialog.find(".flPowerTxt").val(flipperLogicPower(powerIndex) + "%");
 
-        // set the sliders
-        $("#flTimeSlider").slider("value", val >> 4);
-        $("#flPowerSlider").slider("value", val & 0x0F);
+        // set the sliders to reflect the current values
+        flDialog.find(".flTimeSlider").slider("value", timeIndex);
+        flDialog.find(".flPowerSlider").slider("value", isPWM ? powerIndex : 0);
+
+        // show the hold power slider only if this is a PWM-capable port
+        flDialog.find(".flPowerSlider").css("visibility", isPWM ? "visible" : "hidden");
     }
     function hideFlipperLogicPopup()
     {
         // hide the dialog
         flDialog.parent().hide();
 
-        // store the new settings
-        flIcon.parents(".outPortRow").find(".outPortFlipperLogic").val(
-            ($("#flTimeSlider").slider("value") << 4)
-            | $("#flPowerSlider").slider("value"));
+        // store the new settings - encode the two components into the
+        // parameter byte as (time index << 4) | (power index)
+        flIcon.icon.parents(".outPortRow").find(".flipperLogic").val(
+            (flDialog.find(".flTimeSlider").slider("value") << 4)
+            | flDialog.find(".flPowerSlider").slider("value"));
     }
 
     // When hovering over a flipper logic icon, bring up the FL settings
@@ -4802,51 +4910,100 @@ $(function() {
             showFlipperLogicPopup(img, false);
     });
 
-    // hide the flipper logic popup when moving away from the icon that
-    // opened it
-    flDialog.parent().mousemove(function(ev) {
-        // check to see if the mouse is over the icon
-        var x = ev.pageX, y = ev.pageY;
-        var imgofs = flIcon.offset();
-        if (x < imgofs.left || x > imgofs.left + flIcon.outerWidth()
-            || y < imgofs.top || y > imgofs.top + flIcon.outerHeight())
-        {
-            // it's not over the icon - check if it's over the dialog
-            var dlgofs = flDialog.offset();
-            if (x < dlgofs.left || x > dlgofs.left + flDialog.outerWidth()
-                || y < dlgofs.top || y > dlgofs.top + flDialog.outerHeight())
-            {
-                hideFlipperLogicPopup();
-            }
-        }
-    }).click(function(ev) {
-        // if we're in the opening icon, close the dialog and pass the
-        // click to the icon
-        var x = ev.pageX, y = ev.pageY;
-        var imgofs = flIcon.offset();
-        if (x >= imgofs.left && x <= imgofs.left + flIcon.outerWidth()
-            || y >= imgofs.top && y <= imgofs.top + flIcon.outerHeight())
-        {
-            flIcon.click();
-            hideFlipperLogicPopup();
-        }
-    });
+    // set up mouse handlers
+    initOutPortPopupMouseHandlers(flDialog, flIcon, hideFlipperLogicPopup);
 
     // don't bubble clicks from within the FL options popup
     flDialog.click(function(ev) { ev.stopPropagation(); });
 
     // set up the sliders
-    $("#flTimeSlider, #flPowerSlider").slider({
+    $(".flTimeSlider, .flPowerSlider").slider({
         orientation: "vertical",
         min: 0,
         max: 15,
     });
-    $("#flTimeSlider").on("slide", function(ev, ui) {
-        $("#flTimeTxt").val((50 + ui.value*50) + "ms");
+    $("#flipperLogicPopup .flTimeSlider").on("slide", function(ev, ui) {
+        $("#flipperLogicPopup .flTimeTxt").val(flipperLogicTime(ui.value) + "ms");
     });
-    $("#flPowerSlider").on("slide", function(ev, ui) {
-        $("#flPowerTxt").val(Math.round(ui.value*17/2.55) + "%");
+    $("#flipperLogicPopup .flPowerSlider").on("slide", function(ev, ui) {
+        $("#flipperLogicPopup .flPowerTxt").val(flipperLogicPower(ui.value) + "%");
     });
+
+    // --------- Chime Logic popup ----------------------------------------
+
+    // Decode the chime logic time parameters
+    function chimeLogicTime(param)
+    {
+        var ms = [0, 1, 2, 5, 10, 20, 40, 80, 100, 200, 300, 400, 500, 600, 700, 800];
+        return ms[param];
+    }
+    function chimeLogicMinTime(param) { return chimeLogicTime(param) + "ms"; }
+    function chimeLogicMaxTime(param) { return param == 0 ? "Infinite" : chimeLogicTime(param) + "ms"; }
+
+    // Show the chime logic popup
+    var clDialog = $("#chimeLogicPopup");
+    var clIcon = { };
+    function showChimeLogicPopup(img, clicked)
+    {
+        // show the dialog
+        showOutPortPopup(clDialog, clIcon.icon = img);
+
+        // decode the parameter into the time components
+        var val = +img.parents(".outPortRow").find(".flipperLogic").val();
+        var maxTimeIndex = (val >> 4) & 0x0F;
+        var minTimeIndex = val & 0x0F;
+
+        // set the current field values
+        clDialog.find(".minTimeTxt").val(chimeLogicMinTime(minTimeIndex));
+        clDialog.find(".maxTimeTxt").val(chimeLogicMaxTime(maxTimeIndex));
+
+        // Set the sliders to reflect the current values.  Set the max time
+        // so that 0 == infinite shows as the maximum value, and everything
+        // else is shifted down one slot.
+        clDialog.find(".minTimeSlider").slider("value", minTimeIndex);
+        clDialog.find(".maxTimeSlider").slider("value", maxTimeIndex == 0 ? 15 : maxTimeIndex - 1);
+    }
+    function hideChimeLogicPopup()
+    {
+        // hide the dialog
+        clDialog.parent().hide();
+
+        // store the new settings - encode the two components into the
+        // parameter byte as (max time index << 4) | (min time index)
+        clIcon.icon.parents(".outPortRow").find(".flipperLogic").val(
+            (((clDialog.find(".maxTimeSlider").slider("value") + 1) & 0x0f) << 4)
+            | clDialog.find(".minTimeSlider").slider("value"));
+    }
+
+    // When hovering over a chime logic icon, bring up the CL settings
+    // popup if the icon is ON.
+    $("#outputTab .outPortChimeLogic").mouseover(function(ev) {
+        var img = $(this);
+        var flags = +img.parents(".outPortOptions").children(".pinflags").val();
+        if (flags & 16)
+            showChimeLogicPopup(img, false);
+    });
+
+    // set up mouse handlers
+    initOutPortPopupMouseHandlers(clDialog, clIcon, hideChimeLogicPopup);
+
+    // don't bubble clicks from within the options popup
+    clDialog.click(function(ev) { ev.stopPropagation(); });
+
+    // set up the sliders
+    $(".minTimeSlider, .maxTimeSlider").slider({
+        orientation: "vertical",
+        min: 0,
+        max: 15,
+    });
+    $("#chimeLogicPopup .minTimeSlider").on("slide", function(ev, ui) {
+        $("#chimeLogicPopup .minTimeTxt").val(chimeLogicMinTime(ui.value));
+    });
+    $("#chimeLogicPopup .maxTimeSlider").on("slide", function(ev, ui) {
+        $("#chimeLogicPopup .maxTimeTxt").val(chimeLogicMaxTime((ui.value + 1) & 0xf));
+    });
+
+    // ----------------------------------------------------------------------
 
     // insert a row
     $("#outputTab .addRow").click(function(ev) {
@@ -5677,19 +5834,42 @@ $("#printButton").click(function(ev) {
          Flipper Logic Options
       </div>
       <div>
-         <div id="flTime">
+         <div class="flTime">
             <div>Initial Time<br>(millseconds)</div>
-            <div id="flTimeSlider"></div>
-            <input type="text" id="flTimeTxt" size="3" readonly></input>
+            <div class="flTimeSlider"></div>
+            <input type="text" class="flTimeTxt" size="3" readonly>
          </div>
-         <div id="flPower">
+         <div class="flPower">
             <div>Hold Power<br>(percentage)</div>
-            <div id="flPowerSlider"></div>
-            <input type="text" id="flPowerTxt" size="3" readonly></input>
+            <div class="flPowerSlider"></div>
+            <input type="text" class="flPowerTxt" size="3" readonly>
          </div>
       </div>
    </div>
 </div>
+
+
+<!-- Chime Logic options popup ------------------------------------------>
+<div class="windowCover">
+   <div id="chimeLogicPopup">
+      <div>
+         ChimeLogic Options
+      </div>
+      <div>
+         <div class="minTime">
+            <div>Min ON Time<br>(milliseconds)</div>
+            <div class="minTimeSlider"></div>
+            <input type="text" class="minTimeTxt" size="3" readonly>
+         </div>
+         <div class="maxTime">
+            <div>Max ON Time<br>(milliseconds)</div>
+            <div class="maxTimeSlider"></div>
+            <input type="text" class="maxTimeTxt" size="3" readonly>
+         </div>
+      </div>
+   </div>
+</div>
+
 
 <!-- Pin and output selector popup -------------------------------------->
 <div class="windowCover">
@@ -8603,7 +8783,7 @@ function configFunctionSetup()
             fields.push({ prop: prop + ".port.type", ctl: self.find(".pintype"), type: tText, datatype: dNumber });
             fields.push({ prop: prop + ".port.pin", ctl: self.find(".pinval"), type: tText });
             fields.push({ prop: prop + ".flags", ctl: self.find(".pinflags"), type: tText, datatype: dNumber });
-            fields.push({ prop: prop + ".flipperLogic", ctl: self.find(".outPortFlipperLogic"), type: tText, datatype: dNumber });
+            fields.push({ prop: prop + ".flipperLogic", ctl: self.find(".flipperLogic"), type: tText, datatype: dNumber });
             xfields.push({ prop: prop + ".desc", ctl: self.find(".outPortDesc"), type: tText, datatype: dText });
         }
     });

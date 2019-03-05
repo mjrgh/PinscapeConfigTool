@@ -125,6 +125,10 @@
       sustainable level.
    </p>
    <p>
+      This option is mutually exclusive with Chime Logic (see below).  Chime
+      Logic will be automatically disabled if you enable Flipper Logic.
+   </p>
+   <p>
       There's no need to use this option with devices that are designed for
       long-term activation, such as contactors.  This option is designed
       for devices that would overheat if left on for long periods at
@@ -146,6 +150,13 @@
       <li>Hold power: the reduced power level given to the port after the
       initial time expires.  This is a percentage of full power, in
       approximately 7% increments.
+      <p>
+         The power reduction is accomplished using PWM (pulse width
+         modulation), so you can only set a fractional power level for
+         a port that's PWM-capable.  For a digital port, the hold power
+         is fixed at 0% and can't be changed, since a digital port is
+         incapable of power levels other than fully ON or fully OFF.
+      </p>
    </ul>
 
    <p>
@@ -218,6 +229,58 @@
       this with a solenoid, since it wouldn't normally create any
       sort of noticeable effect, but the Pinscape software supports
       it just in case there's some need for it.
+   </p>
+
+   <h2><img src="ChimeLogicOn.png"> Chime Logic</h2>
+
+   <p>
+      This option lets you set minimum and maximum ON time intervals
+      for the port.
+   </p>
+   <p>
+      This option is mutually exclusive with Flipper Logic (see above).
+      Flipper Logic will be automatically disabled if you enable Chime Logic.
+   </p>
+   <p>
+      The Chime Logic options let you set fairly precise timing
+      intervals, especially for very short intervals from single
+      milliseconds to tens of milliseconds.  PC-side software isn't
+      capable of the the same degree of timing precision that the
+      controller can offer, since the PC software has to deal with
+      several layers of Windows software and USB hardware that
+      interpose a certain amount of fuzziness in the timing.
+   </p>
+   <p>
+      Setting a minimum time can be useful for mechanical devices that
+      require a certain minimum amount of time before their effects
+      reach full strength.  For example, some contactors won't make a
+      satisfying enough "clunk" sound unless they're activated for at
+      least 10 or 20 milliseconds at a time.
+   </p>
+   <p>
+      The maximum time can be useful for devices like chimes that depend
+      on very rapid ON/OFF cycling.  It can also be used to protect
+      coils against overheating, doing the same job in software that the
+      Pinscape "Chime Boards" do in hardware via their time limiter circuits.
+      The maximum time setting is similar to the Flipper Logic full power
+      time, but it comes with a trade-off.  On the upside, it offers finer
+      gradations of time at the short end of the scale, from single milliseconds
+      to tens of milliseconds.  On the downside, Chime Logic can only turn
+      off the port power entirely when the maximum is reached, whereas Flipper
+      Logic can leave the port on at reduced power when used with a PWM port.
+   </p>
+   <p>
+      To activate Chime Logic, click the chime icon next in the port row
+      for the desired port.  When you click the icon, a popup box will appear
+      to let you enter the minimum and maximum time values.  The minimum time
+      can be set to a range of values from 0ms to 800ms.  The maximum time
+      has a similar range of selections, and can also be set to "infinity"
+      for no time limit at all.
+   </p>
+   <p>
+      If you set a maximum time that's less than the minimum time, the minimum
+      time takes precedence.  The effect therefore is that the port will always
+      be on for exactly the minimum time.
    </p>
 
 </div>

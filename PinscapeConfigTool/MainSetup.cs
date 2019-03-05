@@ -865,6 +865,7 @@ namespace PinscapeConfigTool
                         + String.Format(@",""FreeHeapBytes"":{0}", cfg.freeHeapBytes)
                         + String.Format(@",""SBXPBX"": {0}", cfg.sbxpbx ? "true" : "false")
                         + String.Format(@",""AccelFeatures"": {0}", cfg.accelFeatures ? "true" : "false")
+                        + String.Format(@",""ChimeLogicFeatures"": {0}", cfg.chimeLogicFeatures ? "true" : "false")
                         + String.Format(@",""ReportTimingFeatures"": {0}", cfg.reportTimingFeatures ? "true" : "false");
                 }
 
@@ -893,12 +894,14 @@ namespace PinscapeConfigTool
             //
             //   { sdaid: sdaid, path: path, volumeLabel: volumeLabel }
             //
-            private Dictionary<String, String> GetSDADrives()
+            private Dictionary<String, String> GetSDADrives(bool includeOldBootLoaders)
             {
                 // search all drives
                 Dictionary<String, String> dict = new Dictionary<String, String>();
                 foreach (DriveInfo d in DriveInfo.GetDrives())
                 {
+                    // Proceed if the device is ready, is a removable drive, and is in
+                    // the valid size range for a KL25Z.
                     // Proceed only if the volume is ready and its label matches the device
                     // name.  The volume label is part of the OpenSDA spec, so we should be 
                     // able to count on it as a necessary condition that this is in fact an 
@@ -906,26 +909,66 @@ namespace PinscapeConfigTool
                     // have coincidentally chosen the same label for a regular hard disk
                     // or thumb drive, but it at least helps reduce false positives.
                     if (d.IsReady 
-                        && d.VolumeLabel == "FRDM-KL25Z" 
                         && d.DriveType == DriveType.Removable
                         && d.TotalSize >= 128000000 && d.TotalSize < 128*1024*1024)
                     {
-                        // get the full SDA ID
-                        var sdaid = ReadSDAID(d.RootDirectory.Name);
-                        if (sdaid != null)
+                        // The OpenSDA spec says that the volume label for a KL25Z with
+                        // the current SDA boot loader will be "FRDM-KL25Z", so consider
+                        // it a KL25Z if we match that label.  This isn't a perfect test,
+                        // since a user could assign the same label to just about actual
+                        // disk-like media (like a hard disk or a thumb drive), but it
+                        // should at least minimize false positives.
+                        //
+                        // If we're including devices with the old factory boot loader,
+                        // the volume label may be "BOOTLOADERAPP" or something similar.
+                        // 
+                        bool include = false;
+                        if (d.VolumeLabel == "FRDM-KL25Z")
                         {
-                            // Truncate the SDAID to the last 80 bits.  This is 10 bytes,
-                            // or 20 hex digits, plus two extra characters for the dashes
-                            // in the formatted version (XXXX-XXXXXXXX-XXXXXXXX).
-                            sdaid = sdaid.Substring(sdaid.Length - 22);
+                            // it has the right volume label - include it
+                            include = true;
+                        }
+                        else if (includeOldBootLoaders && Regex.IsMatch(d.VolumeLabel, @".*BOOTLOADER.*"))
+                        {
+                            // It has the old boot loader volume name.  Check to see if 
+                            // a valid SDA_INFO.HTM file is present.  If so, and it specifies
+                            // "BOARD" type FRDM-KL25Z, include it.
+                            SDAInfo sdaInfo = ReadSDAInfo(d.RootDirectory.Name);
+                            if (sdaInfo != null
+                                && sdaInfo.SDAID != null
+                                && sdaInfo.BootVer != null
+                                && Regex.IsMatch(sdaInfo.Board, @".*KL25Z.*"))
+                            {
+                                include = true;
+                            }
+                        }
+                        
+                        // if we passed the volume label test, check for the SDA ID
+                        if (include)
+                        {  
+                            // get the full SDA ID
+                            SDAInfo sdaInfo = ReadSDAInfo(d.RootDirectory.Name);
+                            if (sdaInfo != null && sdaInfo.SDAID != null)
+                            {
+                                // Truncate the SDAID to the last 80 bits.  This is 10 bytes,
+                                // or 20 hex digits, plus two extra characters for the dashes
+                                // in the formatted version (XXXX-XXXXXXXX-XXXXXXXX).
+                                String sdaid = sdaInfo.SDAID.Substring(sdaInfo.SDAID.Length - 22);
 
-                            // add it to the dictionary
-                            dict[sdaid] = "({"
-                                + "path:\"" + d.RootDirectory.Name.JSStringify() + "\","
-                                + "sdaid:\"" + sdaid.JSStringify() + "\","
-                                + "volumeLabel:\"" + d.VolumeLabel.JSStringify() + "\","
-                                + "totalSize:" + d.TotalSize
-                                + "})";
+                                // add it to the dictionary
+                                dict[sdaid] = "({"
+                                    + "path:\"" + d.RootDirectory.Name.JSStringify() + "\","
+                                    + "sdaid:\"" + sdaid.JSStringify() + "\","
+                                    + "volumeLabel:\"" + d.VolumeLabel.JSStringify() + "\","
+                                    + "totalSize:" + d.TotalSize + ","
+                                    + "bootVer:{text:\"" + sdaInfo.BootVer.Text + "\","
+                                    +    "major:" + sdaInfo.BootVer.Major + ","
+                                    +    "minor:" + sdaInfo.BootVer.Minor + "},"
+                                    + "appVer:{text:\"" + sdaInfo.AppVer.Text + "\","
+                                    +    "major:" + sdaInfo.AppVer.Major + ","
+                                    +    "minor:" + sdaInfo.AppVer.Minor + "}"
+                                    + "})";
+                            }
                         }
                     }
                 }
@@ -934,9 +977,32 @@ namespace PinscapeConfigTool
                 return dict;
             }
 
+            // SDA info struct
+            class SDAInfo
+            {
+                public class Version
+                {
+                    public String Text = null;
+                    public int Major;
+                    public int Minor;
+                }
+
+                // boot loader version, in the format N.NN, and parsed into major and minor fields
+                public Version BootVer;
+
+                // application version
+                public Version AppVer;
+
+                // OpenSDA TUID, in the format XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+                public String SDAID = null;
+
+                // "BOARD" ID - "FRDM-KL25Z" for one of ours
+                public String Board = null;
+            }
+
             // Read the OpenSDA TUID from an OpenSDA drive.  This returns the
             // full 128-bit TUID, in the format XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX.
-            private String ReadSDAID(String root)
+            private SDAInfo ReadSDAInfo(String root)
             {
                 // Look for SDA_INFO.HTM in the root directory.  This is another
                 // part of the OpenSDA spec.  Again, a regular hard disk could have
@@ -944,24 +1010,63 @@ namespace PinscapeConfigTool
                 String fname = Path.Combine(root, "SDA_INFO.HTM");
                 if (File.Exists(fname))
                 {
+                    SDAInfo info = new SDAInfo();
+
                     try
                     {
                         // read the file 
                         String s = File.ReadAllText(fname);
 
-                        // search for the TUID field - this is an <INPUT> field with
-                        // an attribute name="tuid"
-                        Match m = Regex.Match(s, @"(?i)<input.*name=(['""])tuid\1.*>");
-                        if (m.Success)
+                        // extract the value from an <input name="NAME" value="VALUE"> field
+                        Func<String, String> extract = (String name) =>
                         {
-                            // it's the input[name=tuid] field - pull out the value attribute
-                            m = Regex.Match(m.Value, @"(?i)value=(['""])([a-f\d\-]+)\1");
-                            if (m.Success)
+                            // try matching the <input name="NAME"> part
+                            Match match = Regex.Match(s, @"(?i)<input.*name=(['""])" + name + @"\1.*>");
+                            if (match.Success)
                             {
-                                // pull out the SDA ID and return it in all upper-case
-                                return m.Groups[2].Value.ToUpper();
+                                // got it - look for the value="VALUE" part
+                                match = Regex.Match(match.Value, @"(?i)value=(['""])(.*?)\1");
+                                if (match.Success)
+                                {
+                                    // extract and return the value
+                                    return match.Groups[2].Value;
+                                }
                             }
-                        }
+
+                            // not found
+                            return null;
+                        };
+
+                        // extra a version string
+                        Func<String, SDAInfo.Version> extractVsn = (String name) =>
+                        {
+                            String vs = extract(name);
+                            if (vs != null)
+                            {
+                                Match match = Regex.Match(vs, @"(\d+)\.(\d+)");
+                                if (match.Success)
+                                {
+                                    SDAInfo.Version version = new SDAInfo.Version();
+                                    version.Text = vs;
+                                    version.Major = int.Parse(match.Groups[1].Value);
+                                    version.Minor = int.Parse(match.Groups[2].Value);
+
+                                    return version;
+                                }
+                            }
+
+                            // not found
+                            return null;
+                        };
+
+                        // extract our fields
+                        info.SDAID = extract("TUID");           // unique hardware ID
+                        info.BootVer = extractVsn("BOOTVER");   // boot loader version
+                        info.AppVer = extractVsn("APPVER");     // SDA application version
+                        info.Board = extract("BOARD");          // hardware type
+
+                        // return the results
+                        return info;
                     }
                     catch (Exception)
                     {
@@ -969,16 +1074,16 @@ namespace PinscapeConfigTool
                     }
                 }
 
-                // no SDA ID
+                // no SDA file
                 return null;
             }
 
             // Get a list of all OpenSDA drives currently attached, as a string encoding
             // a javascript array of objects with the drive names and SDA IDs.
-            public String AllSDADrives()
+            public String AllSDADrives(bool includeOldBootLoaders)
             {
                 // get the drive list, and turn it into a js array
-                return "[" + String.Join(",", GetSDADrives().Values) + "]";
+                return "[" + String.Join(",", GetSDADrives(includeOldBootLoaders).Values) + "]";
             }
 
             // Get the OpenSDA root directory for a given device entry.  This searches
@@ -991,7 +1096,7 @@ namespace PinscapeConfigTool
                     return null;
 
                 // get the drive list
-                Dictionary<String, String> dict = GetSDADrives();
+                Dictionary<String, String> dict = GetSDADrives(false);
 
                 // return the entry for our SDA ID
                 sdaid = sdaid.ToUpper();
@@ -1006,8 +1111,8 @@ namespace PinscapeConfigTool
             public String InstallFirmware(String sdaPath, string binFile, string cpuidForBackup)
             {
                 // get the SDA ID from the drive
-                String sdaid = ReadSDAID(sdaPath);
-                if (sdaid == null)
+                SDAInfo sdaInfo = ReadSDAInfo(sdaPath);
+                if (sdaInfo == null || sdaInfo.SDAID == null)
                     return "({status:\"error\",message:\"Unable to read OpenSDA ID from programming port drive ("
                         + sdaPath.JSStringify() + ". This might not be an OpenSDA drive.\"})";
 
@@ -1027,7 +1132,7 @@ namespace PinscapeConfigTool
                 for (int i = 0, ofs = 0, bidx = 0 ; i < 4 ; ++i, ++ofs)
                 {
                     for (int j = 0 ; j < 4 ; ++j, ofs += 2)
-                        sdabytes[bidx++] = Byte.Parse(sdaid.Substring(ofs, 2), System.Globalization.NumberStyles.HexNumber);
+                        sdabytes[bidx++] = Byte.Parse(sdaInfo.SDAID.Substring(ofs, 2), System.Globalization.NumberStyles.HexNumber);
                 }
 
                 // load the bin file into memory
@@ -1178,7 +1283,7 @@ namespace PinscapeConfigTool
                     + "configStored:" + (configStored ? "true" : "false") + ","
                     + "message:\"Firmware file " + binFile.JSStringify()
                     + " installed onto " + sdaPath.JSStringify()
-                    + " (OpenSDA ID " + sdaid.JSStringify() + ")\"})";
+                    + " (OpenSDA ID " + sdaInfo.SDAID.JSStringify() + ")\"})";
             }
 
             // Browse for a file.  'type' gives the file type to select:
@@ -1929,10 +2034,11 @@ namespace PinscapeConfigTool
                     {
                         case "D":
                             // DWORD - 32-bit unsigned int from little-endian byte[4]
-                            ret = (buf[idx] 
+                            ret = "0x"
+                                + (buf[idx] 
                                 + (buf[idx + 1] << 8) 
                                 + (buf[idx + 2] << 16)
-                                + (buf[idx + 3] << 24)).ToString();
+                                + (buf[idx + 3] << 24)).ToString("X");
                             idx += 4;
                             break;
 
