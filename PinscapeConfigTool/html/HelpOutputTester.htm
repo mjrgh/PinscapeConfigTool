@@ -5,7 +5,7 @@
    <link rel="stylesheet" href="main.css"/>
    <title>Output Port Tester</title>
 </head>
-<body>
+<body class="help">
 
 <h1>
    <img style="float: right;" src="h1OutputTester.png">
@@ -21,18 +21,16 @@
    </p>
 
    <p>	  
-	  The list shows each output port and its GPIO
-	  pin on the KL25Z, if applicable.  For outputs assigned to
-	  external chips, such as TLC5940 or 74HC595 chips, the pin
-	  number of the output on the external chip is shown instead.
+	  The list shows each output port and its pin location
+      on the KL25Z, external chip, or expansion boards.
    </p>
 
    <p>
-	  If you need a reminder of the location of the KL25Z pin
-	  for an output, move the mouse over the output entry in
-	  the list.  This will highlight the pin on the KL25Z diagram.
-	  Alternatively, moving the mouse over a pin on the KL25Z
-	  diagram will show the pin name.
+	  If you need a reminder of the pin location for a given
+      output port, move the mouse over the port's row in the
+	  the list on the left.  This will highlight the location
+      of the pin on the diagram of the KL25Z or expansion
+      board on the right.
    </p>
 
    <p>
@@ -51,13 +49,16 @@
    </p>
 
    <p>
-	  For PWM ports, the output list will show a "slider"
+      For a PWM port, the output list shows a slider
 	  control that lets you set a brightness level for the port,
 	  from 0 to 255.  0 is OFF and 255 is 100% brightness.
+      There's also an ON/OFF button next to each slider that
+      you can use to switch the port on and off without
+      changing the brightness setting.
    </p>
 
    <p>
-	  For Digital ports, the list shows simply an ON/OFF button.
+	  For a Digital port, the list only includes an ON/OFF button.
 	  Click the button to toggle the output status.
    </p>
 
@@ -83,7 +84,7 @@
    <h2>Troubleshooting Visual Pinball, DOF, and other software</h2>
 
    <p>
-	  This tester can be helpful if you're having problems getting
+	  The Output Tester window can be helpful if you're having problems getting
 	  your output devices to work with your pinball player software.
    </p>
 
@@ -91,34 +92,35 @@
 	  The output tester communicates with the KL25Z directly
 	  via USB.  It doesn't depend on any other shared software
 	  that you might need for other programs, such as DOF,
-	  LEDWIZ.DLL, etc.  By bypasseing all of those
-	  other software layers, the tester lets you narrow down
-	  where a problem is coming from, which will let you focus
-	  your attention on the right area rather than shooting
-	  in the dark.
-   </p>
-   
-   <p>
-	  If the outputs work properly here, it confirms that your
-	  physical wiring is working properly, that the KL25Z is
-	  configured correctly, and that the KL25Z USB connection
-	  is working.  That rules out problems with your Pinscape
-	  hardware setup, so any problems with other software must
-	  lie in the other software.  If you're using Visual Pinball,
-	  the place to start looking is usually DOF (DirectOutput
-	  Framework): that has its own configuration that you have
-	  to set up to match your Pinscape port setup.
+	  LEDWIZ.DLL, etc.  That makes it easier to isolate the
+      source of any problems:
    </p>
 
-   <p>
-	  If the outputs aren't working in the output tester, there's
-	  probably something wrong with the physical wiring or with
-	  the Pinscape firmware configuration.  The first step is to
-	  verify that the outputs are configured correctly in the
-	  Settings page: make sure that the physical wiring matches
-	  the pin assignments, and that there aren't any error or
-	  warning icons displayed next to pin assignments anywhere on
-	  the Settings page.  The tool does lots of error checking to help
+   <ul>
+      <li>If the outputs work properly in the Output Tester
+      window, it confirms that your
+      physical wiring is working properly, that the KL25Z is
+      configured correctly, and that the KL25Z USB connection
+      is working.  That rules out problems with your Pinscape
+      hardware setup, so any problems with other software must
+      lie in the other software.  If you're using Visual Pinball,
+      the place to start looking is usually DOF (DirectOutput
+      Framework).  DOF has its own configuration that you have
+      to set up to match your Pinscape port setup.
+      <p>
+         For help with DOF issues, see the
+         <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=DOF#DOFtroubleshooting"</a>DOF Troubleshooting</a>
+         section in the Pinscape Build Guide.
+      </p>
+
+      <li>If the outputs aren't working in the output tester, there's
+      probably something wrong with the physical wiring or with
+      the Pinscape firmware configuration.  The first step is to
+      verify that the outputs are configured correctly in the
+      Settings page: make sure that the physical wiring matches
+      the pin assignments, and that there aren't any error or
+      warning icons displayed next to pin assignments anywhere on
+      the Settings page.  The tool does lots of error checking to help
 	  ensure the setup is correct.  It checks that you haven't
 	  assigned the same pin to multiple functions, and that each pin
 	  is capable of performing its assigned function.  If everything
@@ -130,7 +132,7 @@
 	  continuity through each circuit, to make sure there
 	  aren't any loose wires, broken wires, or bad solder
 	  connections.
-   </p>
+   </ul>
 
 </div>
 

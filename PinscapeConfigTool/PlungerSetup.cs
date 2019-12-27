@@ -35,6 +35,7 @@ namespace PinscapeConfigTool
                 {
                     case PlungerTypeTSL1410R:
                     case PlungerTypeTSL1412R:
+                    case PlungerTypeTCD1103:
                         // pixel edge detection sensors
                         pixelSensor = true;
                         edgeSensor = true;
@@ -51,6 +52,9 @@ namespace PinscapeConfigTool
 
                     case PlungerTypeVL6180X:
                         //distanceSensor = true;
+                        break;
+
+                    case PlungerTypeAEAT6012:
                         break;
                 }
             }
@@ -135,6 +139,8 @@ namespace PinscapeConfigTool
         const byte PlungerTypeAEDR8300 = 6;         // AEDR8300 75lpi optical quadrature
         const byte PlungerTypeTSL1410CL = 8;        // TSL1410CL, bar code positioning
         const byte PlungerTypeVL6180X = 9;          // VL6180X time-of-flight distance sensor
+        const byte PlungerTypeAEAT6012 = 10;        // AEAT-6012-A06 rotary absolute encoder
+        const byte PlungerTypeTCD1103 = 11;         // TCD1103GFG linear image sensor, edge detection
 
         // Plunger characteristics
         bool edgeSensor = false;                    // edge-detection sensor
@@ -739,7 +745,7 @@ namespace PinscapeConfigTool
                     }
 
                     // request a plunger sensor status report
-                    byte[] buf = tdev.SpecialRequest(3, new byte[] { pixFlags, 6 },
+                    byte[] buf = tdev.SpecialRequest(3, new byte[] { pixFlags, 0 },
                         (r) => { return r[1] == 0xff && r[2] == 0x87 && r[3] == 0; });
 
                     // decode the reply

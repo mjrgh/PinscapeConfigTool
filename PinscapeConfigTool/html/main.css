@@ -8,9 +8,12 @@ body {
     height: 100%;        /* make body element match height of html element */
     background: #ffffff;
     color: #000000;
-    font: 9pt/11pt Verdana;
+    font: 10pt/14pt Segoe UI;
     margin: 0px;
     padding: 16px;
+}
+body.help {
+    font: 10pt/15pt SegoecUI, Verdana;
 }
 
 body > div {
@@ -29,10 +32,8 @@ h1 img, h2 img, h3 img {
 
 h1 {
     padding: 1em 16px;
-    margin: 0px -16px;
+    margin: -16px -16px 24px -16px;
     font: bold 12pt/14pt Verdana;
-    margin-top: -16px;
-    margin-bottom: 2em;
     border-bottom: 1px solid #0000ff;
 }
 
@@ -668,6 +669,18 @@ div.chipNo.header {
     width: 100%;
 }
 
+/*
+ * Pin selector image wrapper structure:
+ *
+ *   <div class="pinimage">
+ *     <div>                       <-- wrapper div
+ *       <img>                     <-- pin image
+ *       <div class="pinoverlay">  <-- pin overlay wrapper
+ *         pin overlays
+ *       </div>
+ *     </div>
+ *   </div>
+ */
 .pinimage {
     border: none;
     box-sizing: border-box;
@@ -676,20 +689,48 @@ div.chipNo.header {
     vertical-align: top;
     margin: 0px;
     padding: 0px;
+    width: 345px;
 }
-#kl25zPinImg > img {
+.kl25zPinSelector .pinimage {
+    margin: 0px;
     padding: 8px 32px;
 }
-#tlc5940Selector .pinimage > img, #hc595Selector .pinimage > img, #tlc59116Selector .pinimage > img {
+.tlc5940PinSelector .pinimage, .hc595PinSelector .pinimage, .tlc59116PinSelector .pinimage {
     padding: 4px 32px;
 }
-#mainBoardDigitalOutputSelector .pinimage > img,
-#mainBoardPWMOutputSelector .pinimage > img,
-#mainBoardInputSelector .pinimage > img,
-#chimeBoardOutputSelector .pinimage > img,
-#powerBoardOutputSelector .pinimage > img
-{
+.expBoardPinSelector .pinimage {
     padding: 4px 0px;
+}
+
+.pinimage > div {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+}
+.pinimage > div > img {
+    margin: 0px;
+    padding: 0px;
+}
+
+.pinLegend {
+    position: absolute;
+    bottom: 32px;
+    left: -32px;
+    padding: 0px;
+    margin: 0px;
+}
+.expBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+
+.pinimage .pinoverlay {
+    display: inline-block;
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    top: -8px;
+    left: -8px;
 }
 
 #kl25zOnBoardLED {
@@ -748,14 +789,36 @@ div.chipNo.header {
     background-position: 0px 0px;
 }
 
-#kl25zPinImg .pinButton {
+.kl25zPinSelector .pinButton {
     background-image: url(pinSprite.png);
 }
-#tlc5940Selector .pinButton, #tlc59116Selector .pinButton {
-    background-image: url(pinSprite5940.png);
+
+.tlc5940PinSelector .pinoverlay, .tlc59116PinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -5px;
+    top: -10px;
 }
-#hc595Selector .pinButton {
+.tlc5940PinSelector .pinButton, .tlc59116PinSelector .pinButton {
+    background-image: url(pinSprite5940.png);
+    width: 10px;
+    height: 20px;
+}
+
+.hc595PinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -10px;
+    top: -10px;
+}
+.hc595PinSelector .pinButton {
     background-image: url(pinSprite595.png);
+    width: 20px;
+    height: 20px;
+}
+
+.expBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
 }
 .expBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
@@ -764,14 +827,6 @@ div.chipNo.header {
 }
 
 .pinButton.enabled {
-}
-#tlc5940Selector .pinButton, #tlc59116Selector .pinButton {
-    width: 10px;
-    height: 16px;
-}
-#hc595Selector .pinButton {
-    width: 20px;
-    height: 20px;
 }
 	
 .pinButton.available.inuse {

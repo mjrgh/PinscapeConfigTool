@@ -23,11 +23,20 @@ namespace PinscapeConfigTool
 {
     public partial class MainSetup : Form
     {
-        public MainSetup()
+        // For the main window, use a null initial page to load the main UI front 
+        // page.  This class can be used to show other pages as well for dialogs.
+        public MainSetup(String initialPage = null)
         {
+            // remember the startup page
+            this.initialPage = initialPage;
+
+            // initialize the form
             InitializeComponent();
+
+            // initialize the navigation table
             InitNavTab();
         }
+        private string initialPage;
 
         private void MainSetup_Load(object sender, EventArgs e)
         {
@@ -38,46 +47,56 @@ namespace PinscapeConfigTool
 
         private void MainSetup_Shown(object sender, EventArgs e)
         {
-            // check the WebBrowser control version
-            Version vsn = webBrowser1.Version;
-            if (vsn.Major < 11)
+            // do some extra checks if this is the main page
+            if (initialPage == null)
             {
+                // check the WebBrowser control version
+                Version vsn = webBrowser1.Version;
+                if (vsn.Major < 11)
+                {
+                    AdviceDialog.Show(
+                        "IEVersionWarning",
+                        "It looks like you have an older version of IE installed (IE " + vsn.Major
+                        + "). THIS PROGRAM MIGHT NOT WORK PROPERLY ON YOUR SYSTEM unless you update "
+                        + "to IE 11 or newer.  If you encounter any \"Script Error\" message boxes, "
+                        + "you'll need to update. "
+                        + "\r\n\r\n"
+                        + "You can update IE through Windows Update or by downloading the latest "
+                        + "version from the Microsoft Web site.  Note that the update is required "
+                        + "even if you never use IE for Web browsing, because IE contains system "
+                        + "components that this program uses internally.");
+                }
+
+                // show DOF update advice
                 AdviceDialog.Show(
-                    "IEVersionWarning",
-                    "It looks like you have an older version of IE installed (IE " + vsn.Major
-                    + "). THIS PROGRAM MIGHT NOT WORK PROPERLY ON YOUR SYSTEM unless you update "
-                    + "to IE 11 or newer.  If you encounter any \"Script Error\" message boxes, "
-                    + "you'll need to update. "
-                    + "\r\n\r\n"
-                    + "You can update IE through Windows Update or by downloading the latest "
-                    + "version from the Microsoft Web site.  Note that the update is required "
-                    + "even if you never use IE for Web browsing, because IE contains system "
-                    + "components that this program uses internally.");
+                    "DOFNotice",
+                    "If you're using DOF (DirectOutput Framework), please make sure you have "
+                    + "the latest version. Click the DOF Update link in the Miscellaneous "
+                    + "section on the main page for pointers to the latest versions.");
+
+                // we want status reports from the worker thread
+                bgworkerDownload.WorkerReportsProgress = true;
+
+                // set up the background worker to check for .bin file updates
+                if (Program.options["CheckForDownloads"].ToUpper().StartsWith("Y"))
+                {
+                    // start an update check
+                    StartUpdateCheck();
+                }
+                else
+                {
+                    downloadStatusObj = "({message:\"Auto download is disabled\", done: true})";
+                    SendDownloadStatusUpdate();
+                }
             }
 
-            AdviceDialog.Show(
-                "DOFNotice",
-                "If you're using DOF (DirectOutput Framework), please make sure you have "
-                + "the latest version. Click the DOF Update link in the Miscellaneous "
-                + "section on the main page for pointers to the latest versions.");
-
-            // we want status reports from the worker thread
-            bgworkerDownload.WorkerReportsProgress = true;
-
-            // set up the background worker to check for .bin file updates
-            if (Program.options["CheckForDownloads"].ToUpper().StartsWith("Y"))
-            {
-                // start an update check
-                StartUpdateCheck();
-            }
-            else
-            {
-                downloadStatusObj = "({message:\"Auto download is disabled\", done: true})";
-                SendDownloadStatusUpdate();
-            }
+            // if the initial page is a relative path, it's a file in the program folder
+            String page = initialPage != null ? initialPage : "html/Top.htm";
+            if (!Regex.IsMatch(page, @"\w+://.*"))
+                page = "file:///" + Path.Combine(Program.programDir, page);
 
             // set up the browser object and navigate to our main menu page
-            webBrowser1.Navigate("file:///" + Path.Combine(Program.programDir, "html/Top.htm"));
+            webBrowser1.Navigate(page);
             webBrowser1.AllowWebBrowserDrop = false;
             webBrowser1.IsWebBrowserContextMenuEnabled = false;
             webBrowser1.WebBrowserShortcutsEnabled = false;
@@ -223,11 +242,31 @@ namespace PinscapeConfigTool
             DeviceInfo dev = GetDeviceByCPUID(devname);
             if (dev != null)
             {
+                // before showing the tester, make sure all ports on the device
+                // are in the default OFF condition
+                AllOutputPortsOff(dev);
+                
+                // flag that the tester is open
                 OutputTesterOpen = true;
-                using (OutputTester dlg = new OutputTester(dev))
+
+                // show the tester as a modal dialog
+                //using (OutputTester dlg = new OutputTester(dev))
+                using (MainSetup dlg = new MainSetup("html/OutputTester.htm?ID=" + devname))
                     dlg.ShowDialog();
+
+                // flag that the tester is closed
                 OutputTesterOpen = false;
+
+                // Turn off any output ports that were activated in the tester
+                AllOutputPortsOff(dev);
             }
+        }
+
+        // turn off all output ports
+        void AllOutputPortsOff(DeviceInfo dev)
+        {
+            // "All ports off" is special request code 5
+            dev.SpecialRequest(5);
         }
 
         // show the IR learning window
@@ -315,8 +354,9 @@ namespace PinscapeConfigTool
                 // for a file that matches the build number according to our naming
                 // convention and placed in the normal download folder.  If the user 
                 // has renamed or moved the file, we won't catch it, so we'll do a
-                // redundant download.  Fortunately the .bin file is puny (about
-                // 60K currently), so this shouldn't bother anyone.
+                // redundant download.  Fortunately the .bin file is small (the
+                // biggest it can be is about 128K, given the size of the KL25Z's
+                // flash memory), so this costs little in time and bandwidth.
                 Match m;
                 if ((m = Regex.Match(bi, @"(?mi)^\s*firmware:\s*(\S+)")).Success
                     && File.Exists(Path.Combine(Program.dlFolder, "Pinscape Controller " + m.Groups[1].Value + ".bin")))
@@ -325,7 +365,7 @@ namespace PinscapeConfigTool
                 // Check the setup tool build version.  If our own build number is
                 // equal or higher, we don't need to download anything.
                 if ((m = Regex.Match(bi, @"(?mi)^\s*setup-tool:\s*(\d+)")).Success
-                    && int.Parse(VersionInfo.BuildNumber) >= int.Parse(m.Groups[1].Value))
+                    && int.Parse(VersionInfo.BuildNumber) >= int .Parse(m.Groups[1].Value))
                     needSetup = false;
             }
 
@@ -562,6 +602,7 @@ namespace PinscapeConfigTool
             "19 plungerFilters {jitterWindowSize:$W,reverseOrientation:$B}",
             "20 plungerBarCode {startPix:$W}",
             "21 TLC59116 {chipMask:$W,SDA:$P,SCL:$P,RESET:$P}",
+            "22 plungerCalRaw {raw0:$W,raw1:$W,raw2:$W}",
             "250[] IRCode3 {codeHi:$D}",
             "251[] IRCode2 {protocol:$B,codeLo:$D}",
             "252[] IRCode1 {flags:$B,keytype:$B,keycode:$B}",
@@ -578,7 +619,8 @@ namespace PinscapeConfigTool
         // accidentally call any of our own internal functionality.
         // This isn't a security issue, as we only load our own pages
         // and our own javascript code into the control; it's just to
-        // clarify the interface and avoid coding errors.
+        // clarify the interface and avoid coding errors.  Javascript
+        // can only access the public members of this interface.
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         [System.Runtime.InteropServices.ComVisibleAttribute(true)]
         public class ScriptInterface
@@ -588,6 +630,12 @@ namespace PinscapeConfigTool
                 this.form = form;
             }
             MainSetup form;
+
+            // close the window
+            public void CloseWindow()
+            {
+                form.Close();
+            }
 
             // check for updates to the config tool
             public bool CheckForProgramUpdates()
@@ -2069,6 +2117,7 @@ namespace PinscapeConfigTool
                             //    3=TLC5940 Out
                             //    4=74HC595 Out
                             //    5=Virtual Out
+                            //    6=TLC59116 Out
                             // The second byte is the port number.  For GPIO pins, this
                             // is a PinName code.  For others, it's simply the index of the
                             // port on the chip.
@@ -2227,6 +2276,73 @@ namespace PinscapeConfigTool
                 // success
                 return "({status:\"ok\",message:\"The IR command was sent.\"})";
             }
+
+            // Send updates to a group of output ports.  The protocol requires
+            // us to send updates in groups of seven ports.  The base port is
+            // given in the logical device port numbering scheme, starting at
+            // port 0.  This must always be a multiple of 7 because of the
+            // way the USB protocol is defined.  The port settings are given
+            // as PWM duty cycles on a linear scale from 0 (fully off) to 255 
+            // (fully on).
+            public void SetOutputPorts(String cpuid, int basePort, byte pwm1, byte pwm2, byte pwm3, byte pwm4, byte pwm5, byte pwm6, byte pwm7)
+            {
+                // get the device
+                DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
+                if (dev != null)
+                {
+                    // Set up the USB message buffer for the 'extended set brightness' 
+                    // command: 
+                    //   byte 0 = 0      -> report ID, always 0
+                    //   byte 1 = 200+n  -> command ID, 200 + port group (group 0 for ports
+                    //                      0-6, group 1 for ports 7-13, etc)
+                    //   byte 2..8       -> brightness level, one byte per port, level 0-255
+                    byte[] buf = new byte[9] { 
+                    0,                          // report ID
+                    (byte)(200 + basePort/7),   // command ID 200 + port group number
+                    pwm1, pwm2, pwm3, pwm4, pwm5, pwm6, pwm7 // PWM values
+                };
+
+                    // send the command
+                    dev.WriteUSB(buf);
+                }
+            }
+
+            // Set/clear night mode
+            public void SetNightMode(String cpuid, bool on)
+            {
+                // get the device
+                DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
+                if (dev != null)
+                {
+                    // send a request to invert the night mode status in the device
+                    byte b = (byte)(on ? 1 : 0);
+                    dev.SpecialRequest(8, new byte[] { b });
+                }
+            }
+
+            // Get night mode status
+            public bool IsNightMode(String cpuid)
+            {
+                // presume night mode is off
+                bool result = false;
+
+                // get the device
+                DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
+                if (dev != null)
+                {
+                    // read a report to get the status
+                    byte[] rpt = dev.ReadStatusReport();
+                    if (rpt != null)
+                    {
+                        // night mode is bit 0x02 of status byte [1]
+                        result = (rpt[1] & 0x02) != 0;
+                    }
+                }
+
+                // return the result
+                return result;
+            }
+
         };
 
         // our script interface object

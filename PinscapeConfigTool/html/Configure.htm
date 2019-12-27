@@ -11,23 +11,11 @@
 <script type="text/javascript" src="jquery-1.12.1.js"></script>
 <script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
 <script type="text/javascript" src="util.js"></script>
+<script type="text/javascript" src="pins.js"></script>
+<script type="text/javascript" src="keycaps.js"></script>
 
 
 <script>
-// Maximum table sizes.  These control the sizes of UI tables we
-// build; they aren't necessarily the actual maximum values that the
-// firmware actually supports.  We build some of our tables out to
-// fixed maximum sizes so that we can pre-build parts of the UI before
-// loading any of the device configuration data, so we have to choose
-// maximum sizes that are likely to be above the actual firmware
-// maxima for the foreseeable future.  It would be better in principle
-// to get the values from the device, but the KL25Z is pretty limited
-// on memory, so the practical limits for most items really can't ever
-// go much higher than they are now.  That lets us simplify our UI
-// initialization work by picking fixed limits in the UI that are high
-// enough that the device will likely never be able to exceed them.
-var MaxOutputs = 128;   // maximum number of feedback device outputs
-var MaxButtons = 128;   // maximum number of buttons
 
 // Configuration sources
 var ConfigSource = {
@@ -35,589 +23,6 @@ var ConfigSource = {
     File: 2,            // configuration saved in a local file
     Factory: 3          // pre-set factory configuration
 };
-
-// Accessible KL25Z GPIO ports.  These are the ports that can be
-// assigned to configurable functions, such as LedWiz outputs, key
-// inputs, and outboard chip connections.  The CPU nominally has 160
-// GPIO lines (five ports of 32 pins each), but only the subset shown
-// below are physically wired to external pins on the Freescale board.
-//
-// Notes:
-//
-// - One additional port, PTC1, is connected to an external pin, but can't
-//   be connected to anything, because it's reserved by the mbed software
-//   as the real-time clock input.  The pin is thus omitted from the list.
-//
-// - PTD0 is exposed as an external pin, but is also hardwired on the
-//   Freescale board to the blue on-board LED.  It *can* be used for an
-//   external device, but doing so will give up control over the blue LED
-//   for status displays.  The blue LED in this case will still turn
-//   on and off according to the electrical state of the pin, since there's
-//   no way to physically disconnect the LED.
-//
-// - PTB18 and PTB19 are included even though they're *not* connected to
-//   external pins.  We include them because they're connected to the
-//   on-board red and green LEDs, respectively, which makes them usable as
-//   LedWiz outputs.  When used this way, the LedWiz output controls the
-//   on-board LED.  These outputs can't be wired to any external devices,
-//   since the ports aren't connected to header pins, but it could be
-//   useful in some cases to connect outputs to the on-board LEDs.  For
-//   example, this can be used as a quick way to test software on the PC
-//   to see if it's talking to the output controller properly.
-//
-// A limited subset of pins are capable of being used as PWM outputs,
-// ADC inputs, or either.  The PWM-capable pins have a "pwm" property in
-// the list below.  Likewise, the ADC-capable pins have an "adc"
-// property.
-//
-// The "pwm" property for PWM-capable pins is in the format
-// "TPM.channel", giving the TPM device number and channel tied to 
-// the pin.  E.g., "2.0" means TPM #2, channel 0.  The TPMs ("Timer/
-// PWM Modules") are the on-board peripherals that actually generate
-// the PWM signals.  The CPU doesn't itself generate the PWM signals;
-// those come from the TPMs.  Each PWM-capable GPIO pin is wired to
-// exactly one TPM channel through the CPU multiplexer (an electrical
-// switching network within the CPU).  The multiplexer makes the TPM
-// connection optional: a PWM-capable pin can be connected to its
-// TPM channel, or it can be connected to something else, such as one
-// of the CPU digital in/out registers.  But this configurability only
-// goes so far: the MUX connection only allows a particular PWM pin to
-// connect to a particular, pre-determined TPM channel.  The association
-// between a given GPIO pin and its assigned TPM channel isn't
-// configurable.  These fixed pin-to-TPM connections are what's
-// shown in the "pwm" properties.  For example, PTA1 can be connected
-// through the MUX to TPM2 channel 0.  There are a total of 10
-// distinct TPM channels connected to exposed GPIO pins.  However,
-// there are more than 10 PWM-capable pins because some exposed TPM
-// channels are connected to more than one GPIO pin.  In such cases,
-// *only one* of the associated pins may be MUXed as a PWM.  For
-// example, TPM2.0 is wired to PTA1, PTB2, PTB18, and PTE22.  Since
-// all four pins map to the same TPM channel, and the TPM channel is
-// what generates the PWM signal for the pins, these four pins can't
-// be controlled as independent PWM outs.  Only *one* of these pins
-// may thus be used at any given time as a PWM out - the rest must be
-// used for some other purpose.  For example, if we assign PTA1 as a
-// PWM out, it means we lose the ability to assign PTB2, PTB18, and
-// PTE22 as PWM outs.  This is why we can only have 10 concurrent PWM
-// outputs with this chip, even though it appears superficially that
-// there are 31 PWM-capable pins.
-//
-// The ADC-capable pins include an "adc" property in the format
-// "module.channel".  E.g., 0.3 means ADC0 channel 3.  There's only
-// one ADC module on the KL25Z, so the module number is always 0, but
-// we include it for the sake of documentation.  The wiring between
-// pins and ADC channels works just like with the PWM channels, so
-// only the pins marked with "adc" can be used as ADC inputs at all,
-// and each one can only be run through its hardwired ADC channel.
-// The ADC setup is simpler than the TPM, though, in that there are
-// no duplicate pin assignments for any ADC channels - meaning that
-// every ADC-capable pin can be assigned as an ADC concurrently,
-// without having to worry about overcommitting module channels.
-//
-// It's important to understand that the "pwm" and "adc" associations
-// in the list below merely *document* the pin-to-channel connections.
-// The entries don't determine them or affect what's connected to what.
-// The connections are physically hard-wired within the CPU and simply
-// can't be changed.  Changing the property values below won't change
-// the way the pins are wired; it will only make the entries in the
-// table wrong.
-//
-var gpioPins = [
-    { name: "PTA1",  pwm: "2.0", interrupt: true },
-    { name: "PTA2",  pwm: "2.1", interrupt: true },
-    { name: "PTA4",  pwm: "0.1", i2c: "1.SDA", interrupt: true },
-    { name: "PTA5",  pwm: "0.2", i2c: "1.SCL", interrupt: true },
-    { name: "PTA12", pwm: "1.0", interrupt: true },
-    { name: "PTA13", pwm: "1.1", interrupt: true },
-    { name: "PTA16", interrupt: true  },
-    { name: "PTA17", interrupt: true  },
-    { name: "PTB0",  pwm: "1.0", adc: "0.8" },
-    { name: "PTB1",  pwm: "1.1", adc: "0.9" },
-    { name: "PTB2",  pwm: "2.0", adc: "0.12" },
-    { name: "PTB3",  pwm: "2.1", adc: "0.13" },
-    { name: "PTB8"   },
-    { name: "PTB9"   },
-    { name: "PTB10"  },
-    { name: "PTB11"  },
-    { name: "PTB18", pwm: "2.0", onBoardLED: 1,
-                     internal: true, internalName: "Red on-board LED", internalShortName: "Red LED",
-                     warning: "This port is hard-wired on the KL25Z to the red on-board LED. "
-                              + "Using this port will supersede the red LED's normal status "
-                              + "display function." },
-    { name: "PTB19", pwm: "2.1", onBoardLED: 2,
-                     internal: true, internalName: "Green on-board LED", internalShortName: "Green LED",
-                     warning: "This port is hard-wired on the KL25Z to the green on-board LED. "
-                              + "Using this port will supersede the green LED's normal status "
-                              + "display function." },
-    { name: "PTC0",  adc: "0.14" },
-    // { name: "PTC1",  pwm: "0.0", adc: "0.15", idc: "1.SCL" }, // omitted - reserved by mbed platform for real-time clock input
-    { name: "PTC2",  pwm: "0.1", adc: "0.11", idc: "1.SDA" },
-    { name: "PTC3",  pwm: "0.2" },
-    { name: "PTC4",  pwm: "0.3" },
-    { name: "PTC5",  spi: "SCLK" },
-    { name: "PTC6",  spi: "MOSI" },
-    { name: "PTC7",  spi: "MISO" },
-    { name: "PTC8",  pwm: "0.4", i2c: "0.SCL" },
-    { name: "PTC9",  pwm: "0.5", i2c: "0.SDA" },
-    { name: "PTC10", i2c: "1.SCL"  },
-    { name: "PTC11", i2c: "1.SDA"  },
-    { name: "PTC12"  },
-    { name: "PTC13"  },
-    { name: "PTC16"  },
-    { name: "PTC17"  },
-    { name: "PTD0",  pwm: "0.0", interrupt: true },
-    { name: "PTD1",  pwm: "0.1", adc: "0.5b", spi: "SCLK", onBoardLED: 3, interrupt: true,
-                     remarks: "Blue on-board LED",
-                     warning: "This port is hard-wired on the KL25Z to the blue on-board LED. "
-                              + "You can use this port for other purposes, but doing so will "
-                              + "supersede the blue LED's normal status display function." },
-    { name: "PTD2",  pwm: "0.2", spi: "MOSI", interrupt: true },
-    { name: "PTD3",  pwm: "0.3", spi: "MISO", interrupt: true },
-    { name: "PTD4",  pwm: "0.4", interrupt: true },
-    { name: "PTD5",  pwm: "0.5", adc: "0.6b", interrupt: true },
-    { name: "PTD6",  adc: "0.7b", interrupt: true },
-    { name: "PTD7",  interrupt: true},
-    { name: "PTE0",  i2c: "1.SDA" },
-    { name: "PTE1",  i2c: "1.SCL" },
-    { name: "PTE2"   },
-    { name: "PTE3"   },
-    { name: "PTE4"   },
-    { name: "PTE5"   },
-    { name: "PTE20", pwm: "1.0", adc: "0.0" },
-    { name: "PTE21", pwm: "1.1", adc: "0.4a" },
-    { name: "PTE22", pwm: "2.0", adc: "0.3" },
-    { name: "PTE23", pwm: "2.1", adc: "0.7a" },
-    { name: "PTE29", pwm: "0.2", adc: "0.4b" },
-    { name: "PTE30", pwm: "0.3", adc: "0.23" },
-    { name: "PTE31", pwm: "0.4" }
-];
-
-// build a hash of the pin table indexed by name
-var gpioPinsByName = { };
-for (var i = 0 ; i < gpioPins.length ; ++i)
-    gpioPinsByName[gpioPins[i].name] = gpioPins[i];
-
-// get the jumper location for a given pin
-function pinToJumper(pin)
-{
-    var g = gpioPinsByName[pin] || {};
-    return g.internalShortName || (g.pin || {}).name;
-}
-
-// Extract the TPM unit from a PWM channel name.  Channel
-// names are in the format "1.2", where 1 is the TPM unit
-// number and 2 is the channel number.  We pull out just
-// the TPM unit number ("1" in this case).
-function pwmToTpm(pwm)
-{
-    return /(\d+)\.\d+/.test(pwm) ? RegExp.$1 : null;
-}
-
-// build a hash of PWM channels and the associated pins
-var pwmChannels = { };
-var tpmUnits = { };
-for (var i = 0 ; i < gpioPins.length ; ++i)
-{
-    var g = gpioPins[i];
-    if (g.pwm)
-    {
-        var t = pwmChannels[g.pwm];
-        if (!t)
-            pwmChannels[g.pwm] = t = {
-                name: g.pwm,
-                orList: function() { return serialComma($.map(this.pins, function(ele) { return ele.name; }), "or"); },
-                pins: []
-            };
-        t.pins.push(g);
-
-        var tpm = pwmToTpm(g.pwm);
-        if (!(t = tpmUnits[tpm]))
-        {
-            tpmUnits[tpm] = t = {
-                name: tpm,
-                orList: function() { return serialComma($.map(this.pins, function(ele) { return ele.name; }), "or"); },
-                pins: []
-            };
-        }
-        t.pins.push(g);
-    }
-}
-
-// KL25Z pin headers
-var kl25z_headers = {
-    "J1": {
-        pins: [["PTC7", "PTC0", "PTC3", "PTC4",  "PTC5", "PTC6", "PTC10", "PTC11"],
-               ["PTA1", "PTA2", "PTD4", "PTA12", "PTA4", "PTA5", "PTC8",  "PTC9"]],
-        type: "pinheader",
-        pin1: [26, 88],
-        pinN: [14, 174]
-    },
-    "J2": {
-        pins: [["PTC12", "PTC13", "PTC16", "PTC17", "PTA16", "PTA17", "PTE31", "NC",    "PTD6", "PTD7"],
-               ["PTA13", "PTD5",  "PTD0",  "PTD2",  "PTD3",  "PTD1",  "GND",   "VREFH", "PTE0", "PTE1"]],
-        type: "pinheader",
-        pin1: [26, 194],
-        pinN: [14, 306]
-    },
-    "J9": {
-        pins: [["PTB8",    "PTB9", "PTB10", "PTB11", "PTE2",  "PTE3", "PTE4", "PTE5"],
-               ["SDA_PTD", "P3V3", "RESET", "P3V3",  "USB5V", "GND",  "GND",  "VIN"]],
-        type:   "pinheader",
-        pin1: [238, 262],
-        pinN: [250, 175]
-    },
-    "J10": {
-        pins: [["PTE20", "PTE21", "PTE22", "PTE23", "PTE29", "PTE30"],
-               ["PTB0",  "PTB1",  "PTB2",  "PTB3",  "PTC2",  "CLKIN"]],
-        type: "pinheader",
-        pin1: [238, 150],
-        pinN: [250, 88]
-    },
-
-    // fake header representing the internal LED connections
-    "LED": {
-        pins: [["PTB18", "PTB19"]],
-        type: "pinheader",
-        pin1: [163, 137],
-        pinN: [163, 152]
-    }
-};
-
-// TLC5940 pins
-var tlc5940_pins = {
-    pins: ["OUT1",  "OUT2", "OUT3", "OUT4",  "OUT5",  "OUT6", "OUT7", "OUT8", "OUT9",  "OUT10", "OUT11", "OUT12", "OUT13", "OUT14",
-           "OUT15", "XERR", "SOUT", "GSCLK", "DCPRG", "IREF", "VCC",  "GND",  "BLANK", "XLAT",  "SCLK",  "SIN",   "VPRG",  "OUT0"],
-    type: "dip",
-    pin1: [73, 46],
-    pinN: [197, 368]
-};
-
-// 74HC595 pins
-var hc595_pins = {
-    pins: ["OUT1",  "OUT2", "OUT3", "OUT4",  "OUT5",  "OUT6", "OUT7", "GND",
-           "OUT7'", "RST",  "SCLK", "LATCH", "ENA",   "SIN",  "OUT0", "VCC"],
-    type: "dip",
-    pin1: [85, 99],
-    pinN: [188, 337]
-};
-
-// TLC59116 pins
-var tlc59116_pins = {
-    pins: ["REXT", "A0",   "A1",    "A2",    "A3",  "OUT0",  "OUT1",  "OUT2",  "OUT3",  "GND", "OUT4",  "OUT5", "OUT6", "OUT7",
-           "OUT8", "OUT9", "OUT10", "OUT11", "GND", "OUT12", "OUT13", "OUT14", "OUT15", "GND", "RESET", "SCL",  "SDA",  "VCC"],
-    type: "dip",
-    pin1: [73, 46],
-    pinN: [197, 368]
-};
-
-// Expansion board - main board headers
-var mainBoard_headers = {
-    "JP12": {
-        pins: [["PTC4", "PTC0"],
-               ["PTC3", "PTA2"]],
-        type: "pinheader",
-        pin1: [217, 76],
-        pinN: [226, 67],
-        orientation: "horizontal"
-    },
-
-    "JP11": {
-        pins: [["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "+5V"],
-               ["3.0", "3.1", "3.2",  "3.3",  "3.4",  "3.5",  "3.6",  "3.7"]],
-        type: "pinheader",
-        pin1: [91, 137],
-        pinN: [82, 77]
-    },
-
-    "JP8": {
-        pins: [["3.16", "3.17", "3.18", "3.19", "3.20", "3.21", "3.28", "3.29", "3.30"],
-               ["3.22", "3.23", "3.24", "3.25", "3.26", "3.27", "3.31", "NC", "+5V"]],
-        type: "pinheader",
-        pin1: [327, 152],
-        pinN: [318, 83]
-    },
-
-    "JP3": {
-        pins: [["PTE23", "LED+"],   // JP3-3 = LED+ = +5V; JP3-1 = Cal Btn LED- = open collector switched by PTE23
-               ["PTE29", "GND"]],   // JP3-2 = Cal Btn = direct connection to PTE29
-        type: "pinheader",
-        orientation: "horizontal",
-        pin1: [239, 336],
-        pinN: [231, 345]
-    },
-    
-    "JP2": {
-        pins: [["PTB0", "PTE21", "3.3V", "5V"],
-               ["NC",   "PTE22", "GND",  "PTE20"]],
-        type: "pinheader",
-        pin1: [206, 336],
-        pinN: [181, 345]
-    },
-    
-    "JP1": {
-        pins: [["PTC2", "PTB2", "PTE30", "PTE5", "PTE3", "PTB11", "PTB9", "PTC12", "PTC16", "PTA16", "PTE31", "PTD7", "NC"],
-               ["PTB3", "PTB1", "PTC11", "PTE4", "PTE2", "PTB10", "PTB8", "PTC13", "PTC17", "PTA17", "PTD6",  "PTE1", "COMMON"]],
-        type: "pinheader",
-        pin1: [144, 337],
-        pinN: [43, 346]
-    },
-
-    "JP9": {
-        pins: [["PTC8", "3.15"]],
-        type: "pinheader",
-        pin1: [190, 71],
-        pinN: [199, 71]
-    }
-
-    // JP6 - PWM OUT.  For reference only; none of these pins
-    // can be assigned as inputs or outputs
-    //"JP6": {
-    //    pins: [["SOUT", "SCLK", "XLAT", "BLANK", "GSCLK"],
-    //           ["GND",  "GND",  "GND",  "GND",   "NC"]],
-    //    type: "pinheader",
-    //    pin1: [320, 214],
-    //    pinN: [328, 249]
-    //},
-
-    // JP5 - Chime Out.  For reference only; these pins aren't
-    // assignable as inputs or outputs.
-    //"JP5": {
-    //    pins: [["SOUT", "SCLK", "LATCH", "ENA", "3.3V"],
-    //           ["NC",   "GND",  "GND",   "GND", "GND"]],
-    //    type: "pinheader",
-    //    pin1: [319, 285],
-    //    pinN: [328, 320]
-    //},
-
-    // JP4 - TV switches.  For reference only; these pins can't
-    // be assigned as inputs or outputs.
-    //"JP4": {
-    //    pins: [["TV1",  "TV2",  "IR+"],      // JP4-5 = IR+ = 5V
-    //           ["TV1",  "TV2",  "PTC9"]],    // JP4-6 = IR- = open collector switched by PTC9
-    //    type: "pinheader",
-    //    pin1: [275, 309],
-    //    pinN: [258, 317]
-    //},
-};
-
-var powerBoard_headers = {
-    "JP5": {
-        pins: [["3.32", "3.33", "3.34", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43", "3.44", "3.45", "3.46", "3.47"]],
-        type: "pinheader",
-        pin1: [97, 49],
-        pinN: [225, 49]
-    },
-    
-    "JP6": {
-        pins: [["3.48", "3.49", "3.50", "3.51", "3.52", "3.53", "3.54", "3.55", "3.56", "3.57", "3.58", "3.59", "3.60", "3.61", "3.62", "3.63"]],
-        type: "pinheader",
-        pin1: [97, 361],
-        pinN: [225, 361]
-    }
-
-    // for reference only - these pins aren't assignable
-    //"JP2": {
-    //    pins: [["SIN",  "SCLK", "XLAT", "BLANK", "GSCLK"],
-    //           ["GND",  "GND",  "GND",  "GND",   "GND"]],
-    //    type: "pinheader",
-    //    pin1: [318, 212],
-    //    pinN: [327, 246]
-    //},
-    //"JP3": {
-    //    pins: [["SOUT", "SCLK", "XLAT", "BLANK", "GSCLK"],
-    //           ["GND",  "GND",  "GND",  "GND",   "GND"]],
-    //    type: "pinheader",
-    //    pin1: [318, 292],
-    //    pinN: [327, 327]
-    //}
-};
-
-var chimeBoard_headers = {
-    "JP9": {
-        pins: [["4.0", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7"]],
-        type: "pinheader",
-        pin1: [113, 68],
-        pinN: [174, 68]
-    }
-
-    // for reference only - these pins aren't assignable
-    //"JP2": {
-    //    pins: [["SOUT", "SCLK", "LATCH", "ENA", "3.3V"],
-    //           ["NC",   "GND",  "GND",   "GND", "GND"]],
-    //    type: "pinheader",
-    //    pin1: [319, 224],
-    //    pinN: [328, 259]
-    //},
-    //"JP3": {
-    //    pins: [["SIN",  "SCLK", "LATCH", "ENA", "3.3V"],
-    //           ["NC",   "GND",  "GND",   "GND", "GND"]],
-    //    type: "pinheader",
-    //    pin1: [319, 299],
-    //    pinN: [328, 334]
-    //}
-};
-
-// Iterate over a pin header object.  Calls func(name, x, y), where
-// 'name' is the pin name, 'n' is the pin number (starting at 1), and
-// 'x' and 'y' give the spatial coordinates.
-function forEachPin(header, func)
-{
-    ({ "dip": forEachDIPPin, "pinheader": forEachHeaderPin })[header.type](header, func);
-}
-
-// DIP IC chip pins are conventionally arranged clockwise around
-// the chip, starting with pin 1 at the lower left:
-//
-//   n n-1 n-2 ... n/2+1
-//   1 2   3   ... n/2
-//
-// Chips can of course be rotated on the board.  We allow rotations
-// in 90 degree increments.  We infer the orientation from the
-// positions of the first pin and diametrically opposed pins, given
-// by properties pin1=[x,y] and pinN=[x,y].  The pin positions are
-// given as image-relative coordinates of the centers of the
-// respective pins.  Note that pinN isn't the highest numbered pin:
-// it's actually the diametrically opposed pin, so the first pin
-// in the second row at pin number n/2+1.
-function forEachDIPPin(chip, func)
-{
-    // get the number of pins, and the number on each side (it's a DIP,
-    // so there are exactly two rows of pins)
-    var npins = chip.pins.length;
-    var oneSidePins = npins/2;
-
-    // get the pin 1 location (pin1=[x,y] position of center of pin 1)
-    var x1 = chip.pin1[0];
-    var y1 = chip.pin1[1];
-
-    // get the last pin location (pinN=[x,y] position of center of last pin)
-    var xN = chip.pinN[0];
-    var yN = chip.pinN[1];
-
-    // Infer the orientation.  If pin1 is at the lower left or upper right,
-    // it's horizontal, otherwise it's vertical.
-    var horizontal = ((x1 < xN && y1 > yN) || (x1 > xN && y1 < yN));
-
-    // figure the iteration increments
-    var pindx = 0, pindy = 0, rowdx = 0, rowdy = 0;
-    if (horizontal)
-    {
-        if (oneSidePins > 1) pindx = (xN - x1)/(oneSidePins - 1);
-        rowdy = yN - y1;
-    }
-    else
-    {
-        if (oneSidePins > 1) pindy = (yN - y1)/(oneSidePins - 1);
-        rowdx = xN - x1;
-    }
-
-    // go up the first row, starting at pin 1
-    var pins = chip.pins;
-    var x = x1, y = y1;
-    for (var pin = 0 ; pin < oneSidePins ; ++pin, x += pindx, y += pindy)
-        func(pins[pin], pin, x, y);
-
-    // go down the second row, reversing direction
-    for (x += rowdx, y += rowdy, x -= pindx, y -= pindy ; pin < npins ; ++pin, x -= pindx, y -= pindy)
-        func(pins[pin], pin, x, y);
-}
-
-// Pin headers are arranged into rows and columns, where the
-// row is the long dimension.  E.g., a 2x10 header has 2 rows
-// of 10 pins, and a 3x15 has 3 rows of 15 pins.
-//
-// We use a zig-zag numbering scheme.  Pin 1 is always at
-// one corner.  Pin 2 is the next pin in the same column.
-// Continue numbering up the column until reaching the last
-// pin, then go back to the next pin in the starting row.
-// Repeat until done.
-//
-// This conventional is pretty universal, but the headers
-// can of course be rotated, and they can also be mirrored.
-// We allow for four rotations, at right angles.
-//
-// header.pins = [[row1], [row2], [row3]...] - pin name strings
-// header.pin1 = [x,y] - center coordinates of pin 1, relative to image
-// header.pinN = [x,y] - center coordinates of LAST pin, relative to image
-//
-// Important: the pin1 and pinN positions are the coordinates
-// of the centers of the respective pins, not of the header
-// plastic or shroud.  Also, note that the property name pinN
-// is literal - the N isn't meant to be replaced with a number,
-// it's just a literal N.
-//
-// For reference, here are the standard numbering layouts in
-// the cardinal rotations.  In most cases, we can work out the
-// orientation on our own, by noting which dimension (x or y)
-// is longer - the long dimension is the row.  The exception
-// is when the pin array is square, such as a 2x2.  In this
-// case, we need to know whether it's a horizontal or vertical
-// orientation.  Set header.orientation to "horizontal" or
-// "vertical" in this case to tell us which it is.  (You can
-// set that in all cases, and it'll override our inference if
-// set, but it's easier to omit it when not necessary.)
-//
-//            0 deg        90 deg      180 deg     270 deg
-//
-//                           6 5                     1 2
-//            2 4 6          4 3        5 3 1        3 4
-//  normal    1 3 5          2 1        6 4 2        5 6
-//
-//                           2 1                     5 6
-//            6 4 2          4 3        1 3 5        3 4
-//  mirror    5 3 1          6 5        2 5 6        1 2
-//
-function forEachHeaderPin(header, func)
-{
-    // get the number of pin rows in this header, and number of pins in each row
-    var nrows = header.pins.length;
-    var npins = header.pins[0].length;
-
-    // get the pin 1 location (header.pin1 = [x,y])
-    var x1 = header.pin1[0];
-    var y1 = header.pin1[1];
-
-    // get the position of the last pin (pinN)
-    var xN = header.pinN[0];
-    var yN = header.pinN[1];
-
-    // figure the orientation - user the header.orientation setting if provided,
-    // of infer it from which dimension is longer
-    var wid = Math.abs(x1 - xN);
-    var ht = Math.abs(y1 - yN);
-    var orientation = header.orientation || (wid > ht ? "horizontal" : "vertical");
-
-    // figure the column (pin) and row increments for the iteration
-    var rowdx = 0, rowdy = 0, pindx = 0, pindy = 0;
-    if (orientation == "horizontal")
-    {
-        // horizontal
-        if (npins > 1) pindx = (xN - x1)/(npins - 1);
-        if (nrows > 1) rowdy = (yN - y1)/(nrows - 1);
-    }
-    else
-    {
-        // vertical
-        if (npins > 1) pindy = (yN - y1)/(npins - 1);
-        if (nrows > 1) rowdx = (xN - x1)/(nrows - 1);
-    }
-
-    // start at pin 1
-    var xrow = x1, yrow = y1;
-
-    // process each row
-    for (var row = 0 ; row < nrows ; ++row, xrow += rowdx, yrow += rowdy)
-    {
-        // start at the first pin of the row
-        var pinno = row+1;
-        var x = xrow, y = yrow;
-        var pinrow = header.pins[row];
-        
-        // process each pin in the row
-        for (var pin = 0 ; pin < npins ; ++pin, x += pindx, y += pindy, pinno += nrows)
-            func(pinrow[pin], pinno, x, y);
-    }
-}
 
 </script>
 
@@ -725,460 +130,6 @@ function forEachHeaderPin(header, func)
       </div>
 
       <script>
-
-// Factory configuration for the stand-alone KL25Z (no expansion boards)
-var standaloneFactoryConfig = {
-    expansionBoards: {
-        version: "0",
-        ext0: "0",
-        ext1: "0",
-        ext2: "0"
-    },
-    calButtonPins: {
-        enabled: 0x03,
-        button: "PTE29",
-        led: "PTE23"
-    },
-    TVon: {
-        statusPin: "NC",
-        latchPin: "NC",
-        relayPin: "NC",
-        delay: 0
-    },
-    TLC5940: {
-        nchips: 0,
-        SIN: "PTC6",
-        SCLK: "PTC5",
-        XLAT: "PTC10",
-        BLANK: "PTC7",
-        GSCLK: "PTA1"
-    },
-    HC595: {
-        nchips: 0,
-        SIN: "PTA5",
-        SCLK: "PTA4",
-        LATCH: "PTA12",
-        ENA: "PTD4"
-    },
-    TLC59116: {
-        chipMask: 0,
-        SDA: "NC",
-        SCL: "NC",
-        RESET: "NC"
-    },
-    ZBLaunchBall: {
-        port: 0,
-        keytype: 2,             // keyboard key
-        keycode: 0x28,          // Enter key
-        pushDistance: 63        // .063" ~ 1/16"
-    },
-    buttons: {
-        // use the defaults from earlier versions, where everything was mapped to joystick buttons
-        1:  { pin: "PTC2",  keytype: 1, keycode: 1, flags: 0 },
-        2:  { pin: "PTB3",  keytype: 1, keycode: 2, flags: 0 },
-        3:  { pin: "PTB2",  keytype: 1, keycode: 3, flags: 0 },
-        4:  { pin: "PTB1",  keytype: 1, keycode: 4, flags: 0 },
-        5:  { pin: "PTE30", keytype: 1, keycode: 5, flags: 0 },
-        6:  { pin: "PTE22", keytype: 1, keycode: 6, flags: 0 },
-        7:  { pin: "PTE5",  keytype: 1, keycode: 7, flags: 0 },
-        8:  { pin: "PTE4",  keytype: 1, keycode: 8, flags: 0 },
-        9:  { pin: "PTE3",  keytype: 1, keycode: 9, flags: 0 },
-        10: { pin: "PTE2",  keytype: 1, keycode: 10, flags: 0 },
-        11: { pin: "PTB11", keytype: 1, keycode: 11, flags: 0 },
-        12: { pin: "PTB10", keytype: 1, keycode: 12, flags: 0 },
-        13: { pin: "PTB9",  keytype: 1, keycode: 13, flags: 0 },
-        14: { pin: "PTB8",  keytype: 1, keycode: 14, flags: 0 },
-        15: { pin: "PTC12", keytype: 1, keycode: 15, flags: 0 },
-        16: { pin: "PTC13", keytype: 1, keycode: 16, flags: 0 },
-        17: { pin: "PTC16", keytype: 1, keycode: 17, flags: 0 },
-        18: { pin: "PTC17", keytype: 1, keycode: 18, flags: 0 },
-        19: { pin: "PTA16", keytype: 1, keycode: 19, flags: 0 },
-        20: { pin: "PTA17", keytype: 1, keycode: 20, flags: 0 },
-        21: { pin: "PTE31", keytype: 1, keycode: 21, flags: 0 },
-        22: { pin: "PTD6",  keytype: 1, keycode: 22, flags: 0 },
-        23: { pin: "PTD7",  keytype: 1, keycode: 23, flags: 0 },
-        24: { pin: "PTE1",  keytype: 1, keycode: 24, flags: 0 }
-    },
-    outputs: {
-        1: { port: { type: 1, pin: "PTA1" }, flags: 0x00 },     // port 1  = PTA1 (PWM)
-        2: { port: { type: 1, pin: "PTA2" }, flags: 0x00 },     // port 2  = PTA2 (PWM)
-        3: { port: { type: 1, pin: "PTD4" }, flags: 0x00 },     // port 3  = PTD4 (PWM)
-        4: { port: { type: 1, pin: "PTA12" }, flags: 0x00 },    // port 4  = PTA12 (PWM)
-        5: { port: { type: 1, pin: "PTA4" }, flags: 0x00 },     // port 5  = PTA4 (PWM)
-        6: { port: { type: 1, pin: "PTA5" }, flags: 0x00 },     // port 6  = PTA5 (PWM)
-        7: { port: { type: 1, pin: "PTA13" }, flags: 0x00 },    // port 7  = PTA13 (PWM)
-        8: { port: { type: 1, pin: "PTD5" }, flags: 0x00 },     // port 8  = PTD5 (PWM)
-        9: { port: { type: 1, pin: "PTD0" }, flags: 0x00 },     // port 9  = PTD0 (PWM)
-        10: { port: { type: 2, pin: "PTD3" }, flags: 0x00 },    // port 10 = PTD3 (PWM)
-        11: { port: { type: 2, pin: "PTD2" }, flags: 0x00 },    // port 11 = PTD2 (Digital)
-        12: { port: { type: 2, pin: "PTC8" }, flags: 0x00 },    // port 12 = PTC8 (Digital)
-        13: { port: { type: 2, pin: "PTC9" }, flags: 0x00 },    // port 13 = PTC9 (Digital)
-        14: { port: { type: 2, pin: "PTC7" }, flags: 0x00 },    // port 14 = PTC7 (Digital)
-        15: { port: { type: 2, pin: "PTC0" }, flags: 0x00 },    // port 15 = PTC0 (Digital)
-        16: { port: { type: 2, pin: "PTC3" }, flags: 0x00 },    // port 16 = PTC3 (Digital)
-        17: { port: { type: 2, pin: "PTC4" }, flags: 0x00 },    // port 17 = PTC4 (Digital)
-        18: { port: { type: 2, pin: "PTC5" }, flags: 0x00 },    // port 18 = PTC5 (Digital)
-        19: { port: { type: 2, pin: "PTC6" }, flags: 0x00 },    // port 19 = PTC6 (Digital)
-        20: { port: { type: 2, pin: "PTC10" }, flags: 0x00 },   // port 20 = PTC10 (Digital)
-        21: { port: { type: 2, pin: "PTC11" }, flags: 0x00 },   // port 21 = PTC11 (Digital)
-        22: { port: { type: 2, pin: "PTE0" }, flags: 0x00 }     // port 22 = PTE0 (Digital)
-    }
-};
-var standaloneFactoryXConfig = { };
-
-// Factory configuration for the expansion boards
-var expansionBoardFactoryConfig = {
-    expansionBoards: {
-        version: "0",
-        ext0: "1",
-        ext1: "1",
-        ext2: "0"
-    },
-    calButtonPins: {
-        enabled: 0x03,
-        button: "PTE29",
-        led: "PTE23"
-    },
-    TVon: {
-        statusPin: "PTD2",
-        latchPin: "PTE0",
-        relayPin: "PTD3",
-        delay: 700
-    },
-    TLC5940: {
-        SIN: "PTC6",
-        SCLK: "PTC5",
-        XLAT: "PTC10",
-        BLANK: "PTC7",
-        GSCLK: "PTA1"
-    },
-    HC595: {
-        SIN: "PTA5",
-        SCLK: "PTA4",
-        LATCH: "PTA12",
-        ENA: "PTD4"
-    },
-    TLC59116: {
-        chipMask: 0,
-        SDA: "NC",
-        SCL: "NC",
-        RESET: "NC"
-    },
-    ZBLaunchBall: {
-        port: 0,
-        keytype: 2,             // keyboard key
-        keycode: 0x28,          // Enter key
-        pushDistance: 63        // .063" ~ 1/16"
-    },
-    IRRemote: {
-        sensorPin: "PTA13",
-        ledPin: "PTC9"
-    },
-    buttons: {
-        // for expansion board mode, use keyboard mappings for the standard VP and VPinMAME keys
-        1:  { pin: "PTC2",  keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
-        2:  { pin: "PTB3",  keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
-        3:  { pin: "PTB2",  keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
-        4:  { pin: "PTB1",  keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
-        5:  { pin: "PTE30", keytype: 2, keycode: 0x23, flags: 0 },  // "6" = coin 4
-        6:  { pin: "PTC11", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
-        7:  { pin: "PTE5",  keytype: 2, keycode: 0x29, flags: 0 },  // Escape = exit
-        8:  { pin: "PTE4",  keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
-        9:  { pin: "PTE3",  keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
-        10: { pin: "PTE2",  keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper
-        11: { pin: "PTB11", keytype: 2, keycode: 0xE0, flags: 0 },  // left control = left magna
-        12: { pin: "PTB10", keytype: 2, keycode: 0xE4, flags: 0 },  // right control = right magna 
-        13: { pin: "PTB9",  keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
-        14: { pin: "PTB8",  keytype: 2, keycode: 0x4A, flags: 0 },  // Home = slam tilt switch
-        15: { pin: "PTC12", keytype: 2, keycode: 0x2C, flags: 0 },  // Space = keyboard nudge
-        16: { pin: "PTC13", keytype: 2, keycode: 0x4D, flags: 0 },  // "End" = coin door
-        17: { pin: "PTC16", keytype: 2, keycode: 0x24, flags: 0 },  // "7" = service escape
-        18: { pin: "PTC17", keytype: 2, keycode: 0x25, flags: 0 },  // "8" = service down/-
-        19: { pin: "PTA16", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
-        20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
-        21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
-        22: { pin: "PTD6",  keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
-        23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
-        24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
-    },
-    outputs: {
-        // Map the first 16 ports to the flashers & strobe on TLC5940 #1.
-        // These are among the most common devices, so we want to map them
-        // into the first 32 logical port numbers for LedWiz compatibility.
-        1:  { port: { type: 3, pin: 0  }, flags: 0x04 },
-        2:  { port: { type: 3, pin: 1  }, flags: 0x04 },
-        3:  { port: { type: 3, pin: 2  }, flags: 0x04 },
-        4:  { port: { type: 3, pin: 3  }, flags: 0x04 },
-        5:  { port: { type: 3, pin: 4  }, flags: 0x04 },
-        6:  { port: { type: 3, pin: 5  }, flags: 0x04 },
-        7:  { port: { type: 3, pin: 6  }, flags: 0x04 },
-        8:  { port: { type: 3, pin: 7  }, flags: 0x04 },
-        9:  { port: { type: 3, pin: 8  }, flags: 0x04 },
-        10: { port: { type: 3, pin: 9  }, flags: 0x04 },
-        11: { port: { type: 3, pin: 10 }, flags: 0x04 },
-        12: { port: { type: 3, pin: 11 }, flags: 0x04 },
-        13: { port: { type: 3, pin: 12 }, flags: 0x04 },
-        14: { port: { type: 3, pin: 13 }, flags: 0x04 },
-        15: { port: { type: 3, pin: 14 }, flags: 0x04 },
-        16: { port: { type: 3, pin: 15 }, flags: 0x04 },
-
-        // Map port 17 to the knocker output, since it shares the jumper with the
-        // strobe on output 16 - that makes these two physically adjacent outputs
-        // logically adjacent in the port mapping.  Knockers are also quite common,
-        // so this belongs in the first 32 ports anyway.  Mark it as noisy.
-        17: { port: { type: 2, pin: "PTC8"}, flags: 0x02 },
-
-        // Map the next 32 ports to the outputs from the first power board.  These
-        // are TLC5940 chips #3 and #4 in the daisy chain (the main board has #1
-        // and #2).  This mapping will provide an additional 15 general-purpose 
-        // outputs that are accessible through the legacy LedWiz protocol, plus 17
-        // more that aren't (because the ports are numbered 33 and up).  Once we
-        // get above port 32 (the highest LedWiz-compatible port number), there are
-        // no external constraints on port numbering, so we might as well just keep
-        // going with contiguous port numbering for the remaining power board outputs.
-        // This gives us consecutive DOF numbering for all 32 outputs on the board.
-        //
-        // These are general-purpose outputs, so don't use gamma.
-        18: { port: { type: 3, pin: 32 }, flags: 0x00 },
-        19: { port: { type: 3, pin: 33 }, flags: 0x00 },
-        20: { port: { type: 3, pin: 34 }, flags: 0x00 },
-        21: { port: { type: 3, pin: 35 }, flags: 0x00 },
-        22: { port: { type: 3, pin: 36 }, flags: 0x00 },
-        23: { port: { type: 3, pin: 37 }, flags: 0x00 },
-        24: { port: { type: 3, pin: 38 }, flags: 0x00 },
-        25: { port: { type: 3, pin: 39 }, flags: 0x00 },
-        26: { port: { type: 3, pin: 40 }, flags: 0x00 },
-        27: { port: { type: 3, pin: 41 }, flags: 0x00 },
-        28: { port: { type: 3, pin: 42 }, flags: 0x00 },
-        29: { port: { type: 3, pin: 43 }, flags: 0x00 },
-        30: { port: { type: 3, pin: 44 }, flags: 0x00 },
-        31: { port: { type: 3, pin: 45 }, flags: 0x00 },
-        32: { port: { type: 3, pin: 46 }, flags: 0x00 },
-        33: { port: { type: 3, pin: 47 }, flags: 0x00 },
-        34: { port: { type: 3, pin: 48 }, flags: 0x00 },
-        35: { port: { type: 3, pin: 49 }, flags: 0x00 },
-        36: { port: { type: 3, pin: 50 }, flags: 0x00 },
-        37: { port: { type: 3, pin: 51 }, flags: 0x00 },
-        38: { port: { type: 3, pin: 52 }, flags: 0x00 },
-        39: { port: { type: 3, pin: 53 }, flags: 0x00 },
-        40: { port: { type: 3, pin: 54 }, flags: 0x00 },
-        41: { port: { type: 3, pin: 55 }, flags: 0x00 },
-        42: { port: { type: 3, pin: 56 }, flags: 0x00 },
-        43: { port: { type: 3, pin: 57 }, flags: 0x00 },
-        44: { port: { type: 3, pin: 58 }, flags: 0x00 },
-        45: { port: { type: 3, pin: 59 }, flags: 0x00 },
-        46: { port: { type: 3, pin: 60 }, flags: 0x00 },
-        47: { port: { type: 3, pin: 61 }, flags: 0x00 },
-        48: { port: { type: 3, pin: 62 }, flags: 0x00 },
-        49: { port: { type: 3, pin: 63 }, flags: 0x00 },
-
-        // Map the main board flipper button light/small LED outputs next.
-        // These are the 16 outputs from the TLC5940 #2.  Flipper button
-        // lights aren't among the most common toys, so we deliberately
-        // map these in the high number range (where old LedWiz software
-        // won't be able to access them) to make room for more common toys
-        // in the LedWiz range.
-        //
-        // These are meant for LEDs, so use gamma by default.
-        50: { port: { type: 3, pin: 16 }, flags: 0x04 },
-        51: { port: { type: 3, pin: 17 }, flags: 0x04 },
-        52: { port: { type: 3, pin: 18 }, flags: 0x04 },
-        53: { port: { type: 3, pin: 19 }, flags: 0x04 },
-        54: { port: { type: 3, pin: 20 }, flags: 0x04 },
-        55: { port: { type: 3, pin: 21 }, flags: 0x04 },
-        56: { port: { type: 3, pin: 22 }, flags: 0x04 },
-        57: { port: { type: 3, pin: 23 }, flags: 0x04 },
-        58: { port: { type: 3, pin: 24 }, flags: 0x04 },
-        59: { port: { type: 3, pin: 25 }, flags: 0x04 },
-        60: { port: { type: 3, pin: 26 }, flags: 0x04 },
-        61: { port: { type: 3, pin: 27 }, flags: 0x04 },
-        62: { port: { type: 3, pin: 28 }, flags: 0x04 },
-        63: { port: { type: 3, pin: 29 }, flags: 0x04 },
-        64: { port: { type: 3, pin: 30 }, flags: 0x04 },
-        65: { port: { type: 3, pin: 31 }, flags: 0x04 }
-    }
-};
-var expansionBoardFactoryXConfig = { };
-
-// fill out the factory defaults for the maximum output and button table sizes
-(function() {
-    function fill(d) {
-        for (var i = 1 ; i <= MaxButtons ; ++i) {
-            if (!(i in d.buttons)) {
-                d.buttons[i] = { pin: "NC", keytype: 0, keycode: 0, flags: 0 };
-            }
-        }
-        for (var i = 1 ; i <= MaxOutputs ; ++i) {
-            if (!(i in d.outputs)) {
-                d.outputs[i] = { port: { type: 0, pin: 0 } };
-            }
-        }
-    }
-    fill(expansionBoardFactoryConfig);
-    fill(standaloneFactoryConfig);
-})();
-    
-// Output Port Aliases.  This is a table of port name aliases for
-// expansion boards.  With the base configuration, we show output
-// port names in raw hardware terms - i.e., the physical pins on
-// the KL25Z or peripheral chips such as TLC5940's.  When an expansion
-// board is used, the user does all of the wiring through the board
-// headers, so we substitute the header pin locations in our displays.
-// This table maps from hardware pins to the alias strings.  The keys
-// are strings in the form "type.pin", where 'type' is the pin type
-// number used in the USB setup messages (1 for KL25Z PWM GPIO, etc)
-// and 'pin' is the internal pin name ("PTxx" for GPIO ports, or a
-// port number from 0 to N for peripheral chips).
-//
-// Format of each entry:
-//
-//   Descriptive name|Output type description|Board name|JPx-y|xxxxOutputSelector
-//
-var outPortAlias = { };
-
-// GPIO Port Aliases.  This is similar to the outPortAlias table,
-// but covers only GPIO ports (no peripheral ports), and covers all
-// GPIO ports used for any purpose, including inputs, outputs, and
-// control connections to peripherals.
-//
-// Format:
-//
-//   Descriptive name|JPx-y or Internal
-//
-var gpioPortAlias = { };
-
-// build the expansion board out port alias table
-var expOutPortAlias, expGpioPortAlias;
-(function()
-{
-    var o = {
-        "3.15":   "Strobe|PWM Mid Power|Main Board|JP9-1|mainBoardPWMOutputSelector",
-
-        "3.0":    "Flasher 1R|PWM Mid Power|Main Board|JP11-2|mainBoardPWMOutputSelector",
-        "3.1":    "Flasher 1G|PWM Mid Power|Main Board|JP11-4|mainBoardPWMOutputSelector",
-        "3.2":    "Flasher 1B|PWM Mid Power|Main Board|JP11-6|mainBoardPWMOutputSelector",
-        "3.3":    "Flasher 2R|PWM Mid Power|Main Board|JP11-8|mainBoardPWMOutputSelector",
-        "3.4":    "Flasher 2G|PWM Mid Power|Main Board|JP11-10|mainBoardPWMOutputSelector",
-        "3.5":    "Flasher 2B|PWM Mid Power|Main Board|JP11-12|mainBoardPWMOutputSelector",
-        "3.6":    "Flasher 3R|PWM Mid Power|Main Board|JP11-14|mainBoardPWMOutputSelector",
-        "3.7":    "Flasher 3G|PWM Mid Power|Main Board|JP11-16|mainBoardPWMOutputSelector",
-        "3.8":    "Flasher 3B|PWM Mid Power|Main Board|JP11-1|mainBoardPWMOutputSelector",
-        "3.9":    "Flasher 4R|PWM Mid Power|Main Board|JP11-3|mainBoardPWMOutputSelector",
-        "3.10":   "Flasher 4G|PWM Mid Power|Main Board|JP11-5|mainBoardPWMOutputSelector",
-        "3.11":   "Flasher 4B|PWM Mid Power|Main Board|JP11-7|mainBoardPWMOutputSelector",
-        "3.12":   "Flasher 5R|PWM Mid Power|Main Board|JP11-9|mainBoardPWMOutputSelector",
-        "3.13":   "Flasher 5G|PWM Mid Power|Main Board|JP11-11|mainBoardPWMOutputSelector",
-        "3.14":   "Flasher 5B|PWM Mid Power|Main Board|JP11-13|mainBoardPWMOutputSelector",
-
-        "3.16":   "LED 1R|PWM Low Power|Main Board|JP8-1|mainBoardPWMOutputSelector",
-        "3.17":   "LED 1G|PWM Low Power|Main Board|JP8-3|mainBoardPWMOutputSelector",
-        "3.18":   "LED 1B|PWM Low Power|Main Board|JP8-5|mainBoardPWMOutputSelector",
-        "3.19":   "LED 2R|PWM Low Power|Main Board|JP8-7|mainBoardPWMOutputSelector",
-        "3.20":   "LED 2G|PWM Low Power|Main Board|JP8-9|mainBoardPWMOutputSelector",
-        "3.21":   "LED 2B|PWM Low Power|Main Board|JP8-11|mainBoardPWMOutputSelector",
-        "3.22":   "LED 3R|PWM Low Power|Main Board|JP8-2|mainBoardPWMOutputSelector",
-        "3.23":   "LED 3G|PWM Low Power|Main Board|JP8-4|mainBoardPWMOutputSelector",
-        "3.24":   "LED 3B|PWM Low Power|Main Board|JP8-6|mainBoardPWMOutputSelector",
-        "3.25":   "LED 4R|PWM Low Power|Main Board|JP8-8|mainBoardPWMOutputSelector",
-        "3.26":   "LED 4G|PWM Low Power|Main Board|JP8-10|mainBoardPWMOutputSelector",
-        "3.27":   "LED 4B|PWM Low Power|Main Board|JP8-12|mainBoardPWMOutputSelector",
-        "3.28":   "LED 5R|PWM Low Power|Main Board|JP8-13|mainBoardPWMOutputSelector",
-        "3.29":   "LED 5G|PWM Low Power|Main Board|JP8-15|mainBoardPWMOutputSelector",
-        "3.30":   "LED 5B|PWM Low Power|Main Board|JP8-17|mainBoardPWMOutputSelector",
-        "3.31":   "LED 6|PWM Low Power|Main Board|JP8-14|mainBoardPWMOutputSelector"
-    };
-
-    // add four power boards worth of outputs
-    for (var i = 0 ; i < 128 ; ++i) {
-        o["3." + (i+32)] =
-            "Output " + ((i%32) + 1)
-            + "|PWM Hi Power"
-            + "|Power Board " + (Math.floor(i/32) + 1)
-            + "|JP" + (Math.floor((i%32)/16)+5)+ "-" + ((i%16)+1)
-            + "|powerBoardOutputSelector";
-    }
-
-    // add four chime boards worth of outputs
-    for (i = 0 ; i < 32 ; ++i) {
-        o["4." + i] =
-            "Output " + ((i%8) + 1)
-            + "|Timed Digital"
-            + "|Chime Board " + (Math.floor(i/8) + 1)
-            + "|JP9-" + ((i%8)+1)
-            + "|chimeBoardOutputSelector";
-    }
-
-    // Table of all internal GPIO connections on the main expansion board.
-    // These generally can't be used for any other purpose.
-    var gInternal = {
-        "PTC10":  "TLC5940 XLAT",
-        "PTC6":   "TLC5940 SIN",
-        "PTC5":   "TLC5940 SCLK",
-        "PTC7":   "TLC5940 BLANK",
-        "PTA1":   "TLC5940 GSCLK",
-        "PTC9":   "IR OUT",
-        "PTA13":  "IR IN",
-        "PTD2":   "PSU2 STATUS",
-        "PTD3":   "TV RELAY",
-        "PTE0":   "PSU2 LATCH"
-    };
-
-    // Table of all external GPIO connections on the main expansion
-    // board.  These KL25Z pins are connected more or less directly
-    // to external headers on the board, so they can be re-purposed
-    // (sometimes with restrictions) for other external uses.  For
-    // example, if a plunger sensor isn't being used, all of the
-    // plunger input pins can be used as button inputs instead.
-    var gExternal = {
-        "PTB0":   "Plunger 1|JP2-1",
-        "PTE23":  "Cal Button LED|JP3-2",
-        "PTE29":  "Cal Button Switch|JP3-1",
-        "PTE22":  "Plunger 4|JP2-4",
-        "PTD5":   "Plunger 4|JP2-4",
-        "PTE21":  "Plunger 3|JP2-3",
-        "PTD0":   "Plunger 3|JP2-3",
-        "PTE20":  "Plunger 2|JP2-8",
-        "PTD4":   "74HC595 ENA|JP5-7",
-        "PTA4":   "74HC595 SCLK|JP5-3",
-        "PTA5":   "74HC595 SOUT|JP5-1",
-        "PTA12":  "74HC595 LATCH|JP5-5",
-        "PTC8":   "Knocker|JP9-2|Timed Digital",
-        "PTC4":   "Extender 1|JP12-1",
-        "PTC3":   "Extender 2|JP12-2",
-        "PTC0":   "Extender 3|JP12-3",
-        "PTA2":   "Extender 4|JP12-4",
-    };
-
-    // Build a combined table of the GPIO port aliases for internal and
-    // external main board connections.
-    var g = { };
-    $.each(gInternal, function(k, v) { g[k] = v + "|Internal"; });
-    $.each(gExternal, function(k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
-
-    // Add GPIO aliases for all of the buttons
-    $.each(expansionBoardFactoryConfig.buttons, function(k, v) {
-        g[v.pin] = "Button " + k + "|Digital In|Main Board|JP1-" + k + "|mainBoardInputSelector";
-    });
-
-    // Add all of the external ports as output aliases.
-    $.each(gExternal, function(k, v)
-    {
-        // break v into fields - Descriptive Name, Jumper, [output type description]
-        v = v.split("|");
-
-        // if it's a PWM-capable port, add a PWM output type for it
-        var gp = gpioPinsByName[k] || { };
-        if (gp.pwm)
-            o["1." + k] = [v[0], v[2] || "PWM GPIO", "Main Board", v[1], "mainBoardPWMOutputSelector"].join("|");
-
-        // add a Digital Out type for it
-        o["2." + k] = [v[0], v[2] || "Digital GPIO", "Main Board", v[1], "mainBoardDigitalOutputSelector"].join("|");
-    });
-
-    // remember these
-    expOutPortAlias = o;
-    expGpioPortAlias = g;
-})();
 
 $("input:radio[name=hardwareType]").change(function(ev)
 {
@@ -1364,7 +315,7 @@ function expBoardAdjustChips()
                Programs on the PC use the unit number to tell the devices apart, so each
                device needs a different number.
 
-               <li>If the LedWiz IDs cause conflicts on your system with other USb devices,
+               <li>If the LedWiz IDs cause conflicts on your system with other USB devices,
                you can try the Pinscape ID.  This ID is registered uniquely to
                Pinscape, so it shouldn't conflict with anything.
                However, <b>using this ID will give up LedWiz compatibility.</b>  This
@@ -1438,12 +389,12 @@ function ensureUsbId(val)
       <b>Pinscape ID.</b>  This is a <b>separate</b> ID from the LedWiz
       unit number.  DOF R3 and the <a class="dofconfigtool">
          DOF Config Tool</a> use this ID to identify the unit.
-      <b>Set this to 1 for your first unit, 2 for the second</b>, and so on.
+      <b>Set this to 1 for your first unit,</b> 2 for the second, and so on.
       <p>
-      This is completely unrelated to the LedWiz unit number, so it doesn't need
-      to match that, and by the same token doesn't need to be different.  This
-      doesn't affect the USB ID or the Windows device drivers.  It's purely for
-      DOF and other Pinscape-aware software.
+         You <b>don't</b> have to copy the LedWiz unit number here!
+         This is completely unrelated to the LedWiz number.  This setting
+         <b>must always</b> be <b>1</b> for your first (or only) Pinscape
+         unit, or DOF won't be able to access it.
       </p>
 
       <div>
@@ -2452,6 +1403,8 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
             <option value="6">AEDR-8300</option>
             <!-- <option value="8">TSL1401CL</option> -->
             <option value="9">VL6180X</option>
+            <option value="10">AEAT-6012-A06</option>
+            <option value="11">TCD1103</option>
          </select>
          <span style="margin-left: 2em;" id="plungerSensorButton">
             <a href="#" id="btnPlungerCal" class="button">Live Sensor View</a>
@@ -2627,6 +1580,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                </ul>
             </div>
          </div>
+
          <div id="plungerPinsVL6180X">
             <div>
                <img src="VL6180X.png" style="float: right; margin: 0px 0px 1em 2em;">
@@ -2680,6 +1634,145 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                </ul>
             </div>
          </div>
+
+         <div id="plungerPinsAEAT">
+            <div>
+               <img style="float: right; margin: 0px 0px 1em 2em;" src="AEAT6012.png">
+               <b>AEAT-6012-A06 rotary encoder.</b>  This is a magnetic sensor that
+               detects the rotational orientation of a magnet.  This can be used to
+               detect the plunger position with a mechanical linkage that makes an
+               axle rotate as the plunger moves.
+               <p>
+                  <b>Important!</b> This sensor uses 5V logic, which is incompatible
+                  with the KL25Z.  Never connect it directly to the KL25Z.  A
+                  bidirectional voltage level shifter board is required.  See the
+                  <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=AEAT6012">
+                     Pinscape Build Guide</a> for instructions.
+               </p>
+            </div>
+            <div class="expBoardPin">
+               <b>Pin assignments:</b>
+               <div class="indented">
+                  <table class="inputs">
+                     <tr>
+                        <td class="pinlabel">CS (chip select):</td>
+                        <td>
+                           <span class="pinselect" id="AEAT6012_CS"
+                              data-cfg="plungerPins.a" data-gpiotype="dig-out extern"
+                             data-desc="Plunger Sensor CS" data-default="PTE21">
+                           </span>
+                        </td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td class="pinlabel">CLK (data clock):</td>
+                        <td>
+                           <span class="pinselect" id="AEAT6012_CLK"
+                              data-cfg="plungerPins.b" data-gpiotype="dig-out extern"
+                             data-desc="Plunger Sensor CLK" data-default="PTE22">
+                           </span>
+                        </td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td class="pinlabel">DO (data out):</td>
+                        <td>
+                           <span class="pinselect" id="AEAT6012_DO"
+                              data-cfg="plungerPins.c" data-gpiotype="dig-in extern"
+                             data-desc="Plunger Sensor DO" data-default="PTE20">
+                           </span>
+                        </td>
+                        <td></td>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+            <div class="expBoardAlt">
+               Connect the sensor to a bidirectional level shifter board, and connect
+               the level shifter to the PLUNGER connector (JP2) on the main interface board.
+               <ul>
+                  <li>Sensor VDD (pin 1) to Pinscape JP2 pin 7 (+5V)
+                  <li>Sensor CSn (pin 2) to level shifter HV1 - LV1 to Pinscape JP2 pin 3 (PTE21)
+                  <li>Sensor Vss (pin 3) to level shifter HV GND
+                  <li>Sensor CLK (pin 4) to level shifter HV2 - LV2 to Pinscape JP2 pin 4 (PTE22)
+                  <li>Sensor DO (pin 5) to level shifter HV3 - LV3 to Pinscape JP2 pin 8 (PTE20)
+                  <li>Level shift LV GND (ground) to Pinscape JP2 pin 6 (GND)
+                  <li>Level shifter LV (logic supply) to Pinscape JP2 pin 5 (VCC)
+                  <li>Level shifter HV (device supply) to Pinscape JP2 pin 7 (+5V)
+               </ul>
+            </div>
+         </div>
+
+         <div id="plungerPinsTCD1103">
+            <div>
+               <img style="float: right; margin: 0px 0px 1em 2em;" src="TCD1103.png">
+               <b>TCD1103GFG linear image sensor.</b>  This is a small image sensor with
+               a single row of 1500 pixels and an 8mm image window.  This sensor detects the
+               plunger position by taking an optical image along the length of the plunger,
+               and analyzing it to determine where the plunger is located within the image.
+               <p>
+                  This sensor requires some extra setup besides the sensor chip.  It needs
+                  an optical lens to focus the image on the sensor, and it also requires
+                  some specific interface circuitry between the sensor chip and the KL25Z.
+                  See the <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=TCD1103">TCD1103</a>
+                  chapter in the <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php">Pinscape Build Guide</a>
+                  for instructions.
+               </p>
+            </div>
+            <div class="expBoardPin">
+               <b>Pin assignments:</b>
+               <div class="indented">
+                  <table class="inputs">
+                     <tr>
+                        <td class="pinlabel">fM (Master Clock):</td>
+                        <td>
+                           <span class="pinselect" id="TCD1103_FM"
+                              data-cfg="plungerPins.a" data-gpiotype="pwm tpm extern"
+                             data-desc="Plunger Sensor fM" data-default="PTE21">
+                           </span>
+                        </td>
+                        <td>Requires a PWM-capable pin</td>
+                     </tr>
+                     <tr>
+                        <td class="pinlabel">OS (output signal):</td>
+                        <td>
+                           <span class="pinselect" id="TCD1103_OS"
+                              data-cfg="plungerPins.b" data-gpiotype="adc extern"
+                             data-desc="Plunger Sensor OS" data-default="PTB0">
+                           </span>
+                        </td>
+                        <td>Requires an ADC (analog in) pin</td>
+                     </tr>
+                     <tr>
+                        <td class="pinlabel">ICG (integration clear gate):</td>
+                        <td>
+                           <span class="pinselect" id="TCD1103_ICG"
+                              data-cfg="plungerPins.c" data-gpiotype="dig-out extern"
+                             data-desc="Plunger Sensor ICG" data-default="PTE20">
+                           </span>
+                        </td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td class="pinlabel">SH (shift gate):</td>
+                        <td>
+                           <span class="pinselect" id="TCD1103_SH"
+                              data-cfg="plungerPins.d" data-gpiotype="dig-out extern"
+                             data-desc="Plunger Sensor ICG" data-default="PTE22">
+                           </span>
+                        </td>
+                        <td></td>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+            <div class="expBoardAlt">
+               This sensor requires a special circuit board.  Use a ribbon
+               cable to connect the sensor circuit board to the PLUNGER connector (JP2)
+               on the main interface board.
+            </div>
+         </div>
+
       </div>
 
       <div id="plungerAutoZero">
@@ -2720,7 +1813,8 @@ $("#plungerType").change(function(ev)
 {
     // deactivate all pin groups until we know which ones we're activating
     $("#plungerPinsTSL .pinselect, #plungerPinsPot .pinselect,"
-      + "#plungerPinsQuad .pinselect, #plungerPinsVL6180X .pinselect").data(
+      + "#plungerPinsQuad .pinselect, #plungerPinsVL6180X .pinselect,"
+      + "#plungerPinsAEAT .pinselect, #plungerPinsTCD1103 .pinselect").data(
         {"active": false, "save": false});
 
     // show or hide the ZB Launch Ball and calibration button sections
@@ -2738,7 +1832,7 @@ $("#plungerType").change(function(ev)
     plungerTypeValid = true;
 
     // show the appropriate section
-    var all = $("#plungerPinsTSL, #plungerPinsPot, #plungerPinsQuad, #plungerPinsVL6180X");
+    var all = $("#plungerPinsTSL, #plungerPinsPot, #plungerPinsQuad, #plungerPinsVL6180X, #plungerPinsAEAT, #plungerPinsTCD1103");
     var typ = +$(this).val();
     switch (typ)
     {
@@ -2752,7 +1846,7 @@ $("#plungerType").change(function(ev)
     case 1:
     case 3:
     case 8:
-        // TSL1410R, TSL1412S, and TSL1401CL
+        // TSL1410R, TSL1412S, and TSL1401CL linear image sensors
         $("#TSLName").text({1: "TSL1410R", 3: "TSL1412S", 8: "TSL1401CL"}[typ] || "TSLxx");
         $("#tsl1410-1412-details, #tsl1401-details").hide();
         $(typ == 8 ? "#tsl1401-details" : "#tsl1410-1412-details").show();
@@ -2774,9 +1868,21 @@ $("#plungerType").change(function(ev)
         break;
 
     case 9:
-        // VL6180X
+        // VL6180X time-of-flight distance sensor
         slideRadio($("#plungerPinsVL6180X"), all, 250, false);
         $("#plungerPinsVL6180X .pinselect").data("active", true).data("save", true);
+        break;
+
+    case 10:
+        // AEAT-6012-A06 rotary absolute encoder
+        slideRadio($("#plungerPinsAEAT"), all, 250, false);
+        $("#plungerPinsAEAT .pinselect").data("active", true).data("save", true);
+        break;
+
+    case 11:
+        // TCD1103GFG linear image sensor
+        slideRadio($("#plungerPinsTCD1103"), all, 250, false);
+        $("#plungerPinsTCD1103 .pinselect").data("active", true).data("save", true);
         break;
     }
 
@@ -2828,6 +1934,21 @@ function setPlungerPinFactoryDefaults(prvPlungerType)
         $("#VL6180X_SDA .pinval").val("PTE20");
         $("#VL6180X_SCL .pinval").val("PTE21");
         $("#VL6180X_GPIO0CE .pinval").val("PTB0");
+        break;
+
+    case 10:
+        // AEAT-6012-A06 rotary absolute encoder
+        $("#AEAT6012_CS .pinval").val("PTE21");
+        $("#AEAT6012_CLK .pinval").val("PTE22");
+        $("#AEAT6012_DO .pinval").val("PTE20");
+        break;
+
+    case 11:
+        // TCD1103GFG linear image sensor
+        $("#TCD1103_FM .pinval").val("PTE20");
+        $("#TCD1103_OS .pinval").val("PTB0");
+        $("#TCD1103_ICG .pinval").val("PTE21");
+        $("#TCD1103_SH .pinval").val("PTE22");
         break;
     }
 }
@@ -3122,8 +2243,6 @@ $("#zbPort").change(function(ev) {
       </div>
    </div>
 
-   <script type="text/javascript" src="keycaps.js"></script>
-
    <script>
 
 $("#helpShiftButton").click(function(ev) {
@@ -3278,7 +2397,7 @@ var shiftKeyMap = {
 var vpUsage = {
     "2.1E": "Start Game",
     "2.1F": "Extra Ball (Buy-In)",
-    "2.22": "Coin In",
+    "2.22": "Coin In (main/left slot)",
     "2.21": "Coin In (second coin slot)",
     "2.23": "Coin In (fourth coin slot)",
     "2.28": "Plunger/Launch Ball",
@@ -5874,77 +4993,110 @@ $("#printButton").click(function(ev) {
 <!-- Pin and output selector popup -------------------------------------->
 <div class="windowCover">
    <div id="pinSelector">
-      <div id="gpioSelector" class="pinSelectorPage">
+      <div id="gpioSelector" class="pinSelectorPage kl25zPinSelector">
          <div id="lstKL25ZPins" class="pinlist"></div>
          <div id="kl25zPinImg" class="pinimage">
-            <img src="kl25zPins.png">
-            <div id="kl25zOnBoardLED"></div>
+            <div>
+               <img src="kl25zPins.png">
+               <div id="kl25zOnBoardLED"></div>
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
-      <div id="tlc5940Selector" class="pinSelectorPage" data-pagetype="chip">
+      <div id="tlc5940Selector" class="pinSelectorPage tlc5940PinSelector" data-pagetype="chip">
          <div class="chipNo header" data-chip="0">Chip 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <div class="chipIndexer background"></div>
-            <div class="chipIndexer foreground"></div>
-            <img src="tlc5940Pins.png">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="tlc5940Pins.png">
+               <div class="pinoverlay"></div>
+            </div>
          </div>
       </div>
-      <div id="tlc59116Selector" class="pinSelectorPage" data-pagetype="chip">
+      <div id="tlc59116Selector" class="pinSelectorPage tlc59116PinSelector" data-pagetype="chip">
          <div class="chipNo header" data-chip="0">Chip 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <div class="chipIndexer background"></div>
-            <div class="chipIndexer foreground"></div>
-            <img src="tlc59116Pins.png">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="tlc59116Pins.png">
+               <div class="pinoverlay"></div>
+            </div>
          </div>
       </div>
-      <div id="hc595Selector" class="pinSelectorPage" data-pagetype="chip">
+      <div id="hc595Selector" class="pinSelectorPage hc595PinSelector" data-pagetype="chip">
          <div class="chipNo header" data-chip="0">Chip 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <div class="chipIndexer background"></div>
-            <div class="chipIndexer foreground"></div>
-            <img src="74hc595Pins.png">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="74hc595Pins.png">
+               <div class="pinoverlay"></div>
+            </div>
          </div>
       </div>
       <div id="mainBoardDigitalOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">JP9</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <img src="mainBoardPins.png">
+            <div>
+               <img src="mainBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
       <div id="mainBoardPWMOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pwm="true" data-pagetype="board">
          <div class="chipNo header" data-chip="0">Flashers</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <img src="mainBoardPins.png">
+            <div>
+               <img src="mainBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
       <div id="mainBoardInputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">N/C</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <img src="mainBoardPins.png">
+            <div>
+               <img src="mainBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
       <div id="powerBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">Board 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <div class="chipIndexer background"></div>
-            <div class="chipIndexer foreground"></div>
-            <img src="powerBoardPins.png">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="powerBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
       <div id="chimeBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">Board 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
-            <div class="chipIndexer background"></div>
-            <div class="chipIndexer foreground"></div>
-            <img src="chimeBoardPins.png">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="chimeBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
       <div id="virtualOutputSelector" class="pinSelectorPage">
@@ -6230,7 +5382,7 @@ function valEq(a, b)
         for (var i = 0 ; i < l ; ++i)
         {
             if (!valEq(a[i], b[i])) {
-				// alert("a[" + i + "] != b[" + i + "]"); // [debug]
+                // alert("a[" + i + "] != b[" + i + "]"); // [debug]
                 return false;
             }
         }
@@ -6242,7 +5394,7 @@ function valEq(a, b)
         // check that all properties of a are in b
         for (var p in a) {
             if (!(p in b)) {
-				// alert("p not in b: " + p); // [debug]
+                // alert("p not in b: " + p); // [debug]
                 return false;
             }
         }
@@ -6250,7 +5402,7 @@ function valEq(a, b)
         // all a.p are in b; now check that all b.p equal a.p
         for (var p in b) {
             if (!(p in a) || !valEq(a[p], b[p])) {
-				// alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
+                // alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
                 return false;
             }
         }
@@ -6395,9 +5547,7 @@ $(function() {
 
         // Set up button objects on top of the KL25Z popup image.  This
         // allows selecting pins by pointing to them on the picture.
-        var btndiv = $("#kl25zPinImg");
-        var xpad = parseInt($("#kl25zPinImg img").css("padding-left"));
-        var ypad = parseInt($("#kl25zPinImg img").css("padding-top"));
+        var btndiv = $("#kl25zPinImg .pinoverlay");
         $.each(kl25z_headers, function(k, v) {
             forEachPin(v, function(pin, n, x, y) {
                 // find the gpioPin entry for the pin
@@ -6405,17 +5555,14 @@ $(function() {
                 var jumper = g.internalShortName || k + "-" + n;
                 var hover = pin + " (" + jumper + ")";
                 
-                // Build the pin button.  Note the 8-pixel adjustment to the top and left
-                // position: this is because the coordinates in the header descriptor are
-                // for the CENTER of the pin on the image.  Our button divs are 16px wide,
-                // so we center them by subtracting 8px from each coordinate.
+                // Build the pin button overlays
                 var posname = k + "-" + n;
                 btndiv.append(
                     "<div class=\"pinButton\" "
                     + "data-pin=\"" + pin + "\" "
                     + "data-hovername=\"" + hover + "\" "
                     + "title=\"" + pin + (posname != "N/A" ? " (" + posname + ")\" " : "")
-                    + "style=\"left: " + (x + xpad - 8) + "px; top: " + (y + ypad - 8) + "px;\">"
+                    + "style=\"left: " + x + "px; top: " + y + "px;\">"
                     + "</div>");
 
                 // set the header reference in the GPIO pin entry
@@ -6440,11 +5587,6 @@ $(function() {
         }
         pinlst.html(options);
 
-        // move the on-board LED display according to the padding
-        var obl = $("#kl25zOnBoardLED");
-        obl.css("left", (parseInt(obl.css("left")) + xpad) + "px")
-            .css("top", (parseInt(obl.css("top")) + ypad) + "px");
-
         // add event handlers the KL25Z GPIO pin list elements and image buttons
         addPinEvents(pinlst, $("#kl25zPinImg"), $("#kl25zPinImg .pinButton, #lstKL25ZPins > div"));
 
@@ -6460,7 +5602,7 @@ $(function() {
                 function() {
                     // remove 'hover' status from all pins and list items
                     list.children().removeClass("hover");
-                    picdiv.children(".pinButton").removeClass("hover");
+                    picdiv.find(".pinButton").removeClass("hover");
 
                     // sync the list and pin pad image if the pin is available
                     var self = $(this);
@@ -6471,7 +5613,7 @@ $(function() {
                         var finder = function() { return $(this).data("pin") == pin; }
                         
                         // set hover state on the matching list item and pin button
-                        picdiv.children().filter(finder).addClass("hover");
+                        picdiv.find(".pinButton").filter(finder).addClass("hover");
                         var listele = list.children().filter(finder);
                         listele.addClass("hover");
 
@@ -6520,7 +5662,7 @@ $(function() {
                         $("#kl25zOnBoardLED").css("background-position", "0px 0px");
 
                     // remove hover state from the list item and image button
-                    picdiv.children().filter(finder).removeClass("hover");
+                    picdiv.find(".pinButton").filter(finder).removeClass("hover");
                     list.children().filter(finder).removeClass("hover");
                 }
 
@@ -6607,9 +5749,8 @@ $(function() {
         {
             // get the image padding
             var picdiv = page.find(".pinimage");
+            var btndiv = picdiv.find(".pinoverlay");
             var img = picdiv.find("img");
-            var xpad = parseInt(img.css("padding-left"));
-            var ypad = parseInt(img.css("padding-top"));
 
             // add each pin
             forEachPin(pins, function(pin, n, x, y)
@@ -6619,14 +5760,14 @@ $(function() {
                 var pinno = (available ? RegExp.$1 : "");
                 
                 // add the button
-                picdiv.append(
+                btndiv.append(
                     "<div class=\"pinButton " + (available ? "available" : "") + "\" "
                     + (available ?
                        "data-pin=\"" + pinno + "\" data-basepin=\"" + pinno + "\" "
                        + "data-pintype=\"" + pintype + "\" data-hovername=\"" + pin + "\" "  :
                        "")
                     + "title=\"" + pin + "\" "
-                    + "style=\"left: " + (x + xpad - wid/2) + "px; top: " + (y + ypad - ht/2) + "px;\">"
+                    + "style=\"left: " + x + "px; top: " + y + "px;\">"
                     + "</div>");
             });
 
@@ -6987,9 +6128,8 @@ $(function() {
         {
             // get the image padding
             var picdiv = page.find(".pinimage");
+            var btndiv = picdiv.find(".pinoverlay");
             var img = picdiv.find("img");
-            var xpad = parseInt(img.css("padding-left"));
-            var ypad = parseInt(img.css("padding-top"));
 
             // if filtering to the list, build a table of the pins in list
             var listPins = { };
@@ -7033,10 +6173,10 @@ $(function() {
                     }
 
                     // add the item
-                    picdiv.append(
+                    btndiv.append(
                         "<div class=\"pinButton" + available + "\" "
                         + dataPin + dataHover
-                        + "style=\"left: " + (x + xpad - 6) + "px; top: " + (y + ypad - 6) + "px;\">"
+                        + "style=\"left: " + x + "px; top: " + y + "px;\">"
                         + "</div>");
                 })
             });
@@ -7850,7 +6990,7 @@ $(function() {
         {
             // deselect all pin buttons
             var picdiv = page.find(".pinimage");
-            var buttons = picdiv.children(".pinButton");
+            var buttons = picdiv.find(".pinButton");
             buttons.removeClass("selected current inuse").attr("title", "");
 
             // count the pins in the image if the caller didn't tell us
@@ -8199,6 +7339,15 @@ function normalizeConfig(config)
         // VL6180X time-of-flight distance sensor - pin d is unused
         config.plungerPins.d = "NC";
         break;
+
+    case 10:
+        // AEAT-6012-A06 rotary absolute encoder - pin d is unsed
+        config.plungerPins.d = "NC";
+        break;
+
+    case 11:
+        // TCD1103GFG linear image sensor - all pins are used
+        break;
     }
 
     // if the TV-ON feature is disabled, clear all fields
@@ -8291,6 +7440,7 @@ function normalizeConfig(config)
     // we don't provide access to several of the plunger variables - these
     // are set through the plunger viewer instead
     delete config.plungerCal;
+    delete config.plungerCalRaw;
     delete config.plungerFilters;
     delete config.plungerBarCode;
 

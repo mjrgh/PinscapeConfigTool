@@ -40,11 +40,13 @@ namespace PinscapeCmd
                     + "NightMode=state : turn night mode ON or OFF (replace 'state' with ON or\n"
                     + "    OFF according to which state you want to engage).\n"
                     + "\n"
-                    + "TVON : pulse the TV relay on for a moment, the same way the controller\n"
-                    + "    normally pulses it at startup to turn on the TVs.  This only works\n"
-                    + "    if you have the TV ON feature enabled.  Note that only pulses the\n"
-                    + "    relay - it doesn't send the TV-on IR commands, if any.  To do that,\n"
-                    + "    use SendIR=n.\n"
+                    + "TVON=mode : turn the TV relay on or off, or pulse it.  'mode' can be ON to\n"
+                    + "    turn the relay on, OFF to turn it off, or PULSE to pulse the relay for\n"
+                    + "    a moment (on and then off), the same way the controller normally pulses\n"
+                    + "    it at system startup to turn on the TVs.  If no mode is supplied at all,\n"
+                    + "    it's the same as TVON=PULSE.  This command only works if the TV ON feature\n"
+                    + "    is enabled.  This only affects the relay; it doesn't send any IR commands.\n"
+                    + "    To do that, use SendIR=n.\n"
                     + "\n"
                     + "SendIR=n : transmit IR remote control command #n, using the command\n"
                     + "    numbering in the setup tool.\n"
@@ -140,6 +142,21 @@ namespace PinscapeCmd
                         if (device == null)
                             throw missingDevice;
                         device.SpecialRequest(11, new byte[] { 2 });
+                    }
+                    else if ((m = Regex.Match(al, @"^tvon=(.+)")).Success)
+                    {
+                        String s = m.Groups[1].Value.ToLower();
+                        if (device == null)
+                            throw missingDevice;
+                        if (s == "on")
+                            device.SpecialRequest(11, new byte[] { 1 });
+                        else if (s == "off")
+                            device.SpecialRequest(11, new byte[] { 0 });
+                        else if (s == "pulse")
+                            device.SpecialRequest(11, new byte[] { 2 });
+                        else
+                            throw new Exception("The TVON mode isn't one of the valid options.  Please specify\n"
+                                + "TVON=ON, TVON=OFF, or TVON=PULSE.");
                     }
                     else if ((m = Regex.Match(al, @"^sendir=(.+)")).Success)
                     {
