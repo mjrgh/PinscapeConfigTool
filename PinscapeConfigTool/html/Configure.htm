@@ -6345,15 +6345,25 @@ $(function() {
         ]);
         buildBoardPinButtons($("#aioBoardInputSelector"), aioBoard_headers, true, aioGpioPortAlias, aioOutPortAlias);
 
+
         // Build the power board pin list
         buildBoardPinButtons($("#powerBoardOutputSelector"), powerBoard_headers, false, expGpioPortAlias, expOutPortAlias);
         initBoardPinPageAdjustor(
             "powerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 32);
 
+        buildBoardPinButtons($("#powerBoardOutputSelector"), powerBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
+        initBoardPinPageAdjustor(
+            "powerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 64);
+
         // Build the chime board pin list when we add or remove board
         buildBoardPinButtons($("#chimeBoardOutputSelector"), chimeBoard_headers, false, expGpioPortAlias, expOutPortAlias);
         initBoardPinPageAdjustor(
             "chimeBoardOutputSelector", $("#numChimeBoards"), "4.", 8, 0);
+
+        buildBoardPinButtons($("#chimeBoardOutputSelector"), chimeBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
+        initBoardPinPageAdjustor(
+            "chimeBoardOutputSelector", $("#numChimeBoards"), "4.", 8, 8);
+
 
         // Initialize the page adjustor for one of the output boards
         function initBoardPinPageAdjustor(

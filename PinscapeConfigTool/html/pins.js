@@ -1244,7 +1244,7 @@ var expOutPortAlias, expGpioPortAlias;
 (function()
 {
     var o = {
-        "3.15":   "Strobe|PWM Mid Power|Pinscape AIO|JP9-1|mainBoardPWMOutputSelector",
+        "3.15":   "Strobe|PWM Mid Power|Main Board|JP9-1|mainBoardPWMOutputSelector",
 
         "3.0":    "Flasher 1R|PWM Mid Power|Main Board|JP11-2|mainBoardPWMOutputSelector",
         "3.1":    "Flasher 1G|PWM Mid Power|Main Board|JP11-4|mainBoardPWMOutputSelector",
