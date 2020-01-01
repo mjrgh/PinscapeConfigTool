@@ -6201,12 +6201,12 @@ $(function() {
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 8, header: "Chime Outputs",
-              pinname: function(pin) { return "Chime " + (pin + 1); },
+              pinname: function(pin) { return "Output " + (pin + 1); },
               pinid: function(pin) { return "4." + pin; },
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 4, header: "Expansion Port", pinname: "Extender",
-	      pinname: function(pin) { return ["C4", "C3", "C0", "D1"][pin]; },
+	      pinname: function(pin) { return ["C4", "C3", "C0", "A2"][pin]; },
               pinid: function (pin) { return ["2.PTC4", "2.PTC3", "2.PTC0", "2.PTA2"][pin]; },
               hovername: aioBoardHoverName
             },
@@ -6257,7 +6257,7 @@ $(function() {
 
         // Build the Pinscape AIO board PWM output list
         buildGroupedPinList($("#aioBoardPWMOutputSelector"), [
-            { groups: [0], pins: 15, header: "Flashers",
+            { groups: [0], pins: 15, header: "RGB Flashers",
               pinname: function(pin) { return (Math.floor(pin/3)+1) + "RGB".substr(pin % 3, 1) },
               pinid: function(pin) { return "3." + pin; },
               hovername: aioBoardHoverName
@@ -6267,18 +6267,18 @@ $(function() {
               pinid: function(pin) { return ["3.15"][pin] },
               hovername: aioBoardHoverName
             },
-            { groups: [0], pins: 16, header: "RGB Flippers",
+            { groups: [0], pins: 16, header: "Small LED/Opto",
               pinname: function(pin) { return (pin < 15 ? (Math.floor(pin/3)+1) + "RGB".substr(pin %3, 1) : "6"); },
               pinid: function(pin) { return "3." + (16 + pin); },
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 32, header: "Power Outputs",
-              pinname: function(pin) { return "PWM Out " + (pin + 1); },
+              pinname: function(pin) { return "Output " + (pin + 1); },
               pinid: function(pin) { return "3." + (32 + pin); },
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 3, header: "Expansion Port", // only pins 1, 2, and 4 are PWM capable
-	      pinname: function(pin) { return ["C4", "C3", "D1"][pin]; },
+	      pinname: function(pin) { return ["C4", "C3", "A2"][pin]; },
               pinid: function (pin) { return ["1.PTC4", "1.PTC3", "1.PTA2"][pin]; },
               hovername: aioBoardHoverName
             },
@@ -6328,7 +6328,7 @@ $(function() {
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 4, header: "Expansion Port", pinname: "Extender",
-	      pinname: function(pin) { return ["C4", "C3", "C0", "D1"][pin]; },
+	      pinname: function(pin) { return ["C4", "C3", "C0", "A2"][pin]; },
               pinid: function(pin) { return ["PTC4", "PTC3", "PTC0", "PTA2"][pin]; },
               hovername: aioBoardHoverName
             },

@@ -701,6 +701,9 @@ div.chipNo.header {
 .expBoardPinSelector .pinimage {
     padding: 4px 0px;
 }
+.aioBoardPinSelector .pinimage {
+    padding: 4px 0px;
+}
 
 .pinimage > div {
     position: relative;
@@ -723,6 +726,11 @@ div.chipNo.header {
     left: 0px;
     bottom: 28px;
 }
+.aioBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+
 
 .pinimage .pinoverlay {
     display: inline-block;
@@ -820,7 +828,17 @@ div.chipNo.header {
     left: -6px;
     top: -6px;
 }
+.aioBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
 .expBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.aioBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;

@@ -350,117 +350,96 @@ var mainBoard_headers = {
 // Pinscape AIO board headers
 var aioBoard_headers = {
     "Expansion Port": {
-        pins: [["PTC4", "PTC0"],
-               ["PTC3", "PTA2"]],
+        pins: [["PTC0", "PTC4"],
+               ["PTA2", "PTC3"]],
         type: "pinheader",
-        pin1: [217, 76],
-        pinN: [226, 67],
+        pin1: [176, 359],
+        pinN: [183, 364],
         orientation: "horizontal"
     },
 
-    "Flasher": {
-        pins: [["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "+5V"],
-               ["3.0", "3.1", "3.2",  "3.3",  "3.4",  "3.5",  "3.6",  "3.7"]],
+    "Flashers and Strobe": {
+        pins: [["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]],
         type: "pinheader",
-        pin1: [91, 137],
-        pinN: [82, 77]
+        pin1: [10, 231],
+        pinN: [10, 345]
     },
 
+
     "Small LED": {
-        pins: [["3.16", "3.17", "3.18", "3.19", "3.20", "3.21", "3.28", "3.29", "3.30"],
-               ["3.22", "3.23", "3.24", "3.25", "3.26", "3.27", "3.31", "NC", "+5V"]],
+        pins: [["3.16", "3.17", "3.18", "3.19", "3.20", "3.21", "3.22", "3.23", "3.24", "3.25", "3.26", "3.27", "3.28", "3.29", "3.30", "3.31"]],
         type: "pinheader",
-        pin1: [327, 152],
-        pinN: [318, 83]
+        pin1: [10, 101],
+        pinN: [10, 217]
     },
 
     "Calibration": {
-        pins: [["PTE23", "LED+"],   // JP3-3 = LED+ = +5V; JP3-1 = Cal Btn LED- = open collector switched by PTE23
-               ["PTE29", "GND"]],   // JP3-2 = Cal Btn = direct connection to PTE29
+        pins: [["PTE23", "LED+", "GND", "PTE29"]],   
         type: "pinheader",
-        orientation: "horizontal",
-        pin1: [239, 336],
-        pinN: [231, 345]
+        pin1: [143, 371],
+        pinN: [165, 371]
     },
     
     "Plunger": {
-        pins: [["PTB0", "PTE21", "3.3V", "5V"],
-               ["NC",   "PTE22", "GND",  "PTE20"]],
+        pins: [["5V", "PTE20", "PTE21", "PTE22", "PTB0", "3.3V", "GND"]],
         type: "pinheader",
-        pin1: [206, 336],
-        pinN: [181, 345]
+        pin1: [195, 371],
+        pinN: [250, 371]
     },
     
-    "Button": {
-        pins: [["PTC2", "PTB2", "PTE30", "PTE5", "PTE3", "PTB11", "PTB9", "PTC12", "PTC16", "PTA16", "PTE31", "PTD7", "NC"],
-               ["PTB3", "PTB1", "PTC11", "PTE4", "PTE2", "PTB10", "PTB8", "PTC13", "PTC17", "PTA17", "PTD6",  "PTE1", "COMMON"]],
+    "Button Inputs 1-8": {
+        pins: [["PTC2", "PTB3", "PTB2", "PTB1", "PTE30", "PTC11", "PTE5", "PTE4"]],
         type: "pinheader",
-        pin1: [144, 337],
-        pinN: [43, 346]
+        pin1: [258, 371],
+        pinN: [313, 371]
     },
 
-    "Power Out": {
+   "Button Inputs 9-24": {
+        pins: [["PTE3", "PTE2", "PTB11", "PTB10", "PTB9", "PTB8", "PTC12", "PTC13", "PTC16", "PTC17", "PTA16", "PTA17", "PTE31", "PTD6", "PTD7", "PTE1"]],
+        type: "pinheader",
+        pin1: [334, 354],
+        pinN: [334, 234]
+    },
+
+    "Power Outputs 1-16": {
         pins: [["3.32", "3.33", "3.34", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43", "3.44", "3.45", "3.46", "3.47"]],
         type: "pinheader",
-        pin1: [97, 49],
-        pinN: [225, 49]
+        pin1: [334, 222],
+        pinN: [334, 101]
     },
     
-    "Power Out": {
+    "Power Outputs 17-32": {
         pins: [["3.48", "3.49", "3.50", "3.51", "3.52", "3.53", "3.54", "3.55", "3.56", "3.57", "3.58", "3.59", "3.60", "3.61", "3.62", "3.63"]],
         type: "pinheader",
-        pin1: [97, 361],
-        pinN: [225, 361]
+        pin1: [284, 46],
+        pinN: [163, 46]
     },
 
-    "Chime Out": {
+    "Knocker": {
+        pins: [["PTC8"]],
+        type: "pinheader",
+        pin1: [98, 46],
+        pinN: [98, 46]
+    },
+
+    "Chime Outputs 1-8": {
         pins: [["4.0", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7"]],
         type: "pinheader",
-        pin1: [113, 68],
-        pinN: [174, 68]
-    },
-
-    // JP6 - PWM OUT.  For reference only; none of these pins
-    // can be assigned as inputs or outputs
-    //"JP6": {
-    //    pins: [["SOUT", "SCLK", "XLAT", "BLANK", "GSCLK"],
-    //           ["GND",  "GND",  "GND",  "GND",   "NC"]],
-    //    type: "pinheader",
-    //    pin1: [320, 214],
-    //    pinN: [328, 249]
-    //},
-
-    // JP5 - Chime Out.  For reference only; these pins aren't
-    // assignable as inputs or outputs.
-    //"JP5": {
-    //    pins: [["SOUT", "SCLK", "LATCH", "ENA", "3.3V"],
-    //           ["NC",   "GND",  "GND",   "GND", "GND"]],
-    //    type: "pinheader",
-    //    pin1: [319, 285],
-    //    pinN: [328, 320]
-    //},
-
-    // JP4 - TV switches.  For reference only; these pins can't
-    // be assigned as inputs or outputs.
-    //"JP4": {
-    //    pins: [["TV1",  "TV2",  "IR+"],      // JP4-5 = IR+ = 5V
-    //           ["TV1",  "TV2",  "PTC9"]],    // JP4-6 = IR- = open collector switched by PTC9
-    //    type: "pinheader",
-    //    pin1: [275, 309],
-    //    pinN: [258, 317]
-    //},
+        pin1: [89, 46],
+        pinN: [34, 46]
+    }
 };
 
 var powerBoard_headers = {
     "JP5": {
-        pins: [["3.32", "3.33", "3.34", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43", "3.44", "3.45", "3.46", "3.47"]],
+        pins: [["3.64", "3.65", "3.66", "3.67", "3.68", "3.69", "3.70", "3.71", "3.72", "3.73", "3.74", "3.75", "3.76", "3.77", "3.78", "3.79"]],
         type: "pinheader",
         pin1: [97, 49],
         pinN: [225, 49]
     },
     
     "JP6": {
-        pins: [["3.48", "3.49", "3.50", "3.51", "3.52", "3.53", "3.54", "3.55", "3.56", "3.57", "3.58", "3.59", "3.60", "3.61", "3.62", "3.63"]],
+        pins: [["3.80", "3.81", "3.82", "3.83", "3.84", "3.85", "3.86", "3.87", "3.88", "3.89", "3.90", "3.91", "3.92", "3.93", "3.94", "3.95"]],
         type: "pinheader",
         pin1: [97, 361],
         pinN: [225, 361]
@@ -485,7 +464,7 @@ var powerBoard_headers = {
 
 var chimeBoard_headers = {
     "JP9": {
-        pins: [["4.0", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7"]],
+        pins: [["4.8", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15"]],
         type: "pinheader",
         pin1: [113, 68],
         pinN: [174, 68]
@@ -1105,7 +1084,7 @@ var pinscapeAIOFactoryConfig = {
         // logically adjacent in the port mapping.  Knockers are also quite common,
         // so this belongs in the first 32 ports anyway.  Mark it as noisy.
         17: { port: { type: 2, pin: "PTC8"}, flags: 0x02 },
-
+  
         // Map the next 32 ports to the outputs from the first power board.  These
         // are TLC5940 chips #3 and #4 in the daisy chain (the main board has #1
         // and #2).  This mapping will provide an additional 15 general-purpose 
@@ -1412,48 +1391,48 @@ var aioOutPortAlias, aioGpioPortAlias;
         "3.30":   "LED 5B|PWM Low Power|Pinscape AIO|Small LED 5B|aioBoardPWMOutputSelector",
         "3.31":   "LED 6|PWM Low Power|Pinscape AIO|Small LED 6|aioBoardPWMOutputSelector",
 
-        "3.32":   "Output 1|PWM Hi Power|Pinscape AIO|Power Out 1|aioBoardPWMOutputSelector",
-        "3.33":   "Output 2|PWM Hi Power|Pinscape AIO|Power Out 2|aioBoardPWMOutputSelector",
-        "3.34":   "Output 3|PWM Hi Power|Pinscape AIO|Power Out 3|aioBoardPWMOutputSelector",
-        "3.35":   "Output 4|PWM Hi Power|Pinscape AIO|Power Out 4|aioBoardPWMOutputSelector",
-        "3.36":   "Output 5|PWM Hi Power|Pinscape AIO|Power Out 5|aioBoardPWMOutputSelector",
-        "3.37":   "Output 6|PWM Hi Power|Pinscape AIO|Power Out 6|aioBoardPWMOutputSelector",
-        "3.38":   "Output 7|PWM Hi Power|Pinscape AIO|Power Out 7|aioBoardPWMOutputSelector",
-        "3.39":   "Output 8|PWM Hi Power|Pinscape AIO|Power Out 8|aioBoardPWMOutputSelector",
-        "3.40":   "Output 9|PWM Hi Power|Pinscape AIO|Power Out 9|aioBoardPWMOutputSelector",
-        "3.41":   "Output 10|PWM Hi Power|Pinscape AIO|Power Out 10|aioBoardPWMOutputSelector",
-        "3.42":   "Output 11|PWM Hi Power|Pinscape AIO|Power Out 11|aioBoardPWMOutputSelector",
-        "3.43":   "Output 12|PWM Hi Power|Pinscape AIO|Power Out 12|aioBoardPWMOutputSelector",
-        "3.44":   "Output 13|PWM Hi Power|Pinscape AIO|Power Out 13|aioBoardPWMOutputSelector",
-        "3.45":   "Output 14|PWM Hi Power|Pinscape AIO|Power Out 14|aioBoardPWMOutputSelector",
-        "3.46":   "Output 15|PWM Hi Power|Pinscape AIO|Power Out 15|aioBoardPWMOutputSelector",
-        "3.47":   "Output 16|PWM Hi Power|Pinscape AIO|Power Out 16|aioBoardPWMOutputSelector",
+        "3.32":   "Output 1|PWM Hi Power|Pinscape AIO|Power 1|aioBoardPWMOutputSelector",
+        "3.33":   "Output 2|PWM Hi Power|Pinscape AIO|Power 2|aioBoardPWMOutputSelector",
+        "3.34":   "Output 3|PWM Hi Power|Pinscape AIO|Power 3|aioBoardPWMOutputSelector",
+        "3.35":   "Output 4|PWM Hi Power|Pinscape AIO|Power 4|aioBoardPWMOutputSelector",
+        "3.36":   "Output 5|PWM Hi Power|Pinscape AIO|Power 5|aioBoardPWMOutputSelector",
+        "3.37":   "Output 6|PWM Hi Power|Pinscape AIO|Power 6|aioBoardPWMOutputSelector",
+        "3.38":   "Output 7|PWM Hi Power|Pinscape AIO|Power 7|aioBoardPWMOutputSelector",
+        "3.39":   "Output 8|PWM Hi Power|Pinscape AIO|Power 8|aioBoardPWMOutputSelector",
+        "3.40":   "Output 9|PWM Hi Power|Pinscape AIO|Power 9|aioBoardPWMOutputSelector",
+        "3.41":   "Output 10|PWM Hi Power|Pinscape AIO|Power 10|aioBoardPWMOutputSelector",
+        "3.42":   "Output 11|PWM Hi Power|Pinscape AIO|Power 11|aioBoardPWMOutputSelector",
+        "3.43":   "Output 12|PWM Hi Power|Pinscape AIO|Power 12|aioBoardPWMOutputSelector",
+        "3.44":   "Output 13|PWM Hi Power|Pinscape AIO|Power 13|aioBoardPWMOutputSelector",
+        "3.45":   "Output 14|PWM Hi Power|Pinscape AIO|Power 14|aioBoardPWMOutputSelector",
+        "3.46":   "Output 15|PWM Hi Power|Pinscape AIO|Power 15|aioBoardPWMOutputSelector",
+        "3.47":   "Output 16|PWM Hi Power|Pinscape AIO|Power 16|aioBoardPWMOutputSelector",
 
-        "3.48":   "Output 17|PWM Hi Power|Pinscape AIO|Power Out 17|aioBoardPWMOutputSelector",
-        "3.49":   "Output 18|PWM Hi Power|Pinscape AIO|Power Out 18|aioBoardPWMOutputSelector",
-        "3.50":   "Output 19|PWM Hi Power|Pinscape AIO|Power Out 19|aioBoardPWMOutputSelector",
-        "3.51":   "Output 20|PWM Hi Power|Pinscape AIO|Power Out 20|aioBoardPWMOutputSelector",
-        "3.52":   "Output 21|PWM Hi Power|Pinscape AIO|Power Out 21|aioBoardPWMOutputSelector",
-        "3.53":   "Output 22|PWM Hi Power|Pinscape AIO|Power Out 22|aioBoardPWMOutputSelector",
-        "3.54":   "Output 23|PWM Hi Power|Pinscape AIO|Power Out 23|aioBoardPWMOutputSelector",
-        "3.55":   "Output 24|PWM Hi Power|Pinscape AIO|Power Out 24|aioBoardPWMOutputSelector",
-        "3.56":   "Output 25|PWM Hi Power|Pinscape AIO|Power Out 25|aioBoardPWMOutputSelector",
-        "3.57":   "Output 26|PWM Hi Power|Pinscape AIO|Power Out 26|aioBoardPWMOutputSelector",
-        "3.58":   "Output 27|PWM Hi Power|Pinscape AIO|Power Out 27|aioBoardPWMOutputSelector",
-        "3.59":   "Output 28|PWM Hi Power|Pinscape AIO|Power Out 28|aioBoardPWMOutputSelector",
-        "3.60":   "Output 29|PWM Hi Power|Pinscape AIO|Power Out 29|aioBoardPWMOutputSelector",
-        "3.61":   "Output 30|PWM Hi Power|Pinscape AIO|Power Out 30|aioBoardPWMOutputSelector",
-        "3.62":   "Output 31|PWM Hi Power|Pinscape AIO|Power Out 31|aioBoardPWMOutputSelector",
-        "3.63":   "Output 32|PWM Hi Power|Pinscape AIO|Power Out 32|aioBoardPWMOutputSelector",
+        "3.48":   "Output 17|PWM Hi Power|Pinscape AIO|Power 17|aioBoardPWMOutputSelector",
+        "3.49":   "Output 18|PWM Hi Power|Pinscape AIO|Power 18|aioBoardPWMOutputSelector",
+        "3.50":   "Output 19|PWM Hi Power|Pinscape AIO|Power 19|aioBoardPWMOutputSelector",
+        "3.51":   "Output 20|PWM Hi Power|Pinscape AIO|Power 20|aioBoardPWMOutputSelector",
+        "3.52":   "Output 21|PWM Hi Power|Pinscape AIO|Power 21|aioBoardPWMOutputSelector",
+        "3.53":   "Output 22|PWM Hi Power|Pinscape AIO|Power 22|aioBoardPWMOutputSelector",
+        "3.54":   "Output 23|PWM Hi Power|Pinscape AIO|Power 23|aioBoardPWMOutputSelector",
+        "3.55":   "Output 24|PWM Hi Power|Pinscape AIO|Power 24|aioBoardPWMOutputSelector",
+        "3.56":   "Output 25|PWM Hi Power|Pinscape AIO|Power 25|aioBoardPWMOutputSelector",
+        "3.57":   "Output 26|PWM Hi Power|Pinscape AIO|Power 26|aioBoardPWMOutputSelector",
+        "3.58":   "Output 27|PWM Hi Power|Pinscape AIO|Power 27|aioBoardPWMOutputSelector",
+        "3.59":   "Output 28|PWM Hi Power|Pinscape AIO|Power 28|aioBoardPWMOutputSelector",
+        "3.60":   "Output 29|PWM Hi Power|Pinscape AIO|Power 29|aioBoardPWMOutputSelector",
+        "3.61":   "Output 30|PWM Hi Power|Pinscape AIO|Power 30|aioBoardPWMOutputSelector",
+        "3.62":   "Output 31|PWM Hi Power|Pinscape AIO|Power 31|aioBoardPWMOutputSelector",
+        "3.63":   "Output 32|PWM Hi Power|Pinscape AIO|Power 32|aioBoardPWMOutputSelector",
 
-        "4.0":    "Timed 1|Timed Digital|Pinscape AIO|Chime Out 1|aioBoardDigitalOutputSelector",
-        "4.1":    "Timed 2|Timed Digital|Pinscape AIO|Chime Out 2|aioBoardDigitalOutputSelector",
-        "4.2":    "Timed 3|Timed Digital|Pinscape AIO|Chime Out 3|aioBoardDigitalOutputSelector",
-        "4.3":    "Timed 4|Timed Digital|Pinscape AIO|Chime Out 4|aioBoardDigitalOutputSelector",
-        "4.4":    "Timed 5|Timed Digital|Pinscape AIO|Chime Out 5|aioBoardDigitalOutputSelector",
-        "4.5":    "Timed 6|Timed Digital|Pinscape AIO|Chime Out 6|aioBoardDigitalOutputSelector",
-        "4.6":    "Timed 7|Timed Digital|Pinscape AIO|Chime Out 7|aioBoardDigitalOutputSelector",
-        "4.7":    "Timed 8|Timed Digital|Pinscape AIO|Chime Out 8|aioBoardDigitalOutputSelector"
+        "4.0":    "Output 1|Timed Digital|Pinscape AIO|Chime 1|aioBoardDigitalOutputSelector",
+        "4.1":    "Output 2|Timed Digital|Pinscape AIO|Chime 2|aioBoardDigitalOutputSelector",
+        "4.2":    "Output 3|Timed Digital|Pinscape AIO|Chime 3|aioBoardDigitalOutputSelector",
+        "4.3":    "Output 4|Timed Digital|Pinscape AIO|Chime 4|aioBoardDigitalOutputSelector",
+        "4.4":    "Output 5|Timed Digital|Pinscape AIO|Chime 5|aioBoardDigitalOutputSelector",
+        "4.5":    "Output 6|Timed Digital|Pinscape AIO|Chime 6|aioBoardDigitalOutputSelector",
+        "4.6":    "Output 7|Timed Digital|Pinscape AIO|Chime 7|aioBoardDigitalOutputSelector",
+        "4.7":    "Output 8|Timed Digital|Pinscape AIO|Chime 8|aioBoardDigitalOutputSelector"
     };
 
     // add four power boards worth of outputs
@@ -1510,13 +1489,11 @@ var aioOutPortAlias, aioGpioPortAlias;
         "PTD0":   "Plunger 3|CHA/SCL",
         "PTE20":  "Plunger 2|SDA",
         "PTB0":   "Plunger 1|Wiper/Int",
-        "PTC8":   "Knocker|Knocker"
-	// Extender/expansion header is not soldered on the Pinscape AIO. These ports
-	// will rarely, if ever be used. We can add tihs back if there is a requirement
-        //"PTC4":   "Expansion Port|C4",
-        //"PTC3":   "Expansion Port|C3",
-        //"PTC0":   "Expansion Port|C0",
-        //"PTA2":   "Expansion Port|A2",
+        "PTC8":   "Knocker|JP9-2|Timed Digital",
+        "PTC4":   "Expansion Port|C4",
+        "PTC3":   "Expansion Port|C3",
+        "PTC0":   "Expansion Port|C0",
+        "PTA2":   "Expansion Port|A2"
     };
 
     // Build a combined table of the GPIO port aliases for internal and
