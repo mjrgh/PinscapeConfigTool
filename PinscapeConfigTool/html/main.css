@@ -560,7 +560,7 @@ div.indented {
     margin: 0px;
     padding: 0px;
     white-space: nowrap;
-    width: 468px;
+    width: 496px;
 }
 .sizer {
     visibility: hidden;
@@ -617,7 +617,7 @@ div.indented {
     margin: 0px;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    min-width: 15ex;
+    min-width: 20ex;
 }
 .pinlist > div {
     margin: 0px;
