@@ -365,7 +365,6 @@ var aioBoard_headers = {
         pinN: [10, 345]
     },
 
-
     "Small LED": {
         pins: [["3.16", "3.17", "3.18", "3.19", "3.20", "3.21", "3.22", "3.23", "3.24", "3.25", "3.26", "3.27", "3.28", "3.29", "3.30", "3.31"]],
         type: "pinheader",
@@ -432,14 +431,14 @@ var aioBoard_headers = {
 
 var powerBoard_headers = {
     "JP5": {
-        pins: [["3.64", "3.65", "3.66", "3.67", "3.68", "3.69", "3.70", "3.71", "3.72", "3.73", "3.74", "3.75", "3.76", "3.77", "3.78", "3.79"]],
+        pins: [["3.32", "3.33", "3.34", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43", "3.44", "3.45", "3.46", "3.47"]],
         type: "pinheader",
         pin1: [97, 49],
         pinN: [225, 49]
     },
     
     "JP6": {
-        pins: [["3.80", "3.81", "3.82", "3.83", "3.84", "3.85", "3.86", "3.87", "3.88", "3.89", "3.90", "3.91", "3.92", "3.93", "3.94", "3.95"]],
+        pins: [["3.48", "3.49", "3.50", "3.51", "3.52", "3.53", "3.54", "3.55", "3.56", "3.57", "3.58", "3.59", "3.60", "3.61", "3.62", "3.63"]],
         type: "pinheader",
         pin1: [97, 361],
         pinN: [225, 361]
@@ -462,9 +461,25 @@ var powerBoard_headers = {
     //}
 };
 
+var aio_powerBoard_headers = {
+    "JP5": {
+        pins: [["3.64", "3.65", "3.66", "3.67", "3.68", "3.69", "3.70", "3.71", "3.72", "3.73", "3.74", "3.75", "3.76", "3.77", "3.78", "3.79"]],
+        type: "pinheader",
+        pin1: [97, 49],
+        pinN: [225, 49]
+    },
+    
+    "JP6": {
+        pins: [["3.80", "3.81", "3.82", "3.83", "3.84", "3.85", "3.86", "3.87", "3.88", "3.89", "3.90", "3.91", "3.92", "3.93", "3.94", "3.95"]],
+        type: "pinheader",
+        pin1: [97, 361],
+        pinN: [225, 361]
+    }
+};
+
 var chimeBoard_headers = {
     "JP9": {
-        pins: [["4.8", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15"]],
+        pins: [["4.0", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7"]],
         type: "pinheader",
         pin1: [113, 68],
         pinN: [174, 68]
@@ -485,6 +500,15 @@ var chimeBoard_headers = {
     //    pin1: [319, 299],
     //    pinN: [328, 334]
     //}
+};
+
+var aio_chimeBoard_headers = {
+    "JP9": {
+        pins: [["4.8", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15"]],
+        type: "pinheader",
+        pin1: [113, 68],
+        pinN: [174, 68]
+    }
 };
 
 // build a hash of the pin table indexed by name
@@ -1084,7 +1108,7 @@ var pinscapeAIOFactoryConfig = {
         // logically adjacent in the port mapping.  Knockers are also quite common,
         // so this belongs in the first 32 ports anyway.  Mark it as noisy.
         17: { port: { type: 2, pin: "PTC8"}, flags: 0x02 },
-  
+
         // Map the next 32 ports to the outputs from the first power board.  These
         // are TLC5940 chips #3 and #4 in the daisy chain (the main board has #1
         // and #2).  This mapping will provide an additional 15 general-purpose 
@@ -1481,20 +1505,20 @@ var aioOutPortAlias, aioGpioPortAlias;
     // example, if a plunger sensor isn't being used, all of the
     // plunger input pins can be used as button inputs instead.
     var gExternal = {
-        "PTE23":  "Calibration|LED-",
-        "PTE29":  "Calibration|A",
-        "PTE22":  "Plunger 4|CHB",
-        "PTD5":   "Plunger 4|CHB",
-        "PTE21":  "Plunger 3|CHA/SCL",
-        "PTD0":   "Plunger 3|CHA/SCL",
-        "PTE20":  "Plunger 2|SDA",
-        "PTB0":   "Plunger 1|Wiper/Int",
-        "PTC8":   "Knocker|JP9-2|Timed Digital",
-        "PTC4":   "Expansion Port|C4",
-        "PTC3":   "Expansion Port|C3",
-        "PTC0":   "Expansion Port|C0",
-        "PTA2":   "Expansion Port|A2"
-    };
+        "PTE23":  "Calibration LED-|LED-",
+        "PTE29":  "Calibration A|A",
+        "PTE22":  "Plunger CHB|CHB",
+        "PTD5":   "Plunger CHB|CHB",
+        "PTE21":  "Plunger CHA/SCL|CHA/SCL",
+        "PTD0":   "Plunger CHA/SCL|CHA/SCL",
+        "PTE20":  "Plunger SDA|SDA",
+        "PTB0":   "Plunger Wiper/INT|Wiper/INT",
+        "PTC8":   "Knocker|Knocker|Timed Digital",
+        "PTC4":   "Expansion C4|C4",
+        "PTC3":   "Expansion C3|C3",
+        "PTC0":   "Expansion C0|C0",
+        "PTA2":   "Expansion A2|A2"
+     };
 
     // Build a combined table of the GPIO port aliases for internal and
     // external Pinscape AIO board connections.
@@ -1650,8 +1674,8 @@ function buildPinToHeaderMap(sysType)
         // for up to four copies of each secondary board.
         $.each({
             "expansion main": { headers: aioBoard_headers, image: "aioBoardPins.png", copies: 1 },
-            "expansion power": { headers: powerBoard_headers, image: "powerBoardPins.png", copies: 4 },
-            "expansion chime": { headers: chimeBoard_headers, image: "chimeBoardPins.png", copies: 4 },
+            "expansion power": { headers: aio_powerBoard_headers, image: "powerBoardPins.png", copies: 4 },
+            "expansion chime": { headers: aio_chimeBoard_headers, image: "chimeBoardPins.png", copies: 4 },
         }, function(boardName, boardInfo) {
             $.each(boardInfo.headers, function(headerName, headerInfo) {
                 forEachPin(headerInfo, function(pinName, n, x, y) {
