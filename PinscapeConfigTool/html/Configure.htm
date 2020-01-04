@@ -189,6 +189,9 @@ $("input:radio[name=hardwareType]").change(function(ev)
     default:
         // plain KL25Z or unknown
 
+	// show or hide sub-option sections as appropriate
+        slideToggle(d, false, 250, fromUI);        // type 0 = no expansion boards
+
         // use hardware pin names for the output ports (no board aliases)
         outPortAlias = { };
         gpioPortAlias = { };
@@ -8186,6 +8189,7 @@ function configFunctionSetup()
 		var hwType = $("input:radio[name=hardwareType]:checked").val();
 		return (hwType == 1 || hwType == 2) ? v : undefined; }
         },
+
         { prop: "TLC5940.nchips", ctl: "#tlc_nchips", type: tText, datatype: dNumber },
         { prop: "HC595.nchips", ctl: "#hc595_nchips", type: tText, datatype: dNumber },
 
