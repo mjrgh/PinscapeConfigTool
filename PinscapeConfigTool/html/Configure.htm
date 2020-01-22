@@ -66,7 +66,8 @@ var ConfigSource = {
 
          <div class="hider">
             If you're using the <a href="http://mjrnet.org/pinscape/expansion-board.html" target="_blank">
-            Pinscape expansion boards</a>, select that option below, and the
+            Pinscape expansion boards</a> or the <a href="https://www.vpforums.org/index.php?showtopic=42631" target="_blank">
+	    Oak Micros Pinscape All-in-One</a>, select that option below, and the
             setup tool will automatically fill in the appropriate pin assignments
             throughout the configuration.
             If you're using the KL25Z by itself, or you're using your own custom add-ons
@@ -89,6 +90,14 @@ var ConfigSource = {
                      <img src="expansionStack.png"><br>
                      <input type="radio" name="hardwareType" value="1">
                      Pinscape Expansion Boards<br>
+                     &nbsp;
+                  </label>
+               </td>
+               <td>
+                  <label>
+                     <img src="pinscapeAIO.png"><br>
+                     <input type="radio" name="hardwareType" value="2">
+                     Pinscape All-in-One<br>
                      &nbsp;
                   </label>
                </td>
@@ -115,10 +124,11 @@ var ConfigSource = {
                   <td>Number of chime boards:</td>
                   <td><input type="text" id="numChimeBoards" size="4" value="0">
                </tr>
+
             </table>
 
             <div>
-               <label><input type="checkbox" id="ckExpBoardShowPins"> Show KL25Z pin assignments</label>
+               <label><input type="checkbox" id="ckExpBoardShowPins"> Show KL25Z pin assignments <b>(Expert Mode)</b></label>
                <div style="margin: 1ex 0px 0px 2em;">
                   The KL25Z pin assignments are hidden by default because you've selected the
                   expansion board configuration.  All pin assignments are pre-determined in
@@ -138,14 +148,14 @@ $("input:radio[name=hardwareType]").change(function(ev)
     var v = $("input:radio[name=hardwareType]:checked").val();
     var fromUI = !!ev.originalEvent;
 
-    // show or hide sub-option sections as appropriate
-    slideToggle(d, v == 1, 250, fromUI);        // type 1 = expansion boards
-
-    // set up defaults for the new configuration
+     // set up defaults for the new configuration
     switch (+v)
     {
     case 1:
         // Pinscape Expansion Boards, first release
+
+	// show or hide sub-option sections as appropriate
+        slideToggle(d, v == 1, 250, fromUI);        // type 1 = expansion boards
 
         // use the expansion board output port aliases
         outPortAlias = expOutPortAlias;
@@ -159,8 +169,28 @@ $("input:radio[name=hardwareType]").change(function(ev)
         $("#ckExpBoardShowPins").prop("checked", false);
         break;
 
+    case 2:
+        // Pinscape AIO
+
+	// show or hide sub-option sections as appropriate
+        slideToggle(d, v == 2, 250, fromUI);        // type 2 = Pinscape AIO
+
+        // use the Pinscape AIO output port aliases
+        outPortAlias = aioOutPortAlias;
+        gpioPortAlias = aioGpioPortAlias;
+
+        if (fromUI)
+            configToUI(pinscapeAIOFactoryConfig, pinscapeAIOFactoryXConfig, ConfigSource.Factory);
+
+        // hide KL25Z pin assignments by default
+        $("#ckExpBoardShowPins").prop("checked", false);
+        break;
+
     default:
         // plain KL25Z or unknown
+
+	// show or hide sub-option sections as appropriate
+        slideToggle(d, false, 250, fromUI);        // type 0 = no expansion boards
 
         // use hardware pin names for the output ports (no board aliases)
         outPortAlias = { };
@@ -173,11 +203,11 @@ $("input:radio[name=hardwareType]").change(function(ev)
     }
 
     // show/hide items globally according to the type
-    $(".expBoardOnly").css("display", v == 1 ? "" : "none");
-    $(".expBoardExclude").css("display", v == 1 ? "none" : "");
+    $(".expBoardOnly").css("display", (v == 1 || v == 2) ? "" : "none");
+    $(".expBoardExclude").css("display", (v == 1 || v == 2) ? "none" : "");
 
     // note the new type
-    prvHardwareType = v;
+    prvHardwareType = v;  // (Mike P - not used ??)
 
     // update pin displays - this shows the pin selectors in standalone
     // mode, and hides them in expansion board mode, except when the "show
@@ -217,6 +247,8 @@ function updatePinVisibility()
         // expansion board alternate text
         $(".expBoardPin").show();
         $(".expBoardAlt").hide();
+        $(".expBoardText").hide();
+        $(".aioBoardText").hide();
         break;
 
     case 1:
@@ -225,6 +257,17 @@ function updatePinVisibility()
         // box is checked
         $(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
         $(".expBoardAlt").show();
+        $(".expBoardText").show();
+        $(".aioBoardText").hide();
+        break;
+    case 2:
+        // Pinscape AIO board mode - show the Pinscape AIO alternate text,
+        // and hide the regular pin selectors, *unless* the "show pins anyway"
+        // box is checked
+        $(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
+        $(".expBoardAlt").show();
+        $(".expBoardText").hide();
+        $(".aioBoardText").show();
         break;
     }
 }
@@ -243,11 +286,29 @@ $("#numMainBoards,#numPowerBoards,#numChimeBoards").change(function()
 // adjust the number of peripheral chips to match the expansion board setup
 function expBoardAdjustChips()
 {
-    // adjust the TLC5940 count: 2 per main board + 2 per power board
-    $("#tlc_nchips").val(2*$("#numMainBoards").val() + 2*$("#numPowerBoards").val()).change();
+    // get the hardware mode
+    switch (+$("input:radio[name=hardwareType]:checked").val())
+    {
+    case 0:
+    default:
+        break;
 
-    // adjust the 74HC595 count: 1 per chime board
-    $("#hc595_nchips").val($("#numChimeBoards").val()).change();
+    case 1:
+	// adjust the TLC5940 count: 2 per main board + 2 per power board
+        $("#tlc_nchips").val(2*$("#numMainBoards").val() + 2*$("#numPowerBoards").val()).change();
+
+        // adjust the 74HC595 count: 1 per chime board
+        $("#hc595_nchips").val($("#numChimeBoards").val()).change();
+	break;
+
+    case 2:
+	// adjust the TLC5940 count: 4 per main board + 2 per power board
+        $("#tlc_nchips").val(4*$("#numMainBoards").val() + 2*$("#numPowerBoards").val()).change();
+
+        // adjust the 74HC595 count: 1 per main board + 1 per chime board
+        $("#hc595_nchips").val(1*$("#numMainBoards").val() + 1*$("#numChimeBoards").val()).change();
+	break;
+    }
 }
 
       </script>
@@ -1479,7 +1540,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   </table>
                </div>
             </div>
-            <div class="expBoardAlt">
+            <div class="expBoardText">
                Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
                <ul>
                   <li>Sensor AO1/AO2 to pin 1
@@ -1487,6 +1548,16 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Sensor VDD to pin 5
                   <li>Sensor VPP (GND) to pin 6
                   <li>Sensor SI to pin 8
+               </ul>
+            </div>
+            <div class="aioBoardText">
+               Connect the sensor to the PLUNGER connections on the Pinscape AIO:
+               <ul>
+                  <li>Sensor AO1/AO2 to Wiper/INT
+                  <li>Sensor CLK to CHA/SCL
+                  <li>Sensor VDD to 3.3V
+                  <li>Sensor VPP (GND) to GND
+                  <li>Sensor SI to SDA
                </ul>
             </div>
          </div>
@@ -1518,7 +1589,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   </table>
                </div>
             </div>
-            <div class="expBoardAlt">
+            <div class="expBoardText">
                Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
                <ul>
                   <li>Pot wiper to pin 1
@@ -1526,12 +1597,27 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Other fixed-resistor end to pin 6
                </ul>
             </div>
-            <div>
+            <div class="aioBoardText">
+               Connect the sensor to the PLUNGER connections on the Pinscape AIO:
+               <ul>
+                  <li>Pot wiper to Wiper
+                  <li>One fixed-resistor end to 3.3V
+                  <li>Other fixed-resistor end to GND
+               </ul>
+            </div>
+            <div class="expBoardText">
                Note: this sensor type setting can be used with other sensors
                that represents the plunger position as an analog voltage level,
                such as an LVDT or analog IR distance finder.  Connect the sensor's
                analog output pin to JP2 pin 1.  Connect sensor power to pin 5 and
                GND to pin 6.
+            </div>
+            <div class="aioBoardText">
+               Note: this sensor type setting can be used with other sensors
+               that represents the plunger position as an analog voltage level,
+               such as an LVDT or analog IR distance finder.  Connect the sensor's
+               analog output pin to Wiper.  Connect sensor power to 3.3V and
+               sensor ground to GND.
             </div>
          </div>
          <div id="plungerPinsQuad">
@@ -1569,7 +1655,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   </table>
                </div>
             </div>
-            <div class="expBoardAlt">
+            <div class="expBoardText">
                Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
                <ul>
                   <li>Channel A (CHA) to pin 3
@@ -1577,6 +1663,16 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Sensor 3.3V to pin 5 (if required)
                   <li>Sensor GND to pin 6
                   <li>Sensor 5V to pin 7 (if required)
+               </ul>
+            </div>
+            <div class="aioBoardText">
+               Connect the sensor to the PLUNGER connections on the Pinscape AIO:
+               <ul>
+                  <li>Channel A (CHA) to CHA
+                  <li>Channel B (CHB) to CHB
+                  <li>Sensor 3.3V to 3.3V (if required)
+                  <li>Sensor GND to GND
+                  <li>Sensor 5V to 5V (if required)
                </ul>
             </div>
          </div>
@@ -1623,7 +1719,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   </table>
                </div>
             </div>
-            <div class="expBoardAlt">
+            <div class="expBoardText">
                Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
                <ul>
                   <li>SDA to pin 8
@@ -1631,6 +1727,16 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>GPIO0/CE to pin 1
                   <li>Sensor VIN to pin 5
                   <li>Sensor GND to pin 6
+               </ul>
+            </div>
+            <div class="aioBoardText">
+               Connect the sensor to the PLUNGER connections on the Pinscape AIO:
+               <ul>
+                  <li>SDA to SDA
+                  <li>SCL to SCL
+                  <li>GPIO0/CE to INT
+                  <li>Sensor VIN to 3.3V
+                  <li>Sensor GND to GND
                </ul>
             </div>
          </div>
@@ -1687,7 +1793,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   </table>
                </div>
             </div>
-            <div class="expBoardAlt">
+            <div class="expBoardText">
                Connect the sensor to a bidirectional level shifter board, and connect
                the level shifter to the PLUNGER connector (JP2) on the main interface board.
                <ul>
@@ -1699,6 +1805,20 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Level shift LV GND (ground) to Pinscape JP2 pin 6 (GND)
                   <li>Level shifter LV (logic supply) to Pinscape JP2 pin 5 (VCC)
                   <li>Level shifter HV (device supply) to Pinscape JP2 pin 7 (+5V)
+               </ul>
+            </div>
+            <div class="aioBoardText">
+               Connect the sensor to a bidirectional level shifter board, and connect
+               the level shifter to the PLUNGER connections on the Pinscape AIO.
+               <ul>
+                  <li>Sensor VDD (pin 1) to 5V
+                  <li>Sensor CSn (pin 2) to level shifter HV1 - LV1 to CHA/SCL (PTE21)
+                  <li>Sensor Vss (pin 3) to level shifter HV to GND
+                  <li>Sensor CLK (pin 4) to level shifter HV2 - LV2 to CHB PTE22)
+                  <li>Sensor DO (pin 5) to level shifter HV3 - LV3 to SDA (PTE20)
+                  <li>Level shift LV GND (ground) to GND
+                  <li>Level shifter LV (logic supply) to 3.3V
+                  <li>Level shifter HV (device supply) to 5V
                </ul>
             </div>
          </div>
@@ -1766,10 +1886,15 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   </table>
                </div>
             </div>
-            <div class="expBoardAlt">
+            <div class="expBoardText">
                This sensor requires a special circuit board.  Use a ribbon
                cable to connect the sensor circuit board to the PLUNGER connector (JP2)
                on the main interface board.
+            </div>
+            <div class="aioBoardText">
+               This sensor requires a special circuit board.  Use a ribbon
+               cable to connect the sensor circuit board to the PLUNGER connections
+               on the Pinscape AIO.
             </div>
          </div>
 
@@ -2042,9 +2167,13 @@ $("#btnPlungerCal").click(function(ev) {
          (The calibration button is only applicable when you have a plunger
          sensor installed.)
       </div>
-      <div class="expBoardAlt">
+      <div class="expBoardText">
          Connect the calibration button to the CAL BTN connector
          (JP3) on the main interface board.
+      </div>
+      <div class="aioBoardText">
+         Connect the calibration button to the Calibartion connections
+         on the Pinscape AIO.
       </div>
    </div>
 
@@ -3139,8 +3268,11 @@ $(function() {
          </p>
       </div>
 
-      <div class="expBoardAlt">
+      <div class="expBoardText">
          The TLC5940 configuration is automatically set up for your expansion boards.
+      </div>
+      <div class="aioBoardText">
+         The TLC5940 configuration is automatically set up for your Pinscape AIO.
       </div>
       <div class="expBoardPin">
          <table class="inputs">
@@ -3411,8 +3543,11 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
          </p>
       </div>
 
-      <div class="expBoardAlt">
+      <div class="expBoardText">
          The 74HC595 configuration is automatically set up for your chime boards.
+      </div>
+      <div class="expBoardText">
+         The 74HC595 configuration is automatically set up for your Pinscape AIO.
       </div>
       <div class="expBoardPin">
          <table class="inputs">
@@ -3713,7 +3848,7 @@ $(function() {
                   +   "<td class=\"dispPinLoc\"></td>"
                   +   "<td class=\"dispPinHeader\"></td>"
                   +   "<td class=\"outPortPin\">"
-                  +      "<input class=\"dispPinName\" type=\"text\" size=\"12\" readonly>"
+                  +      "<input class=\"dispPinName\" type=\"text\" size=\"15\" readonly>"
                   +      "<input class=\"pintype\" type=\"hidden\">"
                   +      "<input class=\"pinval\" type=\"hidden\">"
                   +   "</td>"
@@ -4454,7 +4589,8 @@ var adjustOutputPorts = (function()
         // flags at all, and as long as that's true it's simpler to just
         // treat it as the special case it is.
         var hcFlags = 0;
-        if ($("input:radio[name=hardwareType]:checked").val() == 1)
+	var hwType = $("input:radio[name=hardwareType]:checked").val();
+        if (hwType == 1 || hwType == 2)
             hcFlags = 0x02;  // noisy
 
         // generate the list of new ports we need
@@ -5040,6 +5176,7 @@ $("#printButton").click(function(ev) {
             </div>
          </div>
       </div>
+
       <div id="mainBoardDigitalOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">JP9</div>
          <div class="pinlist"></div>
@@ -5062,12 +5199,45 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
+      <div id="aioBoardDigitalOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Digital Outputs</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="aioBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="aioBoardPWMOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pwm="true" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">PWM Outputs</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="aioBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
       <div id="mainBoardInputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">N/C</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
                <img src="mainBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="aioBoardInputSelector" class="pinSelectorPage aioBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">N/C</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="aioBoardPins.png">
                <div class="pinoverlay"></div>
             </div>
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
@@ -5168,9 +5338,21 @@ $("#printButton").click(function(ev) {
             <img src="mainBoardOut.png"><br>
             Main Board<br>Digital Out
          </div>
+         <div id="pinTypeAIOBoardPWMOut" data-page="aioBoardPWMOutputSelector" data-pintype="1">
+            <img src="aioBoardOut.png"><br>
+            Pinscape AIO<br>PWM Out
+         </div>
+         <div id="pinTypeAIOBoardDigitalOut" data-page="aioBoardDigitalOutputSelector" data-pintype="2">
+            <img src="aioBoardOut.png"><br>
+            Pinscape AIO<br>Digital Out
+         </div>
          <div id="pinTypeMainBoardIn" data-page="mainBoardInputSelector">
             <img src="mainBoardIn.png"><br>
             Main Board
+         </div>
+         <div id="pinTypeAIOBoardIn" data-page="aioBoardInputSelector">
+            <img src="aioBoardIn.png"><br>
+            Pinscape AIO
          </div>
          <div id="pinTypePowerBoardOut" data-page="powerBoardOutputSelector">
             <img src="powerBoardOut.png"><br>
@@ -5982,7 +6164,15 @@ $(function() {
         function mainBoardHoverName(pin)
         {
             // if there's an out port alias, return the jumper entry
-            var alias = expOutPortAlias[pin];
+            var alias = outPortAlias[pin];
+            return alias ? alias.split("|")[3] : undefined;
+        }
+
+        // figure the hover name for a main board pin list item
+        function aioBoardHoverName(pin)
+        {
+            // if there's an out port alias, return the jumper entry
+            var alias = outPortAlias[pin];
             return alias ? alias.split("|")[3] : undefined;
         }
 
@@ -6003,7 +6193,39 @@ $(function() {
               hovername: mainBoardHoverName
             },
         ]);
-        buildBoardPinButtons($("#mainBoardDigitalOutputSelector"), mainBoard_headers, true);
+        buildBoardPinButtons($("#mainBoardDigitalOutputSelector"), mainBoard_headers, true, expGpioPortAlias, expOutPortAlias);
+
+
+        // Build the Pinscape AIO board digital output list
+        buildGroupedPinList($("#aioBoardDigitalOutputSelector"), [
+            { groups: [0], pins: 1, header: "Knocker",
+              pinname: function(pin) { return ["Knocker"][pin]; },
+              pinid: function(pin) { return ["2.PTC8"][pin] },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 8, header: "Chime Outputs",
+              pinname: function(pin) { return "Output " + (pin + 1); },
+              pinid: function(pin) { return "4." + pin; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 4, header: "Expansion Port", pinname: "Expansion Port",
+	      pinname: function(pin) { return ["Expansion C4", "Expansion C3", "Expansion C0", "Expansion A2"][pin]; },
+              pinid: function (pin) { return ["2.PTC4", "2.PTC3", "2.PTC0", "2.PTA2"][pin]; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 4, header: "Plunger",
+              pinname: function(pin) { return ["Plunger SDA", "Plunger CHA/SCL", "Plunger CHB", "Plunger Wiper/INT"][pin]; },
+              pinid: function(pin) { return ["PTE20", "PTE21", "PTE22", "PTB0"][pin]; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 2, header: "Calibration",
+              pinname: function(pin) { return ["Calibration A", "Calibration LED-"][pin]; },
+              pinid: function(pin) { return ["PTE29", "PTE23"][pin]; },
+              hovername: aioBoardHoverName
+            },
+        ]);
+        buildBoardPinButtons($("#aioBoardDigitalOutputSelector"), aioBoard_headers, true, aioGpioPortAlias, aioOutPortAlias);
+
             
         // Build the main board PWM output list
         buildGroupedPinList($("#mainBoardPWMOutputSelector"), [
@@ -6033,7 +6255,49 @@ $(function() {
               hovername: mainBoardHoverName
             },
         ]);
-        buildBoardPinButtons($("#mainBoardPWMOutputSelector"), mainBoard_headers, true);
+        buildBoardPinButtons($("#mainBoardPWMOutputSelector"), mainBoard_headers, true, expGpioPortAlias, expOutPortAlias);
+
+
+        // Build the Pinscape AIO board PWM output list
+        buildGroupedPinList($("#aioBoardPWMOutputSelector"), [
+            { groups: [0], pins: 15, header: "RGB Flashers",
+              pinname: function(pin) { return (Math.floor(pin/3)+1) + "RGB".substr(pin % 3, 1) },
+              pinid: function(pin) { return "3." + pin; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 1, header: "Strobe",
+              pinname: function(pin) { return ["Strobe"][pin]; },
+              pinid: function(pin) { return ["3.15"][pin] },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 16, header: "Small LED/Opto",
+              pinname: function(pin) { return (pin < 15 ? (Math.floor(pin/3)+1) + "RGB".substr(pin %3, 1) : "6"); },
+              pinid: function(pin) { return "3." + (16 + pin); },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 32, header: "Power Outputs",
+              pinname: function(pin) { return "Output " + (pin + 1); },
+              pinid: function(pin) { return "3." + (32 + pin); },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 3, header: "Expansion Port", pinname: "Expansion Port",
+	      pinname: function(pin) { return ["Expansion C4", "Expansion C3", "Expansion A2"][pin]; },
+              pinid: function (pin) { return ["1.PTC4", "1.PTC3", "1.PTA2"][pin]; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 4, header: "Plunger",
+              pinname: function(pin) { return ["Plunger SDA", "Plunger CHA/SCL", "Plunger CHB", "Plunger Wiper/INT"][pin]; },
+              pinid: function(pin) { return ["PTE20", "PTE21", "PTE22", "PTB0"][pin]; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 2, header: "Calibration",
+              pinname: function(pin) { return ["Calibration A", "Calibration LED-"][pin]; },
+              pinid: function(pin) { return ["PTE29", "PTE23"][pin]; },
+              hovername: aioBoardHoverName
+            },
+        ]);
+        buildBoardPinButtons($("#aioBoardPWMOutputSelector"), aioBoard_headers, true, aioGpioPortAlias, aioOutPortAlias);
+
             
         // Build the main board input list
         buildGroupedPinList($("#mainBoardInputSelector"), [
@@ -6054,17 +6318,55 @@ $(function() {
               hovername: mainBoardHoverName
             },
         ]);
-        buildBoardPinButtons($("#mainBoardInputSelector"), mainBoard_headers, true);
+        buildBoardPinButtons($("#mainBoardInputSelector"), mainBoard_headers, true, expGpioPortAlias, expOutPortAlias);
+
+
+        // Build the Pinscape AIO board input list
+        buildGroupedPinList($("#aioBoardInputSelector"), [
+            { groups: [0], pins: 1, header: "N/C", pinname: "Not Conn", pinid: "Not Connected",
+              hovername: function() { return "Not Connected"; }
+            },
+            { groups: [0], pins: 24, header: "Buttons", pinname: "Button 1",
+              pinid: function(pin) { return pinscapeAIOFactoryConfig.buttons[pin+1].pin; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 4, header: "Expansion Port", pinname: "Expansion Port",
+	      pinname: function(pin) { return ["Expansion C4", "Expansiom C3", "Expansion C0", "Expansion A2"][pin]; },
+              pinid: function(pin) { return ["PTC4", "PTC3", "PTC0", "PTA2"][pin]; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 4, header: "Plunger",
+              pinname: function(pin) { return ["Plunger SDA", "Plunger CHA/SCL", "Plunger CHB", "Plunger Wiper/INT"][pin]; },
+              pinid: function(pin) { return ["PTE20", "PTE21", "PTE22", "PTB0"][pin]; },
+              hovername: aioBoardHoverName
+            },
+            { groups: [0], pins: 1, header: "Calibration",
+              pinname: function(pin) { return ["Calibration A"][pin]; },
+              pinid: function(pin) { return ["PTE29"][pin]; },
+              hovername: aioBoardHoverName
+            },
+        ]);
+        buildBoardPinButtons($("#aioBoardInputSelector"), aioBoard_headers, true, aioGpioPortAlias, aioOutPortAlias);
+
 
         // Build the power board pin list
-        buildBoardPinButtons($("#powerBoardOutputSelector"), powerBoard_headers, false);
+        buildBoardPinButtons($("#powerBoardOutputSelector"), powerBoard_headers, false, expGpioPortAlias, expOutPortAlias);
         initBoardPinPageAdjustor(
             "powerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 32);
 
+        buildBoardPinButtons($("#powerBoardOutputSelector"), powerBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
+        initBoardPinPageAdjustor(
+            "powerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 64);
+
         // Build the chime board pin list when we add or remove board
-        buildBoardPinButtons($("#chimeBoardOutputSelector"), chimeBoard_headers, false);
+        buildBoardPinButtons($("#chimeBoardOutputSelector"), chimeBoard_headers, false, expGpioPortAlias, expOutPortAlias);
         initBoardPinPageAdjustor(
             "chimeBoardOutputSelector", $("#numChimeBoards"), "4.", 8, 0);
+
+        buildBoardPinButtons($("#chimeBoardOutputSelector"), chimeBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
+        initBoardPinPageAdjustor(
+            "chimeBoardOutputSelector", $("#numChimeBoards"), "4.", 8, 8);
+
 
         // Initialize the page adjustor for one of the output boards
         function initBoardPinPageAdjustor(
@@ -6124,7 +6426,7 @@ $(function() {
         //
         // If filterToList is true, we'll only make buttons available if
         // they appear in the page's list.
-        function buildBoardPinButtons(page, headers, filterToList)
+        function buildBoardPinButtons(page, headers, filterToList, gpioAlias, outAlias)
         {
             // get the image padding
             var picdiv = page.find(".pinimage");
@@ -6154,7 +6456,7 @@ $(function() {
                     var dataPin = "", available = " available";
                     if (/^PT[A-E]\d+$/i.test(pin)) {
                         dataPin = "data-pin=\"" + pin + "\"";
-                        var g = (expGpioPortAlias[pin] || "").split("|");
+                        var g = (gpioAlias[pin] || "").split("|");
                         dataHover = "data-hovername=\"" + g[0] + " (" + g[1] + ")\"";
                         if (filterToList && !listPins[pin])
                             available = "";
@@ -6163,7 +6465,7 @@ $(function() {
                         dataPin = "data-pin=\"" + RegExp.$2 + "\" "
                                   + "data-pintype=\"" + RegExp.$1 + "\" "
                                   + "data-basepin=\"" + RegExp.$2 + "\" ";
-                        var g = expOutPortAlias[pin].split("|");
+                        var g = outAlias[pin].split("|");
                         dataHover = "data-hovername=\"" + g[0] + " (" + g[1] + ")\"";
                         if (filterToList && !listPins[pin])
                             available = "";
@@ -6336,13 +6638,18 @@ $(function() {
             
             // Show the pin selector
             showPinSelector(self.parents(".pinselect"));
+
+	    // choose appropriate page depending on hardwareType
+	    var selector = "mainBoardInputSelector";
+	    if (+$("input:radio[name=hardwareType]:checked").val() == 2)
+		selector = "aioBoardInputSelector";
             
             // Make the KL25Z digital input page and expansion board input
             // pages visible, and start with the expansion board page active.
             $("#pinTypeSelector > div").each(function() {
                 var btn = $(this);
                 var pageName = btn.data("page");
-                var sel = (pageName == "mainBoardInputSelector");
+                var sel = (pageName == selector);
                 var vis = sel;
                 if (pageName == "gpioSelector" && btn.data("filter") == "dig-in") {
                     btn.data("curfilter", ["dig-in", "extern", "nc"]);
@@ -6370,7 +6677,7 @@ $(function() {
             // show the dialog
             showPinSelector(row.find(".dispPinName").parent());
 
-            // note the hardware mode (0=standalone, 1=expansion boards)
+            // note the hardware mode (0=standalone, 1=expansion boards, 2=pinscape AIO)
             var hwType = +$("input:radio[name=hardwareType]:checked").val();
 
             // get the selected row's pin and type, and the out port alias string
@@ -6414,7 +6721,7 @@ $(function() {
                     // 74HC595.  Visible in standalone mode if we have any of
                     // these chips.
                     vis = (hwType == 0 && +$("#hc595_nchips").val() > 0);
-                    break;
+                   break;
 
                 case "virtualOutputSelector":
                     // Virtual out - always visible
@@ -6433,16 +6740,28 @@ $(function() {
                     vis = (hwType == 1);
                     break;
 
+                case "aioBoardDigitalOutputSelector":
+                    // Pinscape AIO digital outputs.  Enable in Pinscape AIO
+                    // board mode.
+                    vis = (hwType == 2);
+                    break;
+
+                case "aioBoardPWMOutputSelector":
+                    // Pinscape AIO PWM outputs.  Enable in Pinscape AIO
+                    // board mode.
+                    vis = (hwType == 2);
+                    break;
+
                 case "powerBoardOutputSelector":
                     // Power board outputs.  Enable in expansion board mode if we
                     // have at least one power board.
-                    vis = (hwType == 1 && +$("#numPowerBoards").val() > 0);
+                    vis = ((hwType == 1 || hwType == 2) && +$("#numPowerBoards").val() > 0);
                     break;
 
                 case "chimeBoardOutputSelector":
                     // Chime board outputs.  Enable in expansion board mode if we
                     // have at least one chime board.
-                    vis = (hwType == 1 && +$("#numChimeBoards").val() > 0);
+                    vis = ((hwType == 1 || hwType == 2) && +$("#numChimeBoards").val() > 0);
                     break;
                 }
 
@@ -6461,6 +6780,7 @@ $(function() {
                         break;
 
                     case 1:
+		    case 2:
                         // Pinscape Expansion Board mode.  In this mode, each page
                         // can show a mix of types, and each type can appear on more
                         // than one page, so we can't match by type.  Instead, use
@@ -6471,13 +6791,14 @@ $(function() {
                     }
                 }
 
+
                 // If the page is selected, make it visible even if we wouldn't
                 // have otherwise done so.
                 if (selected) {
                     vis = true;
                     foundSelected = true;
                 }
-                
+		
                 // if the button is visible, show it
                 $(this).toggle(vis);
                 if (vis)
@@ -6539,7 +6860,10 @@ $(function() {
             case "tlc59116Selector":
             case "mainBoardDigitalOutputSelector":
             case "mainBoardPWMOutputSelector":
+            case "aioBoardDigitalOutputSelector":
+            case "aioBoardPWMOutputSelector":
             case "mainBoardInputSelector":
+            case "aioBoardInputSelector":
             case "powerBoardOutputSelector":
             case "chimeBoardOutputSelector":
                 // show the chip pin selector
@@ -7157,7 +7481,7 @@ $(function() {
 
             // Warn about the power limits for expansion board pins connected
             // directly to KL25Z GPIO ports
-            if (dismiss && !initial && /^(Extender \d|Plunger \d|Cal Button\|)/i.test(opalias))
+            if (dismiss && !initial && /^(Extender \d|Plunger \d|Calibration\s|Expansion\s|Plunger\s|Cal Button\s)/i.test(opalias))
             {
                 window.external.ShowAdviceDialog(
                     "RawOutputPowerLimitWarning",
@@ -7851,14 +8175,21 @@ function configFunctionSetup()
         { prop: "expansionBoards.type", ctl: "input:radio[name=hardwareType]", type: tRadio, datatype: dNumber },
         { prop: "expansionBoards.version", ctl: "#expBoardVersion", type: tText },
         { prop: "expansionBoards.ext0", ctl: "#numMainBoards", type: tText, datatype: dNumber,
-          fromUI: function(v) { return $("input:radio[name=hardwareType]:checked").val() == "1" ? v : undefined; }
+          fromUI: function(v) { 
+		var hwType = $("input:radio[name=hardwareType]:checked").val();
+		return (hwType == 1 || hwType == 2) ? v : undefined; }
         },
         { prop: "expansionBoards.ext1", ctl: "#numPowerBoards", type: tText, datatype: dNumber,
-          fromUI: function(v) { return $("input:radio[name=hardwareType]:checked").val() == "1" ? v : undefined; }
+          fromUI: function(v) { 
+		var hwType = $("input:radio[name=hardwareType]:checked").val();
+		return (hwType == 1 || hwType == 2) ? v : undefined; }
         },
         { prop: "expansionBoards.ext2", ctl: "#numChimeBoards", type: tText, datatype: dNumber,
-          fromUI: function(v) { return $("input:radio[name=hardwareType]:checked").val() == "1" ? v : undefined; }
+          fromUI: function(v) { 
+		var hwType = $("input:radio[name=hardwareType]:checked").val();
+		return (hwType == 1 || hwType == 2) ? v : undefined; }
         },
+
         { prop: "TLC5940.nchips", ctl: "#tlc_nchips", type: tText, datatype: dNumber },
         { prop: "HC595.nchips", ctl: "#hc595_nchips", type: tText, datatype: dNumber },
 
