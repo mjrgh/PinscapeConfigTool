@@ -67,9 +67,8 @@ var ConfigSource = {
          <div class="hider">
             If you're using the <a href="http://mjrnet.org/pinscape/expansion-board.html" target="_blank">
             Pinscape expansion boards</a> or the <a href="https://www.vpforums.org/index.php?showtopic=42631" target="_blank">
-	    Oak Micros Pinscape All-in-One</a>, select that option below, and the
-            setup tool will automatically fill in the appropriate pin assignments
-            throughout the configuration.
+            Oak Micros Pinscape All-in-One</a>, select the corresponding option below, and the
+            setup tool will automatically fill in the pin assignments throughout the configuration.
             If you're using the KL25Z by itself, or you're using your own custom add-ons
             (e.g., your own output booster circuits), select "stand-alone" so that you
             can set the individual pin assignments to match your wiring.
@@ -128,12 +127,16 @@ var ConfigSource = {
             </table>
 
             <div>
-               <label><input type="checkbox" id="ckExpBoardShowPins"> Show KL25Z pin assignments <b>(Expert Mode)</b></label>
+               <label><input type="checkbox" id="ckExpBoardShowPins"> Show KL25Z pin assignments <b>(Expert mode)</b></label>
                <div style="margin: 1ex 0px 0px 2em;">
-                  The KL25Z pin assignments are hidden by default because you've selected the
-                  expansion board configuration.  All pin assignments are pre-determined in
-                  this configuration.  Check the box above if you want to view the pin assignments
-                  anyway, but be aware that any changes to pin assignments will probably cause problems.
+                  The KL25Z pin assignments are hidden by default because you've selected an
+                  expansion board configuration.  All GPIO pin assignments are set automatically in
+                  this configuration to match your boards, so there's normally no need to view them.
+                  You can check the box above if you want to see the pin assignments
+                  anyway, but be aware that any changes you make to the pin settings will
+                  probably cause malfunctions, because the boards are hard-wired to
+                  specific GPIO pins that the software settings have to match for the
+                  boards to work properly.
                </div>
             </div>
          </div>
@@ -154,8 +157,8 @@ $("input:radio[name=hardwareType]").change(function(ev)
     case 1:
         // Pinscape Expansion Boards, first release
 
-	// show or hide sub-option sections as appropriate
-        slideToggle(d, v == 1, 250, fromUI);        // type 1 = expansion boards
+        // use the expansion board settings view
+        slideToggle(d, true, 250, fromUI);
 
         // use the expansion board output port aliases
         outPortAlias = expOutPortAlias;
@@ -172,8 +175,8 @@ $("input:radio[name=hardwareType]").change(function(ev)
     case 2:
         // Pinscape AIO
 
-	// show or hide sub-option sections as appropriate
-        slideToggle(d, v == 2, 250, fromUI);        // type 2 = Pinscape AIO
+        // use the expansion board settings view
+        slideToggle(d, true, 250, fromUI);
 
         // use the Pinscape AIO output port aliases
         outPortAlias = aioOutPortAlias;
@@ -189,8 +192,8 @@ $("input:radio[name=hardwareType]").change(function(ev)
     default:
         // plain KL25Z or unknown
 
-	// show or hide sub-option sections as appropriate
-        slideToggle(d, false, 250, fromUI);        // type 0 = no expansion boards
+        // use the standalone settings view
+        slideToggle(d, false, 250, fromUI);
 
         // use hardware pin names for the output ports (no board aliases)
         outPortAlias = { };
@@ -205,9 +208,6 @@ $("input:radio[name=hardwareType]").change(function(ev)
     // show/hide items globally according to the type
     $(".expBoardOnly").css("display", (v == 1 || v == 2) ? "" : "none");
     $(".expBoardExclude").css("display", (v == 1 || v == 2) ? "none" : "");
-
-    // note the new type
-    prvHardwareType = v;  // (Mike P - not used ??)
 
     // update pin displays - this shows the pin selectors in standalone
     // mode, and hides them in expansion board mode, except when the "show
@@ -260,6 +260,7 @@ function updatePinVisibility()
         $(".expBoardText").show();
         $(".aioBoardText").hide();
         break;
+
     case 2:
         // Pinscape AIO board mode - show the Pinscape AIO alternate text,
         // and hide the regular pin selectors, *unless* the "show pins anyway"
@@ -289,25 +290,25 @@ function expBoardAdjustChips()
     // get the hardware mode
     switch (+$("input:radio[name=hardwareType]:checked").val())
     {
-    case 0:
-    default:
+    case 0:   // Standalone KL25Z
+    default:  // or unknown/other
         break;
 
-    case 1:
-	// adjust the TLC5940 count: 2 per main board + 2 per power board
+    case 1:   // Pinscape Expansion Boards
+        // adjust the TLC5940 count: 2 per main board + 2 per power board
         $("#tlc_nchips").val(2*$("#numMainBoards").val() + 2*$("#numPowerBoards").val()).change();
 
         // adjust the 74HC595 count: 1 per chime board
         $("#hc595_nchips").val($("#numChimeBoards").val()).change();
-	break;
+           break;
 
-    case 2:
-	// adjust the TLC5940 count: 4 per main board + 2 per power board
+    case 2:   // All-In-One Board
+        // adjust the TLC5940 count: 4 per main board + 2 per power board
         $("#tlc_nchips").val(4*$("#numMainBoards").val() + 2*$("#numPowerBoards").val()).change();
 
         // adjust the 74HC595 count: 1 per main board + 1 per chime board
         $("#hc595_nchips").val(1*$("#numMainBoards").val() + 1*$("#numChimeBoards").val()).change();
-	break;
+        break;
     }
 }
 
@@ -3546,7 +3547,7 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
       <div class="expBoardText">
          The 74HC595 configuration is automatically set up for your chime boards.
       </div>
-      <div class="expBoardText">
+      <div class="aioBoardText">
          The 74HC595 configuration is automatically set up for your Pinscape AIO.
       </div>
       <div class="expBoardPin">
@@ -4577,7 +4578,7 @@ var adjustOutputPorts = (function()
         // apply deletions
         deleteOutputs();
         
-        // HACK: If the expansion board configuration is selected, mark
+        // HACK: If an expansion board configuration is selected, mark
         // any new 74HC595 ports as "noisy".  The expansion boards use
         // these ports only on the chime boards, and these boards are
         // specialized for driving solenoids, and solenoids are pretty
@@ -4587,10 +4588,12 @@ var adjustOutputPorts = (function()
         // abstract and extensible way of handling default flags for new
         // ports, but so far this is the only situation where we need any
         // flags at all, and as long as that's true it's simpler to just
-        // treat it as the special case it is.
+        // treat it as the special case it is.  The user can still remove
+        // the "noisy" flag if it turns out to be wrong for their setup.
         var hcFlags = 0;
-	var hwType = $("input:radio[name=hardwareType]:checked").val();
-        if (hwType == 1 || hwType == 2)
+        var hwType = $("input:radio[name=hardwareType]:checked").val();
+        if (hwType == 1 /* Expansion Boards */
+            || hwType == 2 /* AIO Board */)
             hcFlags = 0x02;  // noisy
 
         // generate the list of new ports we need
@@ -6209,7 +6212,7 @@ $(function() {
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 4, header: "Expansion Port", pinname: "Expansion Port",
-	      pinname: function(pin) { return ["Expansion C4", "Expansion C3", "Expansion C0", "Expansion A2"][pin]; },
+              pinname: function(pin) { return ["Expansion C4", "Expansion C3", "Expansion C0", "Expansion A2"][pin]; },
               pinid: function (pin) { return ["2.PTC4", "2.PTC3", "2.PTC0", "2.PTA2"][pin]; },
               hovername: aioBoardHoverName
             },
@@ -6281,7 +6284,7 @@ $(function() {
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 3, header: "Expansion Port", pinname: "Expansion Port",
-	      pinname: function(pin) { return ["Expansion C4", "Expansion C3", "Expansion A2"][pin]; },
+              pinname: function(pin) { return ["Expansion C4", "Expansion C3", "Expansion A2"][pin]; },
               pinid: function (pin) { return ["1.PTC4", "1.PTC3", "1.PTA2"][pin]; },
               hovername: aioBoardHoverName
             },
@@ -6331,7 +6334,7 @@ $(function() {
               hovername: aioBoardHoverName
             },
             { groups: [0], pins: 4, header: "Expansion Port", pinname: "Expansion Port",
-	      pinname: function(pin) { return ["Expansion C4", "Expansiom C3", "Expansion C0", "Expansion A2"][pin]; },
+              pinname: function(pin) { return ["Expansion C4", "Expansiom C3", "Expansion C0", "Expansion A2"][pin]; },
               pinid: function(pin) { return ["PTC4", "PTC3", "PTC0", "PTA2"][pin]; },
               hovername: aioBoardHoverName
             },
@@ -6639,10 +6642,19 @@ $(function() {
             // Show the pin selector
             showPinSelector(self.parents(".pinselect"));
 
-	    // choose appropriate page depending on hardwareType
-	    var selector = "mainBoardInputSelector";
-	    if (+$("input:radio[name=hardwareType]:checked").val() == 2)
-		selector = "aioBoardInputSelector";
+            // choose the appropriate page depending on the hardware type
+            var selector;
+            switch (+$("input:radio[name=hardwareType]:checked").val())
+            {
+            case 1:   // Pinscape Expansion Boards
+            default:  // other/unknown
+                selector = "mainBoardInputSelector";
+                break;
+
+            case 2:   // AIO Board
+                selector = "aioBoardInputSelector";
+                break;
+            }
             
             // Make the KL25Z digital input page and expansion board input
             // pages visible, and start with the expansion board page active.
@@ -6721,7 +6733,7 @@ $(function() {
                     // 74HC595.  Visible in standalone mode if we have any of
                     // these chips.
                     vis = (hwType == 0 && +$("#hc595_nchips").val() > 0);
-                   break;
+                    break;
 
                 case "virtualOutputSelector":
                     // Virtual out - always visible
@@ -6779,13 +6791,13 @@ $(function() {
                         selected = (outtype == pintype);
                         break;
 
-                    case 1:
-		    case 2:
-                        // Pinscape Expansion Board mode.  In this mode, each page
-                        // can show a mix of types, and each type can appear on more
-                        // than one page, so we can't match by type.  Instead, use
-                        // the port alias - field [4] gives the board type.  If
-                        // there's no port alias, fall back on the type-specific page.
+                    case 1:  // Pinscape expansion boards
+                    case 2:  // Pinscape All-in-one boards
+                        // Expansion Board mode.  In this mode, each page can show a mix
+                        // of types, and each type can appear on more than one page, so
+                        // we can't match by type.  Instead, use the port alias.  Field
+                        // [4] gives the board type.  If there's no port alias, fall back
+                        // on the type-specific page.
                         selected = (alias[4] ? alias[4] == pageName : outtype == pintype);
                         break;
                     }
@@ -8176,18 +8188,21 @@ function configFunctionSetup()
         { prop: "expansionBoards.version", ctl: "#expBoardVersion", type: tText },
         { prop: "expansionBoards.ext0", ctl: "#numMainBoards", type: tText, datatype: dNumber,
           fromUI: function(v) { 
-		var hwType = $("input:radio[name=hardwareType]:checked").val();
-		return (hwType == 1 || hwType == 2) ? v : undefined; }
+              var hwType = $("input:radio[name=hardwareType]:checked").val();
+              return (hwType == 1 || hwType == 2) ? v : undefined;
+          }
         },
         { prop: "expansionBoards.ext1", ctl: "#numPowerBoards", type: tText, datatype: dNumber,
           fromUI: function(v) { 
-		var hwType = $("input:radio[name=hardwareType]:checked").val();
-		return (hwType == 1 || hwType == 2) ? v : undefined; }
+              var hwType = $("input:radio[name=hardwareType]:checked").val();
+              return (hwType == 1 || hwType == 2) ? v : undefined;
+          }
         },
         { prop: "expansionBoards.ext2", ctl: "#numChimeBoards", type: tText, datatype: dNumber,
           fromUI: function(v) { 
-		var hwType = $("input:radio[name=hardwareType]:checked").val();
-		return (hwType == 1 || hwType == 2) ? v : undefined; }
+              var hwType = $("input:radio[name=hardwareType]:checked").val();
+              return (hwType == 1 || hwType == 2) ? v : undefined;
+          }
         },
 
         { prop: "TLC5940.nchips", ctl: "#tlc_nchips", type: tText, datatype: dNumber },
