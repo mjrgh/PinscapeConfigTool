@@ -42,6 +42,7 @@ namespace PinscapeConfigTool
                         break;
 
                     case PlungerTypeAEDR8300:
+                        quadratureSensor = true;
                         //relativeSensor = true;
                         break;
 
@@ -146,6 +147,7 @@ namespace PinscapeConfigTool
         bool edgeSensor = false;                    // edge-detection sensor
         bool pixelSensor = false;                   // image sensor
         bool barCodeSensor = false;                 // sensor reads a bar code
+        bool quadratureSensor = false;              // quadrature sensor type
         //bool relativeSensor = false;              // sensor uses relative positioning (e.g., quadrature) (not currently used)
         //bool distanceSensor = false;              // non-contact distance measurement sensor
 
@@ -165,6 +167,7 @@ namespace PinscapeConfigTool
         int origBarCodeOffset = 0;
         byte[] cfgVar20 = null;
 
+        // extra data for barcode sensors
         struct BarCodeInfo
         {
             public int nBits;           // number of bits in code
@@ -173,6 +176,13 @@ namespace PinscapeConfigTool
             public int pixPerBit;       // pixel width of each bit
             public int raw;             // raw bar code bits
             public int mask;            // mask of successfully decoded bits
+        }
+
+        // extra data for quadrature sensors
+        struct QuadratureInfo
+        {
+            public int chA;             // channel "A" reading
+            public int chB;             // channel "B" reading
         }
 
         private void exposure_Paint(object sender, PaintEventArgs e)
@@ -210,6 +220,7 @@ namespace PinscapeConfigTool
             int axcTime = this.axcTime;
             int rawPos = this.rawPos;
             BarCodeInfo barcode = this.barcode;
+            QuadratureInfo quadrature = this.quadrature;
             String t1 = txtInfo_text;
             String t2 = txtInfo2_text;
             String t3 = txtInfo3_text;
@@ -322,6 +333,70 @@ namespace PinscapeConfigTool
                     byte gray = lum[mypix[i]];
                     using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
                         g.FillRectangle(br, x, 0, s, ht);
+                }
+            }
+
+            // draw the quadrature sensor visualization if appropriate
+            if (quadratureSensor)
+            {
+                // figure the bar layout
+                const int nbars = 16;
+                float barwid = (float)wid / nbars;
+
+                // The center bar will represent the current sensor reading,
+                // with "B" on the leading edge side.  So for the standard
+                // orientation, "B" is on the right, and for reverse orientation,
+                // "A" is on the left.  The "A" and "B" channels each represent
+                // half a bar.  If both channels are the same, the A/B region
+                // covers one whole bar; otherwise there's a bar edge between
+                // A and B.
+                float halfway = wid / 2.0f, startofs = halfway;
+                if (quadrature.chA == quadrature.chB)
+                    startofs -= barwid / 2.0f;
+
+                // Figure the value of the bar to the right
+                bool right = (reverseOrientation ? quadrature.chB : quadrature.chA) != 0;
+                bool left = (reverseOrientation ? quadrature.chA : quadrature.chB) != 0;
+
+                // set up brushes
+                using (Brush off1 = new SolidBrush(Color.DimGray),
+                    on1 = new SolidBrush(Color.WhiteSmoke),
+                    on2 = new SolidBrush(Color.White),
+                    off2 = new SolidBrush(Color.Black))
+                {
+                    // draw the bars to the right
+                    bool color = right;
+                    for (float x = startofs; x < wid + barwid; x += barwid, color = !color)
+                        g.FillRectangle(color ? on1 : off1, x, 0.0f, Math.Min(wid, wid - x), ht);
+
+                    // draw bars to the left
+                    color = quadrature.chA == quadrature.chB ? !left : left;
+                    for (float x = startofs - barwid; x > -barwid; x -= barwid, color = !color)
+                        g.FillRectangle(color ? on1 : off1, x, 0.0f, barwid, ht);
+
+                    // now fill in the half bars for "A" and "B"
+                    g.FillRectangle(right ? on2 : off2, halfway, 0.0f, barwid / 2.0f, ht);
+                    g.FillRectangle(left ? on2 : off2, halfway - barwid / 2.0f, 0.0f, barwid / 2.0f, ht);
+
+                    // draw the outlines
+                    Color colorA = Color.Aqua, colorB = Color.Lime;
+                    float ofsA = reverseOrientation ? -barwid/2.0f : barwid/2.0f;
+                    using (Pen pen = new Pen(colorA, 3.0f))
+                        g.DrawLine(pen, halfway + ofsA, 0.0f, halfway + ofsA, ht);
+                    using (Pen pen = new Pen(colorB, 3.0f))
+                        g.DrawLine(pen, halfway - ofsA, 0.0f, halfway - ofsA, ht);
+
+                    // draw the labels
+                    using (Font font = new Font("Arial", 12, FontStyle.Bold))
+                    {
+                        StringFormat fmt = StringFormat.GenericTypographic;
+                        fmt.Alignment = StringAlignment.Center;
+                        fmt.LineAlignment = StringAlignment.Far;
+                        using (Brush br = new SolidBrush(colorA))
+                            g.DrawString("A", font, br, halfway + ofsA/2.0f, ht / 2.0f, fmt);
+                        using (Brush br = new SolidBrush(colorB))
+                            g.DrawString("B", font, br, halfway - ofsA/2.0f, ht / 2.0f, fmt);
+                    }
                 }
             }
 
@@ -827,21 +902,32 @@ namespace PinscapeConfigTool
                             buf = null;
                         }
 
-                        // Check for a bar code header report.  This is another optional
-                        // header, sent only when using a bar code sensor type.
-                        if ((buf = tdev.ReadUSB()) != null
-                            && buf[1] == 0xff && buf[2] == 0x87 && buf[3] == 2)
+                        // Check for extra sensor-specific reports.  These reports follow
+                        // the two standard sensor reports, and are identified by the first
+                        // two bytes 0xFF87.  The next byte specifies the subtype, which
+                        // depends on the particular sensor type in use.
+                        if ((buf = tdev.ReadUSB()) != null && buf[1] == 0xff && buf[2] == 0x87)
                         {
-                            // It's the bar code report - decode it
-                            barcode.nBits = buf[4];
-                            barcode.codeType = buf[5];
-                            barcode.startOfs = buf[6] | (buf[7] << 8);
-                            barcode.pixPerBit = buf[8];
-                            barcode.raw = buf[9] | (buf[10] << 8);
-                            barcode.mask = buf[11] | (buf[12] << 8);
+                            // check the subtype
+                            if (buf[3] == 2)
+                            {
+                                // Barcode sensor report
+                                barcode.nBits = buf[4];
+                                barcode.codeType = buf[5];
+                                barcode.startOfs = buf[6] | (buf[7] << 8);
+                                barcode.pixPerBit = buf[8];
+                                barcode.raw = buf[9] | (buf[10] << 8);
+                                barcode.mask = buf[11] | (buf[12] << 8);
 
-                            // consume the report
-                            buf = null;
+                                // consume the report
+                                buf = null;
+                            }
+                            else if (buf[3] == 3)
+                            {
+                                // Quadrature sensor report
+                                quadrature.chA = buf[4];
+                                quadrature.chB = buf[5];
+                            }
                         }
 
                         // read the pixel reports if it's an imaging sensor and
@@ -1029,9 +1115,26 @@ namespace PinscapeConfigTool
                             // line 3 - scan time
                             txtInfo3_text = times;
                         }
+                        else if (quadratureSensor)
+                        {
+                            // Quadrature sensor type
+
+                            // line 1 - position
+                            txtInfo_text = String.Format(
+                                "Plunger position: {0}, Orientation: {1}, Release time: {2} ms",
+                                reportedPos == 0xFFFF ? "Unknown" : reportedPos.ToString() + "/" + (posScale - 1),
+                                orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                tRelease);
+
+                            // line 2 - scan time
+                            txtInfo2_text = times;
+
+                            // line 3 - Channel A/B values
+                            txtInfo3_text = String.Format("Quadrature channel A/B: {0}/{1}", quadrature.chA, quadrature.chB);
+                        }
                         else
                         {
-                            // Non-imaging sensor type
+                            // Other non-imaging sensor type
 
                             // line 1 - position
                             txtInfo_text = String.Format(
@@ -1174,6 +1277,7 @@ namespace PinscapeConfigTool
         bool enhanceContrast = false; // show enhanced contrast in sensor view
         int jfLo = -1, jfHi = -1;     // bounds of current jitter filter window on the device, if known
         BarCodeInfo barcode;          // bar code descriptor
+        QuadratureInfo quadrature;    // quadrature sensor status
 
         // Pixel capture file.  The foreground UI thread opens the file when the user 
         // clicks the Save button, and the background thread writes pixels to the file
