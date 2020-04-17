@@ -119,6 +119,9 @@ namespace PinscapeConfigTool
                 pnlBarCode.Visible = false;
             }
 
+            // select the default zoom
+            cbZoom.SelectedIndex = 0;
+
             // start the exposure reader thread
             done = false;
             thread = new Thread(this.ExposureThread);
@@ -185,9 +188,15 @@ namespace PinscapeConfigTool
             public int chB;             // channel "B" reading
         }
 
+        // Zoom factor, for optical sensors
+        int zoom = 1;
+
+        // Horizontal scroll offset; this is used only when zoomed in on an optical sensor
+        int scrollOfs = 0;
+
         private void exposure_Paint(object sender, PaintEventArgs e)
         {
-            // figure the number of on-screen pixels per CCD pixel
+            // figure the number of on-screen pixels per sensor pixel
             int wid = exposure.Width;
             int ht = exposure.Height;
 
@@ -198,9 +207,10 @@ namespace PinscapeConfigTool
             using (Brush dkgray = new SolidBrush(Color.DarkGray))
                 g.FillRectangle(dkgray, 0, 0, wid, ht);
 
-            // get a private copy of the current pixel array (serializing
-            // access via the mutex, since the device reader thread can
-            // install a new pixel array at any time)
+            // Get a private copy of the current sensor data.  Serialize
+            // access via the mutex to ensure we get a consistent view,
+            // since the device reader thread can update the sensor 
+            // readings at any time.
             mutex.WaitOne();
             byte[] mypix = null;
             if (pix != null)
@@ -290,7 +300,7 @@ namespace PinscapeConfigTool
             // Draw the pixels.  For a large sensor, draw the pixels first
             // onto a full-sized bitmap, then rescale it onto the window.
             // For a small sensor, draw the pixels directly into the window.
-            if (npix > wid)
+            if (npix * zoom > wid)
             {
                 // Large sensor.
                 // The sensor is larger than the on-screen display area.
@@ -306,11 +316,11 @@ namespace PinscapeConfigTool
                         if (mypix != null && npix != 0 && !calMode)
                         {
                             // draw the pixels onto the bitmap Graphics object
-                            for (int i = 0; i < npix; ++i)
+                            for (int i = scrollOfs, x = 0; i < npix && x < bmwid; ++i, x += zoom)
                             {
                                 byte gray = lum[mypix[i]];
                                 using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
-                                    gbitmap.FillRectangle(br, i, 0, i, ht);
+                                    gbitmap.FillRectangle(br, x, 0, x + zoom - 1, ht);
                             }
                         }
 
@@ -326,7 +336,7 @@ namespace PinscapeConfigTool
                 // Do the pixel scaling directly to minimize blur.
 
                 // figure the scaling factor (display pixels per sensor pixel)
-                float s = (float)wid / npix;
+                float s = (float)wid / (npix * zoom);
                 float x = 0;
                 for (int i = 0 ; i < npix ; ++i, x += s)
                 {
@@ -454,7 +464,7 @@ namespace PinscapeConfigTool
                 using (Brush green = new SolidBrush(Color.Green))
                 {
                     // rescale from the position scale to the bitmap width
-                    float gpos = pos * (float)wid / posScale;
+                    float gpos = (pos - scrollOfs) * zoom * (float)wid / posScale;
 
                     // draw on the left side for reversed orientation (-1), 
                     // otherwise on the right side
@@ -488,9 +498,9 @@ namespace PinscapeConfigTool
                     ltgray = new SolidBrush(Color.LightGray))
                 {
                     // rescale from the position scale to the bitmap 
-                    int lo = (int)Math.Round((double)jfLo / posScale * wid);
-                    int hi = (int)Math.Round((double)jfHi / posScale * wid);
-                    int rp = (int)Math.Round((double)rawPos / posScale * wid);
+                    int lo = (int)Math.Round((double)(jfLo - scrollOfs)*zoom / posScale * wid);
+                    int hi = (int)Math.Round((double)(jfHi - scrollOfs)*zoom / posScale * wid);
+                    int rp = (int)Math.Round((double)(rawPos - scrollOfs)*zoom / posScale * wid);
 
                     // mirror the coordinates if using reversed orientation
                     if (dir == -1)
@@ -550,7 +560,7 @@ namespace PinscapeConfigTool
                         green = new SolidBrush(Color.Green),
                         ltgray = new SolidBrush(Color.LightGray))
                     {
-                        int xTxt = (int)Math.Round((float)pos / posScale * wid);
+                        int xTxt = (int)Math.Round((float)(pos - scrollOfs)*zoom / posScale * wid);
                         int yTxt = ht * 3 / 4 + (ht / 4 - sz.Height) / 2;
                         if (dir == 1)
                         {
@@ -612,6 +622,10 @@ namespace PinscapeConfigTool
         {
             if (pos != -1)
             {
+                // adjust for zoom and scroll
+                pos -= scrollOfs;
+                pos *= zoom;
+
                 // get the drawing area size
                 int wid = exposure.Width;
                 int ht = exposure.Height;
@@ -1244,6 +1258,9 @@ namespace PinscapeConfigTool
             ckEnhance.Visible = pixelSensor;
             btnSave.Visible = (!btnStopSave.Visible && pixelSensor);
 
+            // show the zoom control only for non-bar-code pixel sensors
+            cbZoom.Visible = lblZoom.Visible = pixelSensor && !barCodeSensor;
+
             // if we've finished closing the pixel capture file, show the Save button
             if (closePixFile && pixFile == null)
             {
@@ -1394,6 +1411,62 @@ namespace PinscapeConfigTool
                 cfgBarCodeOffset = v;
                 SendBarCodeOffset(v);
             }
+        }
+
+        private void cbZoom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int i;
+            if (int.TryParse(cbZoom.SelectedItem.ToString().Replace("%", ""), out i))
+            {
+                zoom = i / 100;
+                ConstrainScroll();
+
+                exposure.Cursor = (zoom == 1 ? Cursors.Default : Cursors.SizeWE);
+            }
+        }
+
+        void ConstrainScroll()
+        {
+            if (scrollOfs < 0)
+                scrollOfs = 0;
+
+            if (npix != 0)
+            {
+                int maxofs = npix - npix / zoom;
+                if (scrollOfs > maxofs)
+                    scrollOfs = maxofs;
+            }
+        }
+
+        bool scrollTrack = false;
+        int scrollTrackX = 0, scrollTrackOfs;
+        private void exposure_MouseDown(object sender, MouseEventArgs e)
+        {
+            scrollTrack = true;
+            scrollTrackX = e.X;
+            scrollTrackOfs = scrollOfs;
+            exposure.Capture = true;
+        }
+
+        private void exposure_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (scrollTrack && npix != 0)
+            {
+                float screenPixPerSensorPix = (float)exposure.Width / npix * zoom;
+                scrollOfs = (int)(scrollTrackOfs + (scrollTrackX - e.Location.X) / screenPixPerSensorPix);
+                ConstrainScroll();
+            }
+        }
+
+        private void exposure_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (scrollTrack)
+                exposure.Capture = false;
+        }
+
+        private void exposure_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            scrollTrack = false;
         }
 
    }
