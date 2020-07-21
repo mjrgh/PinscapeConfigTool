@@ -42,6 +42,7 @@ namespace PinscapeConfigTool
                         break;
 
                     case PlungerTypeAEDR8300:
+                        quadratureSensor = true;
                         //relativeSensor = true;
                         break;
 
@@ -118,6 +119,9 @@ namespace PinscapeConfigTool
                 pnlBarCode.Visible = false;
             }
 
+            // select the default zoom
+            cbZoom.SelectedIndex = 0;
+
             // start the exposure reader thread
             done = false;
             thread = new Thread(this.ExposureThread);
@@ -146,6 +150,7 @@ namespace PinscapeConfigTool
         bool edgeSensor = false;                    // edge-detection sensor
         bool pixelSensor = false;                   // image sensor
         bool barCodeSensor = false;                 // sensor reads a bar code
+        bool quadratureSensor = false;              // quadrature sensor type
         //bool relativeSensor = false;              // sensor uses relative positioning (e.g., quadrature) (not currently used)
         //bool distanceSensor = false;              // non-contact distance measurement sensor
 
@@ -165,6 +170,7 @@ namespace PinscapeConfigTool
         int origBarCodeOffset = 0;
         byte[] cfgVar20 = null;
 
+        // extra data for barcode sensors
         struct BarCodeInfo
         {
             public int nBits;           // number of bits in code
@@ -175,9 +181,22 @@ namespace PinscapeConfigTool
             public int mask;            // mask of successfully decoded bits
         }
 
+        // extra data for quadrature sensors
+        struct QuadratureInfo
+        {
+            public int chA;             // channel "A" reading
+            public int chB;             // channel "B" reading
+        }
+
+        // Zoom factor, for optical sensors
+        int zoom = 1;
+
+        // Horizontal scroll offset; this is used only when zoomed in on an optical sensor
+        int scrollOfs = 0;
+
         private void exposure_Paint(object sender, PaintEventArgs e)
         {
-            // figure the number of on-screen pixels per CCD pixel
+            // figure the number of on-screen pixels per sensor pixel
             int wid = exposure.Width;
             int ht = exposure.Height;
 
@@ -188,9 +207,10 @@ namespace PinscapeConfigTool
             using (Brush dkgray = new SolidBrush(Color.DarkGray))
                 g.FillRectangle(dkgray, 0, 0, wid, ht);
 
-            // get a private copy of the current pixel array (serializing
-            // access via the mutex, since the device reader thread can
-            // install a new pixel array at any time)
+            // Get a private copy of the current sensor data.  Serialize
+            // access via the mutex to ensure we get a consistent view,
+            // since the device reader thread can update the sensor 
+            // readings at any time.
             mutex.WaitOne();
             byte[] mypix = null;
             if (pix != null)
@@ -210,6 +230,7 @@ namespace PinscapeConfigTool
             int axcTime = this.axcTime;
             int rawPos = this.rawPos;
             BarCodeInfo barcode = this.barcode;
+            QuadratureInfo quadrature = this.quadrature;
             String t1 = txtInfo_text;
             String t2 = txtInfo2_text;
             String t3 = txtInfo3_text;
@@ -279,7 +300,7 @@ namespace PinscapeConfigTool
             // Draw the pixels.  For a large sensor, draw the pixels first
             // onto a full-sized bitmap, then rescale it onto the window.
             // For a small sensor, draw the pixels directly into the window.
-            if (npix > wid)
+            if (npix * zoom > wid)
             {
                 // Large sensor.
                 // The sensor is larger than the on-screen display area.
@@ -295,11 +316,11 @@ namespace PinscapeConfigTool
                         if (mypix != null && npix != 0 && !calMode)
                         {
                             // draw the pixels onto the bitmap Graphics object
-                            for (int i = 0; i < npix; ++i)
+                            for (int i = scrollOfs, x = 0; i < npix && x < bmwid; ++i, x += zoom)
                             {
                                 byte gray = lum[mypix[i]];
                                 using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
-                                    gbitmap.FillRectangle(br, i, 0, i, ht);
+                                    gbitmap.FillRectangle(br, x, 0, x + zoom - 1, ht);
                             }
                         }
 
@@ -315,13 +336,77 @@ namespace PinscapeConfigTool
                 // Do the pixel scaling directly to minimize blur.
 
                 // figure the scaling factor (display pixels per sensor pixel)
-                float s = (float)wid / npix;
+                float s = (float)wid / (npix * zoom);
                 float x = 0;
                 for (int i = 0 ; i < npix ; ++i, x += s)
                 {
                     byte gray = lum[mypix[i]];
                     using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
                         g.FillRectangle(br, x, 0, s, ht);
+                }
+            }
+
+            // draw the quadrature sensor visualization if appropriate
+            if (quadratureSensor)
+            {
+                // figure the bar layout
+                const int nbars = 16;
+                float barwid = (float)wid / nbars;
+
+                // The center bar will represent the current sensor reading,
+                // with "B" on the leading edge side.  So for the standard
+                // orientation, "B" is on the right, and for reverse orientation,
+                // "A" is on the left.  The "A" and "B" channels each represent
+                // half a bar.  If both channels are the same, the A/B region
+                // covers one whole bar; otherwise there's a bar edge between
+                // A and B.
+                float halfway = wid / 2.0f, startofs = halfway;
+                if (quadrature.chA == quadrature.chB)
+                    startofs -= barwid / 2.0f;
+
+                // Figure the value of the bar to the right
+                bool right = (reverseOrientation ? quadrature.chB : quadrature.chA) != 0;
+                bool left = (reverseOrientation ? quadrature.chA : quadrature.chB) != 0;
+
+                // set up brushes
+                using (Brush off1 = new SolidBrush(Color.DimGray),
+                    on1 = new SolidBrush(Color.WhiteSmoke),
+                    on2 = new SolidBrush(Color.White),
+                    off2 = new SolidBrush(Color.Black))
+                {
+                    // draw the bars to the right
+                    bool color = right;
+                    for (float x = startofs; x < wid + barwid; x += barwid, color = !color)
+                        g.FillRectangle(color ? on1 : off1, x, 0.0f, Math.Min(wid, wid - x), ht);
+
+                    // draw bars to the left
+                    color = quadrature.chA == quadrature.chB ? !left : left;
+                    for (float x = startofs - barwid; x > -barwid; x -= barwid, color = !color)
+                        g.FillRectangle(color ? on1 : off1, x, 0.0f, barwid, ht);
+
+                    // now fill in the half bars for "A" and "B"
+                    g.FillRectangle(right ? on2 : off2, halfway, 0.0f, barwid / 2.0f, ht);
+                    g.FillRectangle(left ? on2 : off2, halfway - barwid / 2.0f, 0.0f, barwid / 2.0f, ht);
+
+                    // draw the outlines
+                    Color colorA = Color.Aqua, colorB = Color.Lime;
+                    float ofsA = reverseOrientation ? -barwid/2.0f : barwid/2.0f;
+                    using (Pen pen = new Pen(colorA, 3.0f))
+                        g.DrawLine(pen, halfway + ofsA, 0.0f, halfway + ofsA, ht);
+                    using (Pen pen = new Pen(colorB, 3.0f))
+                        g.DrawLine(pen, halfway - ofsA, 0.0f, halfway - ofsA, ht);
+
+                    // draw the labels
+                    using (Font font = new Font("Arial", 12, FontStyle.Bold))
+                    {
+                        StringFormat fmt = StringFormat.GenericTypographic;
+                        fmt.Alignment = StringAlignment.Center;
+                        fmt.LineAlignment = StringAlignment.Far;
+                        using (Brush br = new SolidBrush(colorA))
+                            g.DrawString("A", font, br, halfway + ofsA/2.0f, ht / 2.0f, fmt);
+                        using (Brush br = new SolidBrush(colorB))
+                            g.DrawString("B", font, br, halfway - ofsA/2.0f, ht / 2.0f, fmt);
+                    }
                 }
             }
 
@@ -379,7 +464,7 @@ namespace PinscapeConfigTool
                 using (Brush green = new SolidBrush(Color.Green))
                 {
                     // rescale from the position scale to the bitmap width
-                    float gpos = pos * (float)wid / posScale;
+                    float gpos = (pos - scrollOfs) * zoom * (float)wid / posScale;
 
                     // draw on the left side for reversed orientation (-1), 
                     // otherwise on the right side
@@ -413,9 +498,9 @@ namespace PinscapeConfigTool
                     ltgray = new SolidBrush(Color.LightGray))
                 {
                     // rescale from the position scale to the bitmap 
-                    int lo = (int)Math.Round((double)jfLo / posScale * wid);
-                    int hi = (int)Math.Round((double)jfHi / posScale * wid);
-                    int rp = (int)Math.Round((double)rawPos / posScale * wid);
+                    int lo = (int)Math.Round((double)(jfLo - scrollOfs)*zoom / posScale * wid);
+                    int hi = (int)Math.Round((double)(jfHi - scrollOfs)*zoom / posScale * wid);
+                    int rp = (int)Math.Round((double)(rawPos - scrollOfs)*zoom / posScale * wid);
 
                     // mirror the coordinates if using reversed orientation
                     if (dir == -1)
@@ -475,7 +560,7 @@ namespace PinscapeConfigTool
                         green = new SolidBrush(Color.Green),
                         ltgray = new SolidBrush(Color.LightGray))
                     {
-                        int xTxt = (int)Math.Round((float)pos / posScale * wid);
+                        int xTxt = (int)Math.Round((float)(pos - scrollOfs)*zoom / posScale * wid);
                         int yTxt = ht * 3 / 4 + (ht / 4 - sz.Height) / 2;
                         if (dir == 1)
                         {
@@ -537,6 +622,10 @@ namespace PinscapeConfigTool
         {
             if (pos != -1)
             {
+                // adjust for zoom and scroll
+                pos -= scrollOfs;
+                pos *= zoom;
+
                 // get the drawing area size
                 int wid = exposure.Width;
                 int ht = exposure.Height;
@@ -827,21 +916,32 @@ namespace PinscapeConfigTool
                             buf = null;
                         }
 
-                        // Check for a bar code header report.  This is another optional
-                        // header, sent only when using a bar code sensor type.
-                        if ((buf = tdev.ReadUSB()) != null
-                            && buf[1] == 0xff && buf[2] == 0x87 && buf[3] == 2)
+                        // Check for extra sensor-specific reports.  These reports follow
+                        // the two standard sensor reports, and are identified by the first
+                        // two bytes 0xFF87.  The next byte specifies the subtype, which
+                        // depends on the particular sensor type in use.
+                        if ((buf = tdev.ReadUSB()) != null && buf[1] == 0xff && buf[2] == 0x87)
                         {
-                            // It's the bar code report - decode it
-                            barcode.nBits = buf[4];
-                            barcode.codeType = buf[5];
-                            barcode.startOfs = buf[6] | (buf[7] << 8);
-                            barcode.pixPerBit = buf[8];
-                            barcode.raw = buf[9] | (buf[10] << 8);
-                            barcode.mask = buf[11] | (buf[12] << 8);
+                            // check the subtype
+                            if (buf[3] == 2)
+                            {
+                                // Barcode sensor report
+                                barcode.nBits = buf[4];
+                                barcode.codeType = buf[5];
+                                barcode.startOfs = buf[6] | (buf[7] << 8);
+                                barcode.pixPerBit = buf[8];
+                                barcode.raw = buf[9] | (buf[10] << 8);
+                                barcode.mask = buf[11] | (buf[12] << 8);
 
-                            // consume the report
-                            buf = null;
+                                // consume the report
+                                buf = null;
+                            }
+                            else if (buf[3] == 3)
+                            {
+                                // Quadrature sensor report
+                                quadrature.chA = buf[4];
+                                quadrature.chB = buf[5];
+                            }
                         }
 
                         // read the pixel reports if it's an imaging sensor and
@@ -1029,9 +1129,26 @@ namespace PinscapeConfigTool
                             // line 3 - scan time
                             txtInfo3_text = times;
                         }
+                        else if (quadratureSensor)
+                        {
+                            // Quadrature sensor type
+
+                            // line 1 - position
+                            txtInfo_text = String.Format(
+                                "Plunger position: {0}, Orientation: {1}, Release time: {2} ms",
+                                reportedPos == 0xFFFF ? "Unknown" : reportedPos.ToString() + "/" + (posScale - 1),
+                                orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                tRelease);
+
+                            // line 2 - scan time
+                            txtInfo2_text = times;
+
+                            // line 3 - Channel A/B values
+                            txtInfo3_text = String.Format("Quadrature channel A/B: {0}/{1}", quadrature.chA, quadrature.chB);
+                        }
                         else
                         {
-                            // Non-imaging sensor type
+                            // Other non-imaging sensor type
 
                             // line 1 - position
                             txtInfo_text = String.Format(
@@ -1141,6 +1258,9 @@ namespace PinscapeConfigTool
             ckEnhance.Visible = pixelSensor;
             btnSave.Visible = (!btnStopSave.Visible && pixelSensor);
 
+            // show the zoom control only for non-bar-code pixel sensors
+            cbZoom.Visible = lblZoom.Visible = pixelSensor && !barCodeSensor;
+
             // if we've finished closing the pixel capture file, show the Save button
             if (closePixFile && pixFile == null)
             {
@@ -1174,6 +1294,7 @@ namespace PinscapeConfigTool
         bool enhanceContrast = false; // show enhanced contrast in sensor view
         int jfLo = -1, jfHi = -1;     // bounds of current jitter filter window on the device, if known
         BarCodeInfo barcode;          // bar code descriptor
+        QuadratureInfo quadrature;    // quadrature sensor status
 
         // Pixel capture file.  The foreground UI thread opens the file when the user 
         // clicks the Save button, and the background thread writes pixels to the file
@@ -1290,6 +1411,62 @@ namespace PinscapeConfigTool
                 cfgBarCodeOffset = v;
                 SendBarCodeOffset(v);
             }
+        }
+
+        private void cbZoom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int i;
+            if (int.TryParse(cbZoom.SelectedItem.ToString().Replace("%", ""), out i))
+            {
+                zoom = i / 100;
+                ConstrainScroll();
+
+                exposure.Cursor = (zoom == 1 ? Cursors.Default : Cursors.SizeWE);
+            }
+        }
+
+        void ConstrainScroll()
+        {
+            if (scrollOfs < 0)
+                scrollOfs = 0;
+
+            if (npix != 0)
+            {
+                int maxofs = npix - npix / zoom;
+                if (scrollOfs > maxofs)
+                    scrollOfs = maxofs;
+            }
+        }
+
+        bool scrollTrack = false;
+        int scrollTrackX = 0, scrollTrackOfs;
+        private void exposure_MouseDown(object sender, MouseEventArgs e)
+        {
+            scrollTrack = true;
+            scrollTrackX = e.X;
+            scrollTrackOfs = scrollOfs;
+            exposure.Capture = true;
+        }
+
+        private void exposure_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (scrollTrack && npix != 0)
+            {
+                float screenPixPerSensorPix = (float)exposure.Width / npix * zoom;
+                scrollOfs = (int)(scrollTrackOfs + (scrollTrackX - e.Location.X) / screenPixPerSensorPix);
+                ConstrainScroll();
+            }
+        }
+
+        private void exposure_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (scrollTrack)
+                exposure.Capture = false;
+        }
+
+        private void exposure_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            scrollTrack = false;
         }
 
    }

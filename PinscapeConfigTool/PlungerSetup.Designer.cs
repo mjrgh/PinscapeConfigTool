@@ -68,6 +68,8 @@
             this.pnlReverse = new System.Windows.Forms.Panel();
             this.ckReverseOrientation = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.cbZoom = new System.Windows.Forms.ComboBox();
+            this.lblZoom = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtJitterWindow)).BeginInit();
             this.pnlJitter.SuspendLayout();
@@ -85,6 +87,10 @@
             this.exposure.Size = new System.Drawing.Size(523, 77);
             this.exposure.TabIndex = 0;
             this.exposure.Paint += new System.Windows.Forms.PaintEventHandler(this.exposure_Paint);
+            this.exposure.MouseCaptureChanged += new System.EventHandler(this.exposure_MouseCaptureChanged);
+            this.exposure.MouseDown += new System.Windows.Forms.MouseEventHandler(this.exposure_MouseDown);
+            this.exposure.MouseMove += new System.Windows.Forms.MouseEventHandler(this.exposure_MouseMove);
+            this.exposure.MouseUp += new System.Windows.Forms.MouseEventHandler(this.exposure_MouseUp);
             // 
             // btnClose
             // 
@@ -147,7 +153,7 @@
             // 
             this.panel2.Controls.Add(this.rbHiRes);
             this.panel2.Controls.Add(this.rbLowRes);
-            this.panel2.Location = new System.Drawing.Point(270, 260);
+            this.panel2.Location = new System.Drawing.Point(279, 260);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(209, 23);
             this.panel2.TabIndex = 9;
@@ -298,7 +304,7 @@
             // ckEnhance
             // 
             this.ckEnhance.AutoSize = true;
-            this.ckEnhance.Location = new System.Drawing.Point(16, 266);
+            this.ckEnhance.Location = new System.Drawing.Point(16, 264);
             this.ckEnhance.Name = "ckEnhance";
             this.ckEnhance.Size = new System.Drawing.Size(110, 17);
             this.ckEnhance.TabIndex = 0;
@@ -436,12 +442,40 @@
             this.label14.Size = new System.Drawing.Size(526, 2);
             this.label14.TabIndex = 16;
             // 
+            // cbZoom
+            // 
+            this.cbZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbZoom.FormattingEnabled = true;
+            this.cbZoom.Items.AddRange(new object[] {
+            "100%",
+            "200%",
+            "400%",
+            "800%",
+            "1600%",
+            "3200%"});
+            this.cbZoom.Location = new System.Drawing.Point(183, 260);
+            this.cbZoom.Name = "cbZoom";
+            this.cbZoom.Size = new System.Drawing.Size(64, 21);
+            this.cbZoom.TabIndex = 30;
+            this.cbZoom.SelectedIndexChanged += new System.EventHandler(this.cbZoom_SelectedIndexChanged);
+            // 
+            // lblZoom
+            // 
+            this.lblZoom.AutoSize = true;
+            this.lblZoom.Location = new System.Drawing.Point(142, 265);
+            this.lblZoom.Name = "lblZoom";
+            this.lblZoom.Size = new System.Drawing.Size(37, 13);
+            this.lblZoom.TabIndex = 31;
+            this.lblZoom.Text = "Zoom:";
+            // 
             // PlungerSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(552, 611);
+            this.Controls.Add(this.lblZoom);
+            this.Controls.Add(this.cbZoom);
             this.Controls.Add(this.pnlReverse);
             this.Controls.Add(this.pnlBarCode);
             this.Controls.Add(this.pnlBottom);
@@ -530,5 +564,7 @@
         private System.Windows.Forms.Panel pnlReverse;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox ckReverseOrientation;
+        private System.Windows.Forms.ComboBox cbZoom;
+        private System.Windows.Forms.Label lblZoom;
     }
 }

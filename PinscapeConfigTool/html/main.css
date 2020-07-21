@@ -560,7 +560,7 @@ div.indented {
     margin: 0px;
     padding: 0px;
     white-space: nowrap;
-    width: 468px;
+    width: 496px;
 }
 .sizer {
     visibility: hidden;
@@ -617,7 +617,7 @@ div.indented {
     margin: 0px;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    min-width: 15ex;
+    min-width: 20ex;
 }
 .pinlist > div {
     margin: 0px;
@@ -701,6 +701,9 @@ div.chipNo.header {
 .expBoardPinSelector .pinimage {
     padding: 4px 0px;
 }
+.aioBoardPinSelector .pinimage {
+    padding: 4px 0px;
+}
 
 .pinimage > div {
     position: relative;
@@ -723,6 +726,11 @@ div.chipNo.header {
     left: 0px;
     bottom: 28px;
 }
+.aioBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+
 
 .pinimage .pinoverlay {
     display: inline-block;
@@ -820,7 +828,17 @@ div.chipNo.header {
     left: -6px;
     top: -6px;
 }
+.aioBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
 .expBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.aioBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;

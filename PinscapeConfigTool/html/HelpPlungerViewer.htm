@@ -23,7 +23,28 @@
       the captured image.
    </p>
 
-   <h2>Sensor snapshot</h2>
+   <h2>Quadrature sensor visualization</h2>
+
+   <p>
+      For quadrature sensors (namely the AEDR-8300), the "snapshot"
+      box displays a visualization of the bar scale that the sensor
+      moves across.  Quadrature sensors don't take photographic
+      images, so this is just a simulation of what we infer the
+      bar scale to look like - it's not a true photo image.  What
+      the sensor actually sees is essentially two side-by-side
+      pixel readings, 1/150 of an inch apart.  Given that
+      the white and black bars on the scale are precisely 1/150"
+      wide each (or, at least, they should be, if things are
+      set up properly), we can infer where we must be relative
+      to the nearest two bars.  The visualization extrapolates
+      that out to the rest of the nearby bars, but the sensor
+      doesn't actually see those; it only sees the two bars in
+      the center, in the boxes marked "A" and "B".  Those boxes
+      represent the actual readings on the sensor's "A" and "B
+      channels.
+   </p>
+
+   <h2>Imaging sensor snapshot</h2>
 
    <p>
       For imaging sensors, the "snapshot" box displays the
@@ -84,6 +105,24 @@
       a good level of contrast between the lit areas and the
       shadows.
    </p>
+
+   <h2>Image Zoom</h2>
+
+   <p>
+      For the imaging sensors that take pictures of the plunger
+      (TLS1410/12, TCD1103), you can use the Zoom control to get
+      a closer view of the sensor pixels.  This is especially
+      helpful when adjusting the lens focus for sensors where
+      that's a thing, such as the TCD1103.
+   </p>
+   <p>
+      Use the Zoom combo box to select a zoom factor.
+   </p>
+   <p>
+      When zoomed in, you can scroll the image snapshot by
+      using the mouse to drag the snapshot area left or right.
+   </p>
+
 
    <h2>Plunger position</h2>
 
