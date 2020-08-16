@@ -5,7 +5,7 @@
    <link rel="stylesheet" href="main.css"/>
    <link rel="stylesheet" href="jquery-ui/jquery-ui-1.11.4.css"/>
    <title>Pinscape Controller Settings</title>
-</head
+</head>
 <body>
 
 <script type="text/javascript" src="jquery-1.12.1.js"></script>
@@ -243,8 +243,6 @@ label, input[type=checkbox] {
 </div>
 
 
-</div>
-
 <script type="text/javascript">
 
 // Current port settings, using the device's 0-255 brightness scale.
@@ -293,6 +291,10 @@ $(function()
 
         case 2:
             outPortAlias = aioOutPortAlias;
+            break;
+
+        case 3:
+            outPortAlias = liteOutPortAlias;
             break;
         }
 
