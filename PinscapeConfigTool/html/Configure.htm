@@ -1185,27 +1185,27 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
          </div>
       </div>
 
-      <div id="jsAxisFormat">
-         Joystick axis format: <select id="jsAxisList" style="margin: .5ex 1em .5ex 1em;">
-            <option value="0">X/Y/Z</option>
-            <option value="1">Rx/Ry/Rz</option>
-         </select>
-         <a href="#" class="shower">What's this?</a>
-         <div class="hider">
-            <p>
-               A real joystick reports the
-               position of the stick by sending an "X Axis" value for the left/right
-               position of the stick and a "Y Axis" value for the up/down position.
-               It can also send a "Z Axis" value to represent another control like a
-               throttle.  Normally, Pinscape uses these same three axes, by
-               sending accelerometer readings on the X and Y axes, and plunger
-               readings on the Z axis.  The USB protocol for joysticks also defines
+	  <div id="jsAxisFormat">
+		 Joystick axis format: <select id="jsAxisList" style="margin: .5ex 1em .5ex 1em;">
+			<option value="0">X/Y/Z</option>
+			<option value="1">Rx/Ry/Rz</option>
+		 </select>
+		 <a href="#" class="shower">What's this?</a>
+		 <div class="hider">
+			<p>
+			   A real joystick reports the
+			   position of the stick by sending an "X Axis" value for the left/right
+			   position of the stick and a "Y Axis" value for the up/down position.
+			   It can also send a "Z Axis" value to represent another control like a
+			   throttle.  Normally, Pinscape uses these same three axes, by
+			   sending accelerometer readings on the X and Y axes, and plunger
+			   readings on the Z axis.  The USB protocol for joysticks also defines
                a set of "rotational" axes called Rx, Ry, and Rz.  Real joysticks that
                allow twisting motions report those motions on these "R" axes.
                If you wish, Pinscape can report its normal readings on the "R" axes
                in place of the normal X/Y/Z axes.
-            </p>
-            <p>
+			</p>
+			<p>
                Why would you want to use the "R" axes?  In most cases, you wouldn't;
                the normal X/Y/Z settings are recommended because they're compatible
                with most software.  However, the "R" axes can be useful if you have
@@ -1214,120 +1214,120 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
                axes, and it's creating problems with VP or other software, you 
                might be able to fix the conflict by telling Pinscape to use the 
                Rx/Ry/Rz axes instead.
-            </p>
-            <p>
-               <b>If you change the Pinscape axes, you also have to reconfigure
+			</p>
+			<p>
+			   <b>If you change the Pinscape axes, you also have to reconfigure
                Visual Pinball and any other pinball players to use the Rx/Ry/Rz 
                axes.</b>  Future Pinball has no way to read the Rx/Ry/Rz axes,
                so using these in Pinscape will make it incompatible with FP.
-               You might run into the same limitation in other software.  Because
+			   You might run into the same limitation in other software.  Because
                of the compatibility issues, you might find that it's better to 
                reconfigure the <b>other</b> joystick that's creating the conflict,
                if possible, since that would let you continue using the more 
                compatible X/Y/Z axes for Pinscape.
-            </p>
-         </div>
-      </div>
+			</p>
+		 </div>
+	  </div>
 
-      <div id="jsReportTiming">
-         Joystick report interval (milliseconds): <input type="text" size="6" id="jsReportInterval">
-         <a href="#" class="shower">Explain</a>
-         <div class="hider">
-            <p>
-               This lets you set the time between the joystick reports that the
-               device sends to the PC on the USB connection.  These reports send
-               current information on the accelerometer readings, plunger position,
-               and the button-press status for any buttons assigned to the joystick.
-            </p>
-            <p>
-               Pinscape is capable of sending reports as fast as every 1 to 2
-               milliseconds.  (The exact speed depends on the type of plunger
-               sensor and other external hardware you're using.)  But we
+	  <div id="jsReportTiming">
+		 Joystick report interval (milliseconds): <input type="text" size="6" id="jsReportInterval">
+		 <a href="#" class="shower">Explain</a>
+		 <div class="hider">
+			<p>
+			   This lets you set the time between the joystick reports that the
+			   device sends to the PC on the USB connection.  These reports send
+			   current information on the accelerometer readings, plunger position,
+			   and the button-press status for any buttons assigned to the joystick.
+			</p>
+			<p>
+			   Pinscape is capable of sending reports as fast as every 1 to 2
+			   milliseconds.  (The exact speed depends on the type of plunger
+			   sensor and other external hardware you're using.)  But we
                actually don't want to send reports as fast as we can, because
                Windows and Visual Pinball can't digest them at that pace.  This
                setting lets you slow down the reports to a suitable rate 
                for the PC.
-            </p>
-            <p>
-               <b>Recommendation:</b> start with an input time of <b>8.333ms</b>
-               and an "accelerometer stutter" setting of <b>2</b>.  This should
-               work well on most systems, but it's not necessarily optimal for
-               everyone, because VP's timing characteristics can vary according
-               to your PC setup.   You might have to experiment to find the
-               ideal settings for your system.  After adjusting the timing,
-               test nudging with VP.  If it seems natural, keep the settings.
-               If VP's response to nudging seems erratic (for example, it ignores
-               some nudges, but overreacts to others), try different timings.
-               It's best to keep the setting in a range from about 5ms to 20ms.
-               Anything shorter than 5ms will be too fast for Windows to digest
-               properly, and anything longer than 20ms might produce excessive
-               latency (games respond slowly to button presses and nudges).
-            </p>
-         </div>
-      </div>
+			</p>
+			<p>
+			   <b>Recommendation:</b> start with an input time of <b>8.333ms</b>
+			   and an "accelerometer stutter" setting of <b>2</b>.  This should
+			   work well on most systems, but it's not necessarily optimal for
+			   everyone, because VP's timing characteristics can vary according
+			   to your PC setup.   You might have to experiment to find the
+			   ideal settings for your system.  After adjusting the timing,
+			   test nudging with VP.  If it seems natural, keep the settings.
+			   If VP's response to nudging seems erratic (for example, it ignores
+			   some nudges, but overreacts to others), try different timings.
+			   It's best to keep the setting in a range from about 5ms to 20ms.
+			   Anything shorter than 5ms will be too fast for Windows to digest
+			   properly, and anything longer than 20ms might produce excessive
+			   latency (games respond slowly to button presses and nudges).
+			</p>
+		 </div>
+	  </div>
 
-      <div id="accelStutter">
-         Accelerometer "stutter": <input type="text" size="6" id="accelStutterCount">
-         <a href="#" class="shower">Explain</a>
-         <div class="hider">
-            <p>
-               The "stutter" setting works in connection with the <b>joystick
-               report interval</b> above to set the interval between accelerometer
-               reports.  The accelerometer reading is sent as part of the joystick
-               report, so the base interval between accelerometer readings is exactly
-               the same as the joystick report interval.  This setting lets you
-               slow down the accelerometer readings to a multiple of the joystick
-               interval.
-            </p>
-            <p>
-               The stutter is the number of times that each physical accelerometer
-               reading is repeated in sequential joystick reports.  If you set the
-               stutter to 1, it means that a new reading is sent with every joystick
-               report sent to the PC.  If you set it to 2, a new reading is sent
-               with every <b>other</b> report, and the alternating reports simply
-               repeat the prior reading.  If you set it to 3, a new reading is taken
-               every three reports.
-            </p>
-            <p>
-               Why would you want to slow down the accelerometer readings?  Because
-               VP can't use the readings if they arrive too quickly.  For best
-               results in VP, readings should only be sent once per video cycle.
-               If your graphics card is set to a 60Hz refresh rate, the video
-               cycle is 16.667 milliseconds long, so VP will work best if you send
-               accelerometer readings every 16.667ms.  However, you might want to
-               send joystick reports faster than this, so that joystick button
-               updates are sent closer to real-time.  This is where the stutter
-               setting comes in: it lets you send joystick reports at a fast
-               pace for lower button latency, but slow down the accelerometer
-               readings to accommodate VP's slowness reading them.
-            </p>
-            <p>
-               <b>Recommendation:</b> start with a joystick report interval
-               of <b>8.333ms</b> and a stutter setting of <b>2</b>.  This will
-               read the accelerometer at 60Hz, which is usually optimal for
-               VP, but will send button input updates twice as often, which
-               might make other programs that use joystick buttons more
-               responsive.  The optimal timing in VP can vary according to
-               your PC setup, though.  Check your video card refresh rate
+	  <div id="accelStutter">
+		 Accelerometer "stutter": <input type="text" size="6" id="accelStutterCount">
+		 <a href="#" class="shower">Explain</a>
+		 <div class="hider">
+			<p>
+			   The "stutter" setting works in connection with the <b>joystick
+			   report interval</b> above to set the interval between accelerometer
+			   reports.  The accelerometer reading is sent as part of the joystick
+			   report, so the base interval between accelerometer readings is exactly
+			   the same as the joystick report interval.  This setting lets you
+			   slow down the accelerometer readings to a multiple of the joystick
+			   interval.
+			</p>
+			<p>
+			   The stutter is the number of times that each physical accelerometer
+			   reading is repeated in sequential joystick reports.  If you set the
+			   stutter to 1, it means that a new reading is sent with every joystick
+			   report sent to the PC.  If you set it to 2, a new reading is sent
+			   with every <b>other</b> report, and the alternating reports simply
+			   repeat the prior reading.  If you set it to 3, a new reading is taken
+			   every three reports.
+			</p>
+			<p>
+			   Why would you want to slow down the accelerometer readings?  Because
+			   VP can't use the readings if they arrive too quickly.  For best
+			   results in VP, readings should only be sent once per video cycle.
+			   If your graphics card is set to a 60Hz refresh rate, the video
+			   cycle is 16.667 milliseconds long, so VP will work best if you send
+			   accelerometer readings every 16.667ms.  However, you might want to
+			   send joystick reports faster than this, so that joystick button
+			   updates are sent closer to real-time.  This is where the stutter
+			   setting comes in: it lets you send joystick reports at a fast
+			   pace for lower button latency, but slow down the accelerometer
+			   readings to accommodate VP's slowness reading them.
+			</p>
+			<p>
+			   <b>Recommendation:</b> start with a joystick report interval
+			   of <b>8.333ms</b> and a stutter setting of <b>2</b>.  This will
+			   read the accelerometer at 60Hz, which is usually optimal for
+			   VP, but will send button input updates twice as often, which
+			   might make other programs that use joystick buttons more
+			   responsive.  The optimal timing in VP can vary according to
+			   your PC setup, though.  Check your video card refresh rate
                (use the video card rate, <b>not</b> the monitor's refresh
                rate).  If it's not 60Hz, choose a report interval close to
                10ms that divides evenly into the refresh interval, and choose
                a stutter time equal to the refresh interval divided by the
                report interval.  If your video card refreshes at 120Hz,
                for example, use an 8.333ms interval and set stutter to 1.
-            </p>
-         </div>
-      </div>
+			</p>			   
+		 </div>
+	  </div>
 
    </div>
 
    <script type="text/javascript">
 
 $("#ckJoystick").change(function() {
-    var ena = $(this).prop("checked");
+	var ena = $(this).prop("checked");
     slideToggle($("#jsAxisFormat"), ena, loadingConfig ? 0 : 250, false);
 });
-      
+	  
    </script>
 
 
@@ -5168,257 +5168,257 @@ $("#printButton").click(function(ev) {
 
 <!-- Pin and output selector popup -------------------------------------->
 <div class="windowCover">
-    <div id="pinSelector">
-        <div id="gpioSelector" class="pinSelectorPage kl25zPinSelector">
-            <div id="lstKL25ZPins" class="pinlist"></div>
-            <div id="kl25zPinImg" class="pinimage">
-                <div>
-                    <img src="kl25zPins.png">
-                    <div id="kl25zOnBoardLED"></div>
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+   <div id="pinSelector">
+      <div id="gpioSelector" class="pinSelectorPage kl25zPinSelector">
+         <div id="lstKL25ZPins" class="pinlist"></div>
+         <div id="kl25zPinImg" class="pinimage">
+            <div>
+               <img src="kl25zPins.png">
+               <div id="kl25zOnBoardLED"></div>
+               <div class="pinoverlay"></div>
             </div>
-        </div>
-        <div id="tlc5940Selector" class="pinSelectorPage tlc5940PinSelector" data-pagetype="chip">
-            <div class="chipNo header" data-chip="0">Chip 1</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <div class="chipIndexer background"></div>
-                    <div class="chipIndexer foreground"></div>
-                    <img src="tlc5940Pins.png">
-                    <div class="pinoverlay"></div>
-                </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="tlc5940Selector" class="pinSelectorPage tlc5940PinSelector" data-pagetype="chip">
+         <div class="chipNo header" data-chip="0">Chip 1</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="tlc5940Pins.png">
+               <div class="pinoverlay"></div>
             </div>
-        </div>
-        <div id="tlc59116Selector" class="pinSelectorPage tlc59116PinSelector" data-pagetype="chip">
-            <div class="chipNo header" data-chip="0">Chip 1</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <div class="chipIndexer background"></div>
-                    <div class="chipIndexer foreground"></div>
-                    <img src="tlc59116Pins.png">
-                    <div class="pinoverlay"></div>
-                </div>
+         </div>
+      </div>
+      <div id="tlc59116Selector" class="pinSelectorPage tlc59116PinSelector" data-pagetype="chip">
+         <div class="chipNo header" data-chip="0">Chip 1</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="tlc59116Pins.png">
+               <div class="pinoverlay"></div>
             </div>
-        </div>
-        <div id="hc595Selector" class="pinSelectorPage hc595PinSelector" data-pagetype="chip">
-            <div class="chipNo header" data-chip="0">Chip 1</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <div class="chipIndexer background"></div>
-                    <div class="chipIndexer foreground"></div>
-                    <img src="74hc595Pins.png">
-                    <div class="pinoverlay"></div>
-                </div>
+         </div>
+      </div>
+      <div id="hc595Selector" class="pinSelectorPage hc595PinSelector" data-pagetype="chip">
+         <div class="chipNo header" data-chip="0">Chip 1</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="74hc595Pins.png">
+               <div class="pinoverlay"></div>
             </div>
-        </div>
+         </div>
+      </div>
 
-        <div id="mainBoardDigitalOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">JP9</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="mainBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="mainBoardPWMOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pwm="true" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">Flashers</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="mainBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="aioBoardDigitalOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">Digital Outputs</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="aioBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="aioBoardPWMOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pwm="true" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">PWM Outputs</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="aioBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="liteBoardDigitalOutputSelector" class="pinSelectorPage liteBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">Digital Outputs</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="liteBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="liteBoardPWMOutputSelector" class="pinSelectorPage liteBoardPinSelector" data-pwm="true" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">PWM Outputs</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="liteBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="mainBoardInputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">N/C</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="mainBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="aioBoardInputSelector" class="pinSelectorPage aioBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">N/C</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="aioBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="liteBoardInputSelector" class="pinSelectorPage liteBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">N/C</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <img src="liteBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="powerBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">Board 1</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <div class="chipIndexer background"></div>
-                    <div class="chipIndexer foreground"></div>
-                    <img src="powerBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="chimeBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
-            <div class="chipNo header" data-chip="0">Board 1</div>
-            <div class="pinlist"></div>
-            <div class="pinimage">
-                <div>
-                    <div class="chipIndexer background"></div>
-                    <div class="chipIndexer foreground"></div>
-                    <img src="chimeBoardPins.png">
-                    <div class="pinoverlay"></div>
-                </div>
-                <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-            </div>
-        </div>
-        <div id="virtualOutputSelector" class="pinSelectorPage">
+      <div id="mainBoardDigitalOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">JP9</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
             <div>
-                A "virtual" output is a software port that isn't connected to
-                a physical output.  This can be used as a placeholder in your
-                DOF setup, or for a special function, such as the ZB Launch Ball
-                control port.
+               <img src="mainBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="mainBoardPWMOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pwm="true" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Flashers</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
             <div>
-                <div class="iconWithTitle button available" data-pin="NC " id="btnMakeVirtualPort">
-                    <img src="virtualOutSmall.png">
-                    <br>Virtual
-                </div>
-                <div class="iconWithTitle button available" data-pin="NC" id="btnMakeZBPort">
-                    <img src="zbLaunch32.png">
-                    <br>ZB Launch Port
-                </div>
+               <img src="mainBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-        </div>
-        <div id="pinTypeSelector">
-            <div id="pinTypePwmOut" data-page="gpioSelector" data-filter="pwm" data-pintype="1">
-                <img src="pwmout.png"><br>
-                GPIO<br>
-                PWM Out
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="aioBoardDigitalOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Digital Outputs</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="aioBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinTypeDigOut" data-page="gpioSelector" data-filter="dig-out" data-pintype="2">
-                <img src="digitalout.png"><br>
-                GPIO<br>
-                Digital Out
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="aioBoardPWMOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pwm="true" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">PWM Outputs</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="aioBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinTypeSpiMosi" data-page="gpioSelector" data-filter="spi-mosi">
-                <img src="spiout.png"><br>
-                SPI (MOSI)
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="liteBoardDigitalOutputSelector" class="pinSelectorPage liteBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Digital Outputs</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="liteBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinTypeSpiSclk" data-page="gpioSelector" data-filter="spi-sclk">
-                <img src="spiout.png"><br>
-                SPI (SCLK)
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="liteBoardPWMOutputSelector" class="pinSelectorPage liteBoardPinSelector" data-pwm="true" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">PWM Outputs</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="liteBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinTypeAnalogIn" data-page="gpioSelector" data-filter="adc">
-                <img src="analogin.png"><br>
-                Analog In
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="mainBoardInputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">N/C</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="mainBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinTypeDigIn" data-page="gpioSelector" data-filter="dig-in">
-                <img src="digitalin.png"><br>
-                Digital In
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="aioBoardInputSelector" class="pinSelectorPage aioBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">N/C</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <img src="aioBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinTypeInterruptIn" data-page="gpioSelector" data-filter="interrupt-in">
-                <img src="interruptin.png"><br>
-                Interrupt In
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="liteBoardInputSelector" class="pinSelectorPage liteBoardPinSelector" data-pagetype="board">
+          <div class="chipNo header" data-chip="0">N/C</div>
+          <div class="pinlist"></div>
+          <div class="pinimage">
+             <div>
+                 <img src="liteBoardPins.png">
+                 <div class="pinoverlay"></div>
+             </div>
+          <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+          </div>
+      </div>
+      <div id="powerBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Board 1</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="powerBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinType5940Out" data-page="tlc5940Selector" data-pintype="3">
-                <img src="tlc5940out.png"><br>
-                TLC5940 Out
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="chimeBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Board 1</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="chimeBoardPins.png">
+               <div class="pinoverlay"></div>
             </div>
-            <div id="pinType59116Out" data-page="tlc59116Selector" data-pintype="6">
-                <img src="tlc59116out.png"><br>
-                TLC59116 Out
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="virtualOutputSelector" class="pinSelectorPage">
+         <div>
+            A "virtual" output is a software port that isn't connected to
+            a physical output.  This can be used as a placeholder in your
+            DOF setup, or for a special function, such as the ZB Launch Ball
+            control port.
+         </div>
+         <div>
+            <div class="iconWithTitle button available" data-pin="NC "id="btnMakeVirtualPort">
+               <img src="virtualOutSmall.png">
+               <br>Virtual
             </div>
-            <div id="pinType595Out" data-page="hc595Selector" data-pintype="4">
-                <img src="74hc595out.png"><br>
-                74HC595 Out
+            <div class="iconWithTitle button available" data-pin="NC" id="btnMakeZBPort">
+               <img src="zbLaunch32.png">
+               <br>ZB Launch Port
             </div>
-            <div id="pinTypeMainBoardPWMOut" data-page="mainBoardPWMOutputSelector" data-pintype="1">
-                <img src="mainBoardOut.png"><br>
-                Main Board<br>PWM Out
-            </div>
-            <div id="pinTypeMainBoardDigitalOut" data-page="mainBoardDigitalOutputSelector" data-pintype="2">
-                <img src="mainBoardOut.png"><br>
-                Main Board<br>Digital Out
-            </div>
-            <div id="pinTypeAIOBoardPWMOut" data-page="aioBoardPWMOutputSelector" data-pintype="1">
-                <img src="aioBoardOut.png"><br>
-                Pinscape AIO<br>PWM Out
-            </div>
-            <div id="pinTypeAIOBoardDigitalOut" data-page="aioBoardDigitalOutputSelector" data-pintype="2">
-                <img src="aioBoardOut.png"><br>
-                Pinscape AIO<br>Digital Out
-            </div>
+         </div>
+      </div>
+      <div id="pinTypeSelector">
+         <div id="pinTypePwmOut" data-page="gpioSelector" data-filter="pwm" data-pintype="1">
+            <img src="pwmout.png"><br>
+            GPIO<br>
+            PWM Out
+         </div>
+         <div id="pinTypeDigOut" data-page="gpioSelector" data-filter="dig-out" data-pintype="2">
+            <img src="digitalout.png"><br>
+            GPIO<br>
+            Digital Out
+         </div>
+         <div id="pinTypeSpiMosi" data-page="gpioSelector" data-filter="spi-mosi">
+            <img src="spiout.png"><br>
+            SPI (MOSI)
+         </div>
+         <div id="pinTypeSpiSclk" data-page="gpioSelector" data-filter="spi-sclk">
+            <img src="spiout.png"><br>
+            SPI (SCLK)
+         </div>
+         <div id="pinTypeAnalogIn" data-page="gpioSelector" data-filter="adc">
+            <img src="analogin.png"><br>
+            Analog In
+         </div>
+         <div id="pinTypeDigIn" data-page="gpioSelector" data-filter="dig-in">
+            <img src="digitalin.png"><br>
+            Digital In
+         </div>
+         <div id="pinTypeInterruptIn" data-page="gpioSelector" data-filter="interrupt-in">
+            <img src="interruptin.png"><br>
+            Interrupt In
+         </div>
+         <div id="pinType5940Out" data-page="tlc5940Selector" data-pintype="3">
+            <img src="tlc5940out.png"><br>
+            TLC5940 Out
+         </div>
+         <div id="pinType59116Out" data-page="tlc59116Selector" data-pintype="6">
+            <img src="tlc59116out.png"><br>
+            TLC59116 Out
+         </div>
+         <div id="pinType595Out" data-page="hc595Selector" data-pintype="4">
+            <img src="74hc595out.png"><br>
+            74HC595 Out
+         </div>
+         <div id="pinTypeMainBoardPWMOut" data-page="mainBoardPWMOutputSelector" data-pintype="1">
+            <img src="mainBoardOut.png"><br>
+            Main Board<br>PWM Out
+         </div>
+         <div id="pinTypeMainBoardDigitalOut" data-page="mainBoardDigitalOutputSelector" data-pintype="2">
+            <img src="mainBoardOut.png"><br>
+            Main Board<br>Digital Out
+         </div>
+         <div id="pinTypeAIOBoardPWMOut" data-page="aioBoardPWMOutputSelector" data-pintype="1">
+            <img src="aioBoardOut.png"><br>
+            Pinscape AIO<br>PWM Out
+         </div>
+         <div id="pinTypeAIOBoardDigitalOut" data-page="aioBoardDigitalOutputSelector" data-pintype="2">
+            <img src="aioBoardOut.png"><br>
+            Pinscape AIO<br>Digital Out
+         </div>
             <div id="pinTypeLiteBoardPWMOut" data-page="liteBoardPWMOutputSelector" data-pintype="1">
                 <img src="liteBoardOut.png"><br>
                 Pinscape Lite<br>PWM Out
@@ -5427,32 +5427,32 @@ $("#printButton").click(function(ev) {
                 <img src="liteBoardOut.png"><br>
                 Pinscape Lite<br>Digital Out
             </div>
-            <div id="pinTypeMainBoardIn" data-page="mainBoardInputSelector">
-                <img src="mainBoardIn.png"><br>
-                Main Board
-            </div>
-            <div id="pinTypeAIOBoardIn" data-page="aioBoardInputSelector">
-                <img src="aioBoardIn.png"><br>
-                Pinscape AIO
-            </div>
+         <div id="pinTypeMainBoardIn" data-page="mainBoardInputSelector">
+            <img src="mainBoardIn.png"><br>
+            Main Board
+         </div>
+         <div id="pinTypeAIOBoardIn" data-page="aioBoardInputSelector">
+            <img src="aioBoardIn.png"><br>
+            Pinscape AIO
+         </div>
             <div id="pinTypeLiteBoardIn" data-page="liteBoardInputSelector">
                 <img src="liteBoardIn.png"><br>
                 Pinscape Lite
             </div>
-            <div id="pinTypePowerBoardOut" data-page="powerBoardOutputSelector">
-                <img src="powerBoardOut.png"><br>
-                Power Board
-            </div>
-            <div id="pinTypeChimeBoardOut" data-page="chimeBoardOutputSelector">
-                <img src="chimeBoardOut.png"><br>
-                Chime Board
-            </div>
-            <div id="pinTypeVirtOut" data-page="virtualOutputSelector" data-pintype="5">
-                <img src="virtualout.png"><br>
-                Virtual Out
-            </div>
-        </div>
-    </div>
+         <div id="pinTypePowerBoardOut" data-page="powerBoardOutputSelector">
+            <img src="powerBoardOut.png"><br>
+            Power Board
+         </div>
+         <div id="pinTypeChimeBoardOut" data-page="chimeBoardOutputSelector">
+            <img src="chimeBoardOut.png"><br>
+            Chime Board
+         </div>
+         <div id="pinTypeVirtOut" data-page="virtualOutputSelector" data-pintype="5">
+            <img src="virtualout.png"><br>
+            Virtual Out
+         </div>
+      </div>
+   </div>
 </div>
 
 
