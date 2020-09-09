@@ -704,6 +704,9 @@ div.chipNo.header {
 .aioBoardPinSelector .pinimage {
     padding: 4px 0px;
 }
+.liteBoardPinSelector .pinimage {
+    padding: 4px 0px;
+}
 
 .pinimage > div {
     position: relative;
@@ -727,6 +730,10 @@ div.chipNo.header {
     bottom: 28px;
 }
 .aioBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+.liteBoardPinSelector .pinLegend {
     left: 0px;
     bottom: 28px;
 }
@@ -833,12 +840,22 @@ div.chipNo.header {
     left: -6px;
     top: -6px;
 }
+.liteBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
 .expBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;
 }
 .aioBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.liteBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;
@@ -1409,7 +1426,7 @@ option {
 .bootLoaderInfo {
     border: 1px solid #8080ff;
     padding: 1em;
-    margin: 1em 2m;
+    margin: 1em 2em;
 }
 
 .fileIcon {

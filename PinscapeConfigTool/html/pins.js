@@ -429,6 +429,45 @@ var aioBoard_headers = {
     }
 };
 
+// Pinscape Lite board headers
+var liteBoard_headers = {
+
+    "Small LED": {
+        pins: [["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]],
+        type: "pinheader",
+        pin1: [10, 134],
+        pinN: [10, 324]
+    },
+
+    "Plunger": {
+        pins: [["5V", "PTE20", "PTE21", "PTE22", "PTB0", "3.3V", "GND"]],
+        type: "pinheader",
+        pin1: [98, 365],
+        pinN: [168, 365]
+    },
+
+    "Button Inputs 1-8": {
+        pins: [["PTC2", "PTB3", "PTB2", "PTB1", "PTE30", "PTC11", "PTE5", "PTE4"]],
+        type: "pinheader",
+        pin1: [207, 365],
+        pinN: [295, 365]
+    },
+
+    "Button Inputs 9-24": {
+        pins: [["PTE3", "PTE2", "PTB11", "PTB10", "PTB9", "PTB8", "PTC12", "PTC13", "PTC16", "PTC17", "PTA16", "PTA17", "PTE31", "PTD6", "PTD7", "PTE1"]],
+        type: "pinheader",
+        pin1: [334, 328],
+        pinN: [334, 136]
+    },
+
+    "Power Outputs": {
+        pins: [["PTA2", "PTA13", "PTD2", "PTD3", "PTC8", "PTC9", "PTC0", "PTC3", "PTC4", "PTE23", "PTE29", "PTE0"]],
+        type: "pinheader",
+        pin1: [278, 48],
+        pinN: [134, 48]
+    },
+};
+
 var powerBoard_headers = {
     "JP5": {
         pins: [["3.32", "3.33", "3.34", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43", "3.44", "3.45", "3.46", "3.47"]],
@@ -477,6 +516,23 @@ var aio_powerBoard_headers = {
     }
 };
 
+// future feature
+var lite_powerBoard_headers = {
+    "JP5": {
+        pins: [["3.16", "3.17", "3.18", "3.19", "3.20", "3.21", "3.22", "3.23", "3.24", "3.25", "3.26", "3.27", "3.28", "3.29", "3.30", "3.31"]],
+        type: "pinheader",
+        pin1: [97, 49],
+        pinN: [225, 49]
+    },
+
+    "JP6": {
+        pins: [["3.32", "3.33", "3.34", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43", "3.44", "3.45", "3.46", "3.47"]],
+        type: "pinheader",
+        pin1: [97, 361],
+        pinN: [225, 361]
+    }
+};
+
 var chimeBoard_headers = {
     "JP9": {
         pins: [["4.0", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7"]],
@@ -505,6 +561,16 @@ var chimeBoard_headers = {
 var aio_chimeBoard_headers = {
     "JP9": {
         pins: [["4.8", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15"]],
+        type: "pinheader",
+        pin1: [113, 68],
+        pinN: [174, 68]
+    }
+};
+
+// future feature
+var lite_chimeBoard_headers = {
+    "JP9": {
+        pins: [["4.0", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7"]],
         type: "pinheader",
         pin1: [113, 68],
         pinN: [174, 68]
@@ -1007,7 +1073,7 @@ var expansionBoardFactoryConfig = {
 var expansionBoardFactoryXConfig = { };
 
 
-// Factory configuration for the expansion boards
+// Factory configuration for the Pinscape AIO
 var pinscapeAIOFactoryConfig = {
     expansionBoards: {
         version: "0",
@@ -1193,6 +1259,115 @@ var pinscapeAIOFactoryConfig = {
 };
 var pinscapeAIOFactoryXConfig = { };
 
+// Factory configuration for the Pinscape Lite
+var pinscapeLiteFactoryConfig = {
+    expansionBoards: {
+        version: "0",
+        ext0: "1",
+        ext1: "0",
+        ext2: "0"
+    },
+    calButtonPins: {
+        enabled: 0x0,
+        button: "NC",
+        led: "NC"
+    },
+    TVon: {
+        statusPin: "NC",
+        latchPin: "NC",
+        relayPin: "NC",
+        delay: 0
+    },
+    TLC5940: {
+        SIN: "PTC6",
+        SCLK: "PTC5",
+        XLAT: "PTC10",
+        BLANK: "PTC7",
+        GSCLK: "PTA1"
+    },
+    HC595: {
+        SIN: "PTA5",
+        SCLK: "PTA4",
+        LATCH: "PTA12",
+        ENA: "PTD4"
+    },
+    TLC59116: {
+        chipMask: 0,
+        SDA: "NC",
+        SCL: "NC",
+        RESET: "NC"
+    },
+    ZBLaunchBall: {
+        port: 0,
+        keytype: 2,             // keyboard key
+        keycode: 0x28,          // Enter key
+        pushDistance: 63        // .063" ~ 1/16"
+    },
+    buttons: {
+        // for expansion board mode, use keyboard mappings for the standard VP and VPinMAME keys
+        1: { pin: "PTC2", keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
+        2: { pin: "PTB3", keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
+        3: { pin: "PTB2", keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
+        4: { pin: "PTB1", keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
+        5: { pin: "PTE30", keytype: 2, keycode: 0x23, flags: 0 },  // "6" = coin 4
+        6: { pin: "PTC11", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
+        7: { pin: "PTE5", keytype: 2, keycode: 0x29, flags: 0 },  // Escape = exit
+        8: { pin: "PTE4", keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
+        9: { pin: "PTE3", keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
+        10: { pin: "PTE2", keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper
+        11: { pin: "PTB11", keytype: 2, keycode: 0xE0, flags: 0 },  // left control = left magna
+        12: { pin: "PTB10", keytype: 2, keycode: 0xE4, flags: 0 },  // right control = right magna 
+        13: { pin: "PTB9", keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
+        14: { pin: "PTB8", keytype: 2, keycode: 0x4A, flags: 0 },  // Home = slam tilt switch
+        15: { pin: "PTC12", keytype: 2, keycode: 0x2C, flags: 0 },  // Space = keyboard nudge
+        16: { pin: "PTC13", keytype: 2, keycode: 0x4D, flags: 0 },  // "End" = coin door
+        17: { pin: "PTC16", keytype: 2, keycode: 0x24, flags: 0 },  // "7" = service escape
+        18: { pin: "PTC17", keytype: 2, keycode: 0x25, flags: 0 },  // "8" = service down/-
+        19: { pin: "PTA16", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
+        20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
+        21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
+        22: { pin: "PTD6", keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
+        23: { pin: "PTD7", keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
+        24: { pin: "PTE1", keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
+    },
+    outputs: {
+        // Map the 12 GPIOs that connect to MOSFET power outputs
+        // Only the first 2 are PWM capable
+        1: { port: { type: 1, pin: "PTA2" }, flags: 0x04 },     // port 1  = PTA2 (PWM)
+        2: { port: { type: 1, pin: "PTA13" }, flags: 0x04 },    // port 2  = PTA13 (PWM)
+        3: { port: { type: 2, pin: "PTD2" }, flags: 0x00 },     // port 3 = PTD2 (Digital)
+        4: { port: { type: 2, pin: "PTD3" }, flags: 0x00 },     // port 4 = PTD3 (Digital)
+        5: { port: { type: 2, pin: "PTC8" }, flags: 0x00 },     // port 5 = PTC8 (Digital)
+        6: { port: { type: 2, pin: "PTC9" }, flags: 0x00 },     // port 6 = PTC9 (Digital)
+        7: { port: { type: 2, pin: "PTC0" }, flags: 0x00 },     // port 7 = PTC0 (Digital)
+        8: { port: { type: 2, pin: "PTC3" }, flags: 0x00 },     // port 8 = PTC3 (Digital)
+        9: { port: { type: 2, pin: "PTC4" }, flags: 0x00 },     // port 9 = PTC4 (Digital)
+        10: { port: { type: 2, pin: "PTE23" }, flags: 0x00 },   // port 10 = PTE23 (Digital)
+        11: { port: { type: 2, pin: "PTE29" }, flags: 0x00 },   // port 11 = PTE29 (Digital)
+        12: { port: { type: 2, pin: "PTE0" }, flags: 0x00 },    // port 12 = PTE0 (Digital)
+
+        // Map the first 16 ports to the board flipper button light/small LED outputs.
+        // These are the 16 outputs from the TLC5940 #1
+        // These are meant for LEDs, so use gamma by default.
+        13: { port: { type: 3, pin: 0 }, flags: 0x04 },
+        14: { port: { type: 3, pin: 1 }, flags: 0x04 },
+        15: { port: { type: 3, pin: 2 }, flags: 0x04 },
+        16: { port: { type: 3, pin: 3 }, flags: 0x04 },
+        17: { port: { type: 3, pin: 4 }, flags: 0x04 },
+        18: { port: { type: 3, pin: 5 }, flags: 0x04 },
+        19: { port: { type: 3, pin: 6 }, flags: 0x04 },
+        20: { port: { type: 3, pin: 7 }, flags: 0x04 },
+        21: { port: { type: 3, pin: 8 }, flags: 0x04 },
+        22: { port: { type: 3, pin: 9 }, flags: 0x04 },
+        23: { port: { type: 3, pin: 10 }, flags: 0x04 },
+        24: { port: { type: 3, pin: 11 }, flags: 0x04 },
+        25: { port: { type: 3, pin: 12 }, flags: 0x04 },
+        26: { port: { type: 3, pin: 13 }, flags: 0x04 },
+        27: { port: { type: 3, pin: 14 }, flags: 0x04 },
+        28: { port: { type: 3, pin: 15 }, flags: 0x04 }
+    }
+};
+var pinscapeLiteFactoryXConfig = {};
 
 // fill out the factory defaults for the maximum output and button table sizes
 (function() {
@@ -1210,6 +1385,7 @@ var pinscapeAIOFactoryXConfig = { };
     }
     fill(expansionBoardFactoryConfig);
     fill(pinscapeAIOFactoryConfig);
+    fill(pinscapeLiteFactoryConfig);
     fill(standaloneFactoryConfig);
 })();
     
@@ -1551,6 +1727,118 @@ var aioOutPortAlias, aioGpioPortAlias;
     aioGpioPortAlias = g;
 })();
 
+var liteOutPortAlias, liteGpioPortAlias;
+// build the Pinscape Lite out port alias table
+(function () {
+    var o = {
+        "3.0": "LED 1|PWM Low Power|Pinscape Lite|Small LED 1|liteBoardPWMOutputSelector",
+        "3.1": "LED 2|PWM Low Power|Pinscape Lite|Small LED 2|liteBoardPWMOutputSelector",
+        "3.2": "LED 3|PWM Low Power|Pinscape Lite|Small LED 3|liteBoardPWMOutputSelector",
+        "3.3": "LED 4|PWM Low Power|Pinscape Lite|Small LED 4|liteBoardPWMOutputSelector",
+        "3.4": "LED 5|PWM Low Power|Pinscape Lite|Small LED 5|liteBoardPWMOutputSelector",
+        "3.5": "LED 6|PWM Low Power|Pinscape Lite|Small LED 6|liteBoardPWMOutputSelector",
+        "3.6": "LED 7|PWM Low Power|Pinscape Lite|Small LED 7|liteBoardPWMOutputSelector",
+        "3.7": "LED 8|PWM Low Power|Pinscape Lite|Small LED 8|liteBoardPWMOutputSelector",
+        "3.8": "LED 9|PWM Low Power|Pinscape Lite|Small LED 9|liteBoardPWMOutputSelector",
+        "3.9": "LED 10|PWM Low Power|Pinscape Lite|Small LED 10|liteBoardPWMOutputSelector",
+        "3.10": "LED 11|PWM Low Power|Pinscape Lite|Small LED 11|liteBoardPWMOutputSelector",
+        "3.11": "LED 12|PWM Low Power|Pinscape Lite|Small LED 12|liteBoardPWMOutputSelector",
+        "3.12": "LED 13|PWM Low Power|Pinscape Lite|Small LED 13|liteBoardPWMOutputSelector",
+        "3.13": "LED 14|PWM Low Power|Pinscape Lite|Small LED 14|liteBoardPWMOutputSelector",
+        "3.14": "LED 15|PWM Low Power|Pinscape Lite|Small LED 15|liteBoardPWMOutputSelector",
+        "3.15": "LED 16|PWM Low Power|Pinscape Lite|Small LED 16|liteBoardPWMOutputSelector",
+    };
+
+    // add four power boards worth of outputs
+    for (var i = 0; i < 128; ++i) {
+        o["3." + (i + 16)] =
+            "Output " + ((i % 32) + 1)
+            + "|PWM Hi Power"
+            + "|Power Board " + (Math.floor(i / 32) + 1)
+            + "|JP" + (Math.floor((i % 32) / 16) + 5) + "-" + ((i % 16) + 1)
+            + "|powerBoardOutputSelector";
+    }
+
+    // add four chime boards worth of outputs
+    for (i = 0; i < 32; ++i) {
+        o["4." + i] =
+            "Output " + ((i % 8) + 1)
+            + "|Timed Digital"
+            + "|Chime Board " + (Math.floor(i / 8) + 1)
+            + "|JP9-" + ((i % 8) + 1)
+            + "|chimeBoardOutputSelector";
+    }
+
+    // Table of all internal GPIO connections on the main expansion board.
+    // These generally can't be used for any other purpose.
+    var gInternal = {
+        "PTC10": "TLC5940 XLAT",
+        "PTC6": "TLC5940 SIN",
+        "PTC5": "TLC5940 SCLK",
+        "PTC7": "TLC5940 BLANK",
+        "PTA1": "TLC5940 GSCLK",
+        "PTD4": "74HC595 ENA",
+        "PTA4": "74HC595 SCLK",
+        "PTA5": "74HC595 SOUT",
+        "PTA12": "74HC595 LATCH",
+    };
+
+    // Table of all external GPIO connections on the main expansion
+    // board.  These KL25Z pins are connected more or less directly
+    // to external headers on the board, so they can be re-purposed
+    // (sometimes with restrictions) for other external uses.  For
+    // example, if a plunger sensor isn't being used, all of the
+    // plunger input pins can be used as button inputs instead.
+    var gExternal = {
+        "PTE22": "Plunger CHB|CHB",
+        "PTD5": "Plunger CHB|CHB",
+        "PTE21": "Plunger CHA/SCL|CHA/SCL",
+        "PTD0": "Plunger CHA/SCL|CHA/SCL",
+        "PTE20": "Plunger SDA|SDA",
+        "PTB0": "Plunger Wiper/INT|Wiper/INT",
+        "PTA2": "Power 1|Power 1|PWM GPIO",
+        "PTA13": "Power 2|Power 2|PWM GPIO",
+        "PTD2": "Power 3|Power 3|Digital GPIO",
+        "PTD3": "Power 4|Power 4|Digital GPIO",
+        "PTC8": "Power 5|Power 5|Digital GPIO",
+        "PTC9": "Power 6|Power 6|Digital GPIO",
+        "PTC0": "Power 7|Power 7|Digital GPIO",
+        "PTC3": "Power 8|Power 8|Digital GPIO",
+        "PTC4": "Power 9|Power 9|Digital GPIO",
+        "PTE23": "Power 10|Power 10|Digital GPIO",
+        "PTE29": "Power 11|Power 11|Digital GPIO",
+        "PTE0": "Power 12|Power 12|Digital GPIO"
+    };
+
+    // Build a combined table of the GPIO port aliases for internal and
+    // external Pinscape Lite board connections.
+    var g = {};
+    $.each(gInternal, function (k, v) { g[k] = v + "|Internal"; });
+    $.each(gExternal, function (k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
+
+    // Add GPIO aliases for all of the buttons
+    $.each(pinscapeLiteFactoryConfig.buttons, function (k, v) {
+        g[v.pin] = "Button " + k + "|Digital In|Pinscape Lite|Button Inputs-" + k + "|liteBoardInputSelector";
+    });
+
+    // Add all of the external ports as output aliases.
+    $.each(gExternal, function (k, v) {
+        // break v into fields - Descriptive Name, Jumper, [output type description]
+        v = v.split("|");
+
+        // if it's a PWM-capable port, add a PWM output type for it
+        var gp = gpioPinsByName[k] || {};
+        if (gp.pwm)
+            o["1." + k] = [v[0], v[2] || "PWM GPIO", "Pinscape Lite", v[1], "liteBoardPWMOutputSelector"].join("|");
+
+        // add a Digital Out type for it
+        o["2." + k] = [v[0], v[2] || "Digital GPIO", "Pinscape Lite", v[1], "liteBoardDigitalOutputSelector"].join("|");
+    });
+
+    // remember these
+    liteOutPortAlias = o;
+    liteGpioPortAlias = g;
+})();
 
 // Build a master map of pin to header info mappings for the given
 // system configuration.  The system type is the same as in the USB
@@ -1686,6 +1974,48 @@ function buildPinToHeaderMap(sysType)
                             pinNum: n,
                             image: boardInfo.image,
                             wrapper: "aioBoardPinSelector",
+                            x: x,
+                            y: y
+                        };
+
+                        // for PTxx ports, index them under 2.x (digital out) and
+                        // 1.x (PWM out), as applicable
+                        if (/PT[A-E]\d+/.test(pinName)) {
+                            // all ports can be used as digital outs
+                            pinInfoMap["2." + pinName] = o;
+
+                            // check for PWM capability
+                            var g = gpioPinsByName[pinName];
+                            if (g && g.pwm)
+                                pinInfoMap["1." + pinName] = o;
+                        }
+                        else {
+                            // not a GPIO port - use the normal N.M notation
+                            pinInfoMap[pinName] = o;
+                        }
+                    }
+                });
+            });
+        });
+        break;
+
+    case 3:
+       // Pinscape Lite board.  Populate each board, allowing
+        // for up to four copies of each secondary board.
+        $.each({
+            "expansion main": { headers: liteBoard_headers, image: "liteBoardPins.png", copies: 1 },
+            "expansion power": { headers: lite_powerBoard_headers, image: "powerBoardPins.png", copies: 4 },
+            "expansion chime": { headers: lite_chimeBoard_headers, image: "chimeBoardPins.png", copies: 4 },
+        }, function (boardName, boardInfo) {
+            $.each(boardInfo.headers, function (headerName, headerInfo) {
+                forEachPin(headerInfo, function (pinName, n, x, y) {
+                    for (var i = 1; i <= boardInfo.copies; ++i) {
+                        var o = {
+                            board: boardName + (boardInfo.copies > 1 ? " #" + i : ""),
+                            header: headerName,
+                            pinNum: n,
+                            image: boardInfo.image,
+                            wrapper: "liteBoardPinSelector",
                             x: x,
                             y: y
                         };
