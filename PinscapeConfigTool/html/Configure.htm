@@ -6249,7 +6249,7 @@ $(function() {
         function mainBoardHoverName(pin)
         {
             // if there's an out port alias, return the jumper entry
-            var alias = expOutPortAlias[pin];
+            var alias = outPortAlias[pin];
             return alias ? alias.split("|")[3] : undefined;
         }
 
@@ -6257,7 +6257,7 @@ $(function() {
         function aioBoardHoverName(pin)
         {
             // if there's an out port alias, return the jumper entry
-            var alias = aioOutPortAlias[pin];
+            var alias = outPortAlias[pin];
             return alias ? alias.split("|")[3] : undefined;
         }
 
@@ -6265,7 +6265,7 @@ $(function() {
         function liteBoardHoverName(pin)
         {
             // if there's an out port alias, return the jumper entry
-            var alias = liteOutPortAlias[pin];
+            var alias = outPortAlias[pin];
             return alias ? alias.split("|")[3] : undefined;
         }
 
