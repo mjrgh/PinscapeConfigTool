@@ -1,0 +1,111 @@
+Pinscape Config Tool - Notes for Developers
+===========================================
+
+
+1. Build system setup
+
+To set up the build environment, you'll need:
+
+* Microsoft Visual Studio.  You can download the free Community
+Edition from the Microsoft Web site.  I don't think any special
+install options are required.
+
+If you want to create binary releases using the MakeRelease.bat
+script, you'll also need a command-line ZIP tool.  I use Info-ZIP
+(infozip.sourceforge.net).  You can *probably* use a different ZIP
+tool if you prefer, as long as it has a command-line mode with its
+primary command named ZIP.EXE, since most ZIP tools happen to use
+similar command-line syntax.  If you have any problems, though, you
+might try installing Info-ZIP and seeing if that helps.
+
+
+2. Visual Studio versions
+
+As of this writing (9/2020), I'm building with VS 2013.  That's quite
+out of date at this point, so if you're installing VS for the first
+time, you'll almost certainly be using a newer version.  You should be
+able to use the solution (.sln) file in VS 2017 or VS 2019 without any
+changes.  However, VS sometimes needs to do a one-way format update to
+open an old project in a new VS version, rendering the project files
+incompatible with the old version.  VS should always warn you if this
+is necessary, because after the conversion, the project files will no
+longer be usable with older VS versions.  If VS shows such a warning
+when you open the project, please STOP and use this procedure:
+
+  - DON'T migrate the original project/solution files
+
+  - Instead, create COPIES of the project/solution files that need
+    migrating, naming them to indicate the new VS version they'll
+    be used with
+
+  - Open the NEW COPIES in the new VS, and let VS migrate those
+
+  - Use "git add" to add the new copies to the git repos
+
+  - If you have to make any project changes (e.g., adding new
+    source files to the project), please keep the ORIGINAL project/
+    solution files in sync with any project-level changes you have
+    to make, by manually back-porting the changes to the original
+    project/solution files.  This is usually straightforward, since
+    the VS files in question are mostly XML, which makes them easy
+    easy to 'diff' and edit by hand.
+
+If you run into the VS upgrade issue, and you're planning extensive
+changes or ongoing work, you might want to stop what you're doing and
+contact me before proceeding, to see if we can coordinate the VS
+version migration on the mainline instead.  That way you won't have to
+deal with keeping two versions of the project files in sync, which is
+tedious and error-prone if you have to do it for more than a few
+changes.  I DON'T keep the project on the old VS version because it's
+hard to migrate it; I keep it on the old version because migrations
+can be a source of instability.  VS migrations are usually
+trouble-free, but on occasion they can introduce subtle bugs that go
+unnoticed for a while.  I don't like to take that risk in the absence
+of a compelling reason.
+
+
+2. Config Tool HTML pages
+
+The Config Tool uses an embedded HTML renderer control to display HTML
+pages.  Everything in the main window is displayed that way.  The same
+goes for the help system.  Most of the other dialog windows use
+Windows Forms (the C# dialog layout system) with native controls; it
+should be obvious which windows are HTML and which are native by
+looking at the [Design] mode of the form layouts for the various
+window class .cs files.
+
+For the HTML-based screens, the .htm source files and related
+resources (.css, .js, .png, etc) are in the PinscapeConfigTool\html
+subfolder.
+
+
+3. Adding new HTML files and new HTML resources
+
+If you want to add any new HTML pages, or new resources for the
+HTML pages, such as new .png or .jpg images to show in the HTML
+windows, follow this procedure:
+
+  - Create each new file in the PinscapeConfigTool\html folder
+
+  - Add the file to the git repository via "git add <file>" (git
+    has to be told explicitly that new files go in the repos; it
+    won't assume this on its own)
+
+  - Add the file to the Visual Studio project:
+
+    - Open the project in VS
+    - In the Solution Explorer pane, find PinscapeConfigTool > html
+    - Right click on the html folder and select Add > Existing Item
+    - Select the file(s) to add
+    - Click Add to accept the file selection
+    - The new files will now appear under the html folder in the tree;
+      for each one:
+      
+      - Click on the file to select it into the Properties pane
+      - In the Properties pane, set the value of "Copy to Output 
+        Directory" to "Copy if Newer"
+
+Be sure to exit out of Visual Studio before committing the git
+changes, to ensure that VS has finished writing out all changes to the
+project files.
+
