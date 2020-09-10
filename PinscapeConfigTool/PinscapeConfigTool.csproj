@@ -414,6 +414,15 @@
     <Content Include="html\kl25zPinsSmaller.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\liteBoardIn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\liteBoardOut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\liteBoardPins.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\mainBoardIn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -449,6 +458,9 @@
     </Content>
     <Content Include="html\pinscapeAIO.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\pinscapeLite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\powerBoardOut.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
