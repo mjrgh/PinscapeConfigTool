@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Backup &amp; Restore</title>
+   <title>Sauvegarde &amp; Restauration</title>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 
 <h1>
    <img src="configFileIcon.png" style="float: right;">
-   Back up &amp; Restore
+   Sauvegarde &amp; Restauration
    <img src="configFileIcon.png" style="vertical-align: middle; visibility: hidden;">
 </h1>
 
@@ -28,14 +28,14 @@
 <div class="bigButtonRow">
    <div id="backupButton" class="bigButton">
       <img src="backupButton.png">
-      <br>Save KL25Z settings to a file on your PC
+      <br>Enregistrer les paramètres KL25Z dans un fichier sur votre PC
    </div>
    <div>
-      Saves the configuration settings from the KL25Z to a file on
-      your PC.  You can use this file as a data backup in case of hardware
-      problems or data loss on the KL25Z.  You can also use it to duplicate
-      this device's settings on other devices, or share your setup with
-      other people.
+      Enregistre les paramètres de configuration de la KL25Z sur votre PC.
+      Vous pouvez utiliser ce fichier comme sauvegarde de données en cas de 
+      problèmes ou perte de données sur la KL25Z. Vous pouvez également l'utiliser pour dupliquer
+      les paramètres de cet appareil sur d'autres appareils, ou partagez votre configuration avec
+      d'autres gens.
    </div>
 </div>
 <hr>
@@ -43,20 +43,19 @@
 <div class="bigButtonRow">
    <div id="restoreButton" class="bigButton">
       <img src="restoreButton.png">
-      <br>Restore KL25Z settings from a backup file on your PC
+      <br>Restaurez les paramètres KL25Z à partir d'un fichier de sauvegarde sur votre PC
    </div>   
    <div>
-      Restores the KL25Z to the settings saved in a backup file.  You
-      can use this to recover from data loss or hardware failures, or
-      to restore working settings after making experimental or
-      unwanted changes.
+      Restaure la KL25Z aux paramètres enregistrés dans un fichier de sauvegarde. Vous
+      pouvez l'utiliser pour récupérer des pertes de données ou des pannes matérielles, ou
+      pour restaurer les paramètres après avoir effectué des tests ou les changements indésirables.
    </div>
 </div>
 
 <div id="navproxy"></div>
 <div id="nav">
    <div class="left">
-      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Return to the main menu"><img src="homeIcon.png"></a>
+      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Retourner au menu principal"><img src="homeIcon.png"></a>
    </div>
    <div class="navSpacer">
    </div>
@@ -111,9 +110,9 @@ $(function()
 
     $("#restoreButton").click(function(ev) {
 	if (window.external.YesNoDialog(
-	    "Warning: this will completely replace the configuration settings on "
-	    + "this KL25Z with saved settings from a file. Are you sure you want "
-	    + "to proceed?"))
+	    "Attention: cela remplacera complètement les paramètres de configuration sur "
+	    + "cette KL25Z avec les paramètres enregistrés à partir d'un fichier. Êtes-vous sûr de "
+	    + "vouloir procéder?"))
 	    showCallResult(window.external.RestoreDeviceConfig(CPUID));
     });
 });
