@@ -56,23 +56,23 @@ namespace PinscapeConfigTool
                 {
                     AdviceDialog.Show(
                         "IEVersionWarning",
-                        "It looks like you have an older version of IE installed (IE " + vsn.Major
-                        + "). THIS PROGRAM MIGHT NOT WORK PROPERLY ON YOUR SYSTEM unless you update "
-                        + "to IE 11 or newer.  If you encounter any \"Script Error\" message boxes, "
-                        + "you'll need to update. "
-                        + "\r\n\r\n"
-                        + "You can update IE through Windows Update or by downloading the latest "
-                        + "version from the Microsoft Web site.  Note that the update is required "
-                        + "even if you never use IE for Web browsing, because IE contains system "
-                        + "components that this program uses internally.");
+                        "Il semble que vous ayez installé une ancienne version d'IE (IE "+ vsn.Major
+                        + "). CE PROGRAMME POURRAIT NE PAS FONCTIONNER CORRECTEMENT SUR VOTRE SYSTÈME sauf si vous mettez à jour"
+                        + "vers IE 11 ou plus récent. Si vous rencontrez des boîtes de dialogue \" Erreur de script \ ","
+                        + "vous devrez mettre à jour."
+                        + "\ r \ n \ r \ n"
+                        + "Vous pouvez mettre à jour IE via Windows Update ou en téléchargeant la dernière"
+                        + "version du site Web de Microsoft. Notez que la mise à jour est requise"
+                        + "même si vous n'utilisez jamais IE pour la navigation Web, car IE contient un système"
+                        + "composants que ce programme utilise en interne.");
                 }
 
                 // show DOF update advice
                 AdviceDialog.Show(
                     "DOFNotice",
-                    "If you're using DOF (DirectOutput Framework), please make sure you have "
-                    + "the latest version. Click the DOF Update link in the Miscellaneous "
-                    + "section on the main page for pointers to the latest versions.");
+                    "Si vous utilisez DOF (DirectOutput Framework), assurez-vous d'avoir "
+                    + "la dernière version. Cliquez sur le lien DOF Update dans le Divers"
+                    + "section sur la page principale pour les pointeurs vers les dernières versions.");
 
                 // we want status reports from the worker thread
                 bgworkerDownload.WorkerReportsProgress = true;
@@ -446,7 +446,7 @@ namespace PinscapeConfigTool
             {
                 // the build number is unavailable or looks new - download the zip file
                 setupResult = downloader.CheckForUpdates(
-                    "setup tool",
+                    "outil de configuration",
                     "http://www.mjrnet.org/pinscape/downloads/PinscapeConfigTool.zip",
                     Program.updaterZip, stat, out setupError);
             }
@@ -454,7 +454,7 @@ namespace PinscapeConfigTool
             // We're done - update the status message to reflect the results.
             if (firmwareResult == Downloader.Status.NoUpdate && setupResult == Downloader.Status.NoUpdate)
             {
-                stat.Progress("<span class=\"upToDate\">Download check completed.</span>", true, false);
+                stat.Progress("<span class=\"upToDate\">Vérification du téléchargement terminée.</span>", true, false);
             }
             else
             {
@@ -470,17 +470,17 @@ namespace PinscapeConfigTool
 
                         case Downloader.Status.NoUpdate:
                             return "<span class=\"upToDate\">"
-                                + desc + " is up-to-date"
+                                + desc + " est à jour"
                                 + "</span>";
 
                         case Downloader.Status.DownloadDone:
                             return "<span class=\"newVersion\">"
-                                + "New " + desc + " version downloaded"
+                                + "New " + desc + " version téléchargée"
                                 + "</span>";
 
                         default:
                             return "<span class=\"error\">"
-                                + desc + ": Status unknown"
+                                + desc + ": statut inconnu"
                                 + "</span>";
                     }
                 };
@@ -707,14 +707,14 @@ namespace PinscapeConfigTool
             // Show a standard message box with an OK button
             public void Alert(String msg)
             {
-                MessageBox.Show(msg, "Pinscape Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(msg, "Configuration de Pinscape", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } 
 
             // Show a Yes/No dialog with the given message text.  Returns true 
             // if the user clicks Yes, false if the user clicks No.
             public bool YesNoDialog(String msg)
             {
-                return MessageBox.Show(msg, "Pinscape Setup", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+                return MessageBox.Show(msg, "Configuration de Pinscape", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
             }
 
             // Show a Discard/Cancel dialog with the given message text.  Returns
@@ -727,7 +727,7 @@ namespace PinscapeConfigTool
             // Show a Retry/Cancel dialog.  Returns true if the user clicked retry.
             public bool RetryCancelDialog(String msg)
             {
-                return MessageBox.Show(msg, "Pinscape Setup", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry;
+                return MessageBox.Show(msg, "Configuration de Pinscape", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry;
             }
 
             // Show an "Advice" dialog.  This type of dialog displays a message,
@@ -1161,8 +1161,8 @@ namespace PinscapeConfigTool
                 // get the SDA ID from the drive
                 SDAInfo sdaInfo = ReadSDAInfo(sdaPath);
                 if (sdaInfo == null || sdaInfo.SDAID == null)
-                    return "({status:\"error\",message:\"Unable to read OpenSDA ID from programming port drive ("
-                        + sdaPath.JSStringify() + ". This might not be an OpenSDA drive.\"})";
+                    return "({status:\"error\",message:\"Impossible de lire l'ID OpenSDA à partir du lecteur de port de programmation ("
+                        + sdaPath.JSStringify() + ". Ce n'est peut-être pas un lecteur OpenSDA.\"})";
 
                 // If we're going to apply a backup of the config data, load the backup
                 List<VarData> configVars = null;
@@ -1191,14 +1191,14 @@ namespace PinscapeConfigTool
                 }
                 catch (Exception ex)
                 {
-                    return "({status:\"error\",message:\"Error reading firmware file: " + ex.Message.JSStringify() + "\"})";
+                    return "({status:\"error\",message:\"Erreur lors de la lecture du fichier du micrologiciel: " + ex.Message.JSStringify() + "\"})";
                 }
 
                 // search for the SDA ID patch bytes in the file
                 byte[] pat = Encoding.ASCII.GetBytes("///Pinscape.OpenSDA.TUID///");
                 int idx = filebytes.IndexOf(pat);
                 if (idx < 0)
-                    return "({status:\"error\",message:\"Firmware file doesn't contain OpenSDA ID patch bytes\"})";
+                    return "({status:\"error\",message:\"Le fichier du micrologiciel ne contient pas d'octets de correctif OpenSDA ID\"})";
                 
                 // the actual patch buffer starts after the prefix string
                 idx += pat.Length;
@@ -1319,7 +1319,7 @@ namespace PinscapeConfigTool
                 }
                 catch (Exception ex)
                 {
-                    return "({status:\"error\",message:\"Error writing firmware file: " + ex.Message.JSStringify() + "\"})";
+                    return "({status:\"error\",message:\"Erreur d'écriture du fichier du micrologiciel: " + ex.Message.JSStringify() + "\"})";
                 }
 
                 // make the xconfig data active, if present
@@ -1375,13 +1375,13 @@ namespace PinscapeConfigTool
                 // find the device
                 DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
                 if (dev == null)
-                    return "({status:\"error\",message:\"This KL25Z device isn't currently available. "
-                            + "Please check that it's plugged in and try again.\"})";
+                    return "({status:\"error\",message:\"Cet appareil KL25Z n'est pas disponible actuellement. "
+                            + "Veuillez vérifier qu'il est branché et réessayer. \"}) ";
 
                 // query the number of variables
                 byte[] buf = dev.QueryConfigVar(0);
                 if (buf == null)
-                    return "({status:\"error\",message:\"Unable to query configuration variable descriptors.\"})";
+                    return "({status:\"error\",message:\"Impossible d'interroger les descripteurs de variable de configuration.\"})";
                 byte nScalar = buf[0];
                 byte nArray = buf[1];
 
@@ -1395,7 +1395,7 @@ namespace PinscapeConfigTool
                     // add this scalar: the first byte is the variable ID, the rest is the variable data
                     s = dev.QueryConfigVar(i);
                     if (s == null)
-                        return "({status:\"error\",message:\"Error querying scalar variable " + i + "\"})";
+                        return "({status:\"error\",message:\"Erreur lors de l'interrogation de la variable scalaire " + i + "\"})";
                     vars.Add(new byte[] { i }.Concat(s.Slice(0, 6)));
                 }
 
@@ -1406,7 +1406,7 @@ namespace PinscapeConfigTool
                     byte arrayVar = (byte)(256 - nArray + i);
                     buf = dev.QueryConfigVar(arrayVar, 0);
                     if (buf == null)
-                        return "({status:\"error\",message:\"Error querying slot count for array variable " + i + "\"})";
+                        return "({status:\"error\",message:\"Erreur lors de l'interrogation du nombre d'emplacements pour la variable de tableau " + i + "\"})";
 
                     // query the individual slots
                     byte slots = buf[0];
@@ -1416,7 +1416,7 @@ namespace PinscapeConfigTool
                         // array index, and the rest is the variable data
                         s = dev.QueryConfigVar(arrayVar, j);
                         if (s == null)
-                            return "({status:\"error\",message:\"Error querying array variable " + i + "[" + j + "]\"})";
+                            return "({status:\"error\",message:\"Erreur lors de l'interrogation de la variable de tableau " + i + "[" + j + "]\"})";
                         vars.Add(new byte[] { arrayVar, j }.Concat(s.Slice(0, 5)));
                     }
                 }
@@ -1569,13 +1569,13 @@ namespace PinscapeConfigTool
                 {
                     return "({status:\"error\","
                         + "filename:\"" + filename.JSStringify() + "\","
-                        + "message:\"Error writing file: " + e.Message.JSStringify() + "\"})";
+                        + "message:\"Erreur d'écriture du fichier: " + e.Message.JSStringify() + "\"})";
                 }
 
                 // success
                 return "({status:\"ok\","
                     + "filename:\"" + filename.JSStringify() + "\","
-                    + "message:\"The configuration was successfully saved.\"})";
+                    + "message:\"La configuration a été enregistrée avec succès.\"})";
             }
 
             // variable data loaded from file
@@ -1593,8 +1593,8 @@ namespace PinscapeConfigTool
                 // find the device
                 DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
                 if (dev == null)
-                    return "({status:\"error\",message:\"This KL25Z device isn't currently available. "
-                            + "Please check that it's plugged in and try again.\"})";
+                    return "({status:\"error\",message:\"Cet appareil KL25Z n'est pas disponible actuellement. "
+                            + "Veuillez vérifier qu'il est branché et réessayer. \"}) ";
 
                 // read the file
                 List<VarData> vars;
@@ -1626,7 +1626,7 @@ namespace PinscapeConfigTool
                     PutDeviceXConfig(cpuid, xconfig);
 
                 // success
-                return "({status:\"ok\",message:\"The configuration was successfully restored to the KL25Z.\"})";
+                return "({status:\"ok\",message:\"La configuration a été restaurée avec succès sur la KL25Z.\"})";
             }
 
             // Read a configuration file, returning a javascript result object.  On
@@ -1784,7 +1784,7 @@ namespace PinscapeConfigTool
                             // parse the line
                             m = Regex.Match(l, @"^\s*(\d+)\s*(\[\s*(\d+)\s*\]\s*)?:(\s*\d+)+\s*$");
                             if (!m.Success)
-                                return "({status:\"error\",message:\"Incorrect syntax at line " + lineno + "\"})";
+                                return "({status:\"error\",message:\"Syntaxe incorrecte à la ligne " + lineno + "\"})";
 
                             // set up the variable data descriptor
                             VarData v = new VarData();
@@ -1808,7 +1808,7 @@ namespace PinscapeConfigTool
                 }
                 catch (Exception e)
                 {
-                    return "({status:\"error\", message:\"Error reading file"
+                    return "({status:\"error\", message:\"Erreur de lecture du fichier"
                         + (lineno > 0 ? " at line " + lineno : "") + ": "
                         + e.Message.JSStringify() + "\"})";
                 }
@@ -1868,7 +1868,7 @@ namespace PinscapeConfigTool
                 // in the device firmware
                 byte[] buf = dev.QueryConfigVar(0);
                 if (buf == null)
-                    return "({\"error\":\"Error reading variable counts\"})";
+                    return "({\"error\":\"Erreur lors de la lecture du nombre de variables\"})";
 
                 // decode the counts
                 byte nScalar = buf[0];
@@ -1896,7 +1896,7 @@ namespace PinscapeConfigTool
                             // is obtained by querying this variable with index == 0.
                             buf = dev.QueryConfigVar(vid, 0);
                             if (buf == null)
-                                return "({\"error\":\"Error querying array size for var " + vid + "\"})";
+                                return "({\"error\":\"Erreur lors de l'interrogation de la taille du tableau pour var " + vid + "\"})";
 
                             // read the maximum index
                             byte maxIdx = buf[0];
@@ -1907,7 +1907,7 @@ namespace PinscapeConfigTool
                                 // retrieve this value
                                 buf = dev.QueryConfigVar(vid, i);
                                 if (buf == null)
-                                    return "({\"error\":\"Error retrieving value for var " + vid + "[" + i + "]\"})";
+                                    return "({\"error\":\"Erreur lors de la récupération de la valeur de var " + vid + "[" + i + "]\"})";
 
                                 // add it to the list
                                 arr.Add(ConfigVarToJS(buf, vid, i, i.ToString(), v[2]));
@@ -1943,7 +1943,7 @@ namespace PinscapeConfigTool
                             // present - retrieve the data from the device
                             buf = dev.QueryConfigVar(vid);
                             if (buf == null)
-                                return "({\"error\":\"Error retrieving value for var " + vid + "\"})";
+                                return "({\"error\":\"Erreur lors de la récupération de la valeur de var " + vid + "\"})";
 
                             // add it to the list
                             ret.Add(ConfigVarToJS(buf, vid, 0, v[1], v[2]));
@@ -2000,8 +2000,8 @@ namespace PinscapeConfigTool
                 }
                 catch (Exception e)
                 {
-                    return @"({status:""error"",message:""An error occurred saving the "
-                        + @"external config data in the local file system. (File error: "
+                    return @"({status:""erreur"",message:""Une erreur s'est produite lors de l'enregistrement de "
+                        + @ "données de configuration externes dans le système de fichiers local. (Erreur de fichier: "
                         + e.Message + @")""})";
                 }
             }
@@ -2025,8 +2025,8 @@ namespace PinscapeConfigTool
                 // get the device ID
                 DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
                 if (dev == null)
-                    return "({status:\"error\",message:\"This KL25Z device isn't currently accessible. "
-                        + "Make sure that it's plugged in through its joystick port.\"})";
+                    return "({status:\"erreur\",message:\"Cet appareil KL25Z n'est actuellement pas accessible. "
+                        + "Assurez-vous qu'il est branché via son port joystick.\"})";
 
                 // presume success
                 bool ok = true;
@@ -2050,10 +2050,10 @@ namespace PinscapeConfigTool
 
                 // return results
                 if (ok)
-                    return "({status:\"ok\",message:\"The new settings were successfully programmed into the KL25Z.\"})";
+                    return "({status:\"ok\",message:\"Les nouveaux paramètres ont été programmés avec succès dans la KL25Z.\"})";
                 else
-                    return "({status:\"error\",message:\"An error occurred updating the settings. You might want to "
-                        + "try again. If the problem persists, try resetting the KL25Z manually and retrying.\"});";
+                    return "({status:\"erreur\",message:\"Une erreur s'est produite lors de la mise à jour des paramètres. Vous pouvez "
+                        + "réessayez. Si le problème persiste, essayez de réinitialiser la KL25Z manuellement et réessayez.\"});";
             }
 
             // Format a device configuration variable, given the descriptor table entry
@@ -2246,13 +2246,13 @@ namespace PinscapeConfigTool
                 // look up the device
                 DeviceInfo dev = form.GetDeviceByCPUID(cpuid);
                 if (dev == null)
-                    return "({status:\"error\",message:\"The device doesn't appear to be connected.\"})";
+                    return "({status:\"erreur\",message:\"L'appareil ne semble pas connecté.\"})";
 
                 // parse the code
                 Match m = Regex.Match(code ?? "", @"(?i)([0-9a-f]+)\.([0-9a-f]+)\.([0-9a-f]+)");
                 if (!m.Success)
-                    return "({status:\"error\",message:\"The IR code isn't formatted correctly. "
-                        + "Use Protocol.Flags.Code, with each portion as a hex number.\"})";
+                    return "({status:\"erreur\",message:\"Le code IR n'est pas formaté correctement. "
+                        + "Utilisez Protocol.Flags.Code, avec chaque partie sous forme de nombre hexadécimal.\"})";
 
                 // pull out the sections
                 int protocol = int.Parse(m.Groups[1].Value, System.Globalization.NumberStyles.HexNumber);
@@ -2274,7 +2274,7 @@ namespace PinscapeConfigTool
                 });
 
                 // success
-                return "({status:\"ok\",message:\"The IR command was sent.\"})";
+                return "({status:\"ok\",message:\"La commande IR a été envoyée.\"})";
             }
 
             // Send updates to a group of output ports.  The protocol requires
