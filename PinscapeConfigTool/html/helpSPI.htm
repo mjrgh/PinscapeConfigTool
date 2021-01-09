@@ -1,52 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>SPI GPIO Pins</title>
+   <title>Broches SPI GPIO</title>
 </head>
 <body class="help">
 <h1>
-   SPI GPIO Pins
+   Broches SPI GPIO
 </h1>
 
 <div>
 
    <p>
-      If you're using TLC5940 chips with your controller setup, either with
-      the official expansion boards or with your own custom circuitry, you'll
-      need to attach a couple of the TLC5940 pins to special pins on the KL25Z
-      that connect internally to an on-board subsystem called the
-      SPI Controller.
+      Si vous utilisez des puces TLC5940 avec la configuration de votre contrôleur, soit avec
+      les cartes d'extension officielles ou avec votre propre circuit personnalisé, vous avez
+      besoin d'attacher quelques broches TLC5940 à des broches spéciales sur le KL25Z qui se
+      connectent en interne à un sous-système embarqué appelé le Contrôleur SPI.
    </p>
 
    <p>
-      The pin selector on the configuration page automatically shows you
-      the valid choices for each pin requiring an SPI function, so
-      you just need to choose from the available pins.
+      Le sélecteur de broches sur la page de configuration vous montre automatiquement les
+      choix valides pour chaque broche nécessitant une fonction SPI, donc il vous suffit de
+      choisir parmi les broches disponibles.
    </p>
 
    <p>
-      The reason that such a small number of pins is shown for each SPI
-      connection is that these are the only pins the KL25Z hardware allows for
-      these functions.  The KL25Z's internal wiring makes the 
-      SPI Controller reachable only through a very limited set of pins.
+      La raison pour laquelle un si petit nombre de broches est affiché pour chaque SPI
+      de connexion est que ce sont les seules broches que la carte KL25Z permet ces fonctions.
+      Le câblage interne de la KL25Z rend le contrôleur SPI accessible uniquement via un
+      ensemble très limité de broches.
    </p>
 
    <p>
-      (You don't need to know the following details to set up your controller,
-      but in case you're curious:  SPI stands for Serial Peripheral Interface,
-      which is one of those electronics-industry standards, in this case for
-      connecting different digital devices together for communications and control
-      functions.  The TLC5940's control interface is compatible with SPI, and
-      the KL25Z has a dedicated SPI hardware module, so it's a perfect match to
-      connect the two devices using this module.  The big benefit of doing so
-      is that the SPI module works autonomously, freeing up the KL25Z CPU
-      to do other work while TLC5940 data transfers are taking place.
-      Without the hardware helper, TLC5940 communications would
-      impose a very high workload on the CPU, which would cut into our
-      ability to perform other functions, such as monitoring the plunger
-      sensor and sending joystick updates to the host PC.)
+      (Vous n'avez pas besoin de connaître les détails suivants pour configurer votre contrôleur,
+      mais au cas où vous seriez curieux: SPI signifie "Serial Peripheral Interface",
+      qui est l'une de ces normes de l'industrie électronique, dans ce cas pour connecter
+      différents appareils numériques ensemble pour les communications, le contrôle et 
+      les fonctions. L'interface de contrôle du TLC5940 est compatible avec SPI, et la KL25Z
+      dispose d'un module matériel SPI dédié, il correspond donc parfaitement pour connecter
+      les deux appareils à l'aide de ce module. Le grand avantage de le faire est que le module
+      SPI fonctionne de manière autonome, libérant le CPU KL25Z pour effectuer d'autres travaux
+      pendant les transferts de données TLC5940.
+      Sans l'assistant matériel, les communications TLC5940 imposent une charge de travail
+	   très élevée au processeur, ce qui réduirait notre capacité à exécuter d'autres fonctions,
+	   telles que la surveillance du piston et envoi des mises à jour du joystick au PC hôte).
    </p>
 
 </div>
