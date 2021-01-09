@@ -234,7 +234,7 @@ namespace PinscapeConfigTool
                 }
                 catch (Exception exc)
                 {
-                    MessageBox.Show("An error occurred writing the file: " + exc.Message);
+                    MessageBox.Show("Une erreur s'est produite lors de l'écriture du fichier: " + exc.Message);
                 }
             }
         }
