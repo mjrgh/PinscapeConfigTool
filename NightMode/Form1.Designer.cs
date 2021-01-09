@@ -52,7 +52,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(255, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Check the box to turn on Night Mode for a controller.";
+            this.label1.Text = "Cochez la case pour activer le mode nuit pour un contrôleur.";
             // 
             // timer1
             // 
