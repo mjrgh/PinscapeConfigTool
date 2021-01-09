@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">>
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
    <link rel="stylesheet" href="main.css"/>
    <link rel="stylesheet" href="jquery-ui/jquery-ui-1.11.4.css"/>
-   <title>Pinscape Controller Settings</title>
+   <title>Paramètres du contrôleur Pinscape</title>
 </head>
 <body>
 
@@ -29,29 +29,28 @@ var ConfigSource = {
 
 <h1>
    <img src="h1options.png" style="float: right;">
-   Settings
+   Parametres
    <img src="h1options.png" style="vertical-align: middle; visibility: hidden;">
 </h1>
 
 <div>
 
    <p>
-      <b>Configuration settings for KL25Z CPU ID
-      <span id="CPUID">unknown</span></b>
+      <b>Paramètres de configuration pour l'ID CPU KL25Z
+      <span id="CPUID">Inconnu</span></b>
    </p>
    <div id="heapInfo" style="display: none;">
-      Memory used: <span id="usedHeapBytes">Unknown</span> of 16K bytes (<span id="freeHeapBytes">Unknown</span> bytes free)
-      <a href="#" class="shower">Explain</a>
+      Mémoire utilisée: <span id="usedHeapBytes">Inconnu</span> de 16K bytes (<span id="freeHeapBytes">Unknown</span> bytes libres)
+      <a href="#" class="shower">Explication</a>
       <div class="hider">
-         This shows the total RAM usage on the KL25Z for your current configuration.
-         Memory usage is mostly static; the software allocates memory during initialization
-         after the device boots up.  You shouldn't see any fluctuation during normal use.
-         Memory usage changes only when you add or remove features via the settings below,
-         and only updates after you save the new settings.  Since memory is assigned
-         during startup, the software doesn't need much free memory to run, so don't
-         worry if the free space looks tight.  We show the memory figure mostly for
-         diagnostics, and to give you an idea of how much headroom you have left for
-         enabling additional features.
+         Cela montre l'utilisation totale de la RAM sur le KL25Z pour votre configuration actuelle.
+         L'utilisation de la mémoire est principalement statique, le logiciel alloue de la mémoire lors de l'initialisation
+         après le démarrage de l'appareil. Vous ne devriez voir aucune fluctuation lors d'une utilisation normale.
+         L'utilisation de la mémoire change uniquement lorsque vous ajoutez ou supprimez des fonctionnalités via les paramètres ci-dessous
+         et ne se met à jour qu'après avoir enregistré les nouveaux paramètres. Puisque la mémoire est attribuée
+         au démarrage, le logiciel n'a pas besoin de beaucoup de mémoire libre pour fonctionner, alors ne
+         vous inquiétez pas si l'espace libre semble restreint. Nous montrons le chiffre de mémoire principalement pour
+         les diagnostics et pour vous donner une idée de la marge qu'il vous reste pour activer des fonctionnalités supplémentaires.
       </div>
    </div>
 
@@ -61,18 +60,17 @@ var ConfigSource = {
    <div class="section" data-name="System Type">
       <div>
          <img src="hardwareSection.png" class="sectionIcon">
-         <b>System type.</b>  Are you using this KL25Z on its own,
-         or with a set of expansion boards?  <a href="#" class="shower">Help</a>
+         <b>Type de système.</b>  Utilisez-vous cette KL25Z seule,
+         ou avec un ensemble de cartes d'extension?  <a href="#" class="shower">Aide</a>
 
          <div class="hider">
-            If you're using the <a href="http://mjrnet.org/pinscape/expansion-board.html" target="_blank">
-            Pinscape expansion boards</a>, the <a href="https://www.vpforums.org/index.php?showtopic=42631" target="_blank">
-            Oak Micros Pinscape All-in-One</a>, or <a href="https://www.vpforums.org/index.php?showtopic=45071" target="_blank">
-            Oak Micros Pinscape Lite</a>, select the corresponding option below, and the
-            setup tool will automatically fill in the pin assignments throughout the configuration.
-            If you're using the KL25Z by itself, or you're using your own custom add-ons
-            (e.g., your own output booster circuits), select "stand-alone" so that you
-            can set the individual pin assignments to match your wiring.
+            Si vous utilisez les <a href="http://mjrnet.org/pinscape/expansion-board.html" target="_blank">
+            Cartes d'extension Pinscape</a> ou le <a href="https://www.vpforums.org/index.php?showtopic=42631" target="_blank">
+            Tout-en-un Oak Micros Pinscape</a>, sélectionnez l'option correspondante ci-dessous, et l'outil
+	    de configuration remplira automatiquement les affectations des broches tout au long de la configuration.
+            Si vous utilisez la KL25Z seule ou si vous utilisez vos propres modules complémentaires personnalisés
+            (par exemple, vos propres circuits d'amplification de sortie), sélectionnez «autonome» pour
+            définir les affectations de broches individuelles en fonction de votre câblage.
          </div>
 
          <table class="radio">
@@ -81,15 +79,15 @@ var ConfigSource = {
                   <label>
                      <img src="kl25z.png"><br>
                      <input type="radio" name="hardwareType" value="0">
-                     Stand-alone KL25Z<br>
-                     (or your own custom boards)
+                     Autonome KL25Z<br>
+                     (ou vos propres tableaux personnalisés)
                   </label>
                </td>
                <td>
                   <label>
                      <img src="expansionStack.png"><br>
                      <input type="radio" name="hardwareType" value="1">
-                     Pinscape Expansion Boards<br>
+                     Cartes d'extension Pinscape<br>
                      &nbsp;
                   </label>
                </td>
@@ -97,7 +95,7 @@ var ConfigSource = {
                   <label>
                      <img src="pinscapeAIO.png"><br>
                      <input type="radio" name="hardwareType" value="2">
-                     Pinscape All-in-One<br>
+                     Tout-en-un Pinscape<br>
                      &nbsp;
                   </label>
                </td>
@@ -115,7 +113,7 @@ var ConfigSource = {
 
          <!-- expansion board options - initially hidden -->
          <div id="expansionBoardOptions" style="height: 0px; overflow: hidden; margin: 1em 2em;">
-            <b>Expansion board details:</b>
+            <b>Détails de la carte d'extension:</b>
             <input id="numMainBoards" type="hidden">
             <table class="inputs">
                <!--
@@ -125,27 +123,27 @@ var ConfigSource = {
                </tr>
                -->
                <tr>
-                  <td>Number of MOSFET power boards:</td>
+                  <td>Nombre de cartes d'alimentation MOSFET:</td>
                   <td><input type="text" id="numPowerBoards" size="4" value="0">
                </tr>
                <tr>
-                  <td>Number of chime boards:</td>
+                  <td>Nombre de cartes carillon:</td>
                   <td><input type="text" id="numChimeBoards" size="4" value="0">
                </tr>
 
             </table>
 
             <div>
-               <label><input type="checkbox" id="ckExpBoardShowPins"> Show KL25Z pin assignments <b>(Expert mode)</b></label>
+               <label><input type="checkbox" id="ckExpBoardShowPins"> Afficher les affectations des broches KL25Z <b>(Mode Expert)</b></label>
                <div style="margin: 1ex 0px 0px 2em;">
-                  The KL25Z pin assignments are hidden by default because you've selected an
-                  expansion board configuration.  All GPIO pin assignments are set automatically in
-                  this configuration to match your boards, so there's normally no need to view them.
-                  You can check the box above if you want to see the pin assignments
-                  anyway, but be aware that any changes you make to the pin settings will
-                  probably cause malfunctions, because the boards are hard-wired to
-                  specific GPIO pins that the software settings have to match for the
-                  boards to work properly.
+                  Les affectations des broches KL25Z sont masquées par défaut car vous avez sélectionné une
+                  configuration de la carte d'extension. Toutes les attributions de broches GPIO sont définies
+		  automatiquement dans cette configuration correspond à vos tableaux, il n'est donc normalement
+		  pas nécessaire de les afficher. Vous pouvez cocher la case ci-dessus si vous souhaitez voir
+		  les attributions de broches de toute façon, mais sachez que toute modification que vous 
+		  apportez aux paramètres des broches causent probablement des dysfonctionnements, car les cartes
+		  sont câblées avec des broches GPIO spécifiques et que les paramètres du logiciel doivent 
+		  correspondre pour fonctionner correctement.
                </div>
             </div>
          </div>
@@ -355,8 +353,8 @@ function expBoardAdjustChips()
    <div class="section" data-name="USB ID">
       <div>
          <img src="usbident.png" class="sectionIcon">
-         <b>USB Identification.</b>  This is how the KL25Z identifies itself to
-         Windows through the USB port.
+         <b>Identification USB.</b>  C'est ainsi que le KL25Z est identifiée par
+         Windows via le port USB.
       </div>
 
       <div>
@@ -382,8 +380,8 @@ function expBoardAdjustChips()
          </select>
 
          <span id="usbCustomFields">
-            Vendor ID: <input type="text" size=4 id="txtUsbVendor">
-            Product ID: <input type="text" size=4 id="txtUsbProduct">
+            Fournisseur ID: <input type="text" size=4 id="txtUsbVendor">
+            Produit ID: <input type="text" size=4 id="txtUsbProduct">
          </span>
          <span id="usbInfoFields">
          </span>
@@ -392,41 +390,41 @@ function expBoardAdjustChips()
 
       <div>
          <ul>
-            <li>If you have a <b>real</b> LedWiz unit in your
-            system, choose <b>LedWiz Unit 8</b> for your first Pinscape
-            unit, 9 for the second, etc.
+            <li>Si vous avez <b>réellement</b> une carte LedWiz sur votre système,
+            choisissez <b>LedWiz Unit 8</b> pour la premiere carte LedWiz, 9 our la seconde, etc.
+           
 
-            <li>If you <b>don't</b> have any real LedWiz units, choose
-            <b>LedWiz Unit 1</b> for the first unit, 2 for the second, etc.
+            <li>si vous <b>n'avez pas</b> de vraies cartes LedWiz, choisissez
+            <b> Unit LedWiz 1 </b> pour la première carte, 2 pour la seconde, etc.
          </ul>
 
-         <a href="#" class="shower">I want more details!</a>
+         <a href="#" class="shower">je veux plus de détails!</a>
          <div class="hider">
             <ul>
-               <li><b>For LedWiz compatibility</b>, choose an LedWiz unit number.
-               LedWiz compatibility lets older programs, like Future Pinball, 
-               control outputs through this Pinscape unit.
+               <li><b>Pour la compatibilité LedWiz </b>, choisissez un numéro d'unité LedWiz.
+               La compatibilité LedWiz permet aux anciens programmes, comme Future Pinball,
+               de contrôler les sorties via cette unité Pinscape.
 
-               <li>LedWiz unit numbers <b>must be unique</b>.
-               Be sure to choose an ID that isn't used by your real LedWiz, or by another
-               Pinscape controller.
-               Programs on the PC use the unit number to tell the devices apart, so each
-               device needs a different number.
+               <li>Les numéros de cartes LedWiz <b> doivent être uniques </b>.
+               Assurez-vous de choisir un identifiant qui n'est pas utilisé par votre vrai LedWiz,
+	       ou par un autre Contrôleur Pinscape.
+               Les programmes sur le PC utilisent le numéro de carte pour distinguer les périphériques,
+	       de sorte que chaque appareil a besoin d'un numéro différent.
 
-               <li>If the LedWiz IDs cause conflicts on your system with other USB devices,
-               you can try the Pinscape ID.  This ID is registered uniquely to
-               Pinscape, so it shouldn't conflict with anything.
-               However, <b>using this ID will give up LedWiz compatibility.</b>  This
-               means that older software like Future Pinball won't be able to access
-               the output controller features.  Newer software based on DOF R3
-               (such as Visual Pinball and PinballX) <b>will</b> still be able to take
-               full advantage of the output features.  The input features shouldn't
-               be affected one way or the other.
+               <li>Si les ID LedWiz provoquent des conflits sur votre système avec d'autres périphériques USB,
+               vous pouvez essayer l'ID Pinscape. Cet identifiant est enregistré uniquement pour Pinscape,
+	       il ne devrait donc entrer en conflit avec rien.
+               Cependant, <b> l'utilisation de cet identifiant abandonnera la compatibilité LedWiz. </b> Cela
+               signifie que des logiciels plus anciens comme Future Pinball ne pourront pas accéder
+               aux fonctionnalités du contrôleur de sortie. Les logiciels plus récent basés sur DOF R3
+               (comme Visual Pinball et PinballX) <b> seront </b> toujours en mesure de prendre le
+               plein avantage des fonctionnalités de sortie. Les fonctionnalités d'entrée ne devraient pas
+               être affecté d’une manière ou d’une autre.
 
-               <li>The Custom ID option is only for techies doing something
-               tricky.  Don't use it unless you have a good reason.  Using a
-               custom ID will make the output features unreachable even from DOF.
-               (The input features will still work, though.)
+               <li>L'option ID personnalisé est réservée aux techniciens qui font quelque chose de compliqué.
+               Ne l'utilisez pas à moins d'avoir une bonne raison. Utiliser un ID personnalisé rendra les
+	       fonctionnalités de sortie inaccessibles même à partir de DOF. (Les fonctionnalités d'entrée
+	       continueront cependant de fonctionner.)
             </ul>
          </div>
       </div>
@@ -484,15 +482,15 @@ function ensureUsbId(val)
    <hr>
    <div class="section" data-name="Pinscape ID">
       <img src="pinscapeID.png" class="sectionIcon">
-      <b>Pinscape ID.</b>  This is a <b>separate</b> ID from the LedWiz
-      unit number.  DOF R3 and the <a class="dofconfigtool">
-         DOF Config Tool</a> use this ID to identify the unit.
-      <b>Set this to 1 for your first unit,</b> 2 for the second, and so on.
+      <b>Identifiant Pinscape.</b>  Ceci est un identifiant <b> distinct </b> 
+	  du numero de carte LedWiz. DOF R3 et le <a class="dofconfigtool">
+         DOF Config Tool </a> utilisé par cet identifiant pour identifier la carte.
+      <b> Définissez ce paramètre sur 1 pour votre premier appareil, </b> 2 pour le second, etc.
       <p>
-         You <b>don't</b> have to copy the LedWiz unit number here!
-         This is completely unrelated to the LedWiz number.  This setting
-         <b>must always</b> be <b>1</b> for your first (or only) Pinscape
-         unit, or DOF won't be able to access it.
+         Vous <b> n'avez </b> pas à copier ici le numéro de la carte LedWiz!
+         Ceci n'a aucun rapport avec le numéro LedWiz. Ce paramètre
+         <b> doit toujours </b> être <b> 1 </b> pour votre première (ou seule) carte Pinscape,
+         ou DOF ne pourra pas y accéder.
       </p>
 
       <div>
@@ -523,15 +521,15 @@ function ensureUsbId(val)
    <hr>
    <div class="section" data-name="Disconnect Reset">
       <img src="disconnect.png" class="sectionIcon">
-      <b>Reset on disconnect.</b>  If the USB connection is broken, and
-      can't be re-established within a time limit, the KL25Z can
-      automatically reset itself as an attempt to fix whatever's wrong.
-      Select the time interval (in seconds) before this happens.
+      <b>Réinitialiser lors de la déconnexion. </b> Si la connexion USB est interrompue, et
+      ne peut pas être rétabli dans un délai, la KL25Z peut se réinitialise automatiquement
+      pour tenter de réparer tout ce qui ne va pas.
+      Sélectionnez l'intervalle de temps (en secondes) avant que cela ne se produise.
 
       <div>
          <label><input type="checkbox" id="ckRebootEnable">Enabled</label>
          <div id="rebootOptions">       
-            Time before reboot (seconds):
+            Temps avant le redémarrage (secondes):
             <input type="text" id="txtRebootTime" size=4 style="margin-left: 1em;">
          </div>
       </div>
@@ -540,14 +538,13 @@ function ensureUsbId(val)
          <a href="#" class="shower">Details</a>
          <div class="hider">
             <b>Details</b><br>
-            On some systems, the KL25Z has trouble re-establishing a broken
-            USB connection, such as after rebooting or power-cycling the PC.
-            This can usually be solved by resetting the KL25Z.  If you set
-            this option, the KL25Z will reset itself automatically when it
-            detects a broken connection and can't reconnect within the specified
-            time limit.  The delay is there to avoid unnecessary resets when
-            the connection only glitches momentarily.  The recommended setting
-            is 10 seconds.
+            Sur certains systèmes, la KL25Z a du mal à rétablir une connexion USB,
+	    par exemple après le redémarrage ou la mise hors tension du PC.
+            Cela peut généralement être résolu en réinitialisant le KL25Z. Si vous définissez
+            cette option, la KL25Z se réinitialise automatiquement lorsqu'elle détecte une
+            connexion interrompue et ne peut pas se reconnecter dans le délai spécifié de la
+            limite de temps. Le délai est là pour éviter les réinitialisations inutiles lorsque
+            la connexion ne fonctionne que momentanément. Le réglage recommandé est de 10 secondes.
          </div>
       </div>
    </div>
@@ -581,13 +578,13 @@ $("#txtRebootTime").change(function() {
    <hr>
    <div class="section" data-name="TV ON">
       <img src="tvon.png" class="sectionIcon">
-      <b>TV ON switch.</b>  If one or more of your monitors needs to be turned
-      on manually every time you power up your cabinet, you can use this feature
-      to switch them on automatically.  See the Build Guide for wiring instructions.
+      <b>Interrupteur TV ON.</b>  Si un ou plusieurs de vos moniteurs doivent être allumés
+      manuellement chaque fois que vous allumez votre pincab, vous pouvez utiliser cette fonction
+      pour les activer automatiquement. Consultez le Guide de construction pour les instructions de câblage.
 
       <div>
          <div>
-            <label><input id="tvOnEnabled" type="checkbox">Enabled</label>
+            <label><input id="tvOnEnabled" type="checkbox">Activer</label>
             <span style="margin-left: 2em;" id="tvOnTestButton">
                <a href="#" id="btnTvOnTest" class="button">Test</a>
             </span>
@@ -595,7 +592,7 @@ $("#txtRebootTime").change(function() {
          <div id="tvOnPins">
             <table class="inputs">
                <tr class="expBoardPin">
-                  <td class="pinlabel">Power status input:</td>
+                  <td class="pinlabel">Entrée d'état de l'alimentation:</td>
                   <td>
                      <span class="pinselect" id="tvStatus"
                        data-cfg="TVon.statusPin" data-gpiotype="dig-in extern"
@@ -604,7 +601,7 @@ $("#txtRebootTime").change(function() {
                   </td>
                </tr>
                <tr class="expBoardPin">
-                  <td class="pinlabel">Status latch output:</td>
+                  <td class="pinlabel">Sortie de verrouillage d'état:</td>
                   <td>
                      <span class="pinselect" id="tvLatch"
                        data-cfg="TVon.latchPin" data-gpiotype="dig-out extern"
@@ -613,7 +610,7 @@ $("#txtRebootTime").change(function() {
                   </td>
                </tr>
                <tr class="expBoardPin">
-                  <td class="pinlabel">Relay output:</td>
+                  <td class="pinlabel">Sortie relais:</td>
                   <td>
                      <span class="pinselect" id="tvRelay"
                        data-cfg="TVon.relayPin" data-gpiotype="dig-out extern"
@@ -622,9 +619,9 @@ $("#txtRebootTime").change(function() {
                   </td>
                </tr>
                <tr>
-                  <td>Startup delay time (seconds):</td>
+                  <td>Délai de démarrage (secondes):</td>
                   <td><input type="text" id="tvDelay" size=4></td>
-                  <td style="padding-left: 2em;">This is how long to wait after power-on before pulsing the relay</td>
+                  <td style="padding-left: 2em;">C'est le temps d'attente après la mise sous tension avant de pulser le relais</td>
                </tr>
             </table>
          </div>
@@ -643,7 +640,7 @@ $("#tvOnEnabled").click(function(ev)
     {
         function saveAndClear(id) { 
             oldTVOn[id] = $(id).val(); 
-            $(id).val("Not Connected");
+            $(id).val("Non connecté");
         }
         saveAndClear("#tvStatus .pinval");
         saveAndClear("#tvLatch .pinval");
@@ -656,8 +653,8 @@ $("#tvOnEnabled").click(function(ev)
 $("#tvStatus, #tvLatch, #tvRelay").change(function()
 {
     // if any of these are set, enable the whole feature
-    var ena = $("#tvStatus .pinval").val() != "Not Connected"
-              || $("#tvLatch .pinval").val() != "Not Connected";
+    var ena = $("#tvStatus .pinval").val() != "Non connecté"
+              || $("#tvLatch .pinval").val() != "Non connecté";
 
     // If we're newly enabling it, show the details section.
     // Don't hide the section on disabling, though, since the
@@ -687,7 +684,7 @@ function showTvOn(show, scroll, setDefs)
     {
         function def(id, def) {
             var ctl = $(id);
-            if (ctl.val() == "Not Connected")
+            if (ctl.val() == "Non connecté")
                 ctl.val(oldTVOn[id] || def).change();
         }
         def("#tvStatus .pinval", "PTD2");
@@ -705,19 +702,19 @@ $("#btnTvOnTest").click(function(ev)
     ev.preventDefault();
 
     // check for pin changes
-    function pin(sel) { var p = $(sel).val(); return p == "Not Connected" ? "NC" : p; }
+    function pin(sel) { var p = $(sel).val(); return p == "Non connecté" ? "NC" : p; }
     if (pin("#tvStatus .pinval") != config.TVon.statusPin
         || pin("#tvLatch .pinval") != config.TVon.latchPin
         || pin("#tvRelay .pinval") != config.TVon.relayPin)
     {
         if (!window.external.YesNoDialog(
-            "You've made changes to the TV ON setup that you haven't "
-            + "programmed into the KL25Z yet. The tester window will reflect "
-            + "the current device settings, not your new unsaved changes. "
-            + "If you want to test your new settings, click \"Program KL25Z\" "
-            + "before proceeding to the tester window."
-            + "\r\n\r\n"
-            + "Do you want to open the tester anyway?"))
+            "Vous avez apporté des modifications à la configuration TV ON que vous n'avez pas"
+            + "déjà programmé dans le KL25Z. La fenêtre du testeur reflétera"
+            + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
+            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \" Programmer KL25Z \ ""
+            + "avant de passer à la fenêtre du testeur."
+            + "\ r \ n \ r \ n"
+            + "Voulez-vous quand même ouvrir le testeur?"))
             return;
     }
 
@@ -731,18 +728,19 @@ $("#btnTvOnTest").click(function(ev)
    <hr>
    <div class="section" data-name="IR Remote">
       <img src="irRemote.png" class="sectionIcon">
-      <b>IR Remote Control.</b>  The controller can send and/or receive IR
-      remote control signals if you attach some additional components.  This
-      can be used with the <a href="#TVON">TV ON</a> feature to turn
-      your cabinet TVs on via IR commands at system startup.  See the Build
-      Guide for details on the components required and how to connect them.
-      If you don't have any IR components attached or wish to disable them,
-      simply set the pin assignments here to "Not Connected".
+      <b>Télécommande IR.</b>  Le contrôleur peut envoyer et / ou recevoir des 
+      signaux IR de télécommande si vous connectez des composants supplémentaires. C'est
+      peut être utilisé avec la fonction <a href="#TVON"> TV ON </a> pour activer
+      vos téléviseurs sous tension via les commandes IR au démarrage du système. Voir le 
+      guide de construction pour plus de détails sur les composants requis et comment les
+      connecter.
+      Si vous n'avez aucun composant IR connecté ou si vous souhaitez les désactiver,
+      définissez simplement ici les affectations des broches sur «Non connecté».
 
       <div id="irRemotePins">
          <table class="inputs">
             <tr class="expBoardPin">
-               <td class="pinlabel">IR LED (transmitter) pin:</td>
+               <td class="pinlabel">Broche LED IR (émetteur):</td>
                   <td>
                      <span class="pinselect" id="irTransmitter"
                        data-cfg="IRRemote.ledPin" data-gpiotype="pwm tpm extern"
@@ -750,11 +748,11 @@ $("#btnTvOnTest").click(function(ev)
                      </span>
                   </td>
                   <td>
-                     Requires a PWM-capable pin
+                     Nécessite une broche compatible PWM
                   </td>
                </tr>
                <tr class="expBoardPin">
-                  <td class="pinlabel">IR receiver input pin:</td>
+                  <td class="pinlabel">Broche d'entrée du récepteur IR:</td>
                   <td>
                      <span class="pinselect" id="irReceiver"
                        data-cfg="IRRemote.sensorPin" data-gpiotype="interrupt-in extern"
@@ -762,29 +760,29 @@ $("#btnTvOnTest").click(function(ev)
                      </span>
                   </td>
                   <td>
-                     Requires an interrupt-capable pin
+                     Nécessite une broche capable d'interrompre
                   </td>
                </tr>
             </table>
       </div>
       <div id="noIrRemotePins" style="display:none;">
-         The firmware version installed on your device doesn't support the IR
-         remote features.  Update to the latest firmware to enable these features.
+         La version du micrologiciel installée sur votre appareil ne prend pas en charge la 
+         fonctionnalités IR à distance. Mettez à jour le dernier micrologiciel pour activer ces fonctionnalités.
       </div>
 
       <div id="irCommands">
-         <b>IR Command List.</b>  You can program the Pinscape unit with remote
-         control commands that it can then send and receive.  Each slot below
-         stores one code.  <a href="#" id="helpIR">Help</a>
+         <b>Liste des commandes IR.</b>  Vous pouvez programmer la carte Pinscape avec la télécommande
+         de contrôle qu'il peut ensuite envoyer et recevoir. Chaque emplacement ci-dessous
+         stocke un code.  <a href="#" id="helpIR">Help</a>
          <div>
             <table id="irCommandTab">
             </table>
          </div>
          <div id="irCommandTabStretchNote">
-            <i><b>Note:</b> your current firmware version can store up to
-            <span id="irCommandTabMaxNote">0</span> codes. The list above
-            will automatically expand as you fill in new rows, up to the
-            limit.</i>
+            <i><b>Note :</b>votre version actuelle du micrologiciel peut stocker jusqu'à
+            <span id="irCommandTabMaxNote">0</span> codes. La liste ci-dessus se développera
+	    automatiquement au fur et à mesure que vous remplissez de nouvelles lignes, jusqu'à
+            la limite.</i>
          </div>
       </div>
 
@@ -800,8 +798,8 @@ $("#helpIR").click(function(ev) {
 // Update the IR receiver and sender command pins.  The IR command
 // table is only shown if we have at least one of these enabled.
 $("#irTransmitter, #irReceiver").change(function() {
-    var ena = $("#irTransmitter").children(".pinval").val() != "Not Connected"
-              || $("#irReceiver").children(".pinval").val() != "Not Connected";
+    var ena = $("#irTransmitter").children(".pinval").val() != "Non connecté"
+              || $("#irReceiver").children(".pinval").val() != "Non connecté";
     slideToggle($("#irCommands"), ena, loadingConfig ? 0 : 250, false);
 });
 
@@ -809,14 +807,14 @@ $("#irTransmitter, #irReceiver").change(function() {
 // test buttons on the code slots only if we have an IR transmitter
 // configured.
 $("#irTransmitter").change(function() {
-    var ena = $("#irTransmitter").children(".pinval").val() != "Not Connected";
+    var ena = $("#irTransmitter").children(".pinval").val() != "Non connecté";
     $("#buttonTab .keyIR, #irCommands .irTest").toggle(ena);
 });
 
 // Show the IR learn buttons on the code slots only if we have an
 // IR receiver configured.
 $("#irReceiver").change(function() {
-    var ena = $("#irReceiver").children(".pinval").val() != "Not Connected";
+    var ena = $("#irReceiver").children(".pinval").val() != "Non connecté";
     $("#irCommands .irLearn").toggle(ena);
 });
 
@@ -854,11 +852,11 @@ function sizeIRCommandTab(config)
             +   "<input type=\"hidden\" class=\"irCodeHi\">"
             + "</td>"
             + "<td class=\"irCodeCtls\">"
-            +   "<span class=\"irLearn\" title=\"Learn a code from a remote control\"></span>"
-            +   "<span class=\"irTest\" title=\"Test sending this code\"></span>"
+            +   "<span class=\"irLearn\" title=\"Apprenez un code à partir d'une télécommande\"></span>"
+            +   "<span class=\"irTest\" title=\"Tester l'envoi de ce code\"></span>"
             + "</td>"
             + "<td>"
-            +   "<span class=\"irTVON\" title=\"Send this command at system startup to turn on your cabinet TVs\">"
+            +   "<span class=\"irTVON\" title=\"Envoyez cette commande au démarrage du système pour allumer vos téléviseurs sur le pincab\">"
             +   "</span>"
             + "</td>"
             + "<td>"
@@ -936,8 +934,8 @@ function sizeIRCommandTab(config)
         else
         {
             // invalid format - mark it as an error
-            self.addClass("error").attr("title", "Incorrect format: use Protocol.Flags.64BitCode, as "
-                                        + "hex digits. Press Escape to revert to the previous value.");
+            self.addClass("error").attr("title", "Format incorrect: utilisez Protocol.Flags.64BitCode, comme "
+                                        + "chiffres hexadécimaux. Appuyez sur Echap pour revenir à la valeur précédente.");
             return;
         }
 
@@ -985,20 +983,20 @@ function sizeIRCommandTab(config)
         // check for a change in configuration
         if (config.IRRemote.ledPin == "NC")
         {
-            alert("The IR transmitter isn't configured on the device yet. "
-                  + "You'll have to save the IR transmitter pin assignment by "
-                  + "clicking \"Program KL25Z\" before you can send codes.");
+            alert("L'émetteur IR n'est pas encore configuré sur l'appareil. "
+                  + "Vous devrez enregistrer l'affectation des broches de l'émetteur IR "
+                  + "en cliquant sur \Program KL25Z\ avant de pouvoir envoyer des codes.");
             return;
         }
         if (config.IRRemote.ledPin != $("#irTransmitter .pinval").val())
         {
             window.external.ShowAdviceDialog(
                 "ReprogrammedIRLEDPin",
-                "You've changed the IR LED pin assignment, but you "
-                + "haven't programmed the KL25Z with the changes yet, so "
-                + "this will send using the old pin assignment. If you want "
-                + "to test with the new pin assignment, save the new pin "
-                + "settings by clicking \"Program KL25Z\" first.");
+                "Vous avez modifié l'affectation des broches de la LED IR, mais vous "
+                + "Je n'ai pas encore programmé le KL25Z avec les changements, donc"
+                + "ceci enverra en utilisant l'ancienne affectation des broches. Si vous le souhaitez"
+                + "pour tester avec la nouvelle affectation des broches, enregistrer la nouvelle broche"
+                + "Paramètres en cliquant d'abord sur \Programmer KL25Z\ ");
         }
 
         // get try sending the code
@@ -1161,27 +1159,27 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
    <hr>
    <div class="section" data-name="Joystick">
       <img src="joystick.png" class="sectionIcon">
-      <b>Joystick input.</b>  The controller acts like a Windows USB Joystick
-      in order to send the plunger position, accelerometer readings (for nudging),
-      and button inputs to the PC.  You can disable these inputs if desired.
+      <b>Entrée joystick.</b>  Le contrôleur agit comme un joystick USB Windows
+      pour envoyer la position du piston, les lectures de l'accéléromètre (pour pousser),
+      et touchez les entrées du PC. Vous pouvez désactiver ses entrées si vous le souhaitez.
 
       <div>
-         <label><input id="ckJoystick" type="checkbox"> Enable joystick input</label>
+         <label><input id="ckJoystick" type="checkbox"> Activer l'entrée par joystick</label>
       </div>
 
       <div>
          <a href="#" class="shower">Why would I want to disable this?</a>
          <div class="hider">
-            <b>Why would I want to disable this?</b><br>
-            By default, each Pinscape unit reports its accelerometer readings
-            to the PC via the joystick interface.  If you have more than one
-            unit installed, that means you'll have more than one set of these
-            reports coming in.  The extra reports can confuse some pinball
-            software, and can also affect system performance.  This option
-            lets you disable the extra reports from the secondary units.  If
-            you have a plunger attached to one of the units, you should consider
-            that one to be your primary unit and leave its joystick interface
-            enabled.  You should disable the joystick interface on any other units.
+            <b>Pourquoi voudrais-je désactiver cela?</b><br>
+            Par défaut, chaque carte Pinscape rapporte ses lectures d'accéléromètre
+            au PC via l'interface joystick. Si vous en avez plus d'une d'installée, 
+	    cela signifie que vous aurez plus d'un ensemble de ces rapports qui arrivent.
+	    Les rapports supplémentaires peuvent semer la confusion dans certains logiciels de
+	    flippers et peuvent également affecter les performances du système. Cette option
+            vous permet de désactiver les rapports supplémentaires des unités secondaires. Si
+            vous avez un tire-bille attaché à l'une des cartes, vous devriez considérer
+            celui-là pour être sur votre carte principale et quitter son interface joystick
+            activée. Vous devez désactiver l'interface du joystick sur toutes les autres cartes.
          </div>
       </div>
 
@@ -1190,131 +1188,124 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
 			<option value="0">X/Y/Z</option>
 			<option value="1">Rx/Ry/Rz</option>
 		 </select>
-		 <a href="#" class="shower">What's this?</a>
+		 <a href="#" class="shower">Qu'est-ce que c'est ça?</a>
 		 <div class="hider">
 			<p>
-			   A real joystick reports the
-			   position of the stick by sending an "X Axis" value for the left/right
-			   position of the stick and a "Y Axis" value for the up/down position.
-			   It can also send a "Z Axis" value to represent another control like a
-			   throttle.  Normally, Pinscape uses these same three axes, by
-			   sending accelerometer readings on the X and Y axes, and plunger
-			   readings on the Z axis.  The USB protocol for joysticks also defines
-               a set of "rotational" axes called Rx, Ry, and Rz.  Real joysticks that
-               allow twisting motions report those motions on these "R" axes.
-               If you wish, Pinscape can report its normal readings on the "R" axes
-               in place of the normal X/Y/Z axes.
+			   	Un vrai joystick signale la position du manche en envoyant une valeur "Axe X" pour la gauche / droite
+				La position du manche et une valeur "Axe Y" pour la position haut / bas.
+				Il peut également envoyer une valeur "Axe Z" pour représenter un autre contrôle comme un
+				Manette de Gaz. Normalement, Pinscape utilise ces trois mêmes axes, en
+				envoi de lectures d'accéléromètre sur les axes X et Y, et la lecture du piston
+				sur l'axe Z. Le protocole USB pour les joysticks définit également
+				un ensemble d'axes "rotationnels" appelés Rx, Ry et Rz. De vrais joysticks 
+				autorisent les mouvements de torsion et rapportent ces mouvements sur ces axes "R".
+				Si vous le souhaitez, Pinscape peut rapporter ses lectures normales sur les axes "R"
+				à la place des axes X / Y / Z normaux.
 			</p>
 			<p>
-               Why would you want to use the "R" axes?  In most cases, you wouldn't;
-               the normal X/Y/Z settings are recommended because they're compatible
-               with most software.  However, the "R" axes can be useful if you have
-               other joysticks in your system that are conflicting with Pinscape.
-               If your other joystick is reporting its input on the normal X/Y/Z
-               axes, and it's creating problems with VP or other software, you 
-               might be able to fix the conflict by telling Pinscape to use the 
-               Rx/Ry/Rz axes instead.
+               			Pourquoi voudriez-vous utiliser les axes "R"? Dans la plupart des cas, vous ne le feriez pas,
+               			les paramètres X / Y / Z normaux sont recommandés car ils sont compatibles
+               			avec la plupart des logiciels. Cependant, les axes "R" peuvent être utiles si vous avez
+               			d'autres joysticks dans votre système qui sont en conflit avec Pinscape.
+               			Si votre autre joystick signale son entrée sur les axes X / Y / Z normaux,
+              			cela crée des problèmes avec VP ou d'autres logiciels, vous
+               			pourrait être en mesure de résoudre le conflit en disant à Pinscape d'utiliser les
+               			Axes Rx / Ry / Rz à la place.
 			</p>
 			<p>
-			   <b>If you change the Pinscape axes, you also have to reconfigure
-               Visual Pinball and any other pinball players to use the Rx/Ry/Rz 
-               axes.</b>  Future Pinball has no way to read the Rx/Ry/Rz axes,
-               so using these in Pinscape will make it incompatible with FP.
-			   You might run into the same limitation in other software.  Because
-               of the compatibility issues, you might find that it's better to 
-               reconfigure the <b>other</b> joystick that's creating the conflict,
-               if possible, since that would let you continue using the more 
-               compatible X/Y/Z axes for Pinscape.
+				<b>Si vous modifiez les axes Pinscape, vous devez également reconfigurer
+               			Visual Pinball et tout autre émulateur de flipper à utiliser les axes Rx / Ry / Rz.</b> 
+			   	Future Pinball n'a aucun moyen de lire les axes Rx / Ry / Rz,
+               			donc les utiliser dans Pinscape le rendra incompatible avec FP.
+			   	Vous pourriez rencontrer la même limitation dans d'autres logiciels. Car
+              			des problèmes de compatibilité, vous constaterez peut-être qu'il vaut mieux
+               			reconfigurer l '<b> autre </b> joystick qui crée le conflit, si possible,
+				car cela vous permettrait de continuer à utiliser les axes X / Y / Z compatibles pour Pinscape.
 			</p>
 		 </div>
 	  </div>
 
 	  <div id="jsReportTiming">
-		 Joystick report interval (milliseconds): <input type="text" size="6" id="jsReportInterval">
-		 <a href="#" class="shower">Explain</a>
+		 Intervalle de rapport du joystick (millisecondes): <input type="text" size="6" id="jsReportInterval">
+		 <a href="#" class="shower">Explication</a>
 		 <div class="hider">
 			<p>
-			   This lets you set the time between the joystick reports that the
-			   device sends to the PC on the USB connection.  These reports send
-			   current information on the accelerometer readings, plunger position,
-			   and the button-press status for any buttons assigned to the joystick.
+			   Cela vous permet de définir le temps entre les rapports du joystick que l'appareil 
+				envoie au PC sur la connexion USB. Ces rapports envoient les informations actuelles
+				sur les lectures de l'accéléromètre, la position du tire-bille, et l'état de la 
+				pression des boutons pour tous les boutons attribués au joystick.
 			</p>
 			<p>
-			   Pinscape is capable of sending reports as fast as every 1 to 2
-			   milliseconds.  (The exact speed depends on the type of plunger
-			   sensor and other external hardware you're using.)  But we
-               actually don't want to send reports as fast as we can, because
-               Windows and Visual Pinball can't digest them at that pace.  This
-               setting lets you slow down the reports to a suitable rate 
-               for the PC.
+			   Pinscape est capable d'envoyer des rapports aussi rapidement tous les 1 à 2
+				millisecondes. (La vitesse exacte dépend du type de tire-bille
+				et autre matériel externe que vous utilisez.) Mais nous ne veulont pas
+				envoyer de rapports aussi vite que possible, car Windows et Visual Pinball
+				ne peuvent pas les digérer à ce rythme. Ce paramètre vous permet de ralentir
+				les rapports à un taux approprié pour le PC.
 			</p>
 			<p>
-			   <b>Recommendation:</b> start with an input time of <b>8.333ms</b>
-			   and an "accelerometer stutter" setting of <b>2</b>.  This should
-			   work well on most systems, but it's not necessarily optimal for
-			   everyone, because VP's timing characteristics can vary according
-			   to your PC setup.   You might have to experiment to find the
-			   ideal settings for your system.  After adjusting the timing,
-			   test nudging with VP.  If it seems natural, keep the settings.
-			   If VP's response to nudging seems erratic (for example, it ignores
-			   some nudges, but overreacts to others), try different timings.
-			   It's best to keep the setting in a range from about 5ms to 20ms.
-			   Anything shorter than 5ms will be too fast for Windows to digest
-			   properly, and anything longer than 20ms might produce excessive
-			   latency (games respond slowly to button presses and nudges).
+			   <b>Recommandation : </b> commencer avec un temps d'entrée de <b> 8,333 ms </b>
+				et un paramètre de "tremblement de l'accéléromètre" de <b> 2 </b>. Ceci 
+				fonctionnent bien sur la plupart des systèmes, mais ce n'est pas nécessairement optimal pour
+				tout le monde, car les caractéristiques de synchronisation de VP peuvent varier en fonction
+				à la configuration de votre PC. Vous devrez peut-être expérimenter pour trouver les
+				paramètres idéaux pour votre système. Après avoir ajusté le timing,
+				testez le coup de coude avec VP. Si cela semble naturel, gardez les paramètres.
+				Si la réponse de VP du coup de coude semble erratique (par exemple, il ignore
+				certains coups de coude, mais réagit de manière excessive aux autres), essayez différents entrées.
+				Il est préférable de maintenir le réglage dans une plage d'environ 5 ms à 20 ms.
+				Tout ce qui est inférieur à 5 ms sera trop rapide à digérer pour Windows correctement,
+				et tout ce qui dépasse 20 ms peut produire de la latence (les jeux répondent lentement
+				aux pressions sur les boutons et aux coups de coude).
 			</p>
 		 </div>
 	  </div>
 
 	  <div id="accelStutter">
-		 Accelerometer "stutter": <input type="text" size="6" id="accelStutterCount">
-		 <a href="#" class="shower">Explain</a>
+		 Accéléromètre "tremblement": <input type="text" size="6" id="accelStutterCount">
+		 <a href="#" class="shower">Explication</a>
 		 <div class="hider">
 			<p>
-			   The "stutter" setting works in connection with the <b>joystick
-			   report interval</b> above to set the interval between accelerometer
-			   reports.  The accelerometer reading is sent as part of the joystick
-			   report, so the base interval between accelerometer readings is exactly
-			   the same as the joystick report interval.  This setting lets you
-			   slow down the accelerometer readings to a multiple of the joystick
-			   interval.
+			   Le paramètre de «tremblement» fonctionne avec le joystick <b>
+				intervalle de rapport </b> ci-dessus pour définir l'intervalle entre les rapports de
+				l'accéléromètre La lecture de l'accéléromètre est envoyée dans le cadre de rapport du 
+				joystick de sorte que l'intervalle de base entre les lectures de l'accéléromètre est
+				exactement identique à l'intervalle de rapport du joystick. Ce paramètre vous permet de 
+				ralentir les lectures de l'accéléromètre à un multiple du joystick intervalle.
 			</p>
 			<p>
-			   The stutter is the number of times that each physical accelerometer
-			   reading is repeated in sequential joystick reports.  If you set the
-			   stutter to 1, it means that a new reading is sent with every joystick
-			   report sent to the PC.  If you set it to 2, a new reading is sent
-			   with every <b>other</b> report, and the alternating reports simply
-			   repeat the prior reading.  If you set it to 3, a new reading is taken
-			   every three reports.
+			   Le tremblement est le nombre de fois que chaque accéléromètre physique lit est répétée dans
+				les rapports séquentiels du joystick. Si vous définissez le tremblement à 1, cela 
+				signifie qu'une nouvelle lecture est envoyée avec chaque rapport de joystick envoyé au PC.
+				Si vous le définissez sur 2, une nouvelle lecture est envoyée avec chaque <b> autre </b> rapport,
+				et les rapports alternés simplement répéte la lecture précédente. Si vous le réglez sur 3,
+				une nouvelle lecture est effectuée tous les trois rapports.
 			</p>
 			<p>
-			   Why would you want to slow down the accelerometer readings?  Because
-			   VP can't use the readings if they arrive too quickly.  For best
-			   results in VP, readings should only be sent once per video cycle.
-			   If your graphics card is set to a 60Hz refresh rate, the video
-			   cycle is 16.667 milliseconds long, so VP will work best if you send
-			   accelerometer readings every 16.667ms.  However, you might want to
-			   send joystick reports faster than this, so that joystick button
-			   updates are sent closer to real-time.  This is where the stutter
-			   setting comes in: it lets you send joystick reports at a fast
-			   pace for lower button latency, but slow down the accelerometer
-			   readings to accommodate VP's slowness reading them.
+			   Pourquoi voudriez-vous ralentir les lectures de l'accéléromètre? Car VP ne peut pas utiliser les
+				lectures si elles arrivent trop rapidement. Pour un meilleur résultats dans VP, les lectures
+				doivent être envoyées qu'une seule fois par cycle vidéo.
+				Si votre carte graphique est réglée sur une fréquence de rafraîchissement de 60 Hz, la vidéo,
+				le cycle dure 16,667 millisecondes, donc VP fonctionnera mieux si vous envoyez la lectures
+				de l'accéléromètre toutes les 16,667 ms. Cependant, vous voudrez peut-être envoyer les
+				rapports du joystick plus rapidement que cela, de sorte que le bouton du joystick,
+				les mises à jour soient envoyées plus près du temps réel. C'est là que le tremblement,
+				le réglage entre en jeu: il vous permet d'envoyer des rapports de joystick à un
+				rythme pour réduire la latence des boutons, mais ralenti l'accéléromètre, les lectures pour
+				tenir compte de la lenteur de VP à les lire.
 			</p>
 			<p>
-			   <b>Recommendation:</b> start with a joystick report interval
-			   of <b>8.333ms</b> and a stutter setting of <b>2</b>.  This will
-			   read the accelerometer at 60Hz, which is usually optimal for
-			   VP, but will send button input updates twice as often, which
-			   might make other programs that use joystick buttons more
-			   responsive.  The optimal timing in VP can vary according to
-			   your PC setup, though.  Check your video card refresh rate
-               (use the video card rate, <b>not</b> the monitor's refresh
-               rate).  If it's not 60Hz, choose a report interval close to
-               10ms that divides evenly into the refresh interval, and choose
-               a stutter time equal to the refresh interval divided by the
-               report interval.  If your video card refreshes at 120Hz,
-               for example, use an 8.333ms interval and set stutter to 1.
+			   <b>Recommendation:</b> commencer par un intervalle de rapport du joystick de <b> 8,333 ms </b> et 
+				un paramètre de tremblement de <b> 2 </b>. Cette volonté de lire l'accéléromètre à 60 Hz, ce
+				qui est généralement optimal pour VP, mais enverra les mises à jour des entrées de bouton
+				deux fois plus souvent, ce qui pourrait rendre d'autres programmes utilisant les boutons du
+				joystick plus sensible. Le timing optimal dans VP peut varier selon la configuration de votre PC.
+				Vérifiez le taux de rafraîchissement de votre carte vidéo (utilisez le taux de la carte vidéo,
+				<b> pas </b> l'actualisation du moniteur taux). S'il ne s'agit pas de 60 Hz, choisissez un
+				intervalle de rapport proche de 10 ms qui se divise uniformément dans l'intervalle de
+				rafraîchissement, et choisissez un temps de tremblement égal à l'intervalle de rafraîchissement
+				divisé par l'intervalle de rapport. Si votre carte vidéo s'actualise à 120 Hz, par exemple,
+				utilisez un intervalle de 8,333 ms et réglez le tremblement sur 1.
 			</p>			   
 		 </div>
 	  </div>
@@ -1335,11 +1326,11 @@ $("#ckJoystick").change(function() {
    <hr>
    <div class="section" data-name="Accelerometer">
       <img src="orientation.png" class="sectionIcon">
-      <b>Accelerometer orientation.</b>  If you're using the accelerometer
-      (for nudge sensing), the software needs to know how the KL25Z is oriented
-      in the cabinet so that it can report motion in the right direction.  Install
-      the KL25Z in one of the orientations shown below, level with the floor of
-      the cabinet, with the chips and LEDs facing up.
+      <b>Orientation de l'accéléromètre. </b> Si vous utilisez l'accéléromètre
+      (pour la détection de nudge), le logiciel a besoin de savoir comment la KL25Z est orientée
+      dans le pincab afin qu'il puisse signaler les mouvements dans la bonne direction. Installer
+      la KL25Z dans l'une des orientations indiquées ci-dessous, au niveau du sol du pincab,
+      avec les puces et les LED orientées vers le haut.
 
       <div>
 
@@ -1349,28 +1340,28 @@ $("#ckJoystick").change(function() {
                   <label>
                      <img src="accel-front.png"><br>
                      <input type="radio" name="accelOrientation" value="0">
-                     Ports facing front
+                     Ports face à l'avant
                   </label>
                </td>
                <td>
                   <label>
                      <img src="accel-left.png"><br>
                      <input type="radio" name="accelOrientation" value="1">
-                     Ports facing left
+                     Ports tournés vers la gauche
                   </label>
                </td>
                <td>
                   <label>
                      <img src="accel-right.png"><br>
                      <input type="radio" name="accelOrientation" value="2">
-                     Ports facing right
+                     Ports orientés à droite
                   </label>
                </td>
                <td>
                   <label>
                      <img src="accel-rear.png"><br>
                      <input type="radio" name="accelOrientation" value="3">
-                     Ports facing rear
+                     Ports orientés vers l'arrière
                   </label>
                </td>
             </tr>
@@ -1380,90 +1371,87 @@ $("#ckJoystick").change(function() {
 
 
       <div id="newAccelFeatures">
-         <div style="margin-top: 2em;"><b>Dynamic range.</b>  Select the range for
-            accelerometer readings.  Ranges above &plusmn;2G have lower precision.
+         <div style="margin-top: 2em;"><b>Plage dynamique.</b>  Sélectionnez la plage pour les
+            lectures de l'accéléromètre. Plages ci-dessus &plusmn;2G ont une précision inférieure.
             <a href="#" class="shower">Details</a>
 
             <div class="hider">
                <p>
-                  The KL25Z accelerometer hardware has three native range settings:
-                  &plusmn;2G, &plusmn;4G, and &plusmn;8G.  (A "G" is the acceleration
-                  of the earth's gravity, 9.8m/s&sup2;.)  The device offers the options
-                  because each is a compromise between precision and dynamic
-                  range, and some applications care more about precision while others
-                  care more about range.  <i>Precision</i> is the ability to discern
-                  the difference between nudges that are very close together in
-                  strength. <i>Dynamic range</i> is the ability to tell the difference
-                  between nudges that are very far apart in strength.  In the 2G range,
-                  the device has the best precision, but the tradeoff is that readings
-                  are capped at 2G, so real accelerations that are higher than 2G will
-                  read as 2G.  The 4G and 8G ranges increase the cap, allowing for true
-                  readings up to the respective limits, but the tradeoff
-                  is that they lose some of the ability to distinguish readings that
-                  are very close together.
+                  Le matériel de l'accéléromètre de la KL25Z dispose de trois paramètres de plage natifs:
+                  &plusmn;2G, &plusmn;4G, and &plusmn;8G.  (Un "G" est l'accélération de la gravité
+		  terrestre, 9.8m/s&sup2;.)  L'appareil offre les options car chacun est un compromis
+		  entre précision et gamem dynamique, et certaines applications se soucient davantage
+		  de la précision tandis que d'autres se soucient plus de la portée. <i> La précision </i> 
+		  est la capacité de discerner la différence entre les nudges qui sont très rapprochés
+		  dans la force. <i> La plage dynamique </i> est la capacité de faire la différence
+                  entre des coups de coude qui sont très éloignés en force. Dans la gamme 2G,
+                  l'appareil a la meilleure précision, mais le compromis est que les lectures
+                  sont plafonnés à 2G, donc les accélérations réelles supérieures à 2G lu comme 2G.
+		  Les gammes 4G et 8G augmentent le plafond, permettant une vraie lectures jusqu'aux
+		  limites respectives, mais le compromis est qu'ils perdent une partie de la capacité
+		  de distinguer les lectures qui sont très proches les unes des autres.
                </p>
                <p>
-                  For virtual pinball use, the 1G or 2G settings are recommended,
-                  because precision is more important to us than range.  It makes it
-                  more realistic if the game can discern fine shadings of strength.
-                  It's not as important to distinguish very high accelerations from
-                  one another, since anything beyond a certain point is just a
-                  TILT anyway.
+                  Pour l'utilisation du flipper virtuel, les paramètres 1G ou 2G sont recommandés,
+                  car la précision est plus importante pour nous que la portée. Ça le fait
+                  plus réaliste si le jeu peut discerner de fines nuances de force.
+                  Il n'est pas aussi important de distinguer les accélérations très élevées de
+                  l'un comme de l'autre, car tout ce qui dépasse un certain point n'est qu'un
+                  TILT quand même.
                </p>
                <p>
-                  1G is the default because it was the fixed setting in older versions
-                  of the Pinscape firmware, before this option existed.  1G will produce
-                  the same effects you're used if you had previous versions installed.
-                  If you wish, you can change to 2G with no loss of precision, because
-                  1G and 2G use the same native device settings.  If you do change to
-                  2G, you should adjust your VP "axis gain" settings (in the keyboard
-                  preferences) to compensate, by doubling the old settings.  Similarly,
-                  if you decide to try 4G or 8G, double the gain settings again at 4G,
-                  and yet again at 8G.
+                  1G est la valeur par défaut car c'était le paramètre fixe dans les anciennes versions
+                  du firmware Pinscape, avant que cette option n'existe. 1G produira les mêmes effets
+		  que vous utilisez si vous aviez des versions précédentes installées.
+                  Si vous le souhaitez, vous pouvez passer en 2G sans perte de précision, car 1G et 2G
+		  utilisent les mêmes paramètres de périphérique natifs. Si vous changez pour 2G, vous
+		  devez ajuster vos paramètres VP "gain d'axe" (dans les préférences clavier) pour
+		  compenser, en doublant les anciens paramètres. De même, si vous décidez d'essayer
+		  la 4G ou la 8G, doublez à nouveau les paramètres de gain en 4G, et encore une fois à 8G.
                </p>
             </div>
 
          <div style="margin-left: 2em; margin-top: 0ex;">
             <label><input type="radio" name="accelRange" value="0"> &plusmn;1G
-             (original Pinscape setting, highest precision)</label><br>
+             (réglage Pinscape original, plus haute précision)</label><br>
             <label><input type="radio" name="accelRange" value="1"> &plusmn;2G
-             (same precision as &plusmn;1G but with wider range)</label><br>
+             (même précision que &plusmn;1G mais avec une gamme plus large)</label><br>
             <label><input type="radio" name="accelRange" value="2"> &plusmn;4G
-             (reduced precision, wider range)</label><br>
+             (précision réduite, plage plus large)</label><br>
             <label><input type="radio" name="accelRange" value="3"> &plusmn;8G
-             (lowest precision, widest range)</label><br>
+             (précision la plus basse, plage la plus large)</label><br>
          </div>
       </div>
 
       <div style="margin-top: 2em;">
-         <b>Auto-centering.</b>  The controller automatically zeroes the
-         accelerometer after it's been sitting still for a while.  This
-         compensates for any tilt in the mounting position.  If you prefer,
-         you can disable the automatic centering, and center it manually
-         when needed using the <a href="#" id="accJoystickLink">Joystick Viewer</a>.
+         <b>Centrage automatique. </b> Le contrôleur met automatiquement à zéro 
+         l'accéléromètre après avoir été immobile pendant un certain temps. Cela
+         compense toute inclinaison en position de montage. Si vous préfèrez,
+         vous pouvez désactiver le centrage automatique et le centrer manuellement
+         au besoin en utilisant le <a href="#" id="accJoystickLink">Joystick visuel</a>.
 
          <div id="autoCenterRadioButtons">
             <div>
-               <label><input type="radio" name="autoCenterMode" value="255"> Manually center only (no auto-centering)</label>
+               <label><input type="radio" name="autoCenterMode" value="255"> Centrer manuellement uniquement (pas de centrage automatique)</label>
             </div>
             <div>
-               <label><input type="radio" name="autoCenterMode" value="0"> Auto-center with default time (5 seconds)</label>
+               <label><input type="radio" name="autoCenterMode" value="0"> Centrage automatique avec heure par défaut (5 secondes)</label>
             </div>
             <div>
-               <label><input type="radio" name="autoCenterMode" value="1"> Auto-center with custom time</label>
+               <label><input type="radio" name="autoCenterMode" value="1"> Centrage automatique avec heure personnalisée</label>
                <div style="margin: 1ex 2em 0px 1em;" id="accelAutoCenterTimeDiv">
-                  Time in seconds: <input type="text" size="4" id="accelAutoCenterTime">
-                  <span style="padding-left: 3em;"><i>1-60 seconds</i></span>
+                  Temps par secondes: <input type="text" size="4" id="accelAutoCenterTime">
+                  <span style="padding-left: 3em;"><i>1-60 secondes</i></span>
                </div>
             </div>
          </div>
       </div>
    </div>
    <div id="noNewAccelFeatures" style="display:none;">
-      The firmware version installed on your device has a fixed &plusmn;1G
-      dynamic range for the accelerometer, and automatic centering (zeroing)
-      after being motionless for 5 seconds.  Update to the latest firmware
-      if you want to customize these settings.
+      La version du micrologiciel installée sur votre appareil a une &plusmn; 1G fixe
+      de plage dynamique de l'accéléromètre et centrage automatique (remise à zéro)
+      après avoir été immobile pendant 5 secondes. Mettre à jour le dernier firmware
+      si vous souhaitez personnaliser ces paramètres.
    </div>
 
    <script>
@@ -1489,15 +1477,15 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
    <hr>
    <div class="section" data-name="Plunger Sensor">
       <img src="plungerSection.png" class="sectionIcon">
-      <b>Plunger sensor setup</b>
+      <b>Configuration du capteur de piston (tire-bille)</b>
 
       <div>
          Sensor type:
          <select id="plungerType" style="margin-left: 1em;">
-            <option value="0">None</option>
+            <option value="0">Aucun</option>
             <option value="1">TSL1410R</option>
             <option value="3">TSL1412S</option>
-            <option value="5">Potentiometer</option>
+            <option value="5">Potentiomètre</option>
             <option value="6">AEDR-8300</option>
             <!-- <option value="8">TSL1401CL</option> -->
             <option value="9">VL6180X</option>
@@ -1505,7 +1493,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
             <option value="11">TCD1103</option>
          </select>
          <span style="margin-left: 2em;" id="plungerSensorButton">
-            <a href="#" id="btnPlungerCal" class="button">Live Sensor View</a>
+            <a href="#" id="btnPlungerCal" class="button">Vue du capteur en direct</a>
          </span>
 
       </div>
@@ -1514,40 +1502,38 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
          <div id="plungerPinsTSL">
             <div id="tsl1410-1412-details">
                <img style="float: right; margin: 0px 0px 1em 2em;" src="TSL1410R.jpg">
-               <b><span id="TSLName">TSL14xx</span> optical sensor.</b>  This is a large
-               optical sensor with the pixels arranged in a single row, about 3" long.
-               We detect the plunger position by reading the image from the sensor and
-               looking for the shadow cast by the plunger.  The edge of the shadow tells
-               us the plunger position.
+               <b><span id="TSLName">TSL14xx</span> capteur optique. </b> C'est un grand
+               capteur optique avec les pixels disposés sur une seule rangée, d'environ 3" de long.
+               Nous détectons la position du piston en lisant l'image du capteur et à la recherche
+	       de l'ombre projetée par le piston. Le bord de l'ombre nous raconte la position du piston.
             </div>
             <div id="tsl1401-details">
                <img style="float: right; margin: 0px 0px 1em 2em;" src="TSL1401CL.jpg">
-               <b>TSL1401CL bar code sensor.</b> This is a small optical sensor that we
-               use to read the plunger position from a bar-coded "scale".  The scale has
-               a series of tiny bar codes across its length, with each bar code representing
-               its position.  As the plunger moves, the sensor slides along the scale, and
-               we can read the current position by scanning the nearest bar code.  This
-               requires the specially printed scale with bar codes in the format
-               the software recognizes.
+               <b>TSL1401CL capteur de code à barres.</b> C'est un petit capteur optique que nous
+               Utilisons pour lire la position du piston sur une «échelle» à code-barres. L'échelle a
+               une série de minuscules codes à barres sur toute sa longueur, chaque code à barres représentant
+               sa position. Lorsque le piston se déplace, le capteur glisse le long de l'échelle et
+               nous pouvons lire la position actuelle en scannant le code à barres le plus proche. Cela
+               nécessite la balance spécialement imprimée avec des codes à barres au format que
+               le logiciel reconnaît.
 
                <div>
-                  <b>Important!  Don't confuse this with the TSL1410R.</b>  This option
-                  is for the TSL14<b>01</b>CL, which is a completely different sensor
-                  from the TSL14<b>10</b>R.  The two are at the opposite extremes of
-                  the size scale, so they can't be used interchangeably despite the
-                  confusingly similar names.  The TSL1401CL is about 8mm long, and we
-                  use the small window to read a compact bar code.  The <b>other</b>
-                  sensor is about 3" long, and we use to take pictures of the plunger
-                  directly.  Choose <b>TSL1410R</b> instead if you're using that other,
-                  larger sensor.
+                  <b>Important! Ne confondez pas cela avec le TSL1410R. </b> Cette option
+                  est pour le TSL14 <b> 01 </b> CL, qui est un capteur complètement différent
+                  du TSL14 <b> 10 </b> R. Les deux sont aux extrêmes opposés de l'échelle de taille,
+		  de sorte qu'ils ne peuvent pas être utilisés de manière interchangeable malgré le
+                  noms confusément similaires. Le TSL1401CL mesure environ 8 mm de long et nous
+                  utilisons la petite fenêtre pour lire un code-barres compact. L'<b> autre </b>
+                  capteur mesure environ 3" de long et nous utilisons pour prendre des photos du piston
+                  directement. Choisissez plutôt <b> TSL1410R </b> si vous utilisez cet autre capteur plus grand.
                </div>
             </div>
             <div class="expBoardPin">
-               <b>Pin assignments:</b>
+               <b>Affectations des broches:</b>
                <div class="indented">
                   <table class="inputs">
                      <tr>
-                        <td class="pinlabel">SI (serial data):</td>
+                        <td class="pinlabel">SI (données série):</td>
                         <td>
                            <span class="pinselect" id="tsl_si"
                               data-cfg="plungerPins.a" data-gpiotype="dig-out extern"
@@ -1556,7 +1542,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                         </td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">CLK (serial clock):</td>
+                        <td class="pinlabel">CLK (horloge série):</td>
                         <td>
                            <span class="pinselect" id="tsl_clk"
                               data-cfg="plungerPins.b" data-gpiotype="dig-out extern"
@@ -1565,151 +1551,151 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                         </td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">AO (analog data):</td>
+                        <td class="pinlabel">AO (données analogiques):</td>
                         <td>
                            <span class="pinselect" id="tsl_ao"
                               data-cfg="plungerPins.c" data-gpiotype="adc extern"
                               data-desc="Plunger Sensor AO" data-default="PTB0">
                            </span>
                         </td>
-                        <td>Requires an ADC-capable (analog in) pin</td>
+                        <td>Nécessite une broche compatible ADC (entrée analogique)</td>
                      </tr>
                   </table>
                </div>
             </div>
             <div class="expBoardText">
-               Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
+               Connectez le capteur au connecteur PISTON (JP2) sur la carte d'interface principale:
                <ul>
-                  <li>Sensor AO1/AO2 to pin 1
-                  <li>Sensor CLK to pin 3
-                  <li>Sensor VDD to pin 5
-                  <li>Sensor VPP (GND) to pin 6
-                  <li>Sensor SI to pin 8
+                  <li>Capteur AO1 / AO2 sur broche 1
+                  <li>Capteur CLK sur broche 3
+                  <li>Capteur VDD sur broche 5
+                  <li>Capteur VPP (GND) sur broche 6
+                  <li>Capteur SI sur broche 8
                </ul>
             </div>
             <div class="aioBoardText">
-               Connect the sensor to the PLUNGER connections on the Pinscape AIO or Pinscape Lite:
+               Connectez le capteur aux connexions PISTON sur le Pinscape AIO:
                <ul>
-                  <li>Sensor AO1/AO2 to Wiper/INT
-                  <li>Sensor CLK to CHA/SCL
-                  <li>Sensor VDD to 3.3V
-                  <li>Sensor VPP (GND) to GND
-                  <li>Sensor SI to SDA
+                  <li>Capteur AO1/AO2 sur "Wiper"/INT
+                  <li>Capteur CLK sur CHA/SCL
+                  <li>Capteur VDD sur 3.3V
+                  <li>Capteur VPP (GND) sur GND
+                  <li>Capteur SI sur SDA
                </ul>
             </div>
          </div>
          <div id="plungerPinsPot">
             <div>
                <img src="slidePot.png" style="float: right; margin: 0px 0px 1em 2em;">
-               <b>Potentionmeter.</b>  This uses a slide potentiometer,
-               which is a variable resistor with a control knob that moves linearly
-               across the length of the device.  Attach the control knob to the
-               plunger so that the knob moves with the plunger.  The pot's
-               electrical resistance changes as the knob moves, proportionally to
-               the position, so the controller can determine the plunger position 
-               by reading the voltage on the input.
+               <b>Potentionmètre. </b> Celui-ci utilise un potentiomètre à glissière,
+               qui est une résistance variable avec un bouton de commande qui se déplace linéairement
+               sur toute la longueur de l'appareil. Fixez le bouton de commande au piston de sorte
+	       que le bouton se déplace avec le piston. 
+               la résistance électrique change à mesure que le bouton bouge, proportionnellement à
+               la position, afin que le contrôleur puisse déterminer la position du piston
+               en lisant la tension sur l'entrée.
             </div>
             <div class="expBoardPin">
-               <b>Pin assignments:</b>
+               <b>Affectations des broches:</b>
                <div class="indented">
                   <table class="inputs">
                      <tr>
-                        <td class="pinlabel">Wiper:</td>
+                        <td class="pinlabel">"Wiper = Essuie-glace":</td>
                         <td>
                            <span class="pinselect" id="pot_ao"
                               data-cfg="plungerPins.a" data-gpiotype="adc extern"
                              data-desc="Plunger Sensor AO" data-default="PTB0">
                            </span>
                         </td>
-                        <td>Requires an ADC (analog in) pin</td>
+                        <td>Nécessite une broche ADC (entrée analogique)</td>
                      </tr>
                   </table>
                </div>
             </div>
             <div class="expBoardText">
-               Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
+               Connectez le capteur au connecteur PISTON (JP2) sur la carte d'interface principale:
                <ul>
-                  <li>Pot wiper to pin 1
-                  <li>One fixed-resistor end to pin 5
-                  <li>Other fixed-resistor end to pin 6
+                  <li>Pot wiper sur broche 1
+                  <li>Une extrémité à résistance fixe sur broche 5
+                  <li>Autre extrémité à résistance fixe sur borche 6
                </ul>
             </div>
             <div class="aioBoardText">
-               Connect the sensor to the PLUNGER connections on the Pinscape AIO or Pinscape Lite:
+               Connectez le capteur aux connexions PISTON sur le Pinscape AIO:
                <ul>
                   <li>Pot wiper to Wiper
-                  <li>One fixed-resistor end to 3.3V
-                  <li>Other fixed-resistor end to GND
+                  <li>Une extrémité à résistance fixe sur  3.3V
+                  <li>Autre extrémité à résistance fixe sur GND
                </ul>
             </div>
             <div class="expBoardText">
-               Note: this sensor type setting can be used with other sensors
-               that represents the plunger position as an analog voltage level,
-               such as an LVDT or analog IR distance finder.  Connect the sensor's
-               analog output pin to JP2 pin 1.  Connect sensor power to pin 5 and
-               GND to pin 6.
+               Remarque: ce paramètre de type de capteur peut être utilisé avec d'autres capteurs
+               qui représente la position du piston en tant que niveau de tension analogique,
+               comme un LVDT ou un télémètre infrarouge analogique. Connectez le capteur de
+               la broche de sortie analogique à la broche JP2 1. Connectez l'alimentation du capteur à la broche 5 et
+               GND à la broche 6.
             </div>
             <div class="aioBoardText">
-               Note: this sensor type setting can be used with other sensors
-               that represents the plunger position as an analog voltage level,
-               such as an LVDT or analog IR distance finder.  Connect the sensor's
-               analog output pin to Wiper.  Connect sensor power to 3.3V and
-               sensor ground to GND.
+               Remarque: ce paramètre de type de capteur peut être utilisé avec d'autres capteurs
+               qui représente la position du piston en tant que niveau de tension analogique,
+               comme un LVDT ou un télémètre infrarouge analogique. Connectez le capteur de
+               broche de sortie analogique à essuie-glace. Connectez l'alimentation du capteur à 3,3 V et
+               masse du capteur à GND.
             </div>
          </div>
          <div id="plungerPinsQuad">
             <div>
                <img src="aedr8300.png" style="float: right; margin: 0px 0px 1em 2em;">
-               <b>Quadrature sensor.</b>  This uses an optical sensor that tracks its
-               position along a special reflective guide rail, with bars marked at
-               regular intervals.  The sensor keeps track of its position by counting
-               the bars it passes as it moves.
+               <b>Capteur de quadrature.</b>  Cela utilise un capteur optique qui suit sa
+               position le long d'un rail de guidage réfléchissant spécial, avec des barres marquées à
+               intervalles réguliers. Le capteur garde une trace de sa position en comptant
+               les barres qu'il passe en se déplaçant.
             </div>
             <div class="expBoardPin">
-               <b>Pin assignments:</b>
+               <b>Affectations des broches:</b>
                <div class="indented">
                   <table class="inputs">
                      <tr>
-                        <td class="pinlabel">Channel A:</td>
+                        <td class="pinlabel">Canal A:</td>
                         <td>
                            <span class="pinselect" id="quadrature_CHA"
                               data-cfg="plungerPins.a" data-gpiotype="interrupt-in extern"
                              data-desc="Quadrature Sensor Channel A" data-default="PTD0">
                            </span>
                         </td>
-                        <td>Requires an interrupt-capable pin</td>
+                        <td>Nécessite une broche capable d'interrompre</td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">Channel B:</td>
+                        <td class="pinlabel">Canal B:</td>
                         <td>
                            <span class="pinselect" id="quadrature_CHB"
                              data-cfg="plungerPins.b" data-gpiotype="interrupt-in extern"
                              data-desc="Quadrature Sensor Channel B" data-default="PTD5">
                            </span>
                         </td>
-                        <td>Requires an interrupt-capable pin</td>
+                        <td>Nécessite une broche capable d'interrompre</td>
                      </tr>
                   </table>
                </div>
             </div>
             <div class="expBoardText">
-               Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
+               Connectez le capteur au connecteur PLUNGER (JP2) sur la carte d'interface principale:
                <ul>
-                  <li>Channel A (CHA) to pin 3
-                  <li>Channel B (CHB) to pin 4
-                  <li>Sensor 3.3V to pin 5 (if required)
-                  <li>Sensor GND to pin 6
-                  <li>Sensor 5V to pin 7 (if required)
+                  <li>Canal A (CHA) sur broche 3
+                  <li>Canal B (CHB) sur broche 4
+                  <li>Capteur 3.3V sur broche 5 (si nécessaire)
+                  <li>Capteur GND sur borche 6
+                  <li>Capteur 5V sur broche 7 (si nécessaire)
                </ul>
             </div>
             <div class="aioBoardText">
-                Connect the sensor to the PLUNGER connections on the Pinscape AIO or Pinscape Lite:
+               Connectez le capteur aux connexions PISTON du Pinscape AIO:
                <ul>
-                  <li>Channel A (CHA) to CHA
-                  <li>Channel B (CHB) to CHB
-                  <li>Sensor 3.3V to 3.3V (if required)
-                  <li>Sensor GND to GND
-                  <li>Sensor 5V to 5V (if required)
+                  <li>Canal A (CHA) sur CHA
+                  <li>Canal B (CHB) sur CHB
+                  <li>Capteur 3.3V sur 3.3V (si nécessaire)
+                  <li>Capteur GND sur GND
+                  <li>Capteur 5V sur 5V (si nécessaire)
                </ul>
             </div>
          </div>
@@ -1717,13 +1703,12 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
          <div id="plungerPinsVL6180X">
             <div>
                <img src="VL6180X.png" style="float: right; margin: 0px 0px 1em 2em;">
-               <b>VL6180X distance sensor.</b>  This sensor determines the distance
-               to a nearby object by bouncing pulses of light off the object and
-               measuring how long the light takes to return, using a very precise
-               clock.
+               <b>Capteur de distance VL6180X. </b> Ce capteur détermine la distance
+               à un objet proche en faisant rebondir des impulsions de lumière sur l'objet et
+               mesurer le temps de retour de la lumière, en utilisant une horloge.
             </div>
             <div class="expBoardPin">
-               <b>Pin assignments:</b>
+               <b>Affectations des broches:</b>
                <div class="indented">
                   <table class="inputs">
                      <tr>
@@ -1757,23 +1742,23 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                </div>
             </div>
             <div class="expBoardText">
-               Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
+               Connectez le capteur au connecteur PISTON (JP2) sur la carte d'interface principale:
                <ul>
-                  <li>SDA to pin 8
-                  <li>SCL to pin 3
-                  <li>GPIO0/CE to pin 1
-                  <li>Sensor VIN to pin 5
-                  <li>Sensor GND to pin 6
+                  <li>SDA sur broche 8
+                  <li>SCL sur broche 3
+                  <li>GPIO0/CE sur broche 1
+                  <li>Capteur VIN sur broche 5
+                  <li>Capteur GND sur broche 6
                </ul>
             </div>
             <div class="aioBoardText">
-                Connect the sensor to the PLUNGER connections on the Pinscape AIO or Pinscape Lite:
+               Connectez le capteur aux connexions PISTON du Pinscape AIO:
                <ul>
-                  <li>SDA to SDA
-                  <li>SCL to SCL
-                  <li>GPIO0/CE to INT
-                  <li>Sensor VIN to 3.3V
-                  <li>Sensor GND to GND
+                  <li>SDA sur SDA
+                  <li>SCL sur SCL
+                  <li>GPIO0/CE sur INT
+                  <li>Capteur VIN sur 3.3V
+                  <li>Capteur GND sur GND
                </ul>
             </div>
          </div>
@@ -1781,24 +1766,24 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
          <div id="plungerPinsAEAT">
             <div>
                <img style="float: right; margin: 0px 0px 1em 2em;" src="AEAT6012.png">
-               <b>AEAT-6012-A06 rotary encoder.</b>  This is a magnetic sensor that
-               detects the rotational orientation of a magnet.  This can be used to
-               detect the plunger position with a mechanical linkage that makes an
-               axle rotate as the plunger moves.
+               <b>Encodeur rotatif AEAT-6012-A06. </b> Il s'agit d'un capteur magnétique qui
+               détecte l'orientation de rotation d'un aimant. Cela peut être utilisé pour
+               détecter la position du pliston avec une liaison mécanique qui fait que
+               l'essieu tourne lorsque le piston se déplace.
                <p>
-                  <b>Important!</b> This sensor uses 5V logic, which is incompatible
-                  with the KL25Z.  Never connect it directly to the KL25Z.  A
-                  bidirectional voltage level shifter board is required.  See the
+                  <b>Important! </b> Ce capteur utilise une logique 5V, ce qui est incompatible
+                  avec le KL25Z. Ne le connectez jamais directement à la KL25Z. 
+                  une carte de décalage de niveau de tension bidirectionnelle est requise. Voir le
                   <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=AEAT6012">
-                     Pinscape Build Guide</a> for instructions.
+                  Guide de construction de Pinscape </a> pour obtenir des instructions.
                </p>
             </div>
             <div class="expBoardPin">
-               <b>Pin assignments:</b>
+               <b>Affectations des broches:</b>
                <div class="indented">
                   <table class="inputs">
                      <tr>
-                        <td class="pinlabel">CS (chip select):</td>
+                        <td class="pinlabel">CS (sélection de puce):</td>
                         <td>
                            <span class="pinselect" id="AEAT6012_CS"
                               data-cfg="plungerPins.a" data-gpiotype="dig-out extern"
@@ -1808,7 +1793,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                         <td></td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">CLK (data clock):</td>
+                        <td class="pinlabel">CLK (horloge de données):</td>
                         <td>
                            <span class="pinselect" id="AEAT6012_CLK"
                               data-cfg="plungerPins.b" data-gpiotype="dig-out extern"
@@ -1818,7 +1803,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                         <td></td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">DO (data out):</td>
+                        <td class="pinlabel">DO (sortie de données):</td>
                         <td>
                            <span class="pinselect" id="AEAT6012_DO"
                               data-cfg="plungerPins.c" data-gpiotype="dig-in extern"
@@ -1831,31 +1816,31 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                </div>
             </div>
             <div class="expBoardText">
-               Connect the sensor to a bidirectional level shifter board, and connect
-               the level shifter to the PLUNGER connector (JP2) on the main interface board.
+               Connectez le capteur à une carte de changement de niveau bidirectionnelle et connectez
+               le sélecteur de niveau au connecteur PISTON (JP2) sur la carte d'interface principale.
                <ul>
-                  <li>Sensor VDD (pin 1) to Pinscape JP2 pin 7 (+5V)
-                  <li>Sensor CSn (pin 2) to level shifter HV1 - LV1 to Pinscape JP2 pin 3 (PTE21)
-                  <li>Sensor Vss (pin 3) to level shifter HV GND
-                  <li>Sensor CLK (pin 4) to level shifter HV2 - LV2 to Pinscape JP2 pin 4 (PTE22)
-                  <li>Sensor DO (pin 5) to level shifter HV3 - LV3 to Pinscape JP2 pin 8 (PTE20)
-                  <li>Level shift LV GND (ground) to Pinscape JP2 pin 6 (GND)
-                  <li>Level shifter LV (logic supply) to Pinscape JP2 pin 5 (VCC)
-                  <li>Level shifter HV (device supply) to Pinscape JP2 pin 7 (+5V)
+                  <li>Capteur VDD (broche 1) à Pinscape JP2 broche 7 (+ 5V)
+                  <li>Capteur CSn (broche 2) vers le sélecteur de niveau HV1 - LV1 vers Pinscape JP2 broche 3 (PTE21)
+                  <li>Capteur Vss (broche 3) vers le sélecteur de niveau HV GND
+                  <li>Capteur CLK (broche 4) vers le sélecteur de niveau HV2 - LV2 vers Pinscape JP2 broche 4 (PTE22)
+                  <li>Capteur DO (broche 5) vers le sélecteur de niveau HV3 - LV3 vers Pinscape JP2 broche 8 (PTE20)
+                  <li>Décalage de niveau LV GND (masse) vers Pinscape JP2 broche 6 (GND)
+                  <li>Shifter de niveau LV (alimentation logique) à Pinscape JP2 pin 5 (VCC)
+                  <li>Décaleur de niveau HV (alimentation de l'appareil) vers Pinscape JP2 broche 7 (+ 5V)
                </ul>
             </div>
             <div class="aioBoardText">
-                Connect the sensor to a bidirectional level shifter board, and connect
-               the level shifter to the PLUNGER connections on the Pinscape AIO.
+               Connectez le capteur à une carte de changement de niveau bidirectionnelle et connectez
+               le sélecteur de niveau aux connexions PISTON du Pinscape AIO.
                <ul>
-                  <li>Sensor VDD (pin 1) to 5V
-                  <li>Sensor CSn (pin 2) to level shifter HV1 - LV1 to CHA/SCL (PTE21)
-                  <li>Sensor Vss (pin 3) to level shifter HV to GND
-                  <li>Sensor CLK (pin 4) to level shifter HV2 - LV2 to CHB PTE22)
-                  <li>Sensor DO (pin 5) to level shifter HV3 - LV3 to SDA (PTE20)
-                  <li>Level shift LV GND (ground) to GND
-                  <li>Level shifter LV (logic supply) to 3.3V
-                  <li>Level shifter HV (device supply) to 5V
+                  <li>Capteur VDD (broche 1) à 5V
+                  <li>Capteur CSn (broche 2) vers le sélecteur de niveau HV1 - LV1 vers CHA / SCL (PTE21)
+                  <li>Capteur Vss (broche 3) vers le sélecteur de niveau HV vers GND
+                  <li>Capteur CLK (broche 4) vers le sélecteur de niveau HV2 - LV2 vers CHB PTE22)
+                  <li>Capteur DO (broche 5) vers le sélecteur de niveau HV3 - LV3 vers SDA (PTE20)
+                  <li>Décalage de niveau LV GND (sol) vers GND
+                  <li>Décalage de niveau LV (alimentation logique) à 3,3 V
+                  <li>Manette de niveau HV (alimentation de l'appareil) à 5V
                </ul>
             </div>
          </div>
@@ -1863,45 +1848,45 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
          <div id="plungerPinsTCD1103">
             <div>
                <img style="float: right; margin: 0px 0px 1em 2em;" src="TCD1103.png">
-               <b>TCD1103GFG linear image sensor.</b>  This is a small image sensor with
-               a single row of 1500 pixels and an 8mm image window.  This sensor detects the
-               plunger position by taking an optical image along the length of the plunger,
-               and analyzing it to determine where the plunger is located within the image.
+               <b>Capteur d'image linéaire TCD1103GFG. </b> Il s'agit d'un petit capteur d'image avec
+               une seule ligne de 1500 pixels et une fenêtre d'image de 8 mm. Ce capteur détecte le
+               position du piston en prenant une image optique le long de la longueur du piston,
+               et l'analyser pour déterminer où se trouve le piston dans l'image.
                <p>
-                  This sensor requires some extra setup besides the sensor chip.  It needs
-                  an optical lens to focus the image on the sensor, and it also requires
-                  some specific interface circuitry between the sensor chip and the KL25Z.
-                  See the <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=TCD1103">TCD1103</a>
-                  chapter in the <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php">Pinscape Build Guide</a>
-                  for instructions.
+                  Ce capteur nécessite une configuration supplémentaire en plus de la puce du capteur. Il faut
+                  une lentille optique pour focaliser l'image sur le capteur, et cela nécessite également
+                  certains circuits d'interface spécifiques entre la puce du capteur et le KL25Z.
+                  Voir le <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=TCD1103">TCD1103</a>
+                  Chapitre dans <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php">Guide de construction Pinscape </a>
+                  pour les instructions.
                </p>
             </div>
             <div class="expBoardPin">
-               <b>Pin assignments:</b>
+               <b>Affectations des broches:</b>
                <div class="indented">
                   <table class="inputs">
                      <tr>
-                        <td class="pinlabel">fM (Master Clock):</td>
+                        <td class="pinlabel">fM (Horloge principale):</td>
                         <td>
                            <span class="pinselect" id="TCD1103_FM"
                               data-cfg="plungerPins.a" data-gpiotype="pwm tpm extern"
                              data-desc="Plunger Sensor fM" data-default="PTE21">
                            </span>
                         </td>
-                        <td>Requires a PWM-capable pin</td>
+                        <td>Nécessite une broche compatible PWM</td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">OS (output signal):</td>
+                        <td class="pinlabel">OS (signal de sortie):</td>
                         <td>
                            <span class="pinselect" id="TCD1103_OS"
                               data-cfg="plungerPins.b" data-gpiotype="adc extern"
                              data-desc="Plunger Sensor OS" data-default="PTB0">
                            </span>
                         </td>
-                        <td>Requires an ADC (analog in) pin</td>
+                        <td>Nécessite une broche ADC (entrée analogique)</td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">ICG (integration clear gate):</td>
+                        <td class="pinlabel">ICG (portail clair d'intégration):</td>
                         <td>
                            <span class="pinselect" id="TCD1103_ICG"
                               data-cfg="plungerPins.c" data-gpiotype="dig-out extern"
@@ -1911,7 +1896,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                         <td></td>
                      </tr>
                      <tr>
-                        <td class="pinlabel">SH (shift gate):</td>
+                        <td class="pinlabel">SH (porte de décalage):</td>
                         <td>
                            <span class="pinselect" id="TCD1103_SH"
                               data-cfg="plungerPins.d" data-gpiotype="dig-out extern"
@@ -1924,44 +1909,43 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                </div>
             </div>
             <div class="expBoardText">
-               This sensor requires a special circuit board.  Use a ribbon
-               cable to connect the sensor circuit board to the PLUNGER connector (JP2)
-               on the main interface board.
+               Ce capteur nécessite un circuit imprimé spécial. Utilisez un ruban
+               câble pour connecter le circuit imprimé du capteur au connecteur PLUNGER (JP2)
+               sur la carte d'interface principale.
             </div>
-            <div class="aioBoardText">
-               This sensor requires a special circuit board.  Use a ribbon
-               cable to connect the sensor circuit board to the PLUNGER connections
-                on the Pinscape AIO or Pinscape Lite.
+            <div class = "aioBoardText">
+               Ce capteur nécessite un circuit imprimé spécial. Utilisez un ruban
+               câble pour connecter le circuit imprimé du capteur aux connexions PISTON
+                sur le Pinscape AIO ou Pinscape Lite.
             </div>
          </div>
 
       </div>
 
       <div id="plungerAutoZero">
-         <b>Plunger auto-zeroing:</b> If this is enabled, the firmware will automatically
-         reset the plunger position to zero after it hasn't moved for the minimum time selected.
-         <a href="#" class="shower">Details</a>
+         <b>Mise à zéro automatique du piston: </b> Si cette option est activée, le firmware
+         remet la position du piston à zéro après qu'il n'a pas bougé pendant le temps minimum sélectionné.
+         <a href="#" class="shower">Détails</a>
          <div class="hider">
-            Quadrature sensors use purely relative positioning, so they need a fixed
-            starting point.  We use the plunger's "park position" (where it comes to
-            rest when you're not moving it manually) as the natural zero point.  If the
-            sensor ever misses any plunger motion, or if the plunger isn't at rest when
-            the system is powered up, the relative position counter can get out of sync
-            with reality, making the on-screen plunger a little off from the real position.
-            The firmware can correct for this by automatically zeroing the on-screen
-            position (setting it to exactly the park position) whenever the plunger remains
-            at rest for a minimum time period.  It's usually safe to assume that the plunger
-            is at the park position when it hasn't moved in a long time, since you don't
-            normally hold it still anywhere else for long periods.  You only need to
-            enable this if the plunger doesn't always stay in perfect sync on its own.
-            Choose a long enough time period that you probably won't ever hold the plunger
-            away from the park position for that long in normal play.
+            Les capteurs en quadrature utilisent un positionnement purement relatif, ils ont donc besoin d'un
+            point de départ. Nous utilisons la "position de stationnement" du piston (où il reste lorsque
+	    vous ne le déplacez pas manuellement) comme point zéro naturel. Si le capteur manque jamais un
+	    mouvement du piston, ou si le piston n'est pas au repos quand le système est sous tension, le
+	    compteur de position relative peut se désynchroniser avec la réalité, rendant le piston à l'écran
+	    un peu éloigné de la position réelle. Le micrologiciel peut corriger cela en mettant automatiquement
+	    à zéro l'écran position (en le réglant exactement sur la position de stationnement) chaque fois que
+	    le piston reste au repos pendant une durée minimale. Il est généralement prudent de supposer que le
+	    piston est en position de stationnement alors qu'il n'a pas bougé depuis longtemps, maintenez-le
+	    encore n'importe où ailleurs pendant de longues périodes. Il vous suffit d'activez cette option si le
+	    piston ne reste pas toujours parfaitement synchronisé par lui-même.
+            Choisissez une période suffisamment longue afin detenir jamais le piston loin de la position zero
+	    pendant aussi longtemps en jeu normal.
          </div>
          
          <div>
-            <label><input type="checkbox" id="plungerAutoZeroEnabled"> Enable auto-zeroing</label>
+            <label><input type="checkbox" id="plungerAutoZeroEnabled"> Activer la mise à zéro automatique</label>
             <div style="margin: 1ex 0px 1em 2em;">
-               Auto-zero after <input type="text" size="4" id="plungerAutoZeroTime"> seconds
+               Auto-zéro après <input type="text" size="4" id="plungerAutoZeroTime"> secondes
             </div>
          </div>
       </div>
@@ -2152,13 +2136,13 @@ $("#btnPlungerCal").click(function(ev) {
     if ($("#plungerType").val() != config.plungerType || pinChanges())
     {
         if (!window.external.YesNoDialog(
-            "You've made changes to the sensor setup that you haven't "
-            + "programmed into the KL25Z yet. The live viewer will reflect "
-            + "the current device settings, not your new unsaved changes. "
-            + "If you want to view the sensor using the new settings, click "
-            + "\"Program KL25Z\" before proceeding to the sensor viewer."
-            + "\r\n\r\n"
-            + "Do you want to open the sensor viewer anyway?"))
+            "Vous avez apporté des modifications à la configuration du capteur que vous n'avez pas "
+            + "déjà programmé dans le KL25Z. Le visionneur en direct reflétera"
+            + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
+            + "Si vous souhaitez afficher le capteur en utilisant les nouveaux paramètres, cliquez sur"
+            + "\ Programmer KL25Z \ avant de passer à la visionneuse de capteurs."
+            + "\ r \ n \ r \ n"
+            + "Voulez-vous quand même ouvrir la visionneuse de capteurs?"))
             return;
     }
         
@@ -2171,46 +2155,46 @@ $("#btnPlungerCal").click(function(ev) {
    <hr>
    <div class="section" data-name="Calibration Button">
       <img src="calbtn.png" class="sectionIcon">
-      <b>Plunger calibration button.</b>  If you wish, you can install a 
-      pushbutton in your cabinet to activate plunger calibration mode.
-      This is optional, since you can also run the calibration from this
-      setup program.  See the Build Guide for wiring instructions.
+      <b>Bouton d'étalonnage du piston. </b> Si vous le souhaitez, vous pouvez installer un
+      bouton poussoir dans votre pincab pour activer le mode d'étalonnage du piston.
+      Ceci est facultatif, car vous pouvez également exécuter l'étalonnage à partir de ce
+      programme d'installation. Consultez le Guide de construction pour les instructions de câblage.
 
       <div id="calBtnGroup">
          <table class="inputs">
             <tr>
-               <td class="pinlabel">Button input:</td>
+               <td class="pinlabel">Entrée de bouton:</td>
                <td>
                   <span class="pinselect expBoardPin" id="calBtn"
                     data-cfg="calButtonPins.button" data-gpiotype="dig-in extern"
                     data-desc="Plunger Calibration Button" data-default="PTE29">
                   </span>
-                  <label><input type="checkbox" id="calBtnEna">Enabled</label>
+                  <label><input type="checkbox" id="calBtnEna">Activer/label>
                </td>
             </tr>
             <tr>
-               <td class="pinlabel">Indicator lamp output:</td>
+               <td class="pinlabel">Témoin lumineux de sortie:</td>
                <td>
                   <span class="pinselect expBoardPin" id="calLED"
                     data-cfg="calButtonPins.led" data-gpiotype="dig-out extern"
                     data-desc="Plunger Calibration Lamp" data-default="PTE23">
                   </span>
-                  <label><input type="checkbox" id="calLEDEna">Enabled</label>
+                  <label><input type="checkbox" id="calLEDEna">Activer</label>
                </td>
             </tr>
          </table>
       </div>
       <div id="calBtnHidden" style="height: 0px; overflow: hidden;">
-         (The calibration button is only applicable when you have a plunger
-         sensor installed.)
+         (Le bouton d'étalonnage n'est applicable que si vous avez un piston
+         capteur installé.)
       </div>
-      <div class="expBoardText">
-         Connect the calibration button to the CAL BTN connector
-         (JP3) on the main interface board.
+      <div class = "expBoardText">
+         Connectez le bouton d'étalonnage au connecteur CAL BTN
+         (JP3) sur la carte d'interface principale.
       </div>
-      <div class="aioBoardText">
-         Connect the calibration button to the Calibration connections
-         on the Pinscape AIO or Pinscape Lite.
+      <div class = "aioBoardText">
+         Connectez le bouton d'étalonnage aux connexions d'étalonnage
+         sur le Pinscape AIO ou Pinscape Lite.
       </div>
    </div>
 
@@ -2237,62 +2221,62 @@ function updateCalButtonStatus()
    <div class="section" data-name="ZB Launch Ball">
       <a name="zblaunch"></a>
       <img src="ZBLaunch.png" class="sectionIcon">
-      <b>ZB Launch Ball setup.</b>  You can set up your mechanical plunger
-      to act as a "virtual" Launch Ball button for tables that use a button
-      instead of a plunger.
-      <a href="#" class="shower">Details</a>
+      <b>Configuration de la balle de lancement ZB. </b> Vous pouvez configurer votre piston mécanique
+      pour agir comme un bouton de lancement "virtuel" pour les tables qui utilisent un bouton
+      au lieu d'un piston.
+      <a href="#" class="shower">Détails</a>
 
       <div class="hider">
-         This feature lets you use a mechanical plunger in lieu of a Launch Ball button,
-         for tables that need it, in case you don't want to install a separate physical
-         Launch button.  When this is enabled, you treat the plunger knob like a button:
-         push it a little forward to "click" the button.  You can also pull back and
-         release the plunger to simulate a brief button push.
+         Cette fonctionnalité vous permet d'utiliser un piston mécanique au lieu d'un bouton de lancement de balle,
+         pour les tables qui en ont besoin, au cas où vous ne voudriez pas installer un autre Bouton physique 
+	 de lancement. Lorsque cette option est activée, vous traitez le bouton du piston comme un bouton:
+         poussez-le un peu en avant pour "cliquer" sur le bouton. Vous pouvez également vous retirer et
+         relâchez le piston pour simuler une brève pression sur un bouton.
 
          <ul>
-            <li>The feature is only activated when a non-plunger table is running
-            on the PC.  We can tell because Visual Pinball turns on the <b>output port</b>
-            selected below when such a table is loaded.
+            <li>La fonction n'est activée que lorsqu'une table sans piston est en cours d'exécution
+            sur le PC. Nous pouvons le dire car Visual Pinball active le <b> port de sortie </b>
+            sélectionné ci-dessous lorsqu'un tel tableau est chargé.
 
-            <li>The port you designate can be any type, including a "virtual" port that
-            isn't connected to any physical output wiring.
+            <li>Le port que vous désignez peut être de n'importe quel type, y compris un port «virtuel» qui
+            n'est connecté à aucun câblage de sortie physique.
 
-            <li><b>In the <a class="dofconfigtool">DOF Config Tool</a></b>, be sure to
-            set the port number you designate here as your <b>ZB Launch Ball</b> port.
-            That connects everything on the PC to the right port.
+            <li><b>Dans la <a class="dofconfigtool">Configuration utilitaire DOF</a></b>, assurez-vous de
+            définir le numéro de port que vous désignez ici comme port <b> ZB Launch Ball </b>.
+            Cela connecte tout sur le PC au bon port.
 
-            <li>Select the keyboard key or joystick button to send to the PC when
-            the plunger triggers a launch.  This is usually the Enter key, because
-            that's what almost all PC pinball software uses.
+            <li>Sélectionnez la touche du clavier ou le bouton du joystick à envoyer au PC lorsque
+            le piston déclenche un lancement. Il s'agit généralement de la touche Entrée, car
+            c'est ce qu'utilise presque tous les logiciels de flipper sur PC.
 
-            <li>The <b>push distance</b> sets the sensitivity.  When you push the
-            plunger forward by this amount or more (and the feature has been activated by
-            the output port), the controller simulates pressing the Launch Ball button.
-            Set the distance far enough that it doesn't trip randomly, but short enough
-            that you don't have to push too hard.  We recommend about .06 to .08 inches.
+            <li>La <b> distance de poussée </b> règle la sensibilité. Lorsque vous poussez le
+            piston vers l'avant de ce montant ou plus (et la fonction a été activée par
+            le port de sortie), le contrôleur simule une pression sur le bouton Launch Ball.
+            Réglez la distance suffisamment loin pour qu'elle ne se déclenche pas au hasard, mais suffisamment courte
+            que vous n'ayez pas à pousser trop fort. Nous recommandons environ 0,06 à 0,08 pouces.
          </ul>
       </div>
 
       <div id="zbHidden" style="overflow: hidden; height: 0px;">
-         (The ZB Launch Ball feature only applies when you have a
-         plunger sensor installed.)
+         (La fonction "ZB Launch Ball" s'applique uniquement lorsque vous avez un
+         capteur plongeur installé.)
       </div>
 
       <div id="zbGroup">
          <div>
-            <label><input type="checkbox" id="zbEnabled">Enabled</label>
+            <label><input type="checkbox" id="zbEnabled">Activer</label>
          </div>
          
          <div class="indented" id="zbFields">
             <table class="inputs">
                <tr>
-                  <td>Output port number:</td>
+                  <td>Numéro de port de sortie:</td>
                   <td><input id="zbPort" size=5></td>
-                  <td><b>Important!</b> Set this port to "ZB Launch Ball" in the
-                     <a class="dofconfigtool">DOF Config Tool</a></td>
+                  <td><b>Important! </b> Réglez ce port sur "ZB Launch Ball" dans le
+                     <a class="dofconfigtool">Configuration utilitaire DOF</td>
                </tr>
                <tr class="buttonRow">
-                  <td class="keylabel">Key/button:</td>
+                  <td class="keylabel">Clavier/Boutons:</td>
                   <td>
                      <span class="keymapping" id="keymapZB">
                         <span class="keyname"></span>
@@ -2300,12 +2284,12 @@ function updateCalButtonStatus()
                         <span class="keytype"></span>
                      </span>
                   </td>
-                  <td>Most PC pinball software uses the Enter key for ball launch</td>
+                  <td>La plupart des logiciels de flipper PC utilisent la touche Entrée pour lancer la balle</td>
                </tr>
                <tr>
-                  <td>Push distance (inches):</td>
+                  <td>Distance de poussée (pouces):</td>
                   <td><input id="zbDistance" size=5></td>
-                  <td>Recommended value is 0.063 (about 1/16")
+                  <td>La valeur recommandée est 0,063 (environ 1/16 ")
                </tr>
             </table>
          </div>
@@ -2332,21 +2316,21 @@ $("#zbPort").change(function(ev) {
         var oprow = $("#outputTab .outPortRow").eq(row-1);
         if (oprow.find(".pintype").val() == 0 && !loadingConfig) {
             if (window.external.YesNoDialog(
-                "The port you selected isn't currently configured. Would "
-                + "you like to add it as a \"virtual\" port?  This will "
-                + "ensure that the PC will be able to address it properly."))
+                "Le port que vous avez sélectionné n'est pas actuellement configuré. Ameriez "
+                + "vous l'ajouter en tant que port \" virtuel \ ? Il faudra"
+                + "s'assurer que le PC pourra l'adresser correctement."))
                 appendOutputs(row);
             else
                 window.external.ShowAdviceDialog(
                     "InvalidZBPortWarning",
-                    "Okay, no port was added. Note that the PC won't be able to "
-                    + "activate the ZB Launch feature unless you assign this to a "
-                    + "valid port that exists in the output list. Please be sure "
-                    + "to add the port or change the number here before finalizing "
-                    + "your settings.");
+                    "D'accord, aucun port n'a été ajouté. Notez que le PC ne pourra pas "
+                    + "activer la fonction ZB Launch sauf si vous l'assignez à un"
+                    + "port valide qui existe dans la liste de sortie. Veuillez être sûr"
+                    + "pour ajouter le port ou changer le numéro ici avant de finaliser"
+                    + "vos paramètres.");
         }
         oprow.find(".outPortRemarks").append(
-            "<span class=\"zbRemark\" title=\"This is the ZB Launch Ball output port\">"
+            "<span class=\"zbRemark\" title=\"Ceci est le port de sortie ZB Launch Ball\">"
             + "<a href=\"#zblaunch\">"
             + "<img src=\"zbLaunchSmall.png\">"
             + "</a>"
@@ -2362,39 +2346,38 @@ $("#zbPort").change(function(ev) {
    <div class="section" data-name="Buttons">
       <a name="buttonSection"></a>
       <img src="buttonSection.png" class="sectionIcon">
-      <b>Button inputs.</b>  You can use the KL25Z as a key encoder to
-      connect pinball-style buttons on your cabinet to the PC.  Set up
-      the wiring connections and key assignments below.  Each input can
-      be mapped as a joystick button or keyboard key.  Click an input
-      pin or key assignment to change a setting.
-
+      <b>Entrées de bouton. </b> Vous pouvez utiliser la KL25Z comme encodeur de clavier pour
+      connectez les boutons de style flipper de votre pincab au PC. Installer les connexions
+      de câblage et les affectations des touches ci-dessous. Chaque entrée peut être mappé
+      comme un bouton du joystick ou une touche du clavier. Cliquez sur une entrée
+      d'affectation des broches ou des touches pour modifier un paramètre.
       <div>
-         <a href="#" id="btnButtonTest" class="button">Test Buttons</a>
+         <a href="#" id="btnButtonTest" class="button">boutons de tests</a>
       </div>
       
       <div id="shiftButtonSetup">
          <div>
             <span style="padding-right: 2em;">
                <img src="ShiftButton.png" style="vertical-align: middle;">
-               <b>Shift button number:</b>
+               <b>Numéro du bouton Shift:</b>
             </span>
             <input type="text" id="shiftButton" size="4">
             <span style="padding-left: 2em;">
-               <a href="#" id="helpShiftButton">Help</a>
+               <a href="#" id="helpShiftButton">Aide</a>
             </span>
             <div style="margin: 1ex 0px 2em 2em;">
                <label><input type="radio" name="shiftButtonMode" value="0">
-                  Shift OR Key mode</label><br>
+                  Shift OU Mode Clavier</label><br>
                <label><input type="radio" name="shiftButtonMode" value="1">
-                  Shift AND Key mode</label>
+                  Shift ET Mode Clavier</label>
             </div>
          </div>
       </div>
       
       <div>
-         <a href="#" id="setAllJoystick">Set standard joystick buttons</a>
-         | <a href="#" id="setAllKB">Set standard keyboard keys</a>
-         | <a href="#" class="btnHelp">View standard key assignments</a>
+         <a href="#" id="setAllJoystick">Définir les boutons du joystick standard</a>
+         | <a href="#" id="setAllKB">Définir les touches du clavier standard</a>
+         | <a href="#" class="btnHelp">Afficher les attributions de touches standard</a>
       </div>
       
       <div>
@@ -2402,10 +2385,10 @@ $("#zbPort").change(function(ev) {
          </table>
       </div>
       <div id="buttonTabStretchNote">
-         <i><b>Note:</b> your current firmware version supports up to
-            <span id="buttonTabMaxNote">0</span> physical buttons.  The
-            list above will automatically expand as you fill in new
-            items, up to the limit.</i>
+         <i><b>Note:</b> la version actuelle de votre micrologiciel prend en charge jusqu'à
+            <span id="buttonTabMaxNote">0</span> boutons physiques. 
+            La liste ci-dessus s'étendra automatiquement au fur et à mesure que vous remplissez de nouveaux
+            articles, jusqu'à la limite. </i>
       </div>
    </div>
 
@@ -2426,13 +2409,13 @@ $("#btnButtonTest").click(function(ev)
         || !valEq(cfgMem.shiftButton, cfgDev.shiftButton))
     {
         if (!window.external.YesNoDialog(
-            "You've made changes to the button settings that you haven't "
-            + "programmed into the KL25Z yet. The tester window will reflect "
-            + "the current device settings, not your new unsaved changes. "
-            + "If you want to test your new settings, click \"Program KL25Z\" "
-            + "before proceeding to the tester window."
-            + "\r\n\r\n"
-            + "Do you want to open the tester anyway?"))
+            "Vous avez apporté des modifications aux paramètres du bouton que vous n'avez pas "
+            + "déjà programmé dans la KL25Z. La fenêtre du testeur reflètera"
+            + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
+            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \" Programmer KL25Z \ ""
+            + "avant de passer à la fenêtre du testeur."
+            + "\ r \ n \ r \ n"
+            + "Voulez-vous quand même ouvrir le testeur?"))
             return;
     }
 
@@ -2477,11 +2460,11 @@ $("#shiftButton").change(function(ev)
 {
     var n = $(this).val()
     $("#buttonTab tr").removeClass("shiftRow")
-         .find("td.shiftCol span").attr("title", "Click here to make this the Local Shift Button");
+         .find("td.shiftCol span").attr("title", "Cliquez ici pour en faire le bouton de décalage local");
     $("#buttonRow" + n).addClass("shiftRow")
-        .find("td.shiftCol span").attr("title", "This input is the Local Shift Button. Other "
-                           + "buttons pushed while the Shift Button is held down use "
-                           + "their shifted key codes.");
+        .find("td.shiftCol span").attr("title", "Cette entrée est le bouton de décalage local. Autre "
+                           + "boutons enfoncés alors que le bouton Shift est maintenu enfoncé utilisez "
+                           + "leurs codes clés décalés.");
 
     $("#buttonTab .buttonCol.shifted, #buttonTab th.shifted").toggle(n != 0);
 
@@ -2493,9 +2476,9 @@ $("#shiftButton").change(function(ev)
 $("#setAllJoystick").click(function(ev)
 {
     if (window.external.YesNoDialog(
-        "This will replace your current key assignments in "
-        + "slots 1-24 with joystick buttons 1-24, respectively. "
-        + "Are you sure you want to replace all of these settings?"))
+        "Cela remplacera vos attributions de clés actuelles dans "
+        + "emplacements 1-24 avec les boutons du joystick 1-24, respectivement."
+        + "Voulez-vous vraiment remplacer tous ces paramètres?"))
     {
         $("#buttonTab tr").each(function()
         {
@@ -2515,9 +2498,9 @@ $("#setAllJoystick").click(function(ev)
 $("#setAllKB").click(function(ev)
 {
     if (window.external.YesNoDialog(
-        "This will replace your current key assignments "
-        + "with the standard keyboard mappings for Visual "
-        + "Pinball.  Are you sure you want to proceed?"))
+        "Cela remplacera vos attributions de clés actuelles "
+        + "avec les mappages de clavier standard pour Visual"
+        + "Pinball. Êtes-vous sûr de vouloir continuer?"))
     {
         $("#buttonTab tr").each(function()
         {
@@ -2629,13 +2612,13 @@ function updateKeyCap(km)
     {
     case 0:
     default:
-        title = "Pushing this button won't send any key press to the PC";
+        title = "Appuyer sur ce bouton n'enverra aucune pression de touche au PC";
         wid = ht = "32px";
         break;
 
     case 1:
         txt = code;
-        title = "Joystick Button " + code;
+        title = "Bouton du joystick " + code;
         wid = ht = "32px";
         lht = "28px";
         break;
@@ -2761,10 +2744,10 @@ $(function() {
               + "<th>No.</th>"
               + "<th>Port</th>"
               + "<th class=\"shiftCol\"><img src=\"ShiftButton.png\"></th>"
-              + "<th style=\"text-align: left;\">PC Input</th>"
-              + "<th style=\"text-align: left;\" class=\"shifted\">Shifted</th>"
+              + "<th style=\"text-align: left;\">Entrée PC</th>"
+              + "<th style=\"text-align: left;\" class=\"shifted\">Décalé</th>"
               + "<th style=\"padding: 0px; white-space: nowrap;\">Options [<a href=\"#\" id=\"pulseKeyHelp\">?</a>]</th>"
-              + "<th class=\"keyusage\" title=\"The standard meaning of the assigned key in Visual Pinball\">VP Usage</th>"
+              + "<th class=\"keyusage\" title=\"La signification standard de la clé attribuée dans Visual Pinball \">VP Usage</th>"
               + "</tr>");
 
     // Build a <TR> for each button table row.  Start with more than we
@@ -2807,11 +2790,11 @@ $(function() {
                   +       "<input class=\"keyflags\" type=\"hidden\">"
                   +     "</span>"
                   +   "</span>"
-                  +   "<span class=\"keyIR\" title=\"IR command to send when you press this button\">"
+                  +   "<span class=\"keyIR\" title=\"Commande IR à envoyer lorsque vous appuyez sur ce bouton\">"
                   +     "<span class=\"label\"></span>"
                   +     "<input class=\"IRCommand\" type=\"hidden\">"
                   +   "</span>"
-                  +   "<span class=\"keyNightMode\" title=\"Make this the Night Mode button\"></span>"
+                  +   "<span class=\"keyNightMode\" title=\"Faites-en le bouton du mode nuit\"></span>"
                   + "</td>"
                   + "<td class=\"buttonCol shifted\">"
                   +   "<span class=\"keymapping\" id=\"xkeymap" + i + "\" data-xidx=\"" + i + "\">" // shift key mapping
@@ -2819,17 +2802,17 @@ $(function() {
                   +     "<input class=\"keycode\" type=\"hidden\">"
                   +     "<input class=\"keytype\" type=\"hidden\">"
                   +   "</span>"
-                  +   "<span class=\"keyIR\" title=\"IR command to send when you press this shifted button\">"
+                  +   "<span class=\"keyIR\" title=\"Commande IR à envoyer lorsque vous appuyez sur ce bouton décalé\">"
                   +     "<span class=\"label\"></span>"
                   +     "<input class=\"IRCommand\" type=\"hidden\">"
                   +   "</span>"
-                  +   "<span class=\"keyNightMode\" title=\"Make this the Night Mode button\"></span>"
+                  +   "<span class=\"keyNightMode\" title=\"Faites-en le bouton du mode nuit\"></span>"
                   + "</td>"
                   + "<td class=\"keyflags\">"
                   +   "<img src=\"PulseOff.png\" id=\"keyPulse" + i + "\" data-mask=\"1\" "   // pulse mode flag
-                  +      "title=\"Pulse mode: the button sends one key press when pushed, a second when released\">"
+                  +      "title=\"Mode impulsion: le bouton envoie une pression sur une touche lorsqu'il est enfoncé, une seconde lorsqu'il est relâché\">"
                   + "</td>"
-                  + "<td class=\"keyusage\" id=\"keyusage" + i + "\" title=\"The standard meaning of this key in Visual Pinball\">"
+                  + "<td class=\"keyusage\" id=\"keyusage" + i + "\" title=\"La signification standard de cette clé dans Visual Pinball\">"
                   + "</td>"
                   + "</tr>");
     }
@@ -3031,8 +3014,8 @@ $(function() {
         var toggleMode = ($("#nightModeOptions input:radio[name=nightModeButtonType]:checked").val() == 1);
         if (newState == "on" && shift && !toggleMode)
         {
-            alert("Night Mode can't be assigned to a shifted button when "
-                  + "the on/off switch mode is used.");
+            alert("Le mode nuit ne peut pas être attribué à un bouton décalé lorsque "
+                  + "le mode interrupteur marche / arrêt est utilisé.");
             return;
         }
 
@@ -3226,9 +3209,9 @@ $(function() {
             fld.val(idx).change();
         }))
         {
-            alert("No IR commands have been configured yet. To associate an IR "
-                  + "command with a button, set up the IR command first in the "
-                  + "IR Remote Control section of the setup.");
+            alert("Aucune commande IR n'a encore été configurée. Pour associer une "
+                  + "commande IR avec un bouton, configurez d'abord la commande IR dans la"
+                  + "Section Télécommande IR de la configuration.");
             return;
         }
 
@@ -3278,44 +3261,44 @@ $(function() {
    <hr>
    <div class="section" data-name="TLC5940">
       <img src="tlc5940.png" class="sectionIcon">
-      <b>TLC5940 (external PWM controller chip) setup</b>
-      <a class="shower" href="#">What's this?</a>
+      <b>TLC5940 (configuration de la puce de contrôleur PWM externe)</b>
+      <a class="shower" href="#">Qu'est-ce que c'est?</a>
       <div class="hider">
-            The TLC5940 is an integrated circuit chip that you can connect
-            to the KL25Z to add extra outputs for more feedback devices (lights,
-            solenoids, motors, etc).  TLC5940 outputs have full PWM (Pulse
-            Width Modulation) capabilities, allowing the software to control
-            the brightness of an attached light or the speed of a motor.  The
-            DIP version of this chip is no longer being manufactured, so you
-            can't order them from most distributors, but they're still easy
-            to find on eBay and elsewhere.
+            Le TLC5940 est une puce de circuit intégré que vous pouvez connecter
+            à la KL25Z pour ajouter des sorties supplémentaires pour plus de dispositifs de rétroaction (lumières,
+            solénoïdes, moteurs, etc.). Les sorties du TLC5940 ont un PWM complet (Pulse
+            Modulation de la largeur), permettant au logiciel de contrôler
+            la luminosité d'une lumière attachée ou la vitesse d'un moteur. le
+            La version DIP de cette puce n'est plus en cours de fabrication, il est
+            impossible de les commander auprès de la plupart des distributeurs, mais ils sont toujours faciles
+            à trouver sur eBay et ailleurs.
          <p>
-            These chips let you go beyond the KL25Z's limited PWM capabilities.
-            The KL25Z only has 10 PWM channels of its own, which isn't enough
-            for most virtual pinball machines.  Each TLC5940 chip provides 16 PWM
-            outputs, and you can connect two or more of the chips in a daisy chain
-            to add almost unlimited outputs.  Only five GPIO pins are needed to
-            control the whole chain.
+            Ces puces vous permettent d'aller au-delà des capacités PWM limitées de la KL25Z.
+            La KL25Z ne dispose que de 10 canaux PWM, ce qui n'est pas suffisant
+            pour la plupart des flippers virtuels. Chaque puce TLC5940 fournit 16 PWM en
+            sorties, et vous pouvez connecter deux puces ou plus en guirlande
+            pour ajouter des sorties presque illimitées. Seules cinq broches GPIO sont nécessaires pour
+            contrôler toute la chaîne.
          </p>
          <p>
-            The Pinscape Expansion Boards use these chips to provide extra PWM
-            outputs. You can also install them with your own custom wiring. The
-            circuitry needed is outlined in the Build Guide.  The settings below
-            configure the data signal connections between the KL25Z and the TLC5940's.
+            Les cartes d'extension Pinscape utilisent ces puces pour fournir un PWM supplémentaire
+            aux sorties. Vous pouvez également les installer avec votre propre câblage personnalisé. 
+            Les circuits nécessaires sont décrits dans le Guide de construction. Les paramètres ci-dessous
+            configurent les connexions de signaux de données entre le KL25Z et le TLC5940.
          </p>
       </div>
 
       <div class="expBoardText">
-         The TLC5940 configuration is automatically set up for your expansion boards.
+         La configuration TLC5940 est automatiquement configurée pour vos cartes d'extension.
       </div>
       <div class="aioBoardText">
-          The TLC5940 configuration is automatically set up for your Pinscape AIO or Pinscape Lite.
+         La configuration TLC5940 est automatiquement configurée pour votre Pinscape AIO ou Pinscape Lite.
       </div>
       <div class="expBoardPin">
          <table class="inputs">
             <tr>
                <!-- the fixed width is a hack to get the two table column sets to line up -->
-               <td style="width: 32ex;">Number of TLC5940 chips:</td>
+               <td style="width: 32ex;">Nombre de puces TLC5940:</td>
                <td>
                   <input type="text" size=4 id="tlc_nchips">
                </td>
@@ -3324,27 +3307,27 @@ $(function() {
          <table id="tlcPins" class="inputs" style="display: block;">
             <tr>
                <!-- the fixed width is a hack to get the two table column sets to line up -->
-               <td td style="width: 32ex;" class="pinlabel">SI (serial data) output:</td>
+               <td td style="width: 32ex;" class="pinlabel">SI (données série) en sortie:</td>
                <td>
                   <span class="pinselect" id="tlc_si"
                     data-cfg="TLC5940.SIN" data-gpiotype="spi-mosi extern"
                     data-desc="TLC5940 SI" data-default="PTC6">
                   </span>
                </td>
-               <td>Requires an <a href="#" class="spiHelp">SPI MOSI</a> output pin</td>
+               <td>Nécessite un <a href="#" class="spiHelp">SPI MOSI</a> broche de sortie</td>
             </tr>
             <tr>
-               <td class="pinlabel">SCLK (serial clock) output:</td>
+               <td class="pinlabel">SCLK (horloge série) en sortie:</td>
                <td>
                   <span class="pinselect" id="tlc_si"
                     data-cfg="TLC5940.SCLK" data-gpiotype="spi-sclk extern"
                     data-desc="TLC5940 SCLK" data-default="PTC5">
                   </span>
                </td>
-               <td>Requires an <a href="#" class="spiHelp">SPI SCLK</a> output pin</td>
+               <td>Nécessite un <a href="#" class="spiHelp">SPI SCLK</a> broche de sortie</td>
             </tr>
             <tr>
-               <td class="pinlabel">XLAT output:</td>
+               <td class="pinlabel">Sortie XLAT:</td>
                <td>
                   <span class="pinselect" id="tlc_xlat"
                     data-cfg="TLC5940.XLAT" data-gpiotype="dig-out extern"
@@ -3353,7 +3336,7 @@ $(function() {
                </td>
             </tr>
             <tr>
-               <td class="pinlabel">BLANK output:</td>
+               <td class="pinlabel">Sortie BLANK:</td>
                <td>
                   <span class="pinselect" id="tlc_blank"
                     data-cfg="TLC5940.BLANK" data-gpiotype="dig-out extern"
@@ -3362,14 +3345,14 @@ $(function() {
                </td>
             </tr>
             <tr>
-               <td class="pinlabel">GSCLK output:</td>
+               <td class="pinlabel">Sortie GSCLK:</td>
                <td>
                   <span class="pinselect" id="tlc_gsclk"
                     data-cfg="TLC5940.GSCLK" data-gpiotype="pwm tpm extern"
                     data-desc="TLC5940 GSCLK" data-default="PTA1">
                   </span>
                </td>
-               <td>Requires a <a href="#" class="pwmHelp">PWM-capable output pin</a></td>
+               <td>Necessite un <a href="#" class="pwmHelp">Broche de sortie compatible PWM</a></td>
             </tr>
          </table>
       </div>
@@ -3394,46 +3377,46 @@ $("#tlc_nchips").change(function(ev)
    <hr>
    <div class="section" data-name="TLC59116">
       <img src="tlc59116.png" class="sectionIcon">
-      <b>TLC59116 (external PWM controller chip) setup</b>
-      <a class="shower" href="#">What's this?</a>
+      <b>TLC59116 (configuration de la puce de contrôleur PWM externe)</b>
+      <a class="shower" href="#">Quest-ce que c'est?</a>
       <div class="hider">
-            The TLC59116 is an integrated circuit chip that you can connect
-            to the KL25Z to add extra outputs for more feedback devices (lights,
-            solenoids, motors, etc).  TLC59116 outputs have full PWM (Pulse
-            Width Modulation) capabilities, allowing the software to control
-            the brightness of an attached light or the speed of a motor.
+            Le TLC59116 est une puce de circuit intégré que vous pouvez connecter
+            à la KL25Z pour ajouter des sorties supplémentaires pour plus de dispositifs de rétroaction (lumières,
+            solénoïdes, moteurs, etc.). Les sorties TLC59116 ont un PWM complet (Pulse
+            Modulation de la largeur), permettant au logiciel de contrôler
+            la luminosité d'une lumière attachée ou la vitesse d'un moteur.
          <p>
-            These chips let you go beyond the KL25Z's limited PWM capabilities.
-            The KL25Z only has 10 PWM channels of its own, which isn't enough
-            for most virtual pinball machines.  Each TLC59114 chip provides 16 PWM
-            outputs, and you can connect up to 14 of the chips.  Only three GPIO
-            pins are required no matter how many of the chips are attached.
+            Ces puces vous permettent d'aller au-delà des capacités PWM limitées du KL25Z.
+            Le KL25Z ne dispose que de 10 canaux PWM, ce qui n'est pas suffisant
+            pour la plupart des flippers virtuels. Chaque puce TLC59114 fournit 16 PWM
+            sorties, et vous pouvez connecter jusqu'à 14 des puces. Seulement trois GPIO
+            des broches sont nécessaires quel que soit le nombre de puces attachées.
          </p>
          <p>
-            The TLC59116 is a successor to the TLC5940 (see above) with a more
-            modern design.  It's only available in a surface-mount (SMD) package,
-            which makes it a little harder to work with than the traditional DIP
-            form factor of the TLC5940NT.  This chip is <b>not</b> interchangeable
-            with the TLC5940, even though it has a similar function, since it
-            has a different physical pin layout and a different software interface.
+            Le TLC59116 est un successeur du TLC5940 (voir ci-dessus) avec un plus
+            Design moderne. Il est uniquement disponible dans un boîtier à montage en surface (SMD),
+            ce qui rend le travail un peu plus difficile que le DIP traditionnel
+            facteur de forme du TLC5940NT. Cette puce n'est <b> pas </b> interchangeable
+            avec le TLC5940, même s'il a une fonction similaire, car il
+            a une disposition de broches physique différente et une interface logicielle différente.
          </p>
       </div>
 
       <div>
          <div id="tlc59116Disabled" style="margin-left: 4em;">
-            Disabled - <a href="#">Show Settings</a>
+            Désactivé - <a href="#">Afficher les paramètres</a>
          </div>
          <div id="tlc59116Settings">
             <div>
-               <b>Attached chips by address:</b> <a class="shower" href="#">Explain</a>
+               <b>Puces attachées par adresse:</b> <a class="shower" href="#">Explication</a>
                <div class="hider">
-                  Each TLC59116 has its own unique address, set via the A3 A2 A1 A0 pins
-                  on the chip: a pin wired to + voltage is a "1" and a pin wired to GND
-                  is a "0".  Select the addresses of the chips attached to your system
-                  according to how you wired the address pins.  Addresses 8 and 11
-                  aren't shown because they're reserved for special purposes.
-                  To disable support for this chip type entirely, un-check all of the
-                  addresses to indicate that no chips are present.
+                  Chaque TLC59116 a sa propre adresse unique, définie via les broches A3 A2 A1 A0
+                  sur la puce: une broche câblée à + voltage est un "1" et une broche câblée à GND
+                  est un "0". Sélectionnez les adresses des puces attachées à votre système
+                  selon la façon dont vous avez câblé les broches d'adresse. Adresses 8 et 11
+                  ne sont pas affichés car ils sont réservés à des fins spéciales.
+                  Pour désactiver complètement la prise en charge de ce type de puce, décochez tous les
+                  adresses pour indiquer qu'aucune puce n'est présente.
                </div>
             </div>
             <div id="tlc59116_chipsEnabled">
@@ -3460,7 +3443,7 @@ $("#tlc_nchips").change(function(ev)
             </div>
 
             <div>
-               <b>GPIO pin assignments:</b>
+               <b>Attributions des broches GPIO:</b>
             </div>
             <table id="tlc59116Pins" class="inputs" style="display: block;">
                <tr>
@@ -3482,7 +3465,7 @@ $("#tlc_nchips").change(function(ev)
                   </td>
                </tr>
                <tr>
-                  <td class="pinlabel">RESET:</td>
+                  <td class="pinlabel">REINITIALISER:</td>
                   <td>
                      <span class="pinselect" id="tlc59116_reset"
                         data-cfg="TLC59116.RESET" data-gpiotype="dig-out extern"
@@ -3561,36 +3544,35 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
    <hr>
    <div class="section" data-name="74HC595">
       <img src="74hc595.png" class="sectionIcon">
-      <b>74HC595 (external digital out chip) setup</b>
+      <b>74HC595 (configuration de la puce de sortie numérique externe)</b>
       <a class="shower" href="#">What's this?</a>
       <div class="hider">
-         The 74HC595 is an integrated circuit chip that can be connected
-         to the KL25Z to add more digital outputs for feedback devices like
-         solenoids and replay knockers.  "Digital" means that the outputs
-         are strictly on/off: the software can't modulate intensity or brightness.
-         Digital outputs are ideal for feedback devices that inherently need only
-         on/off control, such as solenoids.
+         Le 74HC595 est une puce de circuit intégré qui peut être connectée
+         à la KL25Z pour ajouter plus de sorties numériques pour les dispositifs de retour comme
+         solénoïdes et heurtoirs de lecture. «Numérique» signifie que les sorties
+         sont strictement on / off: le logiciel ne peut pas moduler l'intensité ou la luminosité.
+         Les sorties numériques sont idéales pour les dispositifs de rétroaction qui n'ont intrinsèquement besoin
+	 que commande marche / arrêt, comme les solénoïdes.
 
          <p>
-            The Pinscape "Chime Board" uses this
-            chip to add outputs for replay knockers and chime units.  You can also
-            add these chips with your own custom wiring; the circuitry is described
-            in the Build Guide.  The settings below let you configure the data
-            connections between the KL25Z and the 74HC595's.
+            Le "Chime Board" Pinscape utilise des puces pour ajouter des sorties pour les heurtoirs de relecture
+	    et les unités de carillon. Vous pouvez aussi ajoutez ces puces avec votre propre câblage personnalisé,
+	    le circuit est décrit dans le Guide de construction. Les paramètres ci-dessous vous permettent de
+	    configurer les données de connexions entre la KL25Z et le 74HC595.
          </p>
       </div>
 
       <div class="expBoardText">
-         The 74HC595 configuration is automatically set up for your chime boards.
+         La configuration 74HC595 est automatiquement configurée pour vos cartes carillon.
       </div>
       <div class="aioBoardText">
-          The 74HC595 configuration is automatically set up for your Pinscape AIO or Pinscape Lite.
+         La configuration 74HC595 est automatiquement configurée pour votre Pinscape AIO ou Pinscape Lite.
       </div>
       <div class="expBoardPin">
          <table class="inputs">
             <tr>
                <!-- the fixed width is a hack to get the two table column sets to line up -->
-               <td style="width: 32ex;">Number of 74HC595 chips:</td>
+               <td style="width: 32ex;">Nombre de puces 74HC595:</td>
                <td>
                   <input type="text" size=4 id="hc595_nchips">
                </td>
@@ -3599,7 +3581,7 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
          <table id="hcPins" class="inputs" style="display: block;">
             <tr>
                <!-- the fixed width is a hack to get the two table column sets to line up -->
-               <td td style="width: 32ex;" class="pinlabel">SI (serial data) output:</td>
+               <td td style="width: 32ex;" class="pinlabel">SI (données série) sortie:</td>
                <td>
                   <span class="pinselect" id="hc595_si"
                     data-cfg="HC595.SIN" data-gpiotype="dig-out extern"
@@ -3608,7 +3590,7 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
                </td>
             </tr>
             <tr>
-               <td class="pinlabel">SCLK (serial clock) output:</td>
+               <td class="pinlabel">SCLK (horloge série) sortie:</td>
                <td>
                   <span class="pinselect" id="hc595_si"
                     data-cfg="HC595.SCLK" data-gpiotype="dig-out extern"
@@ -3617,7 +3599,7 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
                </td>
             </tr>
             <tr>
-               <td class="pinlabel">LATCH output:</td>
+               <td class="pinlabel">Sortie Loquet:</td>
                <td>
                   <span class="pinselect" id="hc595_latch"
                     data-cfg="HC595.LATCH" data-gpiotype="dig-out extern"
@@ -3626,7 +3608,7 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
                </td>
             </tr>
             <tr>
-               <td class="pinlabel">ENA output:</td>
+               <td class="pinlabel">Sortie ENA:</td>
                <td>
                   <span class="pinselect" id="hc595_ena"
                     data-cfg="HC595.ENA" data-gpiotype="dig-out extern"
@@ -3658,31 +3640,30 @@ $("#hc595_nchips").change(function(ev)
    <div class="section" data-name="Night Mode">
       <a name="nightmode"></a>
       <img src="nightModeSection.png" class="sectionIcon">
-      <b>Pinscape After Dark.</b>  You can set up a button or switch to
-      activate <b>Night Mode</b>, which disables the feedback device outputs
-      that you designate as noise-makers.  This lets you play during late-night
-      hours without disturbing your party-pooper housemates and neighbors.
-      <a href="#" class="shower">Details</a>
+      <b>Pinscape après la tombée de la nuit.</b>  Vous pouvez configurer un bouton ou 
+      activer le <b> Mode Nuit </b>, qui désactive les sorties du dispositif de retour
+      que vous désignez comme faiseurs de bruit. Cela vous permet de jouer tard dans la nuit
+      sans déranger vos colocataires, voisins fêtardset famille (surtout vôtre femme :)).
+      <a href="#" class="shower">Détails</a>
 
       <div class="hider">
          <ul>
-            <li>Select an <a href="#buttonSection">input button</a> to turn
-            Night Mode on and off.  Wire this like any other button.
+            <li>Sélectionnez un <a href="#buttonSection">bouton d'entrée</a> pour
+             activé et désactivé le "Mode nuit". Câblez-le comme n'importe quel autre bouton.
+			
+            <li>Vous voudrez probablement configurer le bouton que vous sélectionnez
+            pour "Aucune entrée PC" dans la <a href="#buttonSection"> configuration du bouton </a>,
+            mais vous pouvez lui faire envoyer une frappe si cela vous est utile pour
+            quelque raison.
             
-            <li>You'll probably want to configure the button you select
-            for "No PC Input" in the <a href="#buttonSection">button setup</a>,
-            but you can have it send a keystroke if that's useful to you for
-            some reason.
-            
-            <li>If you don't want to wire a physical button for this, just
-            set the button number to 0 (zero).  You can still control Night
-            Mode with the NightMode.exe program on the PC (it's in your
-            Pinscape Setup Tool folder).
+            <li>Si vous ne souhaitez pas câbler un bouton physique pour cela,
+            réglez le numéro du bouton sur 0 (zéro). Vous pouvez toujours contrôler le "mode nuit"
+            avec le programme NightMode.exe sur le PC (il est dans votre Dossier "Pinscape Setup Tool").
 
-            <li>You can also optionally select an output port to serve as an
-            indicator light, so that you can tell when night mode is turned on.
-            If you don't need an indicator, just set this to 0.  If you do assign
-            a port, you should leave it unassigned in your DOF port layout.
+            <li>Vous pouvez également sélectionner en option un port de sortie pour servir 
+            d'indicateur lumineux, afin que vous puissiez savoir quand le mode nuit est activé.
+            Si vous n'avez pas besoin d'un indicateur, réglez-le simplement sur 0. Si vous attribuez
+            un port, vous devez le laisser non affecté dans votre disposition de port DOF.
          </ul>
       </div>
 
@@ -3690,22 +3671,22 @@ $("#hc595_nchips").change(function(ev)
          <table class="inputs">
             <tr>
                <td>
-                  Button input number:
+                  Numéro d'entrée du bouton:
                </td>
                <td>
                   <input id="nightModeButtonNo" size="4" style="margin: 0px 1em;">
-                  <span style="padding-left: 2em; font-style: italic;">0 = no input button assigned</span>
+                  <span style="padding-left: 2em; font-style: italic;">0 = aucun bouton d'entrée affecté</span>
                </td>
             </tr>
             <tr id="nightModeButtonShift">
                <td></td>
                <td>
-                  <label><input type="checkbox"> Use shifted button</label> (see <a href="#buttonSection">Button Setup</a>)
+                  <label><input type="checkbox"> Utiliser le bouton décalé</label> (Voir <a href="#buttonSection">Configuration des boutons</a>)
                </td>
             </tr>
             <tr>
                <td>
-                  Button type:
+                  Type de bouton:
                </td>
                <td>
                   <table class="radio" style="display: inline-block; vertical-align: middle; margin: 1em 0px;">
@@ -3714,15 +3695,15 @@ $("#hc595_nchips").change(function(ev)
                            <label>
                               <img src="pushButton.png"><br>
                               <input type="radio" name="nightModeButtonType" value="1">
-                              Momentary button
-                              <br>(Toggles mode when pushed)
+                              Bouton momentané
+                              <br> (Active / désactive le mode lorsqu'il est enfoncé)
                            </label>
                         </td>
                         <td>
                            <label>
                               <img src="toggleSwitch.png"><br>
                               <input type="radio" name="nightModeButtonType" value="2">
-                              On/off switch
+                              Interrupteur marche / arrêt
                               <br>&nbsp;
                            </label>
                         </td>
@@ -3732,11 +3713,11 @@ $("#hc595_nchips").change(function(ev)
             </tr>
             <tr>
                <td>
-                  Indicator lamp output port:
+                  Port de sortie du témoin lumineux:
                </td>
                <td>
                   <input id="nightModeOutputNo" size="4" style="margin: 0px 1em;">
-                  <span style="padding-left: 2em; font-style: italic;">0 = no indicator output</span>
+                  <span style="padding-left: 2em; font-style: italic;">0 = pas de sortie d'indicateur</span>
                </td>
             </tr>
          </table>
@@ -3771,7 +3752,7 @@ $("#nightModeOutputNo").change(function()
     $("#outputTab .nightModeRemark").remove();
     if (n != 0) {
         $("#outputTab tr .outPortRemarks").eq(n-1).append(
-            "<span class=\"nightModeRemark\" title=\"This is the Night Mode indicator lamp port\">"
+            "<span class=\"nightModeRemark\" title=\"Ceci est le port du voyant du mode nuit\">"
             + "<a href=\"#nightmode\">"
             + "<img src=\"nightModeSmall.png\">"
             + "</a>"
@@ -3799,15 +3780,15 @@ function showHideNightModeButtonShift()
    <div class="section" data-name="Output Ports">
       <a name="outputSection"></a>
       <img src="outputSection.png" class="sectionIcon">
-      <b>Feedback device outputs.</b>  Pinball software on the PC can control
-      output devices connected to the KL25Z to create special effects during play,
-      such as tactile feedback and lighting displays.  The PC software uses the
-      <b>port numbers</b> in the list below to address the outputs.  Use these
-      port numbers when you set up your <a class="dofconfigtool">DOF configuration</a>.
-      For each port, you can select the physical output pin that the port is wired to.
+      <b>Sorties du dispositif de retour. </b> Le logiciel de flipper sur le PC peut contrôler les
+      périphériques de sortie connectés à la KL25Z pour créer des effets spéciaux pendant la lecture,
+      tels que la rétroaction tactile et les écrans d'éclairage. Le logiciel PC utilise le
+      <b> numéros de port </b> dans la liste ci-dessous pour adresser les sorties. Utilisez les
+      numéros de port lorsque vous configurez votre <a class="dofconfigtool"> configuration DOF </a>.
+      Pour chaque port, vous pouvez sélectionner la broche de sortie physique à laquelle le port est câblé.
 
       <div>
-         <a href="#" id="btnOutputTest" class="button">Test Outputs</a>
+         <a href="#" id="btnOutputTest" class="button">Sorties de test</a>
       </div>
 
       <div>
@@ -3816,10 +3797,10 @@ function showHideNightModeButtonShift()
                <th></th>
                <th>Port No.</th>
                <th>Type</th>
-               <th>Location</th>
-               <th>Pin</th>
+               <th>Localisation</th>
+               <th>Broche</th>
                <th>Port</th>
-               <th></th>  <!-- pin warnings -->
+               <td></th>  <!-- pin warnings -->
                <th></th>  <!-- pin remarks -->
                <th>Options [<a href="#" class="outPortOptionsHelp">?</a>]</th>
                <th>Description</th>
@@ -3839,13 +3820,13 @@ $("#btnOutputTest").click(function(ev)
     if (!valEq(cfgMem.outputs, cfgDev.outputs))
     {
         if (!window.external.YesNoDialog(
-            "You've made changes to the output port settings that you haven't "
-            + "programmed into the KL25Z yet. The tester window will reflect "
-            + "the current device settings, not your new unsaved changes. "
-            + "If you want to test your new settings, click \"Program KL25Z\" "
-            + "before proceeding to the tester window."
-            + "\r\n\r\n"
-            + "Do you want to open the tester anyway?"))
+            "Vous avez apporté des modifications aux paramètres du port de sortie que vous n'avez pas "
+            + "déjà programmé dans la KL25Z. La fenêtre du testeur reflétera"
+            + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
+            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \" Programmer KL25Z \ ""
+            + "avant de passer à la fenêtre du testeur."
+            + "\ r \ n \ r \ n"
+            + "Voulez-vous quand même ouvrir le testeur?"))
             return;
     }
 
@@ -3871,13 +3852,13 @@ $(function() {
         rows.push("<tr id=\"outPortRow" + i + "\" class=\"outPortRow\" data-idx=\"" + i + "\" "
                   +  "data-desc=\"Output Port " + i + "\">"
                   +   "<td class=\"rowControls\">"
-                  +      "<span class=\"addRow\" title=\"Insert a new output port here\"></span>"
-                  +      "<span class=\"delRow\" title=\"Delete this output port\"></span>"
-                  +      "<span class=\"moveRow\" title=\"Move this output port\"></span>"
+                  +      "<span class=\"addRow\" title=\"Insérez un nouveau port de sortie ici\"></span>"
+                  +      "<span class=\"delRow\" title=\"Supprimer ce port de sortie\"></span>"
+                  +      "<span class=\"moveRow\" title=\"Déplacer ce port de sortie\"></span>"
 
-// select - disable for now: still working out the details, but might add later
-//                +      "<span class=\"selectRow\" title=\"Select this output port (use SHIFT or CTRL "
-//                +           "to select multiple ports to move or delete)\"></span>"
+// sélectionner - désactiver pour le moment: travaille toujours sur les détails, mais pourrait ajouter plus tard
+//                +      "<span class=\"selectRow\" title=\"Sélectionnez ce port de sortie (utilisez SHIFT ou CTRL "
+// 		  + 		"pour sélectionner plusieurs ports à déplacer ou supprimer)\"></span>"
 
                   +   "</td>"
                   +   "<td class=\"pinlabel\">" + i + "</td>"
@@ -3897,15 +3878,15 @@ $(function() {
                   +      "<input class=\"pinflags\" type=\"hidden\">"
                   +      "<input class=\"flipperLogic\" type=\"hidden\">"
                   +      "<img src=\"NoisyOff.png\" class=\"outPortNoisy\" data-mask=\"2\" "
-                  +         "title=\"Noisy device: disable this port when Night Mode is engaged\">"
+                  +         "title=\"Appareil bruyant: désactivez ce port lorsque le mode nuit est activé\">"
                   +      "<img src=\"GammaOff.png\" class=\"outPortGamma\" data-mask=\"4\" "
-                  +         "title=\"Use gamma correction on this port (suitable for lamps and LEDs)\">"
+                  +         "title=\"Utilisez la correction gamma sur ce port (convient aux lampes et aux LED)\">"
                   +      "<img src=\"ActiveLowOff.png\" class=\"outPortLow\" data-mask=\"1\" "
-                  +         "title=\"Active low port: port connects to ground (0V) when ON\">"
+                  +         "title=\"Port bas actif: le port se connecte à la terre (0 V) lorsqu'il est allumé\">"
                   +      "<img src=\"FlipperLogicOff.png\" class=\"outPortFlipperLogic\" data-mask=\"8\" "
-                  +         "title=\"Flipper Logic: reduce port power when held on\">"
+                  +         "title=\"Flipper Logic: réduire la puissance du port lorsqu'il est maintenu\">"
                   +      "<img src=\"ChimeLogicOff.png\" class=\"outPortChimeLogic\" data-mask=\"16\" "
-                  +         "title=\"Chime Logic: set minimum and maximum ON times\">"
+                  +         "title=\"Chime Logic: définir les temps de marche minimum et maximum\">"
                   +   "</td>"
                   +   "<td>"
                   +      "<input class=\"outPortDesc\" type=\"text\" size=\"20\">"
@@ -3916,7 +3897,7 @@ $(function() {
     // add a last row with just a "+" control to add a row at the end
     rows.push("<tr class=\"outPortRow\" data-idx=\"end\" id=\"lastOutPortRow\">"
               +   "<td class=\"rowControls\">"
-              +      "<span class=\"addRow\" title=\"Add a new output port\"></span>"
+              +      "<span class=\"addRow\" title=\"Ajouter un nouveau port de sortie\"></span>"
               +   "</td>"
               +   "<td></td>"
               +   "<td></td>"
@@ -4308,7 +4289,7 @@ $(function() {
         // ask for confirmation, and delete the row if confirmed
         ev.stopPropagation();
         if (window.external.YesNoDialog(
-            "Are you sure you want to delete this output port?"))
+            "Êtes-vous sûr de vouloir supprimer ce port de sortie?"))
             deleteOutputs($(this).parents(".outPortRow"), 1);
     });
 
@@ -4647,11 +4628,11 @@ var adjustOutputPorts = (function()
 
         // insert the batch of new outputs into the table
         if (!insertOutputs($("#lastOutPortRow"), newPortList))
-            alert("You've reached the maximum number of output ports. There aren't "
-                  + "enough slots to add all of the ports for the new device(s) you "
-                  + "just added, so none have been added.  You might still be able "
-                  + "to add some of the new ports manually, and you can also reassign "
-                  + "any unused ports on other devices to the new device(s).");
+            alert("Vous avez atteint le nombre maximum de ports de sortie. Il n'y a pas "
+                  + "assez d'emplacements pour ajouter tous les ports pour le ou les nouveaux appareils que vous"
+                  + "venez d'ajouter, donc aucun n'a été ajouté. Vous pourrez peut-être encore"
+                  + "en ajouter manuellement certains et vous pouvez également les réaffecter"
+                  + "tous les ports inutilisés sur d'autres périphériques vers le ou les nouveaux périphériques.");
 
         // adjust the active/inactive status for the peripheral chip connections
         adjustPeripheralPins(pending[3], pending[4], pending[6]);
@@ -4996,20 +4977,20 @@ function sizeOutputsTable()
 <div id="nav">
    <div>
       <div class="left">
-         <a class="iconButton" href="top.htm" id="mainMenuButton" title="Return to the main menu"><img src="homeIcon.png"></a>
+         <a class="iconButton" href="top.htm" id="mainMenuButton" title="Retourner au menu principal"><img src="homeIcon.png"></a>
          <select id="goToSection">
-            <option value="X">Go to...</option>
+            <option value="X">on y va...</option>
          </select>
       </div>
-      <a class="button" href="#" id="programButton" title="Program these new settings into the KL25Z">Program KL25Z</a>
-      <a class="button" href="#" id="revertButton" title="Discard changes and revert to current device settings">Revert</a>
+      <a class="button" href="#" id="programButton" title="Programmez ces nouveaux paramètres dans le KL25Z">Program KL25Z</a>
+      <a class="button" href="#" id="revertButton" title="Annuler les modifications et revenir aux paramètres actuels de l'appareil">Revert</a>
       <div class="right">
-         <a class="iconButton" href="#" id="fileOpsButton" title="Save/restore settings to/from a disk file"><img src="saveIcon.png"></a>
+         <a class="iconButton" href="#" id="fileOpsButton" title="Enregistrer / restaurer les paramètres vers / depuis un fichier disque"><img src="saveIcon.png"></a>
          <div id="fileOpsMenu" class="popupMenu" style="bottom: 1em; right: 1ex;">
-            <div title="Save these in-memory settings to a file" id="fileSaveButton">Save to file</div>
-            <div title="Load new in-memory settings from a file" id="fileLoadButton">Load file</div>
+            <div title="Enregistrez ces paramètres en mémoire dans un fichier" id="fileSaveButton">Save to file</div>
+            <div title="Charger de nouveaux paramètres en mémoire à partir d'un fichier" id="fileLoadButton">Load file</div>
             <hr>
-            <div title="Print this page" id="printButton">Print...</div>
+            <div title="Imprimer cette page" id="printButton">Print...</div>
          </div>
       </div>
    </div>
@@ -5049,10 +5030,10 @@ $("#fileOpsButton").click(function(ev) {
 
 $("#mainMenuButton").click(function(ev) {
     if (uiDirty() && !window.external.DiscardCancelDialog(
-        "You've made changes to the configuration that haven't been "
-        + "programmed into the device or saved to a backup file. If you "
-        + "leave now, you'll abandon this work.  Are you sure you want to "
-        + "discard your changes?"))
+        "Vous avez apporté des modifications à la configuration qui n’ont pas été "
+        + "programmé dans l'appareil ou enregistré dans un fichier de sauvegarde. Si vous"
+        + "partez maintenant, vous abandonnerez le travail. Etes-vous sûr de vouloir"
+        + "annuler vos modifications?"))
     {
         ev.preventDefault();
         return false;
@@ -5061,8 +5042,8 @@ $("#mainMenuButton").click(function(ev) {
 $("#revertButton").click(function(ev) {
     ev.preventDefault();
     if (window.external.DiscardCancelDialog(
-        "This will discard all unsaved changes and return to the settings "
-        + "currently stored on the KL25Z. Are you sure you want to proceed?",
+        "Ceci supprimera toutes les modifications non enregistrées et reviendra aux paramètres. "
+        + "actuellement stocké sur le KL25Z. Voulez-vous vraiment continuer?",
         "&Revert|Cancel"))
         configToUI(config, xconfig, ConfigSource.Board);
 });
@@ -5100,10 +5081,10 @@ $("#fileLoadButton").click(function(ev) {
             configToUI(result.config, result.xconfig, ConfigSource.File);
             window.external.ShowAdviceDialog(
                 "RestoreSettings",
-                "The file settings have been loaded.  Note that the new settings "
-                + "are only in memory - nothing has been changed on the KL25Z yet. "
-                + "If you want to make these settings active on the device, click "
-                + "the \"Program KL25Z\" button.");
+                "Les paramètres du fichier ont été chargés. Notez que les nouveaux paramètres "
+                + "sont seulement en mémoire - rien n'a encore été changé sur la KL25Z."
+                + "Si vous souhaitez activer ces paramètres sur l'appareil, cliquez sur"
+                + "le bouton \" Programmer KL25Z \ ".");
 
             // Remember this as the last saved configuration.  If the user
             // quits without making any changes, there's no need to bug them
@@ -5240,7 +5221,7 @@ $("#printButton").click(function(ev) {
          </div>
       </div>
       <div id="aioBoardDigitalOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pagetype="board">
-         <div class="chipNo header" data-chip="0">Digital Outputs</div>
+         <div class="chipNo header" data-chip="0">Sorties numériques</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
@@ -5251,7 +5232,7 @@ $("#printButton").click(function(ev) {
          </div>
       </div>
       <div id="aioBoardPWMOutputSelector" class="pinSelectorPage aioBoardPinSelector" data-pwm="true" data-pagetype="board">
-         <div class="chipNo header" data-chip="0">PWM Outputs</div>
+         <div class="chipNo header" data-chip="0">Sorties PWM</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
@@ -5262,7 +5243,7 @@ $("#printButton").click(function(ev) {
          </div>
       </div>
       <div id="liteBoardDigitalOutputSelector" class="pinSelectorPage liteBoardPinSelector" data-pagetype="board">
-         <div class="chipNo header" data-chip="0">Digital Outputs</div>
+         <div class="chipNo header" data-chip="0">Sorties numériques</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
@@ -5273,7 +5254,7 @@ $("#printButton").click(function(ev) {
          </div>
       </div>
       <div id="liteBoardPWMOutputSelector" class="pinSelectorPage liteBoardPinSelector" data-pwm="true" data-pagetype="board">
-         <div class="chipNo header" data-chip="0">PWM Outputs</div>
+         <div class="chipNo header" data-chip="0">Sorties PWM</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
@@ -5317,7 +5298,7 @@ $("#printButton").click(function(ev) {
           </div>
       </div>
       <div id="powerBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
-         <div class="chipNo header" data-chip="0">Board 1</div>
+         <div class="chipNo header" data-chip="0">Carte 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
@@ -5330,7 +5311,7 @@ $("#printButton").click(function(ev) {
          </div>
       </div>
       <div id="chimeBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
-         <div class="chipNo header" data-chip="0">Board 1</div>
+         <div class="chipNo header" data-chip="0">CArte 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
@@ -5344,10 +5325,10 @@ $("#printButton").click(function(ev) {
       </div>
       <div id="virtualOutputSelector" class="pinSelectorPage">
          <div>
-            A "virtual" output is a software port that isn't connected to
-            a physical output.  This can be used as a placeholder in your
-            DOF setup, or for a special function, such as the ZB Launch Ball
-            control port.
+            Une sortie "virtuelle" est un port logiciel qui n'est pas connecté à
+            une sortie physique. Cela peut être utilisé comme espace réservé dans votre
+            Configuration DOF, ou pour une fonction spéciale, telle que le ZB Launch Ball
+            port de contrôle.
          </div>
          <div>
             <div class="iconWithTitle button available" data-pin="NC "id="btnMakeVirtualPort">
@@ -5356,7 +5337,7 @@ $("#printButton").click(function(ev) {
             </div>
             <div class="iconWithTitle button available" data-pin="NC" id="btnMakeZBPort">
                <img src="zbLaunch32.png">
-               <br>ZB Launch Port
+               <br>Port ZB Launch
             </div>
          </div>
       </div>
@@ -5364,12 +5345,12 @@ $("#printButton").click(function(ev) {
          <div id="pinTypePwmOut" data-page="gpioSelector" data-filter="pwm" data-pintype="1">
             <img src="pwmout.png"><br>
             GPIO<br>
-            PWM Out
+            Sortie PWM
          </div>
          <div id="pinTypeDigOut" data-page="gpioSelector" data-filter="dig-out" data-pintype="2">
             <img src="digitalout.png"><br>
             GPIO<br>
-            Digital Out
+            Sortie Numérique
          </div>
          <div id="pinTypeSpiMosi" data-page="gpioSelector" data-filter="spi-mosi">
             <img src="spiout.png"><br>
@@ -5381,75 +5362,75 @@ $("#printButton").click(function(ev) {
          </div>
          <div id="pinTypeAnalogIn" data-page="gpioSelector" data-filter="adc">
             <img src="analogin.png"><br>
-            Analog In
+            Entrée analogique
          </div>
          <div id="pinTypeDigIn" data-page="gpioSelector" data-filter="dig-in">
             <img src="digitalin.png"><br>
-            Digital In
+            Entrée numérique
          </div>
          <div id="pinTypeInterruptIn" data-page="gpioSelector" data-filter="interrupt-in">
             <img src="interruptin.png"><br>
-            Interrupt In
+            Interrompre
          </div>
          <div id="pinType5940Out" data-page="tlc5940Selector" data-pintype="3">
             <img src="tlc5940out.png"><br>
-            TLC5940 Out
+            Sortie TLC5940
          </div>
          <div id="pinType59116Out" data-page="tlc59116Selector" data-pintype="6">
             <img src="tlc59116out.png"><br>
-            TLC59116 Out
+            Sortie TLC59116
          </div>
          <div id="pinType595Out" data-page="hc595Selector" data-pintype="4">
             <img src="74hc595out.png"><br>
-            74HC595 Out
+            Sortie 74HC595
          </div>
          <div id="pinTypeMainBoardPWMOut" data-page="mainBoardPWMOutputSelector" data-pintype="1">
             <img src="mainBoardOut.png"><br>
-            Main Board<br>PWM Out
+            Carte principale <br> sortie PWM
          </div>
          <div id="pinTypeMainBoardDigitalOut" data-page="mainBoardDigitalOutputSelector" data-pintype="2">
             <img src="mainBoardOut.png"><br>
-            Main Board<br>Digital Out
+            Carte principale <br> Sortie numérique
          </div>
          <div id="pinTypeAIOBoardPWMOut" data-page="aioBoardPWMOutputSelector" data-pintype="1">
             <img src="aioBoardOut.png"><br>
-            Pinscape AIO<br>PWM Out
+            Pinscape AIO <br> Sortie PWM
          </div>
          <div id="pinTypeAIOBoardDigitalOut" data-page="aioBoardDigitalOutputSelector" data-pintype="2">
             <img src="aioBoardOut.png"><br>
-            Pinscape AIO<br>Digital Out
+            Pinscape AIO <br> Sortie numérique
          </div>
             <div id="pinTypeLiteBoardPWMOut" data-page="liteBoardPWMOutputSelector" data-pintype="1">
                 <img src="liteBoardOut.png"><br>
-                Pinscape Lite<br>PWM Out
+                Pinscape Lite <br> Sortie PWM
             </div>
             <div id="pinTypeLiteBoardDigitalOut" data-page="liteBoardDigitalOutputSelector" data-pintype="2">
                 <img src="liteBoardOut.png"><br>
-                Pinscape Lite<br>Digital Out
+                Pinscape Lite <br> Sortie numérique
             </div>
          <div id="pinTypeMainBoardIn" data-page="mainBoardInputSelector">
-            <img src="mainBoardIn.png"><br>
-            Main Board
+            	<img src="mainBoardIn.png"><br>
+            	CArte Principale
          </div>
          <div id="pinTypeAIOBoardIn" data-page="aioBoardInputSelector">
-            <img src="aioBoardIn.png"><br>
-            Pinscape AIO
+            	<img src="aioBoardIn.png"><br>
+            	Pinscape AIO
          </div>
             <div id="pinTypeLiteBoardIn" data-page="liteBoardInputSelector">
                 <img src="liteBoardIn.png"><br>
                 Pinscape Lite
             </div>
          <div id="pinTypePowerBoardOut" data-page="powerBoardOutputSelector">
-            <img src="powerBoardOut.png"><br>
-            Power Board
+            	<img src="powerBoardOut.png"><br>
+            	Carte d'alimentation
          </div>
          <div id="pinTypeChimeBoardOut" data-page="chimeBoardOutputSelector">
-            <img src="chimeBoardOut.png"><br>
-            Chime Board
+            	<img src="chimeBoardOut.png"><br>
+            	Carte carillon
          </div>
          <div id="pinTypeVirtOut" data-page="virtualOutputSelector" data-pintype="5">
-            <img src="virtualout.png"><br>
-            Virtual Out
+            	<img src="virtualout.png"><br>
+            	Sortie Virtuelle
          </div>
       </div>
    </div>
@@ -5479,40 +5460,40 @@ $("#printButton").click(function(ev) {
             </div>
             <div id="osunused">
                <div>
-                  Select this option if you don't want the button to send
-                  any input to the PC when pressed.
+                  Sélectionnez cette option si vous ne souhaitez pas que le bouton envoie
+                  n'importe quelle entrée du PC lorsque vous appuyez sur.
                </div>
                <div id="unusedBtn" class="iconWithTitle">
                   <img src="noKey.png">
-                  <br>No PC Input
+                  <br>Pas d'entrée PC
                </div>
             </div>
             <!-- 
             <div id="osspecial">
                <div>
-                  Select special functions for the key, separate from
-                  any PC input.
+                  Sélectionnez des fonctions spéciales pour la touche, distinctes de
+                  toute entrée PC.
                </div>
                <div id="nightModeBtn" class="iconWithTitle"
-                 title="Use this button to turn Night Mode on and off">
+                 title="Utilisez ce bouton pour activer et désactiver le mode nuit">
                   <img src="nightModeSmall.png">
-                  <br>Night Mode
+                  <br>Mode nuit
                </div>
             </div>
             -->
             <div id="osjoystick">
                <div class="topfill">
-                  Joystick Buttons
+                  Boutons Joystick
                </div>
                <div class="jsBtnBox">
                </div>
             </div>
          </div>
          <div id="keytype">
-            <img id="keytypeJS" data-page="#osjoystick" title="Joystick Buttons" src="joystickicon.png">
-            <img id="keytypeKB" data-page="#oskeyboard" title="Keyboard Keys" src="keyboardicon.png">
-            <img id="keytypeUnused" data-page="#osunused" title="No PC Input" src="noKey.png">
-            <!-- <img id="keytypeSpecial" data-page="#osspecial" title="Special Function" src="specialicon.png"> -->
+            <img id="keytypeJS" data-page="#osjoystick" title="Boutons Joystick" src="joystickicon.png">
+            <img id="keytypeKB" data-page="#oskeyboard" title="Touches du clavier" src="keyboardicon.png">
+            <img id="keytypeUnused" data-page="#osunused" title="Pas d'entrée PC" src="noKey.png">
+            <!-- <img id="keytypeSpecial" data-page="#osspecial" title="Fonction spéciale" src="specialicon.png"> -->
          </div>
       </div>
    </div>
@@ -5552,18 +5533,18 @@ function programKL25Z()
     // check for pin assignment conflicts
     var w = getPinWarnings();
     if (w.length && !window.external.YesNoDialog(
-        "The following items have conflicting pin assignments:\r\n\r\n"
+        "Les éléments suivants ont des affectations de broches conflictuelles: \r\n\r\n"
         + $.map(w, function(ele) { return ele.data("desc"); }).join("; ")
         + "\r\n\r\n"
-        + "The controller might not work correctly if you program it with "
-        + "these conflicts unresolved.  Are you sure you wish to proceed?"))
+        + "Le contrôleur peut ne pas fonctionner correctement si vous le programmez avec "
+        + "ces conflits non résolus. Êtes-vous sûr de vouloir continuer?"))
         return;
 
     // now warn about overwriting the settings
     if (!window.external.YesNoDialog(
-        "This will program the KL25Z with the new settings you've selected. "
-        + "The previous settings will be permanently overwritten. Are you "
-        + "sure you wish to proceed?"))
+        "Cela programmera la KL25Z avec les nouveaux paramètres que vous avez sélectionnés. "
+        + "Les paramètres précédents seront définitivement écrasés. Êtes-vous"
+        + "bien sûr que vous souhaitez continuer?"))
         return;
 
     // get the current UI configuration, and convert it to USB format
@@ -5574,7 +5555,7 @@ function programKL25Z()
 
     // save a backup copy first
     showCallResult(window.external.WriteConfigFile(
-        CPUID, "Note: this is an in-memory working configuration",
+        CPUID, "Remarque: il s'agit d'une configuration de travail en mémoire",
         "backup", usb, cx),
         { "ok": function() { } }
     );
@@ -5594,10 +5575,10 @@ function programKL25Z()
 function OnCloseWindow()
 {
     if (uiDirty() && !window.external.DiscardCancelDialog(
-        "You've made changes to the configuration that haven't been "
-        + "programmed into the device or saved to a backup file. "
-        + "Quitting now will abandon this work.  Do you really want "
-        + "to discard these changes?"))
+        "Vous avez apporté des modifications à la configuration qui n'ont pas été "
+        + "programmé dans l'appareil ou enregistré dans un fichier de sauvegarde."
+        + "Arrêter maintenant abandonnera le travail. Voulez-vous vraiment"
+        + "annuler ces modifications?"))
         return "cancel";
 }
 
@@ -5841,7 +5822,7 @@ $(function() {
         // Build the KL25Z pin selection list
         var pinlst = $("#lstKL25ZPins");
         var options = [];
-        options.push("<div data-pin=\"Not Connected\">Not Connected</div>");
+        options.push("<div data-pin=\"Not Connected\">Non connecté"</div>");
         for (var i = 0 ; i < gpioPins.length ; ++i)
         {
             var g = gpioPins[i];
@@ -7291,7 +7272,7 @@ $(function() {
                 if (v == "nc") {
                     // NC - matches Not Connected always, or matches other conditions
                     pinFilter = (function(f) {
-                        return function(p, name) { return name == "Not Connected" || f(p, name); };
+                        return function(p, name) { return name == "Non connecté" || f(p, name); };
                     })(pinFilter);
                 }
             });
@@ -7633,7 +7614,7 @@ $(function() {
             {
                 if (!window.external.YesNoDialog(
                     g.warning
-                    + "\r\n\r\nWould you like to proceed with this pin assignment?"))
+                    + "\r\n\r\n Voulez-vous continuer avec cette affectation des broches?"))
                 return;
             }
 
@@ -7644,13 +7625,13 @@ $(function() {
             if (dismiss && page.attr("id") == "gpioSelector" && (alias = gpioPortAlias[name]))
             {
                 if (!window.external.YesNoDialog(
-                    "You're attempting to assign a pin that's already wired "
-                    + "to a specific function on the expansion board ("
-                    + alias.split("|")[0] + "). The physical wiring on the "
-                    + "board might make other uses impossible even if the "
-                    + "associated feature is disabled in the software."
+                    "Vous essayez d'attribuer une broche déjà câblée "
+                    + "à une fonction spécifique sur la carte d'extension ("
+                    + alias.split ("|") [0] + "). Le câblage physique sur le"
+                    + "tableau peut rendre d'autres utilisations impossibles même si "
+                    + "la fonction associée est désactivée dans le logiciel."
                     + "\r\n\r\n"
-                    + "Are you sure you want to proceed with this pin selection?"))
+                    + "Voulez-vous vraiment continuer avec cette sélection de broches?"))
                     return;
             }
 
@@ -7660,14 +7641,14 @@ $(function() {
             {
                 window.external.ShowAdviceDialog(
                     "RawOutputPowerLimitWarning",
-                    "WARNING!\n\n"
-                    + "This pin is connected DIRECTLY to a CPU port on the KL25Z. "
-                    + "These pins have EXTREMELY low power handling capacity. "
-                    + "NEVER CONNECT ANY LOAD LARGER THAN 4mA TO THIS PIN. "
-                    + "The 4mA limit applies whether the pin is used in \"active "
-                    + "high\" or \"active low\" mode. Exceeding 4mA in either mode "
-                    + "can damage the CPU, which can render the whole KL25Z "
-                    + "board inoperable.");
+                    "AVERTISSEMENT! \N\n"
+                    + "Cette broche est connectée DIRECTEMENT à un port CPU sur la KL25Z."
+                    + "Ces broches ont une capacité de gestion de puissance EXTRÊMEMENT faible."
+                    + "NE JAMAIS CONNECTER UNE CHARGE SUPÉRIEURE À 4 mA À CE PIN."
+                    + "La limite 4mA s'applique si la broche est utilisée en \" active "
+                    + mode "high \" ou \ "active low \". Dépassement de 4 mA dans l'un ou l'autre mode "
+                    + "peut endommager le CPU, ce qui peut rendre l'ensemble de la KL25Z"
+                    + "inopérante.");
             }
 
             // dismiss the dialog if desired, otherwise fix up the list display
@@ -8711,7 +8692,7 @@ function pinsInUse()
         {
             // get the pin by name; proceed if we're connected to a pin
             var v = self.children(".pinval").val();
-            if (v != "Not Connected" && gpioPinsByName[v])
+            if (v != "Non connecté" && gpioPinsByName[v])
             {
                 // add an entry for the pin name
                 add(self, v);
@@ -8869,27 +8850,27 @@ function genPinWarnings(cb)
         else if (pwm && inuse["pwm." + pwm] && inuse["pwm." + pwm].fields.length > 1)
         {
             // the PWM channel is overcommitted
-            cb(self, "This pin's PWM channel is used more than once "
-               + "(PWM channel " + pwm + ", used by " + inuse["pwm." + pwm].inUseBy()
-               + "). The PWM channel assigned to a pin can't be changed "
-               + "(it's hard-wired within the CPU), so only one of "
-               + pwmChannels[pwm].orList() + " may be used concurrently "
-               + "as PWM outputs.  The other pins can still be used for other "
-               + "purposes, as long as they're not assigned as PWM outputs.");
+            cb(self, "Le canal PWM de cette broche est utilisé plusieurs fois "
+               + "(Canal PWM" + pwm + ", utilisé par" + inuse ["pwm." + Pwm].inUseBy ()
+               + "). Le canal PWM attribué à une broche ne peut pas être modifié"
+               + "(il est câblé dans le CPU), donc un seul des"
+               + pwmChannels[pwm].orList () + "peut être utilisé simultanément"
+               + "comme sorties PWM. Les autres broches peuvent encore être utilisées pour d'autres"
+               + ", tant qu'ils ne sont pas affectés en tant que sorties PWM.");
         }
         else if (tpm && inuse["tpm." + tpm] && inuse["tpm." + tpm].fields.length > 1)
         {
-            cb(self, "This pin's PWM channel's TPM controller unit (PWM channel "
-               + pwm + ", TPM unit " + tpm + " is used by more than one function "
-               + "that requires control over the PWM frequency (" + inuse["tpm." + tpm].inUseBy()
-               + ").  Only one of the following pins may be used concurrently "
-               + "for any of those functions: " + tpmUnits[tpm].orList() + ". You must "
-               + "switch one of those functions to a PWM-capable pin with a different "
-               + "TPM unit number.  This is a hardware limitation of the KL25Z; PWM "
-               + "frequency is controlled through the TPM unit, which contains a group "
-               + "of channels, rather than the individual channels, so functions "
-               + "that require independent frequency control must be assigned to "
-               + "channels that are on separate TPM units.");
+            cb(self, "Unité de contrôleur TPM du canal PWM de cette broche (canal PWM "
+               + pwm + ", l'unité TPM" + tpm + "est utilisée par plus d'une fonction"
+               + "qui nécessite le contrôle de la fréquence PWM (" + inuse ["tpm." + tpm].inUseBy ()
+               + "). Une seule des broches suivantes peut être utilisée simultanément"
+               + "pour l'une de ces fonctions:" + tpmUnits[tpm].orList () + ". Vous devez"
+               + "basculer l'une de ces fonctions sur une broche compatible PWM avec une autre"
+               + "Numéro d'unité TPM. Ceci est une limitation matérielle de la KL25Z; PWM"
+               + "la fréquence est contrôlée par l'unité TPM, qui contient un groupe"
+               + "de canaux, plutôt que les canaux individuels, donc fonctionne"
+               + "qui nécessitent un contrôle de fréquence indépendant doit être attribué aux"
+               + "canaux situés sur des unités TPM distinctes.");
         }
         else if (spi && inuse["spi." + spi] && inuse["spi." + spi].fields.length > 1)
         {
