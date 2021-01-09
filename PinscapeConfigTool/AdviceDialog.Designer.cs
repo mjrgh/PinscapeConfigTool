@@ -59,7 +59,7 @@
             this.ckHide.Name = "ckHide";
             this.ckHide.Size = new System.Drawing.Size(270, 20);
             this.ckHide.TabIndex = 1;
-            this.ckHide.Text = "Got it; no need to show me this message again";
+            this.ckHide.Text = "Je l'ai; pas besoin de me montrer ce message à nouveau";
             this.ckHide.UseVisualStyleBackColor = false;
             // 
             // txtMessage
