@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Waiting for device</title>
+   <title>En attente de l'appareil</title>
 </head>
 
 <body>
@@ -13,36 +13,36 @@
 
 <h1>
    <img src="h1reboot.png" style="float: right;">
-   Waiting for device
+   En attente de l'appareil
    <img src="h1reboot.png" style="vertical-align: middle; visibility: hidden;">
 </h1>
 
 <div>
 
    <div>
-      <b>Waiting for the device to reboot...</b><br>
-      (We'll return to your regularly scheduled programming as soon
-      as the device comes back on-line!)
+      <b>En attente du redémarrage de l'appareil ... </b> <br>
+      (Nous reviendrons à votre programmation régulière dès que possible
+      lorsque l'appareil revient en ligne!)
    </div>
 
    <div>
       KL25Z CPU ID <span id="CPUID">xxxx-xxxxxxxx-xxxxxxxx</span><br>
-      Status: <span id="status">Checking</span>
+      Status: <span id="status">Vérifié</span>
    </div>
 
    <div id="advice" style="display: none;">
       <div>
-	 The device seems to be taking longer than expected to connect.
-	 You might need to intervene manually.
+	 L'appareil semble mettre plus de temps que prévu à se connecter.
+	 Vous devriez peut-être intervenir manuellement.
       </div>
 
       <div>
-	 <b>Note!</b>  If anything went wrong saving the new settings to Flash
-	 on the KL25Z, the device might revert to the factory defaults.
-	 If this happens, be aware that <b>your new settings were
-	 automatically saved</b> to the <a href="#" id="showDocs">downloads folder</a>
-         before the update.  You can restore that file settings using the
-	 Backup &amp; Restore button on the main menu.
+	 <b>Remarque! </b> En cas de problème, enregistrez les nouveaux paramètres dans la 
+	 Flash sur la KL25Z, l'appareil peut revenir aux paramètres d'usine par défaut.
+	 Si cela se produit, sachez que <b> vos nouveaux paramètres étaient automatiquement 
+	 enregistré </b> dans le <a href="#" id="showDocs"> dossier des téléchargements </a>
+     	 avant la mise à jour. Vous pouvez restaurer les paramètres de ce fichier à l'aide de
+	 Sauvegarde &amp; Bouton de restauration dans le menu principal.
       </div>
 
       <script>
@@ -54,76 +54,73 @@ $("#showDocs").click(function(ev) {
 	 
 
       <div>
-	 Here are some things you can try to get the device back on-line:
+	 Voici certaines choses que vous pouvez essayer pour remettre l'appareil en ligne:
       </div>
 
       <ul>
-	 <li>Manually reset the KL25Z, by pressing the reset button
-	 for a couple of seconds.
+	 <li>Réinitialisez manuellement la KL25Z en appuyant sur le bouton de réinitialisation
+	 pendant quelques secondes.
 
 	 <li>
 	 <img src="kl25z-reboot-diagram.png" style="float: right; margin-left: 2em;">
-	 Power-cycle the KL25Z.  Unplug all USB cables (both
-	 the programming port and joystick port cables).  Wait a few
-	 seconds, then plug it back in via the joystick port
-	 (as shown at right).
+	 Redémarrez la KL25Z. Débranchez tous les câbles USB (les deux - les câbles du port
+	 de programmation et du port du joystick). Attends quelques secondes, puis
+	 rebranchez-le via le port du joystick (comme illustré à droite).
 
-	 <li>If you have any other Pinscape Controller units attached,
-	 unplug all of the others, in case there's a conflict between devices.
+	 <li>Si vous avez d'autres cartes de contrôleur Pinscape connectées,
+	 débranchez les toutes, au cas où il y aurait un conflit entre les appareils.
 
-	 <li>If you have any real LedWiz units installed, try unplugging
-	 them as well.
+	 <li>Si vous avez de vraies cartes LedWiz installées, essayez de les débrancher aussi.
 
-	 <li>The problem might be caused by device driver caching
-	 inside Windows.  This is especially likely if you've just added
-	 keyboard keys to the input button mappings for the first time,
-	 because it changes the device from a pure joystick-type device
-	 to a multi-interface device, which looks slightly different to
-	 the Windows device manager.  You can fix this caching problem
-	 by manually uninstalling the old device driver.  This makes
-	 Windows forget the old settings, allowing it to establish the
-	 correct new settings on the next connection attempt.
-	 To do this, follow these steps:
+	 <li>Le problème peut être causé par la mise en cache du pilote de périphérique
+	 à l'intérieur de Windows. C'est particulièrement probable si vous venez d'ajouter
+	 les touches du clavier aux mappages des boutons d'entrée pour la première fois,
+	 parce que cela change le périphérique de type joystick pour à un appareil
+	 multi-interface, qui est légèrement différent du gestionnaire de périphériques Windows.
+	 Vous pouvez résoudre ce problème de mise en cache en désinstallant manuellement
+	 l'ancien pilote de périphérique. Cela fait Windows oublie les anciens paramètres,
+	 ce qui lui permet d'établir et de corriger les nouveaux paramètres lors de la
+	 prochaine tentative de connexion.
+	 Pour le faire, suivez ces étapes:
 
 	 <ul>
-	    <li><b>Leave the device plugged in throughout this procedure.</b>
+	    <li><b>Laissez l'appareil branché tout au long de cette procédure.</b>
 	    
-	    <li>Open Windows Device Manager: Go to the Windows Start menu,
-	    or bring up global search on Windows 8+ by pressing Start+S,
-	    then type "Device Manager" into the search box.
+	    <li>Ouvrez le Gestionnaire de périphériques Windows: allez dans le menu Démarrer de Windows,
+		ou faites apparaître la recherche globale en appuyant sur la touche "Windows + R",
+		puis tapez "Gestionnaire de périphériques" dans la zone de recherche.
 
-	    <li>Find the device list section for "Human Interface Devices"
-	    and open it.
+	    <li>Recherchez la section de la liste des périphériques pour "Périphériques d'interface utilisateur"
+		et ouvrez-le.
 
-	    <li>Look for a "USB Input Device" entry that's marked with a
-	    "warning" or "trouble" icon.  If you don't see any marked items,
-	    look at each "USB Input Device" item in turn.  For each item,
-	    double-click it to open its Properties dialog, and go to the Events tab.
-	    In the "Information" box, you should see a string like this:
+	    <li>Recherchez une entrée "Périphérique d'entrée USB" marquée d'un
+		icône "avertissement" ou "problème". Si vous ne voyez aucun élément marqué,
+		regardez chaque élément "USB Input Device" tour à tour. Pour chaque article,
+		double-cliquez dessus pour ouvrir sa boîte de dialogue Propriétés et accédez à l'onglet "Evénements".
+		Dans la zone "Informations", vous devriez voir une chaîne comme celle-ci:
 
 	    <p><tt>Device USB\VID_FAFA&PID_00F7...</tt></p>
 
-	    <p>The important part is the fragment reading <b>VID_FAFA</b> or <b>VID_1209</b>.
-	    If you see one of these strings, this is probably the right device.</p>
+	    <p>La partie importante est la lecture du fragment <b>VID_FAFA</b> or <b>VID_1209</b>.
+	    Si vous voyez l'une de ces chaînes, c'est probablement le bon appareil.</p>
 
-	    <li>Once you've identified the problem item, close the properties
-	    dialog, right-click the entry in the list, and select Uninstall.  This
-	    is the key step that removes the old cached Windows device information.
+	    <li>Une fois que vous avez identifié l'élément problématique, fermez la boîte de dialogue propriétés,
+		cliquez avec le bouton droit sur l'entrée dans la liste et sélectionnez Désinstaller. 
+		C'est l'étape clé qui supprime les anciennes informations de périphérique Windows mises en cache.
 
-	    <li>Check for any other items that match the same description.
-	    There might be more than one.  Uninstall each one.
+	    <li>Recherchez tous les autres éléments qui correspondent à la même description.
+		Il peut y en avoir plus d'un. Désinstallez chacun d'eux.
 
-	    <li>Once you're satisfied that you've cleared out the problematic
-	    device entries, close Device Manager.  Unplug the
-	    KL25Z (both cables - programming and joystick), wait a few
-	    moments, then plug it back in via the joystick cable.
+	    <li>Une fois que vous êtes convaincu d'avoir résolu le problème d'entrées de périphérique, fermez le
+		Gestionnaire de périphériques. Débranchez la KL25Z (les deux câbles - programmation et joystick),
+		attendez quelques instants, puis rebranchez-le via le câble du joystick.
 	 </ul>
 
-	 <li>As a last resort, try rebooting Windows.
+	 <li>En dernier recours, essayez de redémarrer Windows.
 
-	 <li>As a last resort after that, try reinstalling the Pinscape firmware
-	 onto the KL25Z.  This will reset it to a "factory" configuration, which
-	 might solve the problem if something got corrupted along the way.
+	 <li>En tout dernier recours après cela, essayez de réinstaller le firmware Pinscape sur la KL25Z. 
+	     Cela le réinitialisera à une configuration «d'usine», qui pourrait résoudre le problème si quelque
+	     chose était corrompu en cours de route.
 
       </ul>
    </div>
@@ -176,7 +173,7 @@ $(function()
 <div id="navproxy"></div>
 <div id="nav">
    <div>
-      <a class="button" href="top.htm" id="mainMenuButton">&lt;&lt; Main Menu</a>
+      <a class="button" href="top.htm" id="mainMenuButton">&lt;&lt; Menu principal</a>
    </div>
 </div>
 
