@@ -499,11 +499,11 @@ $.widget.bridge = function( name, object ) {
 					return false;
 				}
 				if ( !instance ) {
-					return $.error( "cannot call methods on " + name + " prior to initialization; " +
-						"attempted to call method '" + options + "'" );
+					return $.error( "impossible d'appeler des méthodes sur " + name + " avant l'initialisation; " +
+						"tenté d'appeler la méthode '" + options + "'" );
 				}
 				if ( !$.isFunction( instance[options] ) || options.charAt( 0 ) === "_" ) {
-					return $.error( "no such method '" + options + "' for " + name + " widget instance" );
+					return $.error( "pas une telle méthode '" + options + "' pour " + name + " instance de widget" );
 				}
 				methodValue = instance[ options ].apply( instance, args );
 				if ( methodValue !== instance && methodValue !== undefined ) {
