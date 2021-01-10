@@ -640,7 +640,7 @@ $("#tvOnEnabled").click(function(ev)
     {
         function saveAndClear(id) { 
             oldTVOn[id] = $(id).val(); 
-            $(id).val("Non connecté");
+            $(id).val("No connected");
         }
         saveAndClear("#tvStatus .pinval");
         saveAndClear("#tvLatch .pinval");
@@ -653,8 +653,8 @@ $("#tvOnEnabled").click(function(ev)
 $("#tvStatus, #tvLatch, #tvRelay").change(function()
 {
     // if any of these are set, enable the whole feature
-    var ena = $("#tvStatus .pinval").val() != "Non connecté"
-              || $("#tvLatch .pinval").val() != "Non connecté";
+    var ena = $("#tvStatus .pinval").val() != "No connected"
+              || $("#tvLatch .pinval").val() != "No connected";
 
     // If we're newly enabling it, show the details section.
     // Don't hide the section on disabling, though, since the
@@ -684,7 +684,7 @@ function showTvOn(show, scroll, setDefs)
     {
         function def(id, def) {
             var ctl = $(id);
-            if (ctl.val() == "Non connecté")
+            if (ctl.val() == "No connected")
                 ctl.val(oldTVOn[id] || def).change();
         }
         def("#tvStatus .pinval", "PTD2");
@@ -702,7 +702,7 @@ $("#btnTvOnTest").click(function(ev)
     ev.preventDefault();
 
     // check for pin changes
-    function pin(sel) { var p = $(sel).val(); return p == "Non connecté" ? "NC" : p; }
+    function pin(sel) { var p = $(sel).val(); return p == "No connected" ? "NC" : p; }
     if (pin("#tvStatus .pinval") != config.TVon.statusPin
         || pin("#tvLatch .pinval") != config.TVon.latchPin
         || pin("#tvRelay .pinval") != config.TVon.relayPin)
@@ -798,8 +798,8 @@ $("#helpIR").click(function(ev) {
 // Update the IR receiver and sender command pins.  The IR command
 // table is only shown if we have at least one of these enabled.
 $("#irTransmitter, #irReceiver").change(function() {
-    var ena = $("#irTransmitter").children(".pinval").val() != "Non connecté"
-              || $("#irReceiver").children(".pinval").val() != "Non connecté";
+    var ena = $("#irTransmitter").children(".pinval").val() != "No connected"
+              || $("#irReceiver").children(".pinval").val() != "No connected";
     slideToggle($("#irCommands"), ena, loadingConfig ? 0 : 250, false);
 });
 
@@ -807,14 +807,14 @@ $("#irTransmitter, #irReceiver").change(function() {
 // test buttons on the code slots only if we have an IR transmitter
 // configured.
 $("#irTransmitter").change(function() {
-    var ena = $("#irTransmitter").children(".pinval").val() != "Non connecté";
+    var ena = $("#irTransmitter").children(".pinval").val() != "No connected";
     $("#buttonTab .keyIR, #irCommands .irTest").toggle(ena);
 });
 
 // Show the IR learn buttons on the code slots only if we have an
 // IR receiver configured.
 $("#irReceiver").change(function() {
-    var ena = $("#irReceiver").children(".pinval").val() != "Non connecté";
+    var ena = $("#irReceiver").children(".pinval").val() != "No connected";
     $("#irCommands .irLearn").toggle(ena);
 });
 
@@ -7272,7 +7272,7 @@ $(function() {
                 if (v == "nc") {
                     // NC - matches Not Connected always, or matches other conditions
                     pinFilter = (function(f) {
-                        return function(p, name) { return name == "Non connecté" || f(p, name); };
+                        return function(p, name) { return name == "No connected" || f(p, name); };
                     })(pinFilter);
                 }
             });
@@ -8692,7 +8692,7 @@ function pinsInUse()
         {
             // get the pin by name; proceed if we're connected to a pin
             var v = self.children(".pinval").val();
-            if (v != "Non connecté" && gpioPinsByName[v])
+            if (v != "No connected" && gpioPinsByName[v])
             {
                 // add an entry for the pin name
                 add(self, v);
