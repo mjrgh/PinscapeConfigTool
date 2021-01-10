@@ -38,7 +38,7 @@ namespace PinscapeConfigToolUpdater
             if (parentPid < 0 || zipfile == null || mainprog == null)
             {
                 MessageBox.Show(
-                    "This updater is designed to be run automatically from the Pinscape Config Tool.",
+                    "Ce programme de mise à jour est conçu pour être exécuté automatiquement à partir de Pinscape Config Tool.",
                     caption);
                 return;
             }
@@ -60,7 +60,7 @@ namespace PinscapeConfigToolUpdater
         }
 
         // message box caption
-        public static String caption = "Pinscape Config Tool Auto Update";
+        public static String caption = "Mise à jour automatique de Pinscape Config Tool";
 
     }
 }
