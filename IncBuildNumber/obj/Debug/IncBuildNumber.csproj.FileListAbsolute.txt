@@ -1,0 +1,6 @@
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\IncBuildNumber\bin\Debug\IncBuildNumber.exe.config
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\IncBuildNumber\bin\Debug\IncBuildNumber.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\IncBuildNumber\bin\Debug\IncBuildNumber.pdb
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\IncBuildNumber\obj\Debug\IncBuildNumber.csproj.CoreCompileInputs.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\IncBuildNumber\obj\Debug\IncBuildNumber.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\IncBuildNumber\obj\Debug\IncBuildNumber.pdb
