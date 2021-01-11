@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Bouton Shift</title>
+</head>
+<body class="help">
+<h1>
+   Bouton Shift
+</h1>
+
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+
+<div>
+   Vous pouvez désigner un bouton du pincab comme <b> bouton Shift local </b>.
+   Ce n'est pas lié au clavier de votre PC - ce n'est pas <i> la </i>
+   Touche Majuscule. Mais c'est un concept similaire : il vous permet de donner à chaque
+   bouton physique sur votre pincab une deuxième affectation de clé que
+   vous sélectionnez en maintenant enfoncé le bouton Shift local et en appuyant sur
+   l'autre bouton.
+</div>
+
+<div>
+   C'est génial si vous souhaitez minimiser l'encombrement des boutons sur
+   votre pincab, car elle vous permet de doubler le nombre de commandes PC,
+   vous pouvez accéder avec vos boutons existants.
+</div>
+
+<div>
+   Pour configurer un bouton Shift, entrez le numéro de bouton que vous
+   voulez utiliser comme décalage, ou cliquez simplement sur l'icône de décalage
+   (<img src="ShiftButtonHere.png" style= "vertical-align:middle;">)
+   dans la ligne du bouton dans le tableau.
+</div>
+
+<div>
+   Une fois qu'un bouton Shift est attribué, chaque bouton du tableau
+   vous permettra de saisir deux affectations de clés: une affectation de clé régulière
+   et une affectation de clé décalée. La clé ordinaire est envoyée au PC
+   lorsque vous appuyez sur le bouton <i> sans </i> appuyer sur le bouton Shift.
+   La touche décalée est envoyée lorsque vous appuyez sur le bouton tout en maintenant
+   appuyez sur le bouton Shift.
+</div>
+
+<h2>Mode Options</h2>
+
+<div>
+   Le bouton Shift lui-même peut avoir une affectation de touche régulière, juste
+   comme n'importe quel autre bouton. (Il ne peut pas avoir
+   d'affectation de touches décalées, pour des raisons évidentes.)
+</div>
+<div>
+   La gestion de l'affectation des touches du bouton Shift est un peu
+   rusé. Cela implique des compromis, donc le contrôleur vous permet
+   de décidez la manière dont vous voulez le gérer avec le bouton Shift <b>
+   réglage du mode </b>.
+</div>
+<div>
+   <b> Mode Shift OU Clé : </b> C'est la valeur par défaut. Dans ce mode, le
+   Le bouton Shift ne sert qu'a <b> une </b> de ses deux fonctions sur chacun
+   appuyez : c'est <b> soit </b> le bouton Shift, <b> ou </b> c'est un
+   bouton ordinaire avec une affectation de clé. Lequel cela dépend
+   entièrement selon que vous appuyez ou non sur une autre touche pendant que le
+   bouton Shift est enfoncé.
+</div>
+<div>
+   Pour que cela fonctionne, le bouton Shift ne peut pas envoyer sa touche attribuée
+   touche assignée au PC immédiatement lorsque vous appuyez dessus, de la même 
+   manière qu'un bouton normal le serait. Au lieu de cela, il faut attendre de voir
+   si vous appuyez sur une autre touche pendant que le bouton Shift est enfoncé.
+   Voici comment il décide de ce qu'il faut faire ensuite:
+
+   <ul>
+	<li>Si vous appuyez sur le bouton Shift, puis relâchez sans
+	    appuyer sur n'importe quel autre bouton dans l'intervalle, le contrôleur suppose
+	    que vous utilisiez le bouton Shift pour son attribution de touche ordinaire
+	    plutôt que sa fonction Shift. Dans ce cas, le bouton Shift
+	    envoie sa clé attribuée au PC <i> lorsque vous la relâchez </i>.
+	    Il doit attendre jusque-là, car c'est la seule façon dont il sait
+	    que vous n'allez pas appuyer sur un autre bouton.
+
+	<li>D'autre part, si vous appuyez sur un autre bouton pendant que
+	    le bouton Shift est enfoncé, le contrôleur décide que vous avez appuyé
+	    sur le bouton Shift pour sa fonction Shift. Dans ce cas, il
+	    <b> n'envoie pas </b> la clé du bouton Shift au PC pendant
+	    cette pression, même lorsque vous relâchez le bouton.
+   </ul>
+
+   Ce mode est le mode par défaut car il vous permet d'utiliser n'importe quel bouton en toute
+   sécurité comme le bouton Shift sans aucun effet secondaire indésirable. Par exemple,
+   Supposons que vous ayez affecté le bouton « Quitter » comme bouton Shift.
+   Normalement, appuyer sur ce bouton met fin au jeu actuel et retourne au menu de sélection.
+   Lorsque vous utilisez Exit comme Shift, vous ne voulez probablement pas que cela se produise.
+   Ce serait ennuyeux si vous vouliez juste régler le volume audio, disons, et il est également
+   sorti du jeu. Le mode "Shift OR Key" évite les effets secondaires indésirables tels que
+   ceci en sautant le mappage de touches régulier à chaque fois que la fonction Shift
+   est utilisé. Le compromis est que la pression normale sur une touche est retardée jusqu'à
+   ce que vous relâchez le bouton.
+</div>
+<div>
+   <b>Mode Shift AND Clé : </b> Dans ce mode, le bouton envoie son mappage de touches ordinaire
+   à chaque pression, <i> en plus </i> de sa fonction Shift. Puisque la clé est toujours envoyée,
+   il n'y a pas besoin d'attendre de voir si vous allez appuyer sur un autre bouton.
+   Cela permet au contrôleur d'envoyer la clé mappée immédiatement lorsque vous appuyez sur le
+   bouton, comme pour n'importe quel autre bouton.
+</div>
+<div>
+   Ce mode élimine le délai d'envoi de la clé que vous obtenez
+   en mode "Shift OR Key" - c'est la façon dont la clé n'est pas envoyée avant que vous
+   <i> relâchiez </i> le bouton plutôt que lorsque vous appuyez pour la première fois
+   sur le bouton. Certaines personnes trouvent ce délai déroutant ou simplement ennuyeux.
+   Si vous n'aimez pas le délai, ce mode vous permet de vous en débarrasser.
+</div>
+<div>
+   Le compromis est que le bouton ne peut pas être «intelligent» pour savoir s'il doit 
+   ou ne doit pas envoyer sa touche mappée à chaque pression. Il l'envoie juste à chaque fois.
+   Donc, si vous utilisez ce mode, veillez simplement à sélectionner un bouton qui n'aura pas
+   d'effets secondaires indésirables lorsqu'il envoie sa clé mappée.
+</div>   
+
+</body>
+</html>

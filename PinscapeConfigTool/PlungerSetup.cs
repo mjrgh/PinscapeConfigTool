@@ -239,9 +239,9 @@ namespace PinscapeConfigTool
             // update the jitter filter units label
             String units =
                 pixelSensor & edgeSensor ? "Pixels" :
-                barCodeSensor ? "Le code à barres s'arrête" :
-                "Unités d'appareils natifs";
-            lblJitterUnits.Text = "(" + units + ", 0 to " + posScale + "; utiliser 0 pour désactiver)";
+                barCodeSensor ? "Bar code stops" :
+                "Native device units";
+            lblJitterUnits.Text = "(" + units + ", 0 à " + posScale + "; utiliser 0 pour désactiver)";
 
             // Figure the pixel-to-luminance mapping.  By default, this is
             // just a linear mapping from raw pixel brightness levels to 
@@ -527,7 +527,7 @@ namespace PinscapeConfigTool
                         g.DrawRectangle(plg, lo, y, hi - lo - 2, rht - 2);
 
                     // label it
-                    String msg1 = "Jitter Window ";
+                    String msg1 = "Fenêtre de gigue ";
                     String msg2 = String.Format("(Raw={0})", rawPos);
                     using (Font font = SystemFonts.DefaultFont)
                     {
@@ -707,8 +707,8 @@ namespace PinscapeConfigTool
             if (msg.Count != 0)
             {
                 if (MessageBox.Show("Vous avez changé le " + msg.SerialJoin() + " réglages."
-                    + " Souhaitez-vous enregistrer le nouveau paramètre "+ (msg.Count> 1?" S ":" ")
-                    + "sur l'appareil?",
+                    + " Souhaitez-vous enregistrer le nouveau paramètre" + (msg.Count> 1 ? "s" : "")
+                    + " sur l'appareil?",
                     "Outil de configuration Pinscape", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     // Yes, save - send the updated settings to the device
@@ -1096,7 +1096,7 @@ namespace PinscapeConfigTool
                                 txtInfo_text = String.Format(
                                     "Pixels: {0}, Orientation: {1}, Edge pos: {2}, Release time: {3} ms",
                                     newnpix,
-                                    orientation == 1 ? "Standard" : orientation == -1 ? "Inversé " : " Inconnu",
+                                    orientation == 1 ? "Standard" : orientation == -1 ? "Inversé" : "Inconnu",
                                     reportedPos == 0xFFFF ? "Pas détecté" : reportedPos.ToString(),
                                     tRelease);
                             }
@@ -1113,7 +1113,7 @@ namespace PinscapeConfigTool
                                 txtInfo_text = String.Format(
                                     "Pixels: {0}, Orientation: {1}, Position du piston: {2}, Temps de relâchement: {3} ms",
                                     newnpix,
-                                    orientation == 1 ? "Standard" : orientation == -1 ? "Inversé " : " Inconnu",
+                                    orientation == 1 ? "Standard" : orientation == -1 ? "Inversé" : "Inconnu",
                                     reportedPos == 0xFFFF ? "Pas détecté" : reportedPos.ToString(),
                                     tRelease);
                             }
@@ -1124,7 +1124,7 @@ namespace PinscapeConfigTool
                                     (int)Math.Round(numZero * 100.0 / npix));
 
                             if (axcTime > 0)
-                                txtInfo2_text += ", Auto-exposure time " + axcTime + "us";
+                                txtInfo2_text += ", Temps d'exposition automatique " + axcTime + "us";
 
                             // line 3 - scan time
                             txtInfo3_text = times;
@@ -1210,19 +1210,19 @@ namespace PinscapeConfigTool
             {
                 // calibration is in progress - show instructions
                 lblCal.Text = "Calibration en cours. Cela fonctionnera "
-                    + "pendant environ 15 secondes. Pendant son exécution: \r\n\r\n"
-                    + "• Tirez le piston vers l'arrière \r\n"
-                    + "• Tenez un instant, puis relâchez \r\n"
-                    + "• Attendez qu'il s'arrête \r\n"
-                    + "• Répétez plusieurs fois comme vous le souhaitez \r\n";
+                    + "pendant environ 15 secondes. Pendant son exécution:\r\n\r\n"
+                    + " • Tirez le piston vers l'arrière\r\n"
+                    + " • Tenez un instant, puis relâchez\r\n"
+                    + " • Attendez qu'il s'arrête\r\n"
+                    + " • Répétez plusieurs fois comme vous le souhaitez\r\n";
                 btnCal.Enabled = false;
             }
             else if (calStarted)
             {
                 // calibration done
-                lblCal.Text = "Calibration terminée. \R\n\r\n"
-                    + "Si vous souhaitez répéter le processus, assurez-vous que le piston"
-                    + "est au repos à sa position normale de stationnement, puis appuyez sur le bouton"
+                lblCal.Text = "Calibration terminée.\r\n\r\n"
+                    + "Si vous souhaitez répéter le processus, assurez-vous que le piston "
+                    + "est au repos à sa position normale de stationnement, puis appuyez sur le bouton "
                     + "Bouton Calibrer.";
                 btnCal.Enabled = true;
             }
@@ -1230,12 +1230,12 @@ namespace PinscapeConfigTool
             {
                 // we haven't done the first calibration with this dialog yet
                 lblCal.Text = "Calibrez le capteur lorsque vous "
-                    + "l'installez d'abord, et chaque fois que vous ajustez sa position."
-                    + "Vous devez également recalibrer si la flèche \" Parc \ "est affichée"
+                    + "l'installez d'abord, et chaque fois que vous ajustez sa position. "
+                    + "Vous devez également recalibrer si la flèche \"Park\" est affichée "
                     + "ci-dessus ne correspond pas à la position de repos réelle du piston."
                     + "\r\n\r\n"
-                    + "Pour calibrer, assurez-vous que le piston est au repos"
-                    + "position de stationnement normale, puis appuyez sur Calibrer et suivez"
+                    + "Pour calibrer, assurez-vous que le piston est au repos "
+                    + "position de stationnement normale, puis appuyez sur Calibrer et suivez "
                     + "les instructions à l'écran.";
                 btnCal.Enabled = true;
             }
@@ -1354,7 +1354,7 @@ namespace PinscapeConfigTool
                     pixFile = new StreamWriter(new FileStream(dlg.FileName, FileMode.Create), Encoding.ASCII);
 
                     // write the file header
-                    pixFile.WriteLine("# Captured sensor pixels");
+                    pixFile.WriteLine("# Pixels du capteur capturés");
                     pixFile.WriteLine("# " + DateTime.Now);
                     pixFile.WriteLine("#");
                     pixFile.WriteLine("# Time(ms)   Position   Pixels...");

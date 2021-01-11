@@ -1,0 +1,1532 @@
+html {
+    min-height: 100%;    /* make document at least as tall as viewport */
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    height: 100%;        /* make body element match height of html element */
+    background: #ffffff;
+    color: #000000;
+    font: 10pt/14pt Segoe UI;
+    margin: 0px;
+    padding: 16px;
+}
+body.help {
+    font: 10pt/15pt SegoecUI, Verdana;
+}
+
+body > div {
+}
+
+div {
+    margin: 1em 0px;
+}
+
+h1, h2, h3 {
+}
+
+h1 img, h2 img, h3 img {
+    vertical-align: middle;
+}
+
+h1 {
+    padding: 1em 16px;
+    margin: -16px -16px 24px -16px;
+    font: bold 12pt/14pt Verdana;
+    border-bottom: 1px solid #0000ff;
+}
+
+h2 {
+    font: bold 10pt/12pt Verdana;
+}
+
+h3 {
+    font: bold 9pt/11p Verdana
+}
+
+div.warning {
+    text-align: center;
+    margin: 2em 1em;
+    padding: 2em;
+    background: #ffff80;
+    box-shadow: 2px 2px 8px #804000;
+    border: 1px solid #e0e020;
+    border-radius: 4px;
+}
+div.warning > p:first-child {
+    font-weight: bold;
+    font-size: 110%;
+    margin-top: 0px;
+}
+div.warning > p:last-child {
+    margin-bottom: 0px;
+}
+
+ul > li, ol > li {
+    margin: 1em 0px;
+}
+
+div#nav {
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background: #f8f8f8;
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0px 0px 10px #808080;
+    height: 1em;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    z-index: 10000;
+    text-align: center;
+    white-space: nowrap;
+    display: table;
+}
+div#navproxy {
+    height: 3.5em;
+}
+#nav div {
+    margin: 0px;
+    padding: 0px;
+}
+#nav > div {
+    padding: 10px 0px;
+    display: table-cell;
+    vertical-align: middle;
+}
+#nav div.left {
+    display: inline-block;
+    position: absolute;
+    left: 1ex;
+}
+#nav div.right {
+    display: inline-block;
+    position: absolute;
+    right: 1ex;
+}
+
+#nav a.button, #nav a.iconButton {
+    display: inline-block;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 3px;
+}
+#nav img {
+    vertical-align: middle;
+    padding: 0px;
+    margin: 0px;
+}
+#nav a.iconButton {
+    margin-top: -6px;
+}
+#nav .navSpacer {
+    height: 1.75em;
+}
+a.iconButton {
+    padding: 3px;
+    border: 1px solid transparent;
+}
+a.iconButton:hover {
+    border: 1px solid #800080;
+    background: #00ffff;
+}
+a.iconButton:active {
+    border: 1px solid #ff00ff;
+    background: #ff0000;
+}
+
+a.silent {
+    text-decoration: none;
+}
+a.silent:hover {
+    text-decoration: underline;
+}
+
+.popupMenu {
+    display: none;
+    position: absolute;
+    z-index: 10000;
+    background: #f8f8f8;
+    cursor: pointer;
+    border: 1px solid #a0a0a0;
+    box-shadow: 1px 1px 4px #000000;
+}
+.popupMenu div, #nav .popupMenu div {
+    padding: 1ex;
+    font-weight: bold;
+}
+.popupMenu div:hover {
+    background: #00ffff;
+}
+.popupMenu div:active {
+    background: #0080ff;
+}
+.popupMenu hr {
+    margin: 0px;
+    border: 1px solid #d0d0d0;
+}
+
+a.tbButton {
+    display: inline-block;
+    padding: 3px 12pt;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 8pt;
+    text-decoration: none;
+    text-align: center;
+}
+a.tbButton:hover {
+    background: #00ffff;
+    border-color: #808020;
+}
+a.tbButton:active {
+    background: #00ffff;
+    border-color: #808020;
+}
+
+a.button {
+    display: inline-block;
+    white-space: nowrap;
+    color: #900090;
+    padding: .5ex 1em;
+    margin: 1ex 1em;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 3px;
+    border: 1px solid #202020;
+}
+
+a.button.iconic {
+    border-color: transparent;
+}
+
+
+div > a.button {
+    margin-left: 0px;
+}
+
+a.button:hover {
+    background: #00ffff;
+    border-color: #808020;
+    color: #800080;
+}
+
+a.button:active {
+    background: #00ffff;
+    border-color: #808020;
+    color: #ff00ff;
+}
+
+div.devBtnGroup {
+    display: inline-block;
+    margin: 0px .75em;
+}
+div.devBtnGroup a.button {
+    margin: 1ex .25ex;
+}
+
+div.working {
+    color: #808080;
+}
+
+div#devlistmain {
+    margin: 1em 2em;
+}
+
+div.devlistitem {
+    padding: .5ex 1em;
+}
+div.devlistitem > div {
+}
+
+.devlistitem.first {
+    border-left: 8px solid #ff8000;
+}
+
+.devlistitem.second {
+    border-left: 8px solid #ff00ff;
+}
+
+.devlistitem.third {
+    border-left: 8px solid #00ffff;
+}
+
+.devlistitem.fourth {
+    border-left: 8px solid #00ff00;
+}
+
+.firmwareUpdateNotice {
+	display: none;
+	color: #008000;
+	font-weight: bold;
+}
+
+.iconWithTitle {
+    white-space: nowrap;
+    display: inline-block;
+    border: 2px solid #d0d0d0;
+    border-radius: 3px;
+    margin: 1ex;
+    padding: 1ex 1em;
+    font-size: 8pt;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 13ex;
+}
+.iconWithTitle > img {
+    margin: 1em 1ex 1ex 1ex;
+}
+.iconWithTitle.selected {
+    border: 2px solid #0000ff;
+    background: #e0ffff;
+}
+.iconWithTitle:hover {
+    border: 2px solid #000000;
+    background: #00ffff;
+}
+
+hr {
+    margin: 2em 0px;
+    clear: both;
+}
+
+.hider {
+    height: 0px;
+    overflow: hidden;
+    margin-top: 1ex;
+}
+
+.shower {
+    padding-left: 2em;
+}
+
+.reHideButton {
+	padding-left: 2em;
+}
+
+table.radio {
+    margin: 1em auto;
+}
+
+table.radio td {
+    text-align: center;
+    vertical-align: bottom;
+    padding: 1em;
+    border: 1px solid transparent;
+}
+table.radio td.selected {
+    border: 1px solid #ff00ff;
+}
+
+img.sectionIcon {
+    float: right;
+    margin:  0px 0px 1em 2em;
+}
+
+.hilite {
+    font-weight: bold;
+    color: #800080;
+}
+
+table.inputs {
+}
+
+table.inputs > tbody > tr > td:first-child {
+    text-align: right;
+    padding-right: 2em;
+}
+table.inputs > tbody > tr > td:nth-child(3) {
+    font-style: italic;
+}
+table.inputs > tbody > tr > td {
+    vertical-align: middle;
+}
+
+div.twocol {
+    display: table-row;
+}
+
+div.twocol > div {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0px 1em;
+}
+div.twocol > div:first-child {
+    padding-left: 0px;
+}
+div.twocol > div:last-child {
+    padding-right: 0px;
+}
+
+div.indented {
+    margin-left: 2em;
+}
+
+#IRCommandSelector {
+    margin: 0px;
+    position: absolute;
+	display: inline-block;
+}
+#IRCommandSelector > div {
+    margin: 0px auto;
+    padding: 0px;
+}
+#IRCommandSelector > div > div:first-child {
+	margin: 0px;
+	padding: 0px;
+	height: 8em;
+}
+#IRCommandList {
+	position: absolute;
+	display: inline-block;
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	background: #ffffff;
+	border: 1px solid #e0e0e0;
+	box-shadow: 2px 2px 10px #808080;
+	overflow-y: auto;
+}
+#IRCommandList div {
+	white-space: nowrap;
+	padding: 1ex 2em;
+	margin: 0px;
+	cursor: default;
+}
+#IRCommandList div:hover {
+	background: #0000ff;
+	color: #ffffff;
+}
+#IRCommandList .IRidx {
+}
+#IRCommandList .IRCode {
+	padding: 0px 1em;
+}
+#IRCommandList .IRDesc {
+}
+#IRCommandList .IRCheck {
+	display: inline-block;
+	width: 2em;
+	text-align: center;
+}
+
+#keySelector {
+    margin: 0px;
+    position: absolute;
+    width: 100%;
+}
+#keySelector > div {
+    margin: 0px auto;
+    padding: 0px;
+    box-sizing: border-box;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    box-shadow: 2px 2px 10px #808080;
+    background-color: #f0f0f0;
+}
+#keySelector > div > div:first-child {
+    margin: 0px;
+    padding: 0px;
+    height: 280px;
+}
+#oskeyboard, #osjoystick, #osunused, #osspecial {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    height: 280px;
+    overflow: hidden;
+    width: 360px;
+}
+    
+#oskeyboard {
+    background: url(kb.png) 4px 4px no-repeat;
+    width: 831px;
+}
+#osunused > div:first-child, #osspecial > div:first-child {
+    margin: 1em 1em 50px 1em;
+}
+#osunused, #osspecial {
+    text-align: center;
+}
+.keycapBtn {
+    position: absolute;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 4px solid transparent;
+    border-radius: 4px;
+}
+.keycapBtn:hover {
+    border-color: #ffff00;
+}
+.keycapBtn.selected {
+    border-color: #0000ff;
+}
+.keycapBtn.selected:hover {
+    border-color: #00ffff;
+}
+#keytype {
+    height: 36px;
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px solid #d0d0d0;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background: #ffffff;
+    text-align: center;
+}
+
+#keytype > img {
+    margin: 0px 1em;
+    border: 3px solid transparent;
+    border-radius: 3px;
+}
+#keytype > img:hover {
+    border: 3px solid #e0e0e0;
+}
+#keytype > img.selected {
+    border: 3px solid #0000ff;
+}
+
+#osjoystick {
+}
+#osjoystick div.topfill {
+    height: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+#osjoystick div.jsBtnBox {
+    width: 288px;
+    margin: 0px auto;
+    border: 2px solid #c0c0c0;
+    border-radius: 4px;
+    background: #d0d0d0;
+}
+#osjoystick div.jsBtnRow {
+    margin: 0px;
+    padding: 0px;
+}
+.jsBtn {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 2px 2px;
+    padding-top: 8px;
+    width: 32px;
+    height: 32px;
+    background: url(jskey.png) -32px 0px no-repeat;
+    text-align: center;
+    cursor: pointer;
+}
+.jsBtn:hover {
+    background-position: -64px 0px;
+    font-weight: bold;
+}
+.jsBtn.selected {
+    background-position: 0px 0px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#autoCenterRadioButtons > div {
+	margin: .5ex 2em;
+}
+
+
+.pinselect, .expBoardAlt {
+    cursor: pointer;
+}
+.outPortPin, .dispPinName {
+	cursor: pointer;
+}
+
+#pinSelector {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    height: 428px;
+    background: #e0e0e0;
+    border: 2px solid #808080;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px #606060;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#pinSelector .pinSelectorPage {
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    white-space: nowrap;
+    width: 496px;
+}
+.sizer {
+    visibility: hidden;
+    white-space: nowrap;
+}
+
+#pinTypeSelector {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 100px;
+    height: 100%;
+    background: #f0f0f0;
+    border-left: 1px solid #b0b0b0;
+    overflow-y: auto;
+    font-size: 8pt;
+    cursor: pointer;
+}
+#pinTypeSelector img {
+    border-radius: 4px;
+}
+#pinTypeSelector > div {
+    padding: 8px 0px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    margin: 0px;
+}
+#pinTypeSelector > div:hover {
+    background: #00ffff;
+}
+#pinTypeSelector > div.selected {
+    background: #ffffff;
+    border: 2px solid #0000a0;
+}
+#pinTypeSelector > div.selected:hover {
+    background: #00ffff;
+    border: 2px solid #0000ff;
+}
+
+.pinlist {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    border-right: 1px solid #b0b0b0;
+    background: white;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 0px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    min-width: 20ex;
+}
+.pinlist > div {
+    margin: 0px;
+    padding: 3px;
+    cursor: default;
+    display: none;
+}
+.pinlist > div.available {
+    display: block;
+}
+.pinlist > div.current {
+    font-weight: bold;
+}
+.pinlist > div.inuse {
+    color: #808080;
+}
+.pinlist > div.pwmInuse {
+    color: #900090;
+}
+.pinlist > div.hover {
+    background: #d0d0d0;
+}
+.pinlist > div.selected {
+    background: #0000ff;
+    color: #ffffff;
+}
+.pinlist > div.selected.hover {
+    background: #0000ff;
+    color: #ffff00;
+}
+.pinlist > div.chipPin {
+    padding-left: 1em;
+    display: block;
+}
+div.chipNo {
+    background: #f8f8f8;
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0px;
+    padding: 3px;
+    display: block;
+    font-weight: bold;
+}
+div.chipNo.header {
+    display: inline-block;
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 1;
+    border-top-left-radius: 8px;
+    width: 100%;
+}
+
+/*
+ * Pin selector image wrapper structure:
+ *
+ *   <div class="pinimage">
+ *     <div>                       <-- wrapper div
+ *       <img>                     <-- pin image
+ *       <div class="pinoverlay">  <-- pin overlay wrapper
+ *         pin overlays
+ *       </div>
+ *     </div>
+ *   </div>
+ */
+.pinimage {
+    border: none;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+    width: 345px;
+}
+.kl25zPinSelector .pinimage {
+    margin: 0px;
+    padding: 8px 32px;
+}
+.tlc5940PinSelector .pinimage, .hc595PinSelector .pinimage, .tlc59116PinSelector .pinimage {
+    padding: 4px 32px;
+}
+.expBoardPinSelector .pinimage {
+    padding: 4px 0px;
+}
+.aioBoardPinSelector .pinimage {
+    padding: 4px 0px;
+}
+.liteBoardPinSelector .pinimage {
+    padding: 4px 0px;
+}
+
+.pinimage > div {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+}
+.pinimage > div > img {
+    margin: 0px;
+    padding: 0px;
+}
+
+.pinLegend {
+    position: absolute;
+    bottom: 32px;
+    left: -32px;
+    padding: 0px;
+    margin: 0px;
+}
+.expBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+.aioBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+.liteBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+
+
+.pinimage .pinoverlay {
+    display: inline-block;
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    top: -8px;
+    left: -8px;
+}
+
+#kl25zOnBoardLED {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    height: 40px;
+    width: 40px;
+    left: 155px;
+    top: 124px;
+    background: url(onBoardLED.png) 0px 0px no-repeat;
+    pointer-events: none;
+}
+
+.chipIndexer {
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    text-align: center;
+    margin: 0px;
+    width: 100%;
+    padding: 0px 4px;
+}
+.chipIndexer.background {
+    opacity: .5;
+    background: #c0c0c0;
+    height: 2.5em;
+    padding: 0px;
+}
+.chipIndexer div {
+    display: inline-block;
+    margin: 0px .75ex;
+    padding: .5ex 1ex;
+    background: #e8e8e8;
+    border: 2px solid #008080;
+    border-radius: 5px;
+    cursor: default;
+}
+.chipIndexer div:hover {
+    background: #00ffff;
+    border-color: #000080;
+}
+.chipIndexer div.selected {
+    background: #0000ff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.pinButton {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    padding: 0px;
+    margin: 0px;
+    background-position: 0px 0px;
+}
+
+.kl25zPinSelector .pinButton {
+    background-image: url(pinSprite.png);
+}
+
+.tlc5940PinSelector .pinoverlay, .tlc59116PinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -5px;
+    top: -10px;
+}
+.tlc5940PinSelector .pinButton, .tlc59116PinSelector .pinButton {
+    background-image: url(pinSprite5940.png);
+    width: 10px;
+    height: 20px;
+}
+
+.hc595PinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -10px;
+    top: -10px;
+}
+.hc595PinSelector .pinButton {
+    background-image: url(pinSprite595.png);
+    width: 20px;
+    height: 20px;
+}
+
+.expBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
+.aioBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
+.liteBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
+.expBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.aioBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.liteBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+
+.pinButton.enabled {
+}
+	
+.pinButton.available.inuse {
+    background-position: 0px -20px;
+}
+.pinButton.available.pwmInuse {
+    background-position: 0px -40px;
+}
+.pinButton.available {
+    background-position: 0px -60px;
+}
+.pinButton.available.selected {
+    background-position: 0px -80px;
+}
+.pinButton.available.hover {
+    background-position: 0px -100px;
+}
+.pinButton.available.hover.selected {
+    background-position: 0px -120px;
+}
+
+#virtualOutputSelector > div {
+    margin: 1em;
+    text-align: center;
+    white-space: normal;
+}
+#virtualOutputSelector > div:first-child {
+    padding: 50px 1em;
+}
+
+#unassignedOutputSelector .remarks {
+    padding: 1em;
+    text-align: center;
+    white-space: normal;
+}
+#unassignedOutputSelector .pinlist {
+    width: 100%;
+    border-top-left-radius: 0px;
+    border-top: 1px solid #808080;
+}
+
+.pinval {
+    display: inline-block;
+    vertical-align: top;
+    padding: 3px 5px;
+    padding-right: 20px;
+    width: 15ex;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    font: 9pt Arial;
+	cursor: pointer;
+}
+.pinwarn {
+    visibility: hidden;
+}
+.pinwarn.active {
+    visibility: visible;
+    cursor: pointer;
+}
+.pinwarn img {
+    margin: 0px 1em;
+    vertical-align: middle;
+}
+
+.pinlabel.active, .keylabel.active {
+    background: #00ffff;
+    color: #000080;
+}
+tr.openDlgRow {
+    background: #00ffff;
+}
+
+.windowCover {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    display: none;
+    z-index: 1;
+}
+.windowCoverSemi {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    z-index: 2;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: .1;
+    background: #000000;
+}
+
+#loadingOverlay {
+    position: fixed;
+    z-index: 3;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+}
+#loadingOverlay > div {
+    display: table;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+}
+#loadingOverlay > div > div {
+    display: table-cell;
+    height: 100%;
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
+}
+#loadingOverlay > div > div > div {
+    display: inline-block;
+    padding: 8em 12em;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    box-shadow: 2px 2px 10px #a0a0a0;
+}
+
+input {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    font: 9pt Arial;
+    padding: 3px 5px;
+}
+select {
+    border-radius: 2px;
+    border: 1px solid #e0e0e0;
+}
+option {
+    padding: 1px 8px;
+}
+
+#buttonTab {
+    border-collapse: collapse;
+}
+#buttonTab th {
+    padding: 1ex 4px;
+}
+
+#buttonTab td {
+    border: none;
+    padding: 0px 4px;
+    margin: 0px;
+    border: none;
+    text-align: center;
+    vertical-align: middle;
+}
+#buttonTab td.wider {
+    padding: 0px 1em;
+}
+#buttonTab span {
+    vertical-align: middle;
+}
+
+#buttonTab td.buttonCol {
+    white-space: nowrap;
+}
+.shiftRow .buttonCol.shifted {
+	visibility: hidden;
+}
+
+#buttonTab td.buttonCol.shifted {
+	border-left: 1px dotted #808080;
+}
+
+.buttonCol .keyNightMode {
+    background: url(nightModeWayOff.png) no-repeat;
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    margin-left: 4px;
+	cursor: pointer;
+}
+.buttonCol .keyNightMode:hover {
+    background: url(nightModeOff.png) no-repeat;
+}
+.buttonCol.nightMode .keyNightMode {
+    background: url(nightModeSmall.png) no-repeat;
+}
+
+.keymappingContainer {
+    display: inline-block;
+	width: 42px;
+	text-align: center;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+.keymapping {
+    display: inline-block;
+	width: 42px;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    background: 0px 0px no-repeat;
+    cursor: pointer;
+}
+.keymapping.asKey, .keymapping.asMediaKey {
+    background-image: url(kb.png);
+}
+.keymapping.asKeyName {
+}
+.keymapping.asMediaKey {
+}
+.keymapping.asNone {
+    background-image: url(unusedButton.png);
+}
+.keymapping.asJoystickButton {
+    background-image: url(joystickButton.png);
+    color: #ffffff;
+}
+.keyname {
+    font-size: 10pt;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+#irCommands {
+	padding-top: 2em;
+}
+
+#irCommandTab td {
+	vertical-align: middle;
+	text-align: center;
+	white-space: nowrap;
+	padding: 0px 1em;
+}
+#irCommandTab td.irCode {
+	padding-right: 0px;
+}
+#irCommandTab td.irCodeCtls {
+	padding-left: 0px;
+}
+
+#irCommandTab .irLearn, #irCommandTab .irTest {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	border-radius: 3px;
+	cursor: pointer;
+	border: 1px solid transparent;
+	background: center center no-repeat;
+}
+#irCommandTab .irLearn:hover, #irCommandTab .irTest:hover {
+	border: 1px solid #00b0ff;
+	background-color: #ffff00;
+}
+
+#irCommandTab .irLearn {
+	background-image: url("irLearn.png");
+}
+#irCommandTab .irTest {
+	background-image: url("irTestButton.png");
+}
+#irCommandTab .irTest.sending {
+	background-image: url("irTestSending.png");
+	border: 1px solid #ff0000;
+}
+
+#irCommandTab .irTVON {
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	background: url("tvOnButtonOff.png") center center no-repeat;
+	border-radius: 3px;
+	border: 1px solid transparent;
+	cursor: pointer;
+}
+#irCommandTab .irTVON:hover, #irCommandTab .irTVON.active {
+	background-image: url("tvOnButton.png");
+}
+#irCommandTab .irTVON:hover {
+	border: 1px solid #00b0ff;
+	background-color: #ffff00;
+}
+
+#irCommandTab .irCode input.error {
+	background-color: #ffd0d0;
+}
+
+#buttonTab .keyIR {
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 0px;
+	margin: 0px;
+	cursor: pointer;
+	width: 28px;
+}
+#buttonTab .keyIR .label {
+	display: table-cell;
+	box-sizing: border-box;
+	background: url(irButtonOff.png) center center no-repeat;
+	height: 28px;
+	width: 28px;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 115%;
+	font-weight: bold;
+}
+#buttonTab .keyIR .label.active, #buttonTab .keyIR .label:hover {
+	background: url(irButton.png) center center no-repeat;
+}
+
+#buttonTab td.keyusage, #buttonTab th.keyusage {
+    text-align: left;
+    padding: 0px;
+    padding-left: 1ex;
+	white-space: nowrap;
+}
+#buttonTab td.keyflags {
+    padding: 0px;
+}
+#buttonTab td.keyflags img {
+	cursor: pointer;
+}
+#buttonTab td.keyremarks {
+    padding: 0px;
+}
+#buttonTab .pinselect {
+	white-space: nowrap;
+}
+#buttonTab td {
+	vertical-align: middle;
+}
+
+.shiftCol span {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+}
+.shiftRow .shiftCol span, .shiftRow .shiftCol span:hover {
+    background: url(ShiftButton.png) no-repeat;
+}
+.shiftCol span {
+    background: url(ShiftButtonHereFaint.png) no-repeat;
+}
+.shiftCol span:hover {
+    background: url(ShiftButtonHere.png) no-repeat;
+}
+
+#zbFields td:nth-child(3) {
+    padding-left: 1em;
+}
+
+#outputTab {
+    border-collapse: collapse;
+    border: none;
+}
+
+#outputTab td {
+    padding: 0px 1ex;
+    margin: 0px;
+    border: none;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    white-space: nowrap;
+}
+#outputTab td.outPortPin {
+    padding: 0px;
+}
+#outputTab td.outPortRemarks {
+    padding: 0px;
+    width: 16px;
+}
+#outputTab td.outPortOptions {
+    text-align: left;
+}
+#outputTab td.outPortOptions img {
+    padding: 0px 2px;
+	cursor: pointer;
+}
+#outputTab td.rowControls {
+    padding: 0px;
+    text-align: left;
+}
+
+#outputTab .addRow, #outputTab .delRow, #outputTab .moveRow, #outputTab .selectRow {
+    background: url(addDelRow.png) no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 22px;
+    height: 22px;
+}
+#outputTab .addRow {
+    background-position: 0px 0px;
+}
+#outputTab .addRow:hover {
+    background-position: 0px -22px;
+}
+#outputTab .addRow:active {
+    background-position: 0px -44px;
+}
+#outputTab .delRow {
+    background-position: -22px 0px;
+}
+#outputTab .delRow:hover {
+    background-position: -22px -22px;
+}
+#outputTab .delRow:active, #outputTab tr.selected .delRow {
+    background-position: -22px -44px;
+}
+#outputTab .moveRow {
+    background-position: -44px 0px;
+}
+#outputTab .moveRow:hover {
+    background-position: -44px -22px;
+}
+#outputTab .moveRow:active, #outputTab tr.selected .moveRow {
+    background-position: -44px -44px;
+}
+#outputTab .selectRow {
+    background-position: -66px 0px;
+}
+#outputTab .selectRow:hover {
+    background-position: -66px -22px;
+}
+#outputTab .selectRow:active, #outputTab tr.selected .selectRow {
+    background-position: -66px -44px;
+}
+
+.rowMover {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    pointer-events: none;
+    box-shadow: 0px 0px 10px #00ff00;
+    white-space: nowrap;
+    background: #fafaff;
+}
+.rowMover td {
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+.rowMover .moveIcon {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: url(addDelRow.png) -44px -44px no-repeat;
+    vertical-align: middle;
+}
+
+.bigButtonRow {
+    display: table;
+}
+.bigButtonRow > div {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0px 3em;
+}
+.bigButtonRow > div:first-child {
+    padding: 0px;
+}
+.bigButton {
+    margin: 0px 1em;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+    background: #f8f8f8;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px #404040;
+    cursor: pointer;
+}
+.bigButton img {
+    margin: 1em 0px;
+    vertical-align: middle;
+}
+
+.bigButton:hover {
+    background: #f0ffff;
+    border-color: #00ffff;
+}
+.bigButton:active {
+    background: #e0ffff;
+    border-color: #ffff00;
+}
+
+#binFiles > div, #noBinFiles {
+    margin: 1em 2em;
+}
+#binFiles img {
+    vertical-align: middle;
+    margin-right: 1ex;
+}
+#binFiles a, a#showDocs {
+    text-decoration: none;
+}
+#binFiles a:hover, a#showDocs:hover {
+    text-decoration: underline;
+}
+
+.flowStep {
+    display: none;
+}
+.flowStep.done {
+    color: #909090;
+}
+.flowStep.done h2 {
+    color: #60b060;
+}
+
+.flowStep > div:nth-of-type(1) {
+}
+.flowStep > div:nth-of-type(2) {
+    display: none;
+}
+.flowStep.done > div:nth-of-type(1) {
+    display: none;
+}
+.flowStep.done > div:nth-of-type(2) {
+    display: block;
+}
+
+.flowStep .checkmark {
+    padding-right: 1em;
+    display: none;
+}
+.flowStep.done .checkmark {
+    display: inline;
+}
+
+#backupError {
+    color: #ff0000;
+}
+
+#SDADriveList > div {
+    margin: 1em 2em;
+}
+
+#SDADriveList img {
+    vertical-align: middle;
+    margin-right: 1ex;
+}
+
+#SDADriveList a {
+    text-decoration: none;
+}
+#SDADriveList a:hover {
+    text-decoration: underline;
+}
+
+.bootLoaderInfo {
+    border: 1px solid #8080ff;
+    padding: 1em;
+    margin: 1em 2em;
+}
+
+.fileIcon {
+    vertical-align: middle;
+    margin-right: 1ex;
+}
+
+#autoUpdateStatus .error {
+    color: #ff0000;
+}
+.upToDate {
+    color: #008000;
+}
+.newVersion {
+    color: #0000ff;
+    font-weight: bold;
+}
+
+#autoUpdateRetry {
+    padding-left: 1em;
+}
+
+@media print {
+    .noPrint {
+	display: none !important;
+    }
+    #navproxy, #nav {
+	display: none !important;
+    }
+}
+
+.diagnosticData {
+	font-size: 80%;
+	margin-left: 1em;
+}
+
+#plungerPinGroup > div {
+	margin: 0px;
+}
+
+#tlc59116_chipsEnabled {
+	display: table;
+}
+#tlc59116_chipsEnabled > div {
+	display: table-row;
+}
+#tlc59116_chipsEnabled label {
+	display: table-cell;
+	padding: 0px 1em;
+	white-space: nowrap;
+}
+
+.programUpdateNotice.headlineBox {
+	margin: 1em 0px;
+	display: none;
+	line-height: 1.5;
+	border-radius: 8px;
+	background: #008000;
+	color: #ffffff;
+	font-weight: bold;
+	padding: 1em;
+}
+.programUpdateNotice.headlineBox a {
+	color: #a0a0ff;
+}
+.programUpdateNotice.headlineBox a:hover {
+	color: #ffa0ff;
+}
+#configToolUpToDate {
+	display: none;
+}
+
+#autoUpdateStatus {
+	margin-bottom: 1ex;
+}
+.programUpdateNotice, #firmwareUpdateNotice, #configToolUpToDate {
+	margin: 1ex 0px;
+}
+
+
+#flipperLogicPopup, #chimeLogicPopup {
+	position: absolute;
+	box-sizing: border-box;
+	padding: 1em;
+	background: #ffffff;
+	border: 1px solid #808080;
+	border-radius: 4px;
+	box-shadow: 2px 2px 10px #404040;
+    white-space: nowrap;
+}
+#flipperLogicPopup div, #chimeLogicPopup div {
+	margin: 0px;
+	text-align: center;
+}
+
+#flipperLogicPopup .flTime, #flipperLogicPopup .flPower, #chimeLogicPopup .minTime, #chimeLogicPopup .maxTime {
+	display: inline-block;
+	margin: 5px;
+	font-size: 7pt;
+}
+#flipperLogicPopup .flTimeSlider, #flipperLogicPopup .flPowerSlider, #chimeLogicPopup .minTimeSlider, #chimeLogicPopup .maxTimeSlider {
+	margin: 8px auto;
+}

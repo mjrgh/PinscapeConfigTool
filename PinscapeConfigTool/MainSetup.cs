@@ -56,23 +56,23 @@ namespace PinscapeConfigTool
                 {
                     AdviceDialog.Show(
                         "IEVersionWarning",
-                        "Il semble que vous ayez installé une ancienne version d'IE (IE "+ vsn.Major
-                        + "). CE PROGRAMME POURRAIT NE PAS FONCTIONNER CORRECTEMENT SUR VOTRE SYSTÈME sauf si vous mettez à jour"
-                        + "vers IE 11 ou plus récent. Si vous rencontrez des boîtes de dialogue \" Erreur de script \ ","
-                        + "vous devrez mettre à jour."
-                        + "\ r \ n \ r \ n"
-                        + "Vous pouvez mettre à jour IE via Windows Update ou en téléchargeant la dernière"
-                        + "version du site Web de Microsoft. Notez que la mise à jour est requise"
-                        + "même si vous n'utilisez jamais IE pour la navigation Web, car IE contient un système"
-                        + "composants que ce programme utilise en interne.");
+                        "Il semble que vous ayez installé une ancienne version d'IE (IE " + vsn.Major
+                        + "). CE PROGRAMME POURRAIT NE PAS FONCTIONNER CORRECTEMENT SUR VOTRE SYSTÈME sauf si vous mettez à jour "
+                        + "vers IE 11 ou plus récent. Si vous rencontrez des boîtes de dialogue \"Erreur de script\", "
+                        + "vous devrez mettre à jour. "
+                        + "\r\n\r\n"
+                        + "Vous pouvez mettre à jour IE via Windows Update ou en téléchargeant la dernière "
+                        + "version du site Web de Microsoft. Notez que la mise à jour est requise "
+                        + "même si vous n'utilisez jamais IE pour la navigation Web, car IE contient un composant "
+                        + "système que ce programme utilise en interne.");
                 }
 
                 // show DOF update advice
                 AdviceDialog.Show(
                     "DOFNotice",
                     "Si vous utilisez DOF (DirectOutput Framework), assurez-vous d'avoir "
-                    + "la dernière version. Cliquez sur le lien DOF Update dans le Divers"
-                    + "section sur la page principale pour les pointeurs vers les dernières versions.");
+                    + "la dernière version. Cliquez sur le lien DOF Update dans la section "
+                    + "divers sur la page principale pour être redirigé vers les dernières versions.");
 
                 // we want status reports from the worker thread
                 bgworkerDownload.WorkerReportsProgress = true;
@@ -85,7 +85,7 @@ namespace PinscapeConfigTool
                 }
                 else
                 {
-                    downloadStatusObj = "({message:\"Auto download is disabled\", done: true})";
+                    downloadStatusObj = "({message:\"Le téléchargement automatique est désactivé\", fait: true})";
                     SendDownloadStatusUpdate();
                 }
             }
@@ -1996,12 +1996,12 @@ namespace PinscapeConfigTool
                 try
                 {
                     File.WriteAllText(Path.Combine(Program.dlFolder, CPUID + ".xconfig"), xc);
-                    return @"({status:""ok"",message:""External config data saved.""})";
+                    return @"({status:""ok"",message:""Données de configuration externes enregistrées.""})";
                 }
                 catch (Exception e)
                 {
                     return @"({status:""erreur"",message:""Une erreur s'est produite lors de l'enregistrement de "
-                        + @ "données de configuration externes dans le système de fichiers local. (Erreur de fichier: "
+                        + @"données de configuration externes dans le système de fichiers local. (Erreur de fichier: "
                         + e.Message + @")""})";
                 }
             }

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Visionneuse d'entrée du joystick</title>
+</head>
+<body class="help">
+
+<h1>
+   <img style="float: right;" src="joystickicon.png">
+   Visionneuse d'entrée du joystick
+   <img style="visibility: hidden; vertical-align: middle;" src="joystickicon.png">
+</h1>
+
+<div>
+
+   <p>
+	Cette fenêtre vous permet de visualiser l'entrée du joystick
+	provenant de la carte de contrôle Pinscape. Cela montre la
+	version traitée de l'entrée KL25Z, au format vu par Visual
+	Pinball et autres logiciel lors de la lecture à partir du joystick.
+   </p>
+
+   <h2>Accéléromètre</h2>
+   <p>
+	Le réticule montre les lectures de l'accéléromètre.
+	Il détecte le mouvement de l'appareil, donc utilisez-le dans
+	les émulateurs de flipper pour détecter quand vous "poussez" le
+	pincab. Si vous observez le réticule pendant que vous le déplacez,
+	vous verrez comment il réagit au mouvement du pincab.
+   </p>
+   <p>
+	'appareil capte également toute inclinaison de la planche, car
+	la gravité est un type d'accélération. Si vous avez un "centrage
+	automatique" activé dans la configuration, le firmware annule
+	automatiquement l'inclinaison en remettant à zéro les lectures
+	après que la planche ait été mise en place pendant quelques secondes.
+	Vous pouvez ajuster le timing du centrage automatique.
+   </p>
+   <p>  Le centrage automatique est utile car on veut que l'accéléromètre
+	signale une accélération nulle chaque fois que le pincab est immobile.
+	Toute accélération non nulle apparaîtra dans la simulation de flipper
+	comme une influence sur la bille. Nous voulons seulement ce type
+	d'influence uniquement en réponse aux coups de coude et à d'autres
+	mouvements du pincab.
+   </p>
+   <p>
+	Si vous avez désactivé le centrage automatique dans la configuration, 
+	vous pouvez cliquer sur le bouton "Centrer maintenant" 	pour mettre
+	à zéro l'accéléromètre manuellement.
+   </p>
+
+   <h2>Piston ou tire-bille</h2>
+   <p>
+	Les lectures du piston indiquées ici prennent en compte l'étalonnage.
+	Si le piston est correctement calibré, la lecture doit être au point
+	zéro, indiqué par la flèche, lorsque le piston physique est «stationné»
+	à sa position de repos normal. La barre doit se déplacer vers la droite
+	lorsque vous tirez sur le piston. Si la lecture ne montre pas zéro quand
+	le piston est à sa position de repos, vous devez recommencer le processus
+	d'étalonnage à partir de la fenêtre "configuration de piston".
+   </p>
+
+   <h2>Boutons du joystick</h2>
+   <p>
+	Les boutons affichés ici sont les boutons du joystick "mappés".
+	Ce ne sont pas exactement les mêmes que les boutons physiques câblés
+	au contrôleur, car le firmware traduit chaque bouton appuyé sur le
+	mappage que vous avez sélectionné pour le bouton, soit comme bouton du
+	joystick ou une touche du clavier. Si vous en avez attribué un comme une
+	touche de clavier, il n'apparaîtra pas du tout ici lorsque vous appuyerez
+	dessus, car le bouton envoie l'entrée à Windows en tant que clavier 
+	d'entrée à la place. Si vous avez mappé un bouton physique sur un joystick
+	bouton, le bouton attribué doit s'allumer ici lorsque vous appuyez dessus.
+   </p>
+
+   <p>
+	Si vous configurez toujours vos connexions, vous trouverez peut-être
+	utile de regarder les fenêtres du testeur de bouton et du testeur de piston.
+	Ceux-ci vous donneront une vision plus directe de ce qui se passe au 
+	niveau matériel.
+   </p>
+
+   <h2>Capturer</h2>
+   <p>
+	L'option «Capturer» vous permet de collecter les lectures d'entrées de
+	l'accéléromètre du piston et enregistrer les données collectées dans un
+	fichier. C'est principalement à des fins de débogage. Quand la section 
+	de capture est activée, maintenez la touche Contrôle enfoncée pour
+	collecter des données. Les nouvelles lectures sont ajoutées à la zone de texte.
+	(Les lectures ne sont collectées que lorsque vous maintenez la touche
+	de contrôle pour éviter de collecter des quantités excessives - les lectures
+	arrivent très rapidement. Lors du dépannage, vous voulez seulement collecter 
+	des lectures liées à quelque chose de spécifique vous faites, comme tirer
+	le piston ou pousser le pincab. Le filtrage avec la touche Contrôle permet
+	de recueillir un ensemble ciblé de lectures autour d'un événement particulier.)
+	Une fois que vous avez collecté les lectures que vous recherchez, vous pouvez
+	les enregistrez dans un fichier si vous le souhaitez en cliquant sur l'icône du disque.
+	Cela peut être utile pour partager les données avec quelqu'un d'autre qui vous
+	aidera à dépanner.
+   </p>
+
+</div>
+
+</body>
+</html>
