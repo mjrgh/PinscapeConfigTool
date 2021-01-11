@@ -1,0 +1,10 @@
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\obj\Debug\NightMode.csprojAssemblyReference.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\obj\Debug\NightMode.Form1.resources
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\obj\Debug\NightMode.Properties.Resources.resources
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\obj\Debug\NightMode.csproj.GenerateResource.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\obj\Debug\NightMode.csproj.CoreCompileInputs.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\bin\Debug\NightMode.exe.config
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\bin\Debug\NightMode.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\bin\Debug\NightMode.pdb
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\obj\Debug\NightMode.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\NightMode\obj\Debug\NightMode.pdb

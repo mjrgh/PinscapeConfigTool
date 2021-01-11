@@ -1,0 +1,10 @@
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\bin\Debug\PinscapeConfigToolUpdater.exe.config
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\bin\Debug\PinscapeConfigToolUpdater.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\bin\Debug\PinscapeConfigToolUpdater.pdb
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\obj\Debug\PinscapeConfigToolUpdater.csprojAssemblyReference.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\obj\Debug\PinscapeConfigToolUpdater.UpdateWindow.resources
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\obj\Debug\PinscapeConfigToolUpdater.Properties.Resources.resources
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\obj\Debug\PinscapeConfigToolUpdater.csproj.GenerateResource.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\obj\Debug\PinscapeConfigToolUpdater.csproj.CoreCompileInputs.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\obj\Debug\PinscapeConfigToolUpdater.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeConfigToolUpdater\obj\Debug\PinscapeConfigToolUpdater.pdb

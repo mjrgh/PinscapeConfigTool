@@ -65,7 +65,7 @@ namespace NightMode
             // if we didn't find a unit, return failure
             if (dev == null)
             {
-                MessageBox.Show("Le numéro d'unité sélectionné ("+ unité +") n'a pas été trouvé.");
+                MessageBox.Show("Le numéro d'unité sélectionné (" + unit + ") n'a pas été trouvé.");
                 return;
             }
 
@@ -77,7 +77,7 @@ namespace NightMode
         static void Usage()
         {
             MessageBox.Show("Usage: NightMode <PinscapeUnitNumber> ON|OFF\r\n\r\n"
-                + "Par exemple, \"NightMode 1 ON\" active le mode nuit sur l'unité Pinscape # 1. \ R \ n \ r \ n "
+                + "Par exemple, \"NightMode 1 ON\" active le mode nuit sur l'unité Pinscape # 1.\r\n\r\n"
                 + "Exécuter sans arguments pour sélectionner de manière interactive.");
         } 
     }

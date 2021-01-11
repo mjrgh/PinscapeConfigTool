@@ -1,0 +1,6 @@
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeCmd\bin\Debug\PinscapeCmd.exe.config
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeCmd\bin\Debug\PinscapeCmd.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeCmd\bin\Debug\PinscapeCmd.pdb
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeCmd\obj\Debug\PinscapeCmd.csproj.CoreCompileInputs.cache
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeCmd\obj\Debug\PinscapeCmd.exe
+D:\Github\nicofab18\PinscapeConfigTool V2 Fr\PinscapeCmd\obj\Debug\PinscapeCmd.pdb
