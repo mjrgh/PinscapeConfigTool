@@ -2410,9 +2410,9 @@ $("#btnButtonTest").click(function(ev)
     {
         if (!window.external.YesNoDialog(
             "Vous avez apporté des modifications aux paramètres du bouton que vous n'avez pas "
-            + "déjà programmé dans la KL25Z. La fenêtre du testeur reflètera"
+            + "déjà programmé dans la KL25Z. La fenêtre du testeur reflètera "
             + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
-            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \" Programmer KL25Z \ ""
+            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \"Programmer KL25Z \" "
             + "avant de passer à la fenêtre du testeur."
             + "\ r \ n \ r \ n"
             + "Voulez-vous quand même ouvrir le testeur?"))
@@ -3821,9 +3821,9 @@ $("#btnOutputTest").click(function(ev)
     {
         if (!window.external.YesNoDialog(
             "Vous avez apporté des modifications aux paramètres du port de sortie que vous n'avez pas "
-            + "déjà programmé dans la KL25Z. La fenêtre du testeur reflétera"
+            + "déjà programmé dans la KL25Z. La fenêtre du testeur reflétera "
             + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
-            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \" Programmer KL25Z \ ""
+            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \"Programmer KL25Z \" "
             + "avant de passer à la fenêtre du testeur."
             + "\ r \ n \ r \ n"
             + "Voulez-vous quand même ouvrir le testeur?"))
@@ -5083,8 +5083,8 @@ $("#fileLoadButton").click(function(ev) {
                 "RestoreSettings",
                 "Les paramètres du fichier ont été chargés. Notez que les nouveaux paramètres "
                 + "sont seulement en mémoire - rien n'a encore été changé sur la KL25Z."
-                + "Si vous souhaitez activer ces paramètres sur l'appareil, cliquez sur"
-                + "le bouton \" Programmer KL25Z \ ".");
+                + "Si vous souhaitez activer ces paramètres sur l'appareil, cliquez sur "
+                + "le bouton \"Programmer KL25Z \"." );
 
             // Remember this as the last saved configuration.  If the user
             // quits without making any changes, there's no need to bug them
@@ -5822,7 +5822,7 @@ $(function() {
         // Build the KL25Z pin selection list
         var pinlst = $("#lstKL25ZPins");
         var options = [];
-        options.push("<div data-pin=\"Not Connected\">Non connecté"</div>");
+        options.push("<div data-pin=\"Not Connected\">Not Connected</div>");
         for (var i = 0 ; i < gpioPins.length ; ++i)
         {
             var g = gpioPins[i];
@@ -7645,8 +7645,8 @@ $(function() {
                     + "Cette broche est connectée DIRECTEMENT à un port CPU sur la KL25Z."
                     + "Ces broches ont une capacité de gestion de puissance EXTRÊMEMENT faible."
                     + "NE JAMAIS CONNECTER UNE CHARGE SUPÉRIEURE À 4 mA À CE PIN."
-                    + "La limite 4mA s'applique si la broche est utilisée en \" active "
-                    + mode "high \" ou \ "active low \". Dépassement de 4 mA dans l'un ou l'autre mode "
+                    + "La limite 4mA s'applique si la broche est utilisée en \"active"
+                    + "mode high \ ou \ active low \. Dépassement de 4 mA dans l'un ou l'autre mode "
                     + "peut endommager le CPU, ce qui peut rendre l'ensemble de la KL25Z"
                     + "inopérante.");
             }
