@@ -1503,6 +1503,7 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
             <option value="9">VL6180X</option>
             <option value="10">AEAT-6012-A06</option>
             <option value="11">TCD1103</option>
+            <option value="12">VCNL4010</option>
          </select>
          <span style="margin-left: 2em;" id="plungerSensorButton">
             <a href="#" id="btnPlungerCal" class="button">Live Sensor View</a>
@@ -1778,6 +1779,64 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
             </div>
          </div>
 
+         <div id="plungerPinsVCNL4010">
+            <div>
+               <img src="VCNL4010.png" style="float: right; margin: 0px 0px 1em 2em;">
+               <b>VCNL4010 IR proximity sensor - EXPERIMENTAL.</b>
+               This sensor determines the distance to a nearby object by shining an
+               IR light source on the object, and measuring the intensity of the
+               reflected light.
+               <p>
+                  Important: the firmware support for this sensor is currently <b>experimental</b>.
+                  It hasn't been tested yet and might not function properly (or at all).  If you
+                  have a sensor of this type to test with, let me know how it works.
+               </p>
+            </div>
+            <div class="expBoardPin">
+               <b>Pin assignments:</b>
+               <div class="indented">
+                  <table class="inputs">
+                     <tr>
+                        <td class="pinlabel">SDA:</td>
+                        <td>
+                           <span class="pinselect" id="VCNL4010_SDA"
+                              data-cfg="plungerPins.a" data-gpiotype="dig-out extern"
+                             data-desc="VCNL4010 SDA" data-default="PTE20">
+                           </span>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="pinlabel">SCL:</td>
+                        <td>
+                           <span class="pinselect" id="VCNL4010_SCL"
+                             data-cfg="plungerPins.b" data-gpiotype="dig-out extern"
+                             data-desc="VCNL4010 SCL" data-default="PTE21">
+                           </span>
+                        </td>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+            <div class="expBoardText">
+               Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
+               <ul>
+                  <li>SDA to pin 8
+                  <li>SCL to pin 3
+                  <li>Sensor VIN to pin 5
+                  <li>Sensor GND to pin 6
+               </ul>
+            </div>
+            <div class="aioBoardText">
+                Connect the sensor to the PLUNGER connections on the Pinscape AIO or Pinscape Lite:
+               <ul>
+                  <li>SDA to SDA
+                  <li>SCL to SCL
+                  <li>Sensor VIN to 3.3V
+                  <li>Sensor GND to GND
+               </ul>
+            </div>
+         </div>
+
          <div id="plungerPinsAEAT">
             <div>
                <img style="float: right; margin: 0px 0px 1em 2em;" src="AEAT6012.png">
@@ -1976,6 +2035,7 @@ $("#plungerType").change(function(ev)
     // deactivate all pin groups until we know which ones we're activating
     $("#plungerPinsTSL .pinselect, #plungerPinsPot .pinselect,"
       + "#plungerPinsQuad .pinselect, #plungerPinsVL6180X .pinselect,"
+      + "#plungerPinsVCNL4010 .pinselect,"
       + "#plungerPinsAEAT .pinselect, #plungerPinsTCD1103 .pinselect").data(
         {"active": false, "save": false});
 
@@ -1994,7 +2054,7 @@ $("#plungerType").change(function(ev)
     plungerTypeValid = true;
 
     // show the appropriate section
-    var all = $("#plungerPinsTSL, #plungerPinsPot, #plungerPinsQuad, #plungerPinsVL6180X, #plungerPinsAEAT, #plungerPinsTCD1103");
+    var all = $("#plungerPinsTSL, #plungerPinsPot, #plungerPinsQuad, #plungerPinsVL6180X, #plungerPinsVCNL4010, #plungerPinsAEAT, #plungerPinsTCD1103");
     var typ = +$(this).val();
     switch (typ)
     {
@@ -2046,6 +2106,13 @@ $("#plungerType").change(function(ev)
         slideRadio($("#plungerPinsTCD1103"), all, 250, false);
         $("#plungerPinsTCD1103 .pinselect").data("active", true).data("save", true);
         break;
+
+    case 12:
+        // VCNL4010 IR proximity sensor
+        slideRadio($("#plungerPinsVCNL4010"), all, 250, false);
+        $("#plungerPinsVCNL4010 .pinselect").data("active", true).data("save", true);
+        break;
+
     }
 
     // if this was a UI event, reset the factory defaults for the pin configuration
@@ -2112,6 +2179,12 @@ function setPlungerPinFactoryDefaults(prvPlungerType)
         $("#TCD1103_ICG .pinval").val("PTE21");
         $("#TCD1103_SH .pinval").val("PTE22");
         break;
+
+    case 12:
+        // VCNL4010 IR proximity sensor
+        $("#VCNL4010_SDA .pinval").val("PTE20");
+        $("#VCNL4010_SCL .pinval").val("PTE21");
+        break;
     }
 }
 
@@ -2142,6 +2215,10 @@ $("#btnPlungerCal").click(function(ev) {
             return $("#VL6180X_SDA .pinval").val() != config.plungerPins.a
                 || $("#VL6180X_SCL .pinval").val() != config.plungerPins.b
                 || $("#VL6180X_GPIO0CE .pinval").val() != config.plungerPins.c;
+
+        case 12:
+            return $("#VCNL4010_SDA .pinval").val() != config.plungerPins.a
+                || $("#VCNL4010_SCL .pinval").val() != config.plungerPins.b;
 
         default:
             return false;
@@ -7847,6 +7924,13 @@ function normalizeConfig(config)
     case 11:
         // TCD1103GFG linear image sensor - all pins are used
         break;
+
+    case 12:
+        // VCNL4010 IR proximity sensor - pins c and d are unused
+        config.plungerPins.c = "NC";
+        config.plungerPins.d = "NC";
+        break;
+
     }
 
     // if the TV-ON feature is disabled, clear all fields

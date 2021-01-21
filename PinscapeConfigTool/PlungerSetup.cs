@@ -55,6 +55,10 @@ namespace PinscapeConfigTool
                         //distanceSensor = true;
                         break;
 
+                    case PlungerTypeVCNL4010:
+                        //distanceSensor = true;
+                        break;
+
                     case PlungerTypeAEAT6012:
                         break;
                 }
@@ -145,6 +149,7 @@ namespace PinscapeConfigTool
         const byte PlungerTypeVL6180X = 9;          // VL6180X time-of-flight distance sensor
         const byte PlungerTypeAEAT6012 = 10;        // AEAT-6012-A06 rotary absolute encoder
         const byte PlungerTypeTCD1103 = 11;         // TCD1103GFG linear image sensor, edge detection
+        const byte PlungerTypeVCNL4010 = 12;        // VCNL4010 IR proximity sensor
 
         // Plunger characteristics
         bool edgeSensor = false;                    // edge-detection sensor

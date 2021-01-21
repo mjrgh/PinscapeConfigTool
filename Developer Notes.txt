@@ -8,7 +8,16 @@ To set up the build environment, you'll need:
 
 * Microsoft Visual Studio.  You can download the free Community
 Edition from the Microsoft Web site.  I don't think any special
-install options are required.
+install options are required.  I'm currently building this
+project with VS 2013, which is an older version, but it will
+happily co-exist on your system alongside newer versions.  To
+get VS 2013, go here:
+
+https://visualstudio.microsoft.com/vs/older-downloads/
+
+and then select 2013 from the version list and proceed to the
+download.  See Visual Studio Versions below for more on using
+a newer VS update if you prefer.
 
 If you want to create binary releases using the MakeRelease.bat
 script, you'll also need a command-line ZIP tool.  I use Info-ZIP
@@ -19,28 +28,59 @@ similar command-line syntax.  If you have any problems, though, you
 might try installing Info-ZIP and seeing if that helps.
 
 
-2. Visual Studio versions
+2. Building the program
 
-As of this writing (9/2020), I'm building with VS 2013.  That's quite
-out of date at this point, so if you're installing VS for the first
-time, you'll almost certainly be using a newer version.  You should be
-able to use the solution (.sln) file in VS 2017 or VS 2019 without any
-changes.  However, VS sometimes needs to do a one-way format update to
-open an old project in a new VS version, rendering the project files
-incompatible with the old version.  VS should always warn you if this
-is necessary, because after the conversion, the project files will no
-longer be usable with older VS versions.  If VS shows such a warning
-when you open the project, please STOP and use this procedure:
+Open the solution (.sln) file in Visual Studio.  Go to the top
+menu and select Build > Build Solution.
 
-  - DON'T migrate the original project/solution files
+
+3. Visual Studio versions
+
+As of this writing (9/2020), I'm building with Visual Studio 2013.
+That's quite out of date at this point, but you can still download it
+from the Microsoft site:
+
+https://visualstudio.microsoft.com/vs/older-downloads/
+
+You can also try building from a newer VS version if you prefer.  I
+don't expect any significant problems migrating to newer versions,
+since C# is usually pretty forward-compatible across versions.
+However, there are often a few small changes needed when moving across
+VS updates, and these can sometimes be quite subtle and require some
+effort to figure out the *correct* fix.  If you don't know what you're
+doing, attempting a fix that just "shuts up the compiler" and gets it
+to compile can also often make the program stop working.
+
+So: If you're an experienced developer, and you like messing with that
+stuff, feel free to try VS 2019 or whatever other version you like.
+However, if you just want to get it built without a lot of fuss and
+without worrying about whether there are going to be hidden gotchas in
+the built copy, use VS 2013.
+
+If you *do* do decide to try it with a newer VS version, you should be
+able to simply open the solution (.sln) file without any changes.
+However, VS sometimes requires a one-way format update to open an old
+project in a new VS version, and this conversion will render the
+solution (.sln) and/or project (.csproj) files incompatible with the
+original VS 2013.  If this type of one-way conversion is necessary, VS
+*should* show you a warning message.  If VS shows such a warning when
+you open the project, CANCEL and use this procedure instead:
+
+  - Whatever you do, DON'T migrate the ORIGINAL project/solution 
+    files
 
   - Instead, create COPIES of the project/solution files that need
-    migrating, naming them to indicate the new VS version they'll
-    be used with
+    to be converted
 
-  - Open the NEW COPIES in the new VS, and let VS migrate those
+  - Name the copies to indicate the new VS version they'll be used
+    with: e.g., copy PinscapeConfigTool.sln and name the copy 
+    PinscapeConfigTool-vs2019.sln
 
-  - Use "git add" to add the new copies to the git repos
+  - Open the NEW COPIES in the new VS, and allow VS to convert
+    those to the new format
+
+  - Use "git add" to add the new solution/project files to the
+    git repos
 
   - If you have to make any project changes (e.g., adding new
     source files to the project), please keep the ORIGINAL project/
@@ -50,21 +90,27 @@ when you open the project, please STOP and use this procedure:
     the VS files in question are mostly XML, which makes them easy
     easy to 'diff' and edit by hand.
 
-If you run into the VS upgrade issue, and you're planning extensive
-changes or ongoing work, you might want to stop what you're doing and
+If you run into the VS upgrade issue, and you're planning to make
+changes that require adding new files to the build or otherwise
+changing the project/solution trees, you might want to stop what
+you're doing and either (a) go back to the VS version I'm using, so
+that you don't have to do the conversion in the first place, or (b)
 contact me before proceeding, to see if we can coordinate the VS
-version migration on the mainline instead.  That way you won't have to
-deal with keeping two versions of the project files in sync, which is
-tedious and error-prone if you have to do it for more than a few
-changes.  I DON'T keep the project on the old VS version because it's
-hard to migrate it; I keep it on the old version because migrations
-can be a source of instability.  VS migrations are usually
-trouble-free, but on occasion they can introduce subtle bugs that go
-unnoticed for a while.  I don't like to take that risk in the absence
-of a compelling reason.
+version migration on the mainline instead.  Either way, you won't have
+to deal with keeping two versions of the project files in sync.
+That's tedious and error-prone.
+
+My reason for keeping the project on the old VS version is NOT that
+it's hard to do a version migration; it's that a migration can
+destabilize the build in ways that aren't obvious.  After a VS version
+migration, it's important to do a full test of all features to make
+sure that nothing in the program's run-time behavior changed or broke
+due to the build process change.  Staying on the same VS version gives
+me more confidence that there won't be any new bugs or regressions
+introduced by a small code change.
 
 
-2. Config Tool HTML pages
+4. Config Tool HTML pages
 
 The Config Tool uses an embedded HTML renderer control to display HTML
 pages.  Everything in the main window is displayed that way.  The same
@@ -79,7 +125,7 @@ resources (.css, .js, .png, etc) are in the PinscapeConfigTool\html
 subfolder.
 
 
-3. Adding new HTML files and new HTML resources
+5. Adding new HTML files and new HTML resources
 
 If you want to add any new HTML pages, or new resources for the
 HTML pages, such as new .png or .jpg images to show in the HTML
