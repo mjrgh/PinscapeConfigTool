@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NightMode
@@ -79,6 +77,6 @@ namespace NightMode
             MessageBox.Show("Usage: NightMode <PinscapeUnitNumber> ON|OFF\r\n\r\n"
                 + "Par exemple, \"NightMode 1 ON\" active le mode nuit sur l'unité Pinscape # 1.\r\n\r\n"
                 + "Exécuter sans arguments pour sélectionner de manière interactive.");
-        } 
+        }
     }
 }
