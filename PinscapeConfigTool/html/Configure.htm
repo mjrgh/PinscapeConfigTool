@@ -527,7 +527,7 @@ function ensureUsbId(val)
       Sélectionnez l'intervalle de temps (en secondes) avant que cela ne se produise.
 
       <div>
-         <label><input type="checkbox" id="ckRebootEnable">Enabled</label>
+         <label><input type="checkbox" id="ckRebootEnable">Activé</label>
          <div id="rebootOptions">       
             Temps avant le redémarrage (secondes):
             <input type="text" id="txtRebootTime" size=4 style="margin-left: 1em;">
@@ -1168,7 +1168,7 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
       </div>
 
       <div>
-         <a href="#" class="shower">Why would I want to disable this?</a>
+          <a href="#" class="shower">Pourquoi voudrais-je désactiver cela?</a>
          <div class="hider">
             <b>Pourquoi voudrais-je désactiver cela?</b><br>
             Par défaut, chaque carte Pinscape rapporte ses lectures d'accéléromètre
@@ -1200,27 +1200,27 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
 				un ensemble d'axes "rotationnels" appelés Rx, Ry et Rz. De vrais joysticks 
 				autorisent les mouvements de torsion et rapportent ces mouvements sur ces axes "R".
 				Si vous le souhaitez, Pinscape peut rapporter ses lectures normales sur les axes "R"
-				à la place des axes X / Y / Z normaux.
+				à la place des axes X/Y/Z normaux.
 			</p>
 			<p>
                			Pourquoi voudriez-vous utiliser les axes "R"? Dans la plupart des cas, vous ne le feriez pas,
                			les paramètres X / Y / Z normaux sont recommandés car ils sont compatibles
                			avec la plupart des logiciels. Cependant, les axes "R" peuvent être utiles si vous avez
                			d'autres joysticks dans votre système qui sont en conflit avec Pinscape.
-               			Si votre autre joystick signale son entrée sur les axes X / Y / Z normaux,
+               			Si votre autre joystick signale son entrée sur les axes X/Y/Z normaux,
               			cela crée des problèmes avec VP ou d'autres logiciels, vous
                			pourrait être en mesure de résoudre le conflit en disant à Pinscape d'utiliser les
-               			Axes Rx / Ry / Rz à la place.
+               			Axes Rx/Ry/Rz à la place.
 			</p>
 			<p>
 				<b>Si vous modifiez les axes Pinscape, vous devez également reconfigurer
-               			Visual Pinball et tout autre émulateur de flipper à utiliser les axes Rx / Ry / Rz.</b> 
-			   	Future Pinball n'a aucun moyen de lire les axes Rx / Ry / Rz,
+               			Visual Pinball et tout autre émulateur de flipper à utiliser les axes Rx/Ry/Rz.</b> 
+			   	Future Pinball n'a aucun moyen de lire les axes Rx/Ry/Rz,
                			donc les utiliser dans Pinscape le rendra incompatible avec FP.
 			   	Vous pourriez rencontrer la même limitation dans d'autres logiciels. Car
               			des problèmes de compatibilité, vous constaterez peut-être qu'il vaut mieux
                			reconfigurer l '<b> autre </b> joystick qui crée le conflit, si possible,
-				car cela vous permettrait de continuer à utiliser les axes X / Y / Z compatibles pour Pinscape.
+				car cela vous permettrait de continuer à utiliser les axes X/Y/Z compatibles pour Pinscape.
 			</p>
 		 </div>
 	  </div>
@@ -2137,11 +2137,11 @@ $("#btnPlungerCal").click(function(ev) {
     {
         if (!window.external.YesNoDialog(
             "Vous avez apporté des modifications à la configuration du capteur que vous n'avez pas "
-            + "déjà programmé dans le KL25Z. Le visionneur en direct reflétera"
+            + "déjà programmé dans le KL25Z. Le visionneur en direct reflétera "
             + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
-            + "Si vous souhaitez afficher le capteur en utilisant les nouveaux paramètres, cliquez sur"
-            + "\ Programmer KL25Z \ avant de passer à la visionneuse de capteurs."
-            + "\ r \ n \ r \ n"
+            + "Si vous souhaitez afficher le capteur en utilisant les nouveaux paramètres, cliquez sur "
+            + "\Programmer KL25Z\ avant de passer à la visionneuse de capteurs."
+            + "\r\n\r\n"
             + "Voulez-vous quand même ouvrir la visionneuse de capteurs?"))
             return;
     }
@@ -2169,7 +2169,7 @@ $("#btnPlungerCal").click(function(ev) {
                     data-cfg="calButtonPins.button" data-gpiotype="dig-in extern"
                     data-desc="Plunger Calibration Button" data-default="PTE29">
                   </span>
-                  <label><input type="checkbox" id="calBtnEna">Activer/label>
+                  <label><input type="checkbox" id="calBtnEna">Activer</label>
                </td>
             </tr>
             <tr>
@@ -2317,16 +2317,16 @@ $("#zbPort").change(function(ev) {
         if (oprow.find(".pintype").val() == 0 && !loadingConfig) {
             if (window.external.YesNoDialog(
                 "Le port que vous avez sélectionné n'est pas actuellement configuré. Ameriez "
-                + "vous l'ajouter en tant que port \" virtuel \ ? Il faudra"
+                + "vous l'ajouter en tant que port \" virtuel \ ? Il faudra "
                 + "s'assurer que le PC pourra l'adresser correctement."))
                 appendOutputs(row);
             else
                 window.external.ShowAdviceDialog(
                     "InvalidZBPortWarning",
                     "D'accord, aucun port n'a été ajouté. Notez que le PC ne pourra pas "
-                    + "activer la fonction ZB Launch sauf si vous l'assignez à un"
-                    + "port valide qui existe dans la liste de sortie. Veuillez être sûr"
-                    + "pour ajouter le port ou changer le numéro ici avant de finaliser"
+                    + "activer la fonction ZB Launch sauf si vous l'assignez à un "
+                    + "port valide qui existe dans la liste de sortie. Veuillez être sûr "
+                    + "pour ajouter le port ou changer le numéro ici avant de finaliser "
                     + "vos paramètres.");
         }
         oprow.find(".outPortRemarks").append(
@@ -2411,10 +2411,10 @@ $("#btnButtonTest").click(function(ev)
         if (!window.external.YesNoDialog(
             "Vous avez apporté des modifications aux paramètres du bouton que vous n'avez pas "
             + "déjà programmé dans la KL25Z. La fenêtre du testeur reflètera "
-            + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
-            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \"Programmer KL25Z \" "
-            + "avant de passer à la fenêtre du testeur."
-            + "\ r \ n \ r \ n"
+            + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées. "
+            + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \"Programmer KL25Z\" "
+            + "avant de passer à la fenêtre du testeur. "
+            + "\r\n\r\n"
             + "Voulez-vous quand même ouvrir le testeur?"))
             return;
     }
@@ -2499,7 +2499,7 @@ $("#setAllKB").click(function(ev)
 {
     if (window.external.YesNoDialog(
         "Cela remplacera vos attributions de clés actuelles "
-        + "avec les mappages de clavier standard pour Visual"
+        + "avec les mappages de clavier standard pour Visual "
         + "Pinball. Êtes-vous sûr de vouloir continuer?"))
     {
         $("#buttonTab tr").each(function()
@@ -3210,7 +3210,7 @@ $(function() {
         }))
         {
             alert("Aucune commande IR n'a encore été configurée. Pour associer une "
-                  + "commande IR avec un bouton, configurez d'abord la commande IR dans la"
+                  + "commande IR avec un bouton, configurez d'abord la commande IR dans la "
                   + "Section Télécommande IR de la configuration.");
             return;
         }
@@ -3262,7 +3262,7 @@ $(function() {
    <div class="section" data-name="TLC5940">
       <img src="tlc5940.png" class="sectionIcon">
       <b>TLC5940 (configuration de la puce de contrôleur PWM externe)</b>
-      <a class="shower" href="#">Qu'est-ce que c'est?</a>
+      <a class="shower" href="#">Qu'est-ce que c'est ça?</a>
       <div class="hider">
             Le TLC5940 est une puce de circuit intégré que vous pouvez connecter
             à la KL25Z pour ajouter des sorties supplémentaires pour plus de dispositifs de rétroaction (lumières,
@@ -3545,7 +3545,7 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
    <div class="section" data-name="74HC595">
       <img src="74hc595.png" class="sectionIcon">
       <b>74HC595 (configuration de la puce de sortie numérique externe)</b>
-      <a class="shower" href="#">What's this?</a>
+      <a class="shower" href="#">Qu'est-ce que c'est ça?</a>
       <div class="hider">
          Le 74HC595 est une puce de circuit intégré qui peut être connectée
          à la KL25Z pour ajouter plus de sorties numériques pour les dispositifs de retour comme
@@ -3643,7 +3643,7 @@ $("#hc595_nchips").change(function(ev)
       <b>Pinscape après la tombée de la nuit.</b>  Vous pouvez configurer un bouton ou 
       activer le <b> Mode Nuit </b>, qui désactive les sorties du dispositif de retour
       que vous désignez comme faiseurs de bruit. Cela vous permet de jouer tard dans la nuit
-      sans déranger vos colocataires, voisins fêtardset famille (surtout vôtre femme :)).
+      sans déranger votre famille (surtout vôtre femme).
       <a href="#" class="shower">Détails</a>
 
       <div class="hider">
@@ -3825,7 +3825,7 @@ $("#btnOutputTest").click(function(ev)
             + "les paramètres actuels de l'appareil, pas vos nouvelles modifications non enregistrées."
             + "Si vous souhaitez tester vos nouveaux paramètres, cliquez sur \"Programmer KL25Z \" "
             + "avant de passer à la fenêtre du testeur."
-            + "\ r \ n \ r \ n"
+            + "\r\n\r\n"
             + "Voulez-vous quand même ouvrir le testeur?"))
             return;
     }
@@ -4629,9 +4629,9 @@ var adjustOutputPorts = (function()
         // insert the batch of new outputs into the table
         if (!insertOutputs($("#lastOutPortRow"), newPortList))
             alert("Vous avez atteint le nombre maximum de ports de sortie. Il n'y a pas "
-                  + "assez d'emplacements pour ajouter tous les ports pour le ou les nouveaux appareils que vous"
-                  + "venez d'ajouter, donc aucun n'a été ajouté. Vous pourrez peut-être encore"
-                  + "en ajouter manuellement certains et vous pouvez également les réaffecter"
+                  + "assez d'emplacements pour ajouter tous les ports pour le ou les nouveaux appareils que vous "
+                  + "venez d'ajouter, donc aucun n'a été ajouté. Vous pourrez peut-être encore "
+                  + "en ajouter manuellement certains et vous pouvez également les réaffecter "
                   + "tous les ports inutilisés sur d'autres périphériques vers le ou les nouveaux périphériques.");
 
         // adjust the active/inactive status for the peripheral chip connections
@@ -5031,8 +5031,8 @@ $("#fileOpsButton").click(function(ev) {
 $("#mainMenuButton").click(function(ev) {
     if (uiDirty() && !window.external.DiscardCancelDialog(
         "Vous avez apporté des modifications à la configuration qui n’ont pas été "
-        + "programmé dans l'appareil ou enregistré dans un fichier de sauvegarde. Si vous"
-        + "partez maintenant, vous abandonnerez le travail. Etes-vous sûr de vouloir"
+        + "programmé dans l'appareil ou enregistré dans un fichier de sauvegarde. Si vous "
+        + "partez maintenant, vous abandonnerez le travail. Etes-vous sûr de vouloir "
         + "annuler vos modifications?"))
     {
         ev.preventDefault();
@@ -5043,7 +5043,7 @@ $("#revertButton").click(function(ev) {
     ev.preventDefault();
     if (window.external.DiscardCancelDialog(
         "Ceci supprimera toutes les modifications non enregistrées et reviendra aux paramètres. "
-        + "actuellement stocké sur le KL25Z. Voulez-vous vraiment continuer?",
+        + "actuellement stocké sur la KL25Z. Voulez-vous vraiment continuer?",
         "&Revert|Cancel"))
         configToUI(config, xconfig, ConfigSource.Board);
 });
@@ -5059,7 +5059,7 @@ $("#fileSaveButton").click(function(ev) {
     var uic = configFromUI();
     var uicx = xconfigFromUI();
     var result = showCallResult(window.external.WriteConfigFile(
-        CPUID, "Note: this is an in-memory working configuration", "browse",
+        CPUID, "Remarque: il s'agit d'une configuration de travail en mémoire", "browse",
         configToUSB(uic).join(";"), JSON.stringify(uicx)));
 
     // if we were successful, remember this as the last saved configuration,
@@ -5543,7 +5543,7 @@ function programKL25Z()
     // now warn about overwriting the settings
     if (!window.external.YesNoDialog(
         "Cela programmera la KL25Z avec les nouveaux paramètres que vous avez sélectionnés. "
-        + "Les paramètres précédents seront définitivement écrasés. Êtes-vous"
+        + "Les paramètres précédents seront définitivement écrasés. Êtes-vous "
         + "bien sûr que vous souhaitez continuer?"))
         return;
 
@@ -5576,8 +5576,8 @@ function OnCloseWindow()
 {
     if (uiDirty() && !window.external.DiscardCancelDialog(
         "Vous avez apporté des modifications à la configuration qui n'ont pas été "
-        + "programmé dans l'appareil ou enregistré dans un fichier de sauvegarde."
-        + "Arrêter maintenant abandonnera le travail. Voulez-vous vraiment"
+        + "programmé dans l'appareil ou enregistré dans un fichier de sauvegarde. "
+        + "Arrêter maintenant abandonnera le travail. Voulez-vous vraiment "
         + "annuler ces modifications?"))
         return "cancel";
 }
@@ -7627,7 +7627,7 @@ $(function() {
                 if (!window.external.YesNoDialog(
                     "Vous essayez d'attribuer une broche déjà câblée "
                     + "à une fonction spécifique sur la carte d'extension ("
-                    + alias.split ("|") [0] + "). Le câblage physique sur le"
+                    + alias.split ("|") [0] + "). Le câblage physique sur le "
                     + "tableau peut rendre d'autres utilisations impossibles même si "
                     + "la fonction associée est désactivée dans le logiciel."
                     + "\r\n\r\n"
@@ -7645,9 +7645,9 @@ $(function() {
                     + "Cette broche est connectée DIRECTEMENT à un port CPU sur la KL25Z."
                     + "Ces broches ont une capacité de gestion de puissance EXTRÊMEMENT faible."
                     + "NE JAMAIS CONNECTER UNE CHARGE SUPÉRIEURE À 4 mA À CE PIN."
-                    + "La limite 4mA s'applique si la broche est utilisée en \"active"
+                    + "La limite 4mA s'applique si la broche est utilisée en \"active" 
                     + "mode high \ ou \ active low \. Dépassement de 4 mA dans l'un ou l'autre mode "
-                    + "peut endommager le CPU, ce qui peut rendre l'ensemble de la KL25Z"
+                    + "peut endommager le CPU, ce qui peut rendre l'ensemble de la KL25Z "
                     + "inopérante.");
             }
 
@@ -8852,32 +8852,32 @@ function genPinWarnings(cb)
             // the PWM channel is overcommitted
             cb(self, "Le canal PWM de cette broche est utilisé plusieurs fois "
                + "(Canal PWM" + pwm + ", utilisé par" + inuse ["pwm." + Pwm].inUseBy ()
-               + "). Le canal PWM attribué à une broche ne peut pas être modifié"
+               + "). Le canal PWM attribué à une broche ne peut pas être modifié "
                + "(il est câblé dans le CPU), donc un seul des"
-               + pwmChannels[pwm].orList () + "peut être utilisé simultanément"
+               + pwmChannels[pwm].orList () + "peut être utilisé simultanément "
                + "comme sorties PWM. Les autres broches peuvent encore être utilisées pour d'autres"
                + ", tant qu'ils ne sont pas affectés en tant que sorties PWM.");
         }
         else if (tpm && inuse["tpm." + tpm] && inuse["tpm." + tpm].fields.length > 1)
         {
             cb(self, "Unité de contrôleur TPM du canal PWM de cette broche (canal PWM "
-               + pwm + ", l'unité TPM" + tpm + "est utilisée par plus d'une fonction"
+               + pwm + ", l'unité TPM" + tpm + "est utilisée par plus d'une fonction "
                + "qui nécessite le contrôle de la fréquence PWM (" + inuse ["tpm." + tpm].inUseBy ()
-               + "). Une seule des broches suivantes peut être utilisée simultanément"
-               + "pour l'une de ces fonctions:" + tpmUnits[tpm].orList () + ". Vous devez"
+               + "). Une seule des broches suivantes peut être utilisée simultanément "
+               + "pour l'une de ces fonctions:" + tpmUnits[tpm].orList () + ". Vous devez "
                + "basculer l'une de ces fonctions sur une broche compatible PWM avec une autre"
-               + "Numéro d'unité TPM. Ceci est une limitation matérielle de la KL25Z; PWM"
-               + "la fréquence est contrôlée par l'unité TPM, qui contient un groupe"
-               + "de canaux, plutôt que les canaux individuels, donc fonctionne"
-               + "qui nécessitent un contrôle de fréquence indépendant doit être attribué aux"
+               + "Numéro d'unité TPM. Ceci est une limitation matérielle de la KL25Z; PWM "
+               + "la fréquence est contrôlée par l'unité TPM, qui contient un groupe "
+               + "de canaux, plutôt que les canaux individuels, donc fonctionne "
+               + "qui nécessitent un contrôle de fréquence indépendant doit être attribué aux "
                + "canaux situés sur des unités TPM distinctes.");
         }
         else if (spi && inuse["spi." + spi] && inuse["spi." + spi].fields.length > 1)
         {
             // the SPI controller is overcommitted
-            cb(self, "This pin's SPI controller function is used more than once "
-               + "(" + spi + ", used by " + inuse["spi." + spi].inUseBy()
-               + "). Each SPI function can only be assigned to one pin.");
+            cb(self, "La fonction de contrôleur SPI de cette broche est utilisée plus d'une fois "
+               + "(" + spi + ", utilisé par " + inuse["spi." + spi].inUseBy()
+                + "). Chaque fonction SPI ne peut être attribuée qu'à une seule broche.");
         }
         else
         {
