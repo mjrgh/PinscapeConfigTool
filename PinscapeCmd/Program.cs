@@ -1,11 +1,9 @@
-﻿using System;
+﻿using CollectionUtils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using CollectionUtils;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace PinscapeCmd
@@ -54,7 +52,7 @@ namespace PinscapeCmd
                     + "Silencieux: ne faites pas de pause avant la fin du programme. Le programme attend normalement\n"
                     + "pour que vous appuyiez sur une touche avant de quitter lorsque vous l'exécutez à partir de Windows\n"
                     + "bureau, pour vous permettre de voir tous les messages affichés avant la console\n"
-                    + "La fenêtre se ferme. Si vous exécutez le programme via un\n" 
+                    + "La fenêtre se ferme. Si vous exécutez le programme via un\n"
                     + "processus automatisé, tel qu'un script de commande ou un raccourci de démarrage Windows, utilisez\n"
                     + "cette option pour que le programme se termine immédiatement une fois terminé."
                 );
@@ -66,7 +64,7 @@ namespace PinscapeCmd
             uint[] ProcessList,
             uint ProcessCount
         );
-        
+
         static void Main(string[] args)
         {
             // If we're the only process in our console process group, it
@@ -87,7 +85,7 @@ namespace PinscapeCmd
                 // the command line will have to select one explicitly
                 DeviceInfo device = devices.Count == 1 ? devices[0] : null;
                 Exception missingDevice = new Exception(
-                    devices.Count == 0 ? "Aucune unité Pinscape n'est présente dans votre système":
+                    devices.Count == 0 ? "Aucune unité Pinscape n'est présente dans votre système" :
                     "Plusieurs unités Pinscape sont présentes dans votre système, vous devez donc spécifier\n"
                     + "celui auquel vous voulez vous adresser. Écrivez \"unit=n\", où 'n' est le Pinscape\n"
                     + "numéro d'unité de l'unité à laquelle vous vous adressez, avant tout autre élément du\n"
