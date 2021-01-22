@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Broches GPIO PWM</title>
+</head>
+<body class="help">
+<h1>
+   Broches GPIO PWM
+</h1>
+
+<div>
+
+   <p>
+      Certaines affectations de broches dans la configuration nécessitent des broches avec des capacités "PWM"
+      PWM signifie Pulse Width Modulation, qui est un matériel fonctionnel qui permet de contrôler l'intensité
+      d'une sortie comme la luminosité d'une LED ou la vitesse d'un moteur.
+   </p>
+
+   <p>
+      Certaines - pas toutes - des broches externes du KL25Z ont des capacités PWM.
+      Lorsque vous sélectionnez une broche pour une fonction qui nécessite PWM, le sélecteur de broche
+      limitera la sélection pour afficher uniquement les broches compatibles PWM.
+   </p>
+
+   <p>
+      Si vous voyez une icône d'avertissement (<img src="pinwarn.png" style="vertical-align: middle;">)
+      à côté d'une sélection de broches, cela indique que la sélection a un conflit.
+      Cliquez sur l'avertissement pour afficher un message détaillé, qui vous dira quel autre usage est en conflit.
+   </p>
+
+   <p>
+      Pour toutes les broches que vous attribuez, vous devez être sûr de choisir une brochee qui n'est pas
+      utilisée à toute autre fin. Le message d'avertissement de broche vous dira si une broche est utilisé
+      plus d'une fois.
+   </p>
+
+   <p>
+      Dans le cas des broches PWM, la situation est légèrement plus compliquée.
+      Vous devez non seulement choisir une broche libre, mais aussi une qui est connectée
+      à un "canal PWM" libre. Si vous voyez un message de conflit vous indiquant que le canal PWM de votre
+      broche sélectionnée est utilisé plus d'une fois, lisez la suite pour en savoir plus sur ce que cela
+      signifie.
+   </p>
+
+   <h2>Broches et "Canaux"</h2>
+
+   <p>
+      En interne, le KL25Z gère la broche de sortie PWM à l'aide d'un module matériel appelé contrôleur PWM.
+      Lorsque vous attribuez une broche comme sortie PWM, la KL25Z effectue une connexion électrique en interne
+      entre la broche sélectionnée et le module contrôleur PWM.  
+   </p>
+
+   <p>
+      Le module contrôleur PWM de la KL25Z ne dispose que de 10 canaux. Cela signifie que seules 10 sorties PWM
+      indépendantes sont possibles à la fois. Vous pourrez noter cependant qu'il y a considérablement plus de 10
+      broches compatibles PWM. Comment est-ce possible? C'est parce que chaque canal du contrôleur PWM est
+      sur-engagé. Chaque canal se connecte à plusieurs broches. Par exemple, le canal "0.2" peut être connecté à
+      PTA5, PTC3, PTD2 ou PTE29. Le mot "ou" est vraiment important ici, cependant: vous ne pouvez connecter ce
+      canal qu'à <b> une </b> de ces broches à la fois.
+   </p>
+
+   <p>
+      C'est là que réside la complication. Si vous affectez PTA5 comme sortie PWM, cela engage le canal PWM 0.2
+      sur cette broche et rend PTC3, PTD2 et PTE29 indisponible en tant que sorties PWM. Vous pouvez toujours
+      utiliser ces autres broches à d'autres fins, mais vous ne pouvez pas les utiliser comme sorties PWM une
+      fois le canal en cours d'utilisation.
+   </p>
+
+   <p>
+      L'outil de sélection de broches essaie de vous aider en vous montrant les broches qui ne sont pas disponibles
+      car leurs canaux PWM respectifs sont déjà assigné à d'autres broches. C'est parfois aussi utile pour la
+      planification pour pouvoir voir la matrice de connexion globale, alors voici une référence croisée des broches
+      compatibles PWM et de leurs canaux, et vice-versa.
+   </p>
+
+   <style type="text/css">
+.helpPinTab {
+    margin: 1em auto;
+}
+.helpPinTab td {
+    text-align: center;
+    padding: 0px 1em;
+}
+div.caption {
+    text-align: center;
+    font-weight: bold;
+    margin: 2em 1em 1em 1em;
+}
+   </style>
+
+
+   <div class="caption">Broches compatibles PWM</div>
+   <table class="helpPinTab">
+      <tr><th>Broche</th><th>Canal PWM</th></tr>
+      <tr><td>PTA1</td><td>2.0</td></tr>
+      <tr><td>PTA2</td><td>2.1</td></tr>
+      <tr><td>PTA4</td><td>0.1</td></tr>
+      <tr><td>PTA5</td><td>0.2</td></tr>
+      <tr><td>PTA12</td><td>1.0</td></tr>
+      <tr><td>PTA13</td><td>1.1</td></tr>
+      <tr><td>PTB0</td><td>1.0</td></tr>
+      <tr><td>PTB1</td><td>1.1</td></tr>
+      <tr><td>PTB2</td><td>2.0</td></tr>
+      <tr><td>PTB3</td><td>2.1</td></tr>
+      <tr><td>PTB18</td><td>2.0</td></tr>
+      <tr><td>PTB19</td><td>2.1</td></tr>
+      <tr><td>PTC1</td><td>0.0</td></tr>
+      <tr><td>PTC2</td><td>0.1</td></tr>
+      <tr><td>PTC3</td><td>0.2</td></tr>
+      <tr><td>PTC4</td><td>0.3</td></tr>
+      <tr><td>PTC8</td><td>0.4</td></tr>
+      <tr><td>PTC9</td><td>0.5</td></tr>
+      <tr><td>PTD0</td><td>0.0</td></tr>
+      <tr><td>PTD1</td><td>0.1</td></tr>
+      <tr><td>PTD2</td><td>0.2</td></tr>
+      <tr><td>PTD3</td><td>0.3</td></tr>
+      <tr><td>PTD4</td><td>0.4</td></tr>
+      <tr><td>PTD5</td><td>0.5</td></tr>
+      <tr><td>PTE20</td><td>1.0</td></tr>
+      <tr><td>PTE21</td><td>1.1</td></tr>
+      <tr><td>PTE22</td><td>2.0</td></tr>
+      <tr><td>PTE23</td><td>2.1</td></tr>
+      <tr><td>PTE29</td><td>0.2</td></tr>
+      <tr><td>PTE30</td><td>0.3</td></tr>
+      <tr><td>PTE31</td><td>0.4</td></tr>
+   </table>
+
+   <div class="caption">Canaux PWM et broches associées</div>
+   <table class="helpPinTab">
+      <tr><th>Canal PWM Channel</th><th>Broches Connectées</th></tr>
+
+      <tr><td>0.0</td><td>PTC1, PTD0</td>
+      <tr><td>0.1</td><td>PTA4, PTC2, PTD1</td>
+      <tr><td>0.2</td><td>PTA5, PTC3, PTD2, PTE29</td>
+      <tr><td>0.3</td><td>PTC4, PTD3, PTE30</td>
+      <tr><td>0.4</td><td>PTC8, PTD4, PTE31</td>
+      <tr><td>0.5</td><td>PTC9, PTD5</td>
+      <tr><td>1.0</td><td>PTA12, PTB0, PTE20</td>
+      <tr><td>1.1</td><td>PTA13, PTB1, PTE21</td>
+      <tr><td>2.0</td><td>PTA1, PTB18, PTB2, PTE22</td>
+      <tr><td>2.1</td><td>PTA2, PTB19, PTB3, PTE23</td>
+
+   </table>
+	 
+
+
+</div>
+
+</html>
+</body>
