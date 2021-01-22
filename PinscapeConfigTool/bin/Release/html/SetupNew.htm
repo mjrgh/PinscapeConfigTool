@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Configuration du contrôleur Pinscape</title>
+</head>
+<body>
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+<div>
+
+<h1>Nouvelle configuration KL25Z</h1>
+</div>
+
+<div id="NewOrExisting" class="flowStep" style="display: block;">
+   <p>
+      Cette procédure configurera votre KL25Z avec le firmware Pinscape.
+   </p>
+   <p>
+      Si vous avez une autre KL25Z de branchée à votre système autre que celle que vous souhaitez
+      configurer, c'est le bon moment pour la débrancher, nous ne voulons pas faire de
+      confusion sur celle que nous allons initialiser.
+   <p>
+      Avant de commencer, s'agit-il d'une nouvelle KL25Z neuve sortie d'usine que vous venez de
+      sortir de la boîte, ou avez-vous déjà installé Pinscape sur cette KL25Z?
+   </p>
+
+   <div id="NewOrExistingQ">
+      <p><a href="#" id="NewKL25Z">C'est une nouvelle!</a></p>
+      <p><a href="Install.htm" id="OldKL25Z">J'ai déjà installé Pinscape sur cet appareil</a></p>
+   </div>
+</div>
+
+<div id="OldKL25ZBranch" style="display: none;">
+   <div class="flowStep done">
+      <h2>J'ai déjà installé Pinscape sur cet appareil</h2>
+   </div>
+   <p>
+      Génial, cela va faciliter les choses. Il suffit de copier le firmware sur l'appareil.
+   </p>
+   <p>
+      <a class="button" href="Install.htm">Procédure en cours</a>
+   </p>
+</div>
+
+<div id="NewKL25ZBranch" style="display: none;">
+   <img src="kl25z-annotated.png" style="float: right; margin: 1em 0px 1em 2em;">
+   <div class="flowStep done">
+      <h2>C'est une toute nouvelle!</h2>
+   </div>
+
+   <div class="flowStep" style="display: block;">
+      <p>
+         Pour une toute nouvelle KL25Z, nous devrons peut-être mettre à jour les "fichiers
+	      de démarrage" principals avant que nous puissions installer Pinscape. Nous
+	      Vérifions votre KL25Z pour trouver si cela est nécessaire.
+      </p>
+      <p>
+         Veuillez brancher un câble USB sur le <b> port de programmation </b> de la nouvelle
+	      KL25Z comme illustré à droite, et branchez l'autre extrémité sur un port USB 2.0 de
+	      votre PC.
+      </p>
+      <div id="SDADriveList" style="clear: both;">
+         <div></div>
+      </div>
+      <div id="multiDriveWarning" style="display:none;">
+         Attention: plus d'une KL25Z est branchée! Cela serait une bonne idée de les
+	      débrancher toutes sauf la nouvelle que vous souhaitez configurer. 
+         le processus d'installation effacera toutes les données existantes sur l'appareil, 
+         nous ne voulons pas de confusion sur laquelle nous initialisons.
+      </div>
+      <div id="noDrivesFound">
+         (Aucun appareil n'a encore été trouvé. Votre KL25Z devrait apparaître ici lorsque
+         vous la branchez comme indiqué sur le schéma.)
+      </div>
+   </div>
+</div>
+
+<script type="text/javascript">
+
+$("#OldKL25Z").click(function(ev) {
+    $("#OldKL25ZBranch, #OldKL25ZBranch .flowStep").show();
+    $("#NewOrExistingQ").hide();
+    $("#NewOrExisting").addClass("done");
+    ev.preventDefault();
+});
+
+var sdaUpdater = false;
+$("#NewKL25Z").click(function(ev) {
+    $("#NewKL25ZBranch, #NewKL25ZBranch .flowStep").show();
+    $("#NewOrExistingQ").hide();
+    $("#NewOrExisting").addClass("done");
+
+    sdaUpdater = setInterval(updateDriveList, 1000);
+    
+    ev.preventDefault();
+});
+
+// update the SDA drive list
+function updateDriveList()
+{
+    var drives = eval(window.external.AllSDADrives(true));
+    drives.sort(function(a, b) { return a.path.localeCompare(b.path); });
+    var h = $("#SDADriveList .bootLoaderInfo").first();
+    for (var i = 0 ; i < drives.length || h.length ; )
+    {
+        // if the current items match, move on, otherwise sync the lists
+        var d = i < drives.length ? drives[i] : null;
+        if (d && h.length && d.path == h.data("path"))
+        {
+            // they're the same - move to the next on each list
+            ++i;
+            h = h.next();
+        }
+        else if (!d || (h.length && h.data("path").localeCompare(d.path) < 0))
+        {
+            // we're out of new drives, or this old drive sorts before this
+            // new drive: this old drive is no longer present, so delete it
+            var nxt = h.next();
+            h.remove();
+            h = nxt;
+        }
+        else
+        {
+            // otherwise, the new drive must be new, so insert it before the
+            // current item (or at the end of the list if there's no current item)
+
+            // check if it's up to date
+            var status;
+            if (d.bootVer.major >= 1 && d.bootVer.minor >= 11
+                && d.appVer.major >= 1 && d.appVer.minor >= 14)
+            {
+                status = "<b>Bonne nouvelle!</b>  Cet appareil est à jour! Vous pouvez procéder directement "
+                         + "à la configuration de Pinscape."
+                         + "<div><a href=\"Install.htm\" style=\"font-weight:bold;\">Installation de Pinscape</a></div>"
+                         + "<div><a href=\"#\" class=\"updateBootLoader\">Mettez quand même à jour les fichiers de démarrage</a> "
+                         + "(non recommandé)</div>"
+            }
+            else
+            {
+                status = "<b>Cet appareil a un ancien firmware d'usine</b> qui "
+                         + "doit être mis à jour avant de pouvoir installer "
+                         + "Pinscape."
+                         + "<div><a href=\"#\" class=\"updateBootLoader\" style=\"font-weight:bold;\">procéder</a></div>";
+            }
+
+            // build the item
+            var newitem = $("<div/>").addClass("bootLoaderInfo").data("path", d.path).html(
+                "<img src=\"kl25zDiskIcon.png\">"
+                + "<b>" + d.path.htmlify() + "</b>"
+                + " (" + d.volumeLabel.htmlify() + ")"
+                + " | OpenSDA ID " + d.sdaid.htmlify()
+                + "<div class=\"bootVer\">Version du chargeur de démarrage: " + d.bootVer.text
+                + ", Version de l'application de débogage: " + d.appVer.text
+                + "<div class=\"bootStat\">" + status + "</div>"
+                + "</div>");
+
+            if (h.length)
+                h.before(newitem);
+            else
+                $("#SDADriveList > div").append(newitem);
+            ++i;
+        }
+    }
+
+    // show or hide the multi-drive warning
+    $("#multiDriveWarning").toggle(drives.length > 1);
+
+    // show or hide the "no drives found" notice
+    $("#noDrivesFound").toggle(drives.length == 0);
+
+    // refresh the handlers
+    $("#SDADriveList a.updateBootLoader").off("click").click(function(ev) {
+        ev.preventDefault();
+        clearInterval(sdaUpdater);
+        $("#NewOrExisting, #NewKL25ZBranch").hide();
+        $("#BootLoaderUpdate").show();
+    });
+}
+
+</script>
+
+   
+
+<div id="BootLoaderUpdate" style="display: none;">
+   <p>
+      Nous allons maintenant vous guider à travers le processus de mise à jour du fichier de
+      démarrage sur votre KL25Z. <b> Il s'agit d'une procédure unique </b> que vous n'aurez
+      plus jamais à répéter à l'avenir pour cet appareil, peu importe le nombre de fois que
+      vous souhaitez réinstaller le logiciel Pinscape.
+   </p>
+
+   <div style="text-align: center; margin: 4em 1em;" id="buttons1">
+      <a id="startButton" class="shower button noReHide" href="#" style="display: inline-block; min-width: 12ex;">Démarrage</a>
+   </div>
+   <div class="hider">
+      <div id="warningWin8">
+         <p>L'intérêt de cette mise à jour est que <b> l'ancien firmware d'usine
+            n'est pas compatible avec les versions modernes de Windows </b>. La mise à jour 
+            corrigera définitivement le problème de cet appareil, mais cela crée un Catch-22
+            si vous utilisez Windows 8 ou version ultérieure ...
+         </p>
+
+         <div class="warning">
+            <p>Attention!</p>
+            
+            <p>
+               Cette procédure <b> échouera </b> sous Windows <b> 8 OU PLUS VIEUX </b>. Il
+               ne fonctionnera pas sur <b> TOUTES LES VERSIONS ULTÉRIEURES:</b>
+            </p>
+            <p>
+               <b>
+                  Windows 8 - échouer
+                  <br>Windows 8.1 - échouer
+                  <br>Windows 10 - échouer
+                  <br>Tout système plus vieux que Windows 7 - échouer
+               </b>
+            </p>
+            
+            <p>
+               Vous <b> devez </b> effectuer ces étapes sous <b> Windows 7 ou version antérieure </b>:
+               XP, Vista ou Windows 7 fonctionneront et <b> seules </b> ces versions fonctionneront.
+               Cela est dû à un bogue / limitation dans le micrologiciel d'usine KL25Z.
+            </p>
+            
+            <p>
+               <b>Après </b> la mise à jour, votre KL25Z fonctionnera sur <b> toutes les versions de Windows </b>.
+            </p>
+         </div>
+         
+         <div class="warning">
+            <b>Vous n'avez pas besoin d'installer ou d'exécuter ce programme de configuration sur
+	       l'ancienne machine! </b> La seule chose que fait le programme de configuration est
+	       de lister les instructions. Juste afficher ou imprimez les instructions afin de
+               pouvoir vous y référer sur l'autre appareil.
+         </div>
+      </div>
+      
+      <div style="text-align: center;" id="warningWin8Opts">
+         <div>
+            <a href="#" id="xpvm">Êtes-vous hors de votre esprit Vulcain? <span id="year"></span>! Je n'ai pas de machine XP ou Win 7!!!!</a>
+         </div>
+         <div>
+            <a href="#" class="shower noReHide" id="dismissWarning">OK, allons-y!</a>
+         </div>
+      </div>
+      
+      <script>
+$(function() {
+    $("#year").html((new Date()).getFullYear());
+});
+
+$("#xpvm").click(function(ev) {
+    ev.preventDefault();
+    window.external.ShowHelp("xpvm.htm");
+});
+
+$("#startButton").click(function(ev) {
+    $("#buttons1").hide();
+});
+$("#dismissWarning").click(function(ev) {
+    $("#warningWin8, #warningWin8Opts").hide();
+});
+      </script>
+      
+      <div class="hider">
+         <hr>
+         <p>Pour mettre à niveau le micrologiciel d'usine, procédez comme suit:</P>
+         
+         <ol id="stepList">
+
+             <li>Soution 1 (originale) :</li>
+             
+             <li>Dans votre navigateur Web, accédez à <a target="_blank" href="http://pemicro.com/opensda/">
+                     http://pemicro.com/opensda/
+                 </a>.
+
+             <li>
+                 Recherchez la section <b> OpenSDA Firmware (MSD &amp; Debug)</b>.
+                 Recherchez la section <b> OpenSDA Firmware (MSD & amp; Debug) </b>.
+                 Cliquez sur le lien <b> Firmware Apps </b>. Vous serez invité à créer un compte gratuit ou à
+                 indiquer votre adresse e-mail pour recevoir un lien de téléchargement. Choisissez l'option
+                 que vous préférez et téléchargez le fichier.
+
+             <li>Soution 2 (option) :</li>
+             
+             <li>
+                 Connectez-vous à mon site pour récupérer la dernière version du fichier OpenSDA récupéré
+                 sur le site officiel proposé au dessus, cela vous évite de créé un compte uniquement pour cela.
+                 <a target="_blank" href="http://mescreations.dyndns-free.com/phpBB3/viewtopic.php?f=19&t=174&sid=7c4a7a9fe889d0dad9ad7292f5519a6e">
+                     http://Nicofab18-Mescreations/
+                 </a>.
+             <li>Téléchargez-le et suivant les étapes ci-dessous
+
+             <li>Décompressez le fichier téléchargé dans un dossier local sur votre disque dur.
+
+             <li>
+                 <b>Débranchez tous les câbles USB de votre KL25Z. </b> Si vous avez d’autres cartes KL25Z
+                 déjà installés, débranchez les toutes également.
+
+             <li>
+                 Ouvrez la fenêtre Poste de travail sur votre bureau Windows afin de pouvoir afficher les
+                 lecteurs de disque connectés.
+
+             <li>
+                 <img src="kl25z-annotated.png" style="float: right; margin: 1em 0px 1em 2em;">
+                 <b>Appuyez et maintenez </b> le bouton de réinitialisation KL25Z.
+
+             <li>
+                 <b>Maintenez le bouton de réinitialisation enfoncé </b> pendant que vous branchez un câble
+                 USB sur le Port <b> de programmation </b> sur la KL25Z, et branchez l’autre extrémité sur un
+                 port USB sur votre ordinateur.
+
+             <li>Relâchez le bouton de réinitialisation.
+
+             <li>
+                 Vous devriez voir une nouvelle icône de clé USB apparaître dans la fenêtre Poste de travail,
+                 avec un nom comme <b> BOOTLOADERAPP </b>. Ceci représente le port de programmation du KL25Z.
+
+             <li>
+                 Dans le logiciel PEMicro que vous avez téléchargé ci-dessus, recherchez le fichier
+                 <b> BOOTUPDATEAPP_Pemicro_v111.SDA </b>. (Les chiffres à la fin sont les numéro de version,
+                 afin qu'ils puissent varier.)
+
+             <li>Faites glisser et déposez ce fichier sur la clé USB de la KL25Z.
+
+             <li>Attendez que Windows ait fini de copier le fichier, puis débranchez la KL25Z.
+
+             <li>
+                 Nous allons maintenant répéter les étapes ci-dessus avec un fichier .SDA différent. Comme
+                 avant, appuyez et maintenez le bouton de réinitialisation sur le KL25Z, et branchez un câble USB
+                 entre le port de programmation KL25Z et votre ordinateur. Relâchez le bouton de réinitialisation.
+                 Dans les fichiers téléchargés, recherchez <b> MSD-DEBUG-FRDM-KL25Z_Pemicro_v114.SDA </b>, et
+                 faites-le glisser sur la clé USB. (Comme précédemment, les chiffres à la fin peuvent varier.)
+                 Débranchez le câble USB une fois que Windows a fini de copier le fichier.
+
+             <li>
+                 Pour confirmer que tout a fonctionné, reconnectez le port de programmation de la KL25Z sur
+                 votre PC <b> sans appuyer sur le bouton de réinitialisation </b>. La clé USB doit apparaît à
+                 nouveau, mais il devrait maintenant être intitulé <b> FRDM-KL25Z </b>. vous devriez aussi
+                 voir un voyant vert fixe (non clignotant) sur la carte lorsqu'elle est branchée.
+
+
+                 <p><a href="#" class="shower" id="troubleshooting">Ça n'a pas l'air bon!</a>
+                 <p class="hider">
+                     <b>Si l'un de ces éléments ne correspond pas à ce que vous voyez, </b> la mise à jour n'a
+                     peut-être pas réussie. <b>
+                     Si vous avez tenté la mise à niveau à partir de Windows 8 ou supérieur, c'est probablement
+                     le problème.
+                     </b> Le micrologiciel d'usine d'origine est incompatible avec Windows 8-10 et échouera
+                     silencieusement et mystérieusement (sans message d'erreur) sur ses systèmes. Si vous avez
+                     effectué la mise à jour à partir de Windows 7 ou une version antérieure et que cela ne
+                     fonctionne toujours pas, c'est possible que les procédures aient changé depuis cette
+                     rédaction. Essayez de chercher pour obtenir des instructions (fichiers .txt et / ou .pdf)
+                     dans le fichier ZIP téléchargé pour voir s'il y a des informations sur les nouvelles procédures.
+                 </p>
+
+             <li>
+                 Si tout s'est déroulé comme prévu, votre KL25Z est désormais prête à l'emploi! Avec la mise à jour
+                 du dernier firmware en place, l'appareil fonctionnera désormais sur toutes les versions de Windows
+                 à partir de XP, de sorte que l'avertissement précédent concernant Windows 8-10 ne s'applique plus.
+
+                 <p>
+                     Nous sommes maintenant prêts à passer à l'étape suivante, qui consiste à installer le Logiciel
+                     Pinscape Controller sur la KL25Z.
+                 </p>
+
+                 <p>
+                     <b>Important! </b> À l'avenir, <b> NE PAS </b> appuyer ou maintenir le bouton de réinitialisation
+                     tout en branchant le KL25Z. Cela déclenche le processus de mise à jour du fichier de démarrage,
+                     que vous avez maintenant terminé! Cela ne sera normalement jamais plus à être répété sur
+                     la même carte.
+                 </p>
+
+         </ol>
+         <div style="margin: 1ex 2em; clear: both;" id="listButtons">
+            <a href="#" id="nextStep">Etape suivante</a>
+            <span style="margin: 0px 1em;">|</span>
+            <a href="#" id="showAll">Afficher tout</a>
+            <span style="margin: 0px 1em;">|</span>
+            <a href="#" id="printBtn">Imprimer les instructions</a>
+         </div>
+         <div style="margin: 1ex 2em; clear: both; display: none;" id="listButtonsDone">
+            <a href="#" id="printBtn2">Imprimer les instructions</a>
+         </div>
+         
+         <div id="done" class="noPrint">
+            <div style="margin: 2em; text-align: center;">
+               <a class="button" href="Install.htm">Installer le logiciel Pinscape &gt;&gt;</a>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+</div>
+
+<div id="navproxy"></div>
+<div id="nav">
+   <div class="left">
+      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Retourner au menu principal"><img src="homeIcon.png"></a>
+   </div>
+   <div class="navSpacer">
+   </div>
+</div>
+
+<script type="text/javascript">
+$(function()
+{
+    // hide all but the first list element
+    $("#done").hide();
+    var lst = $("#stepList > li").slice(1);
+    lst.hide();
+
+    // "Next Step" -> show next list item: show the first element in the
+    // remaining list, then slice the list to remove the first element.
+    // If the list is empty, we're done.
+    $("#nextStep").click(function(ev) {
+	ev.preventDefault();
+	lst.first().show();
+	scrollIntoView($(this));
+	lst = lst.slice(1);
+	if (lst.length == 0)
+	    done(true);
+    });
+
+    // "Show All" -> show the whole rest of the list
+    $("#showAll").click(function(ev) {
+	ev.preventDefault();
+	lst.show();
+	done(false);
+    });
+
+    // Print button -> show the rest of the list and print the page
+    $("#printBtn, #printBtn2").click(function(ev) {
+	ev.preventDefault();
+	lst.show();
+	done(false);
+	$("#troubleshooting").click();
+	$("#warningWin8").show();
+	window.external.PrintPage();
+	$("#warningWin8").hide();
+    });
+
+    // When the last item is displayed, remove the Next Step and Show
+    // All buttons and show the "Done" section
+    function done(scroll)
+    {
+	$("#listButtons").hide();
+	$("#listButtonsDone").show();
+	$("#done").show();
+	if (scroll)
+	    scrollIntoView($("#done"));
+    }
+});
+</script>
+
+</body>
+</html>
