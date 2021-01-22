@@ -137,15 +137,15 @@ var gpioPins = [
     { name: "PTB10"  },
     { name: "PTB11"  },
     { name: "PTB18", pwm: "2.0", onBoardLED: 1,
-                     internal: true, internalName: "Red on-board LED", internalShortName: "Red LED",
-                     warning: "This port is hard-wired on the KL25Z to the red on-board LED. "
-                              + "Using this port will supersede the red LED's normal status "
-                              + "display function." },
+        internal: true, internalName: "LED rouge intégrée", internalShortName: "LED rouge",
+        warning: "Ce port est câblé sur le KL25Z à la LED rouge intégrée. "
+            + "L'utilisation de ce port remplacera l'état normal de fonction d'affichage "
+            + "de la LED rouge." },
     { name: "PTB19", pwm: "2.1", onBoardLED: 2,
-                     internal: true, internalName: "Green on-board LED", internalShortName: "Green LED",
-                     warning: "This port is hard-wired on the KL25Z to the green on-board LED. "
-                              + "Using this port will supersede the green LED's normal status "
-                              + "display function." },
+        internal: true, internalName: "LED verte intégrée", internalShortName: "LED verte",
+        warning: "Ce port est câblé sur le KL25Z à la LED verte intégrée. "
+            + "L'utilisation de ce port remplacera l'état normal de fonction d'affichage "
+            + "de la LED verte." },
     { name: "PTC0",  adc: "0.14" },
     // { name: "PTC1",  pwm: "0.0", adc: "0.15", idc: "1.SCL" }, // omitted - reserved by mbed platform for real-time clock input
     { name: "PTC2",  pwm: "0.1", adc: "0.11", idc: "1.SDA" },
@@ -164,10 +164,10 @@ var gpioPins = [
     { name: "PTC17"  },
     { name: "PTD0",  pwm: "0.0", interrupt: true },
     { name: "PTD1",  pwm: "0.1", adc: "0.5b", spi: "SCLK", onBoardLED: 3, interrupt: true,
-                     remarks: "Blue on-board LED",
-                     warning: "This port is hard-wired on the KL25Z to the blue on-board LED. "
-                              + "You can use this port for other purposes, but doing so will "
-                              + "supersede the blue LED's normal status display function." },
+        remarks: "LED embarquée bleue",
+        warning: "Ce port est câblé sur le KL25Z à la LED bleue embarquée. "
+            + "Vous pouvez utiliser ce port à d'autres fins, mais cela remplacera "
+            + "la fonction d'affichage d'état normal de la LED bleue." },
     { name: "PTD2",  pwm: "0.2", spi: "MOSI", interrupt: true },
     { name: "PTD3",  pwm: "0.3", spi: "MISO", interrupt: true },
     { name: "PTD4",  pwm: "0.4", interrupt: true },
