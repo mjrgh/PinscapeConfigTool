@@ -350,7 +350,7 @@ namespace PinscapeConfigTool
             // the Config Tool URL prefix to point to your own server where
             // you're hosting updates to your translated/custom version of
             // the Config Tool.
-            String configToolUrlPrefix = "http://mescreations.dyndns-free.com/phpBB3/download/";
+            String configToolUrlPrefix = "http://mescreations.dyndns-free.com/phpBB3/download/PinscapeConfigTool_Fr/";
             String firmwareUrlPrefix = "http://www.mjrnet.org/pinscape/downloads/";
 
             // presume we'll need an update of the setup tool if we don't already
