@@ -328,29 +328,88 @@ namespace PinscapeConfigTool
             // status object
             DLStatus stat = new DLStatus(this);
 
+
             // download URL prefix
-			String configToolUrlPrefix = "http://mescreations.dyndns-free.com/phpBB3/download/PinscapeConfigTool_Fr/";
-            // String urlpre = "http://mescreations.dyndns-free.com/phpBB3/download/PinscapeConfigTool_Fr/";
-            // String urlpre = "http://mjrnet.org/pinscape/downloads/";
+            String urlpre = "http://mjrnet.org/pinscape/downloads/";
+
+            // URL prefix for the Config Tool and KL25Z firmware.  For the main
+            // release version, these point to the same mjrnet.org location.
+            // These can be changed to use separate servers for other release
+            // versions, such as translated versions or custom builds.
+            //
+            // In what situation would you want to use separate servers?  The
+            // original use case was for language translations of the Config
+            // Tool: in this case, we'll want to check for updates to the
+            // *translated* version of the Config Tool, rather than updates
+            // to the original English version, so we'll want to look for
+            // Config Tool updates at the server where the translated version
+            // is hosted.  But users will still be using the main firmware
+            // release, so for the firmware part, we'll still want to look at
+            // mjrnet.org.  In this situation, simply leave the firmware URL
+            // prefix pointing to the original mjrnet.org path, but change
+            // the Config Tool URL prefix to point to your own server where
+            // you're hosting updates to your translated/custom version of
+            // the Config Tool.
+            String configToolUrlPrefix = "http://mescreations.dyndns-free.com/phpBB3/download/";
+            String firmwareUrlPrefix = "http://www.mjrnet.org/pinscape/downloads/";
 
             // presume we'll need an update of the setup tool if we don't already
-            // have a copy of the same file locally
+            // have a copy of the same version locally
             bool needFirmware = true;
             bool needSetup = true;
 
-            // get the latest BuildInfo.txt file, with the build number info
+            // Get the latest BuildInfo.txt file, with the build number info.  Check
+            // for Config Tool updates first.
             String buildInfoError;
             Downloader.Status infoResult = downloader.CheckForUpdates(
-                " nouveau",
-                urlpre + "BuildInfo.txt", "BuildInfo.txt", stat, out buildInfoError);
+
+            " nouveau",
+            configToolUrlPrefix + "BuildInfo.txt", "BuildInfo.txt", stat, out buildInfoError);
+
 
             // if successful, check to see if we already have the latest versions
             // of the respective files
+            String configToolBuildInfoText = null;
             if (infoResult == Downloader.Status.DownloadDone || infoResult == Downloader.Status.NoUpdate)
             {
                 // read the file
-                String bi = File.ReadAllText(Path.Combine(Program.dlFolder, "BuildInfo.txt"));
+                configToolBuildInfoText = File.ReadAllText(Path.Combine(Program.dlFolder, "BuildInfo.txt"));
 
+                // Check the setup tool build version.  If our own build number is
+                // equal or higher, we don't need to download anything.
+                Match m;
+                if ((m = Regex.Match(configToolBuildInfoText, @"(?mi)^\s*setup-tool:\s*(\d+)")).Success
+                    && int.Parse(VersionInfo.BuildNumber) >= int.Parse(m.Groups[1].Value))
+                    needSetup = false;
+            }
+
+            // If the Firmware update server path is different from the Config Tool
+            // server path, we need to fetch the new BuildInfo.txt file for the Firmware.
+            // If the servers are the same, we can just look in the same file we already
+            // retrieved.
+            String firmwareBuildInfoText = null;
+            if (firmwareUrlPrefix == configToolUrlPrefix)
+            {
+                // The firmware is in the same server location as the config tool, so we
+                // can refer to the same BuildInto.txt for the update details.
+                firmwareBuildInfoText = configToolBuildInfoText;
+            }
+            else
+            {
+                // The repeat the BuildInfo.txt download, this time from the firmware server
+                infoResult = downloader.CheckForUpdates(
+                    "Build version data",
+                    firmwareUrlPrefix + "BuildInfo.txt", "BuildInfo_Firmware.txt", stat, out buildInfoError);
+
+                // if successful, load the file
+                if (infoResult == Downloader.Status.DownloadDone || infoResult == Downloader.Status.NoUpdate)
+                    firmwareBuildInfoText = File.ReadAllText(Path.Combine(Program.dlFolder, "BuildInfo_Firmware.txt"));
+            }
+
+            // now check BuildInfo.txt for the current Firmware version, if we
+            // successfully retrieved the file
+            if (infoResult == Downloader.Status.DownloadDone || infoResult == Downloader.Status.NoUpdate)
+            {
                 // Check the firmware version.  If we already have a copy of the
                 // same version, don't download it again.  Note that we only check
                 // for a file that matches the build number according to our naming
@@ -360,15 +419,9 @@ namespace PinscapeConfigTool
                 // biggest it can be is about 128K, given the size of the KL25Z's
                 // flash memory), so this costs little in time and bandwidth.
                 Match m;
-                if ((m = Regex.Match(bi, @"(?mi)^\s*firmware:\s*(\S+)")).Success
+                if ((m = Regex.Match(firmwareBuildInfoText, @"(?mi)^\s*firmware:\s*(\S+)")).Success
                     && File.Exists(Path.Combine(Program.dlFolder, "Pinscape Controller " + m.Groups[1].Value + ".bin")))
                     needFirmware = false;
-
-                // Check the setup tool build version.  If our own build number is
-                // equal or higher, we don't need to download anything.
-                if ((m = Regex.Match(bi, @"(?mi)^\s*setup-tool:\s*(\d+)")).Success
-                    && int.Parse(VersionInfo.BuildNumber) >= int .Parse(m.Groups[1].Value))
-                    needSetup = false;
             }
 
             // get the latest "Pinscape_Controller_KL25Z.bin" file
@@ -379,7 +432,8 @@ namespace PinscapeConfigTool
                 String tmpfile = "Pinscape_Controller_KL25Z.bin.download";
                 firmwareResult = downloader.CheckForUpdates(
                     "Pinscape Controller firmware",
-                    "http://mjrnet.org/pinscape/downloads/" + "Pinscape_Controller_KL25Z.bin",
+
+                    firmwareUrlPrefix + "Pinscape_Controller_KL25Z.bin",
                     tmpfile, stat, out firmwareError);
                 //urlpre
                 // if we successfully downloaded a new file, parse the build timestamp from 
@@ -448,9 +502,9 @@ namespace PinscapeConfigTool
             {
                 // the build number is unavailable or looks new - download the zip file
                 setupResult = downloader.CheckForUpdates(
+
                     "L'outil de configuration",
-                    "http://mescreations.dyndns-free.com/phpBB3/download/PinscapeConfigTool_Fr/PinscapeConfigTool_Fr.zip",
-                // String urlpre = "http://mjrnet.org/pinscape/downloads/PinscapeConfigTool.zip";
+                    configToolUrlPrefix + "PinscapeConfigTool.zip",
                     Program.updaterZip, stat, out setupError);
             }
 
