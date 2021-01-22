@@ -261,32 +261,32 @@ namespace PinscapeConfigTool
                 switch (mode)
                 {
                     case Mode.Success:
-                        lblStatus.Text = "SUCCESS";
+                        lblStatus.Text = "SUCCES";
                         lblStatus.ForeColor = Color.DarkGreen;
-                        lblDetails.Text = "Command code " + command.Details() + " recognized.  Click Save to store this code.";
+                        lblDetails.Text = "Code de commande " + command.Details() + " reconnu. Cliquez sur Enregistrer pour stocker ce code.";
                         btnSave.Enabled = true;
                         lnkRedo.Visible = true;
                         lnkRawData.Visible = true;
                         break;
 
                     case Mode.Failed:
-                        lblStatus.Text = "FAILED";
+                        lblStatus.Text = "ECHOUE";
                         lblStatus.ForeColor = Color.DarkRed;
                         if (data.Count > 0)
-                            lblDetails.Text = "The command could not be decoded. You might want to try again. If the "
-                                + "code can't be learned after several tries, the remote might use a data format that "
-                                + "the Pinscape firmware doesn't recognize. If you contact us about it, include the "
-                                + "pulse data below, which will help us identify the remote's data format.";
+                            lblDetails.Text = "La commande n'a pas pu être décodée. Vous voudrez peut-être réessayer. Si le "
+                                + "code ne peut pas être appris après plusieurs essais, la télécommande peut utiliser un format de données que "
+                                + "le firmware de Pinscape ne reconnaît pas. Si vous nous contactez à ce sujet, incluez les "
+                                + "données d'impulsion ci-dessous, qui nous aideront à identifier le format de données de la télécommande.";
                         else
-                            lblDetails.Text = "No IR signals were detected. Check that the sensor is attached and "
-                                + "configured in the software. If the sensor is set up correctly and works with other "
-                                + "remotes, your remote might use an IR wavelength that the sensor can't detect.";
+                            lblDetails.Text = "Aucun signal IR n'a été détecté. Vérifiez que le capteur est fixé et "
+                                + "configuré dans le logiciel. Si le capteur est correctement configuré et fonctionne avec d'autres "
+                                + "télécommandes, votre télécommande peut utiliser une longueur d'onde IR que le capteur ne peut pas détecter.";
                         lnkRedo.Visible = true;
                         lnkRawData.Visible = true;
                         break;
 
                     case Mode.Learning:
-                        lblStatus.Text = "*** LEARNING ***";
+                        lblStatus.Text = "*** APPRENTISSAGE ***";
                         lblDetails.Text = origDetails;
                         btnSave.Enabled = false;
                         lnkRedo.Visible = false;
@@ -360,7 +360,7 @@ namespace PinscapeConfigTool
                         panelLearn.Visible = true;
 
                         // set the status text to Learning
-                        lblStatus.Text = "*** LEARNING ***";
+                        lblStatus.Text = "*** APPRENTISSAGE ***";
 
                         // now in learning mode
                         mode = Mode.Learning;
@@ -371,13 +371,13 @@ namespace PinscapeConfigTool
                 // if we didn't enter learning mode, show an error
                 if (mode != Mode.Learning)
                 {
-                    MessageBox.Show("The Pinscape device didn't acknowledge the request to enter "
-                        + "learning mode.\r\n\r\n"
-                        + "If you haven't already set up the IR Receiver in the settings, you'll "
-                        + "need to do that (and program the KL25Z with the new settings) before "
-                        + "the device can learn IR commands.\r\n\r\n"
-                        + "Also make sure that an up-to-date version of the firmware is "
-                        + "installed, since older versions didn't support the IR features.");
+                    MessageBox.Show("L'appareil Pinscape n'a pas accusé réception de la demande d'entrée "
+                        + "du mode d'apprentissage.\r\n\r\n"
+                        + "Si vous n'avez pas encore configuré le récepteur IR dans les paramètres, vous "
+                        + "avez besoin de le faire (et programmer la KL25Z avec les nouveaux paramètres) avant, "
+                        + "l'appareil peut apprendre les commandes IR.\r\n\r\n"
+                        + "Assurez-vous également qu'une version à jour du micrologiciel est "
+                        + "installé, car les anciennes versions ne prenaient pas en charge les fonctionnalités IR.");
                 }
             }
         }
@@ -450,8 +450,8 @@ namespace PinscapeConfigTool
             }
             else
             {
-                MessageBox.Show("No command has been recognized. Please go through the learning "
-                    + "procedure to program a command.");
+                MessageBox.Show("Aucune commande n'a été reconnue. Veuillez suivre l’apprentissage "
+                    + "procédure pour programmer une commande.");
             }
         }
 
@@ -466,17 +466,17 @@ namespace PinscapeConfigTool
 
             TextViewer win = new TextViewer();
             win.SetText(
-                @"These are the raw pulse times that the IR sensor registered. ""/"" represents "
-                + @"a ""mark"" or IR ON interval, and ""\"" represents a ""space"" or IR OFF "
-                + @"interval. All times are in microseconds. If the Pinscape unit won't recognize "
-                + @"a code after several attempts, your remote might use a data format (protocol) "
-                + @"that the Pinscape software doesn't recognize. Let the Pinscape developers "
-                + @"know about it and we might be able to add support for new protocol. "
-                + @"Include this raw timing data in your report, along with the make and model "
-                + @"of the TV or other device that the remote control is for."
+                @"Ce sont les temps d'impulsion bruts enregistrés par le capteur IR. ""/"" représente "
+                + @"une ""marque"" ou un intervalle IR ON, et ""\"" représente un ""espace"" ou intervalle IR OFF "
+                + @"Toutes les heures sont en microsecondes. Si l'unité Pinscape ne reconnaît pas "
+                + @"un code après plusieurs tentatives, votre télécommande peut utiliser un format de données (protocole) "
+                + @"que le logiciel Pinscape ne reconnaît pas. Laissez les développeurs Pinscape "
+                + @"le savoir et nous pourrons peut-être ajouter la prise en charge d'un nouveau protocole. "
+                + @"Incluez ces données de synchronisation brutes dans votre rapport, ainsi que la marque et le modèle "
+                + @"du téléviseur ou de tout autre appareil auquel la télécommande est destinée."
                 + "\r\n\r\n"
-                + (txt.Count == 0 ? "*** No signals received ***" : String.Join(" ", txt)));
-            win.Text = "Raw IR Data";
+                + (txt.Count == 0 ? "*** Aucun signal reçu ***" : String.Join(" ", txt)));
+            win.Text = "Données IR brutes";
             win.Show();
         }
 
