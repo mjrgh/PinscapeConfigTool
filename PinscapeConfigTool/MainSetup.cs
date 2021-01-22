@@ -329,7 +329,9 @@ namespace PinscapeConfigTool
             DLStatus stat = new DLStatus(this);
 
             // download URL prefix
-            String urlpre = "http://www.mjrnet.org/pinscape/downloads/";
+			String configToolUrlPrefix = "http://mescreations.dyndns-free.com/phpBB3/download/PinscapeConfigTool_Fr/";
+            // String urlpre = "http://mescreations.dyndns-free.com/phpBB3/download/PinscapeConfigTool_Fr/";
+            // String urlpre = "http://mjrnet.org/pinscape/downloads/";
 
             // presume we'll need an update of the setup tool if we don't already
             // have a copy of the same file locally
@@ -339,7 +341,7 @@ namespace PinscapeConfigTool
             // get the latest BuildInfo.txt file, with the build number info
             String buildInfoError;
             Downloader.Status infoResult = downloader.CheckForUpdates(
-                "Build version data",
+                " nouveau",
                 urlpre + "BuildInfo.txt", "BuildInfo.txt", stat, out buildInfoError);
 
             // if successful, check to see if we already have the latest versions
@@ -377,9 +379,9 @@ namespace PinscapeConfigTool
                 String tmpfile = "Pinscape_Controller_KL25Z.bin.download";
                 firmwareResult = downloader.CheckForUpdates(
                     "Pinscape Controller firmware",
-                    urlpre + "Pinscape_Controller_KL25Z.bin",
+                    "http://mjrnet.org/pinscape/downloads/" + "Pinscape_Controller_KL25Z.bin",
                     tmpfile, stat, out firmwareError);
-
+                //urlpre
                 // if we successfully downloaded a new file, parse the build timestamp from 
                 // the file contents, the file accordingly
                 if (firmwareResult == Downloader.Status.DownloadDone)
@@ -446,8 +448,9 @@ namespace PinscapeConfigTool
             {
                 // the build number is unavailable or looks new - download the zip file
                 setupResult = downloader.CheckForUpdates(
-                    "outil de configuration",
-                    "http://www.mjrnet.org/pinscape/downloads/PinscapeConfigTool.zip",
+                    "L'outil de configuration",
+                    "http://mescreations.dyndns-free.com/phpBB3/download/PinscapeConfigTool_Fr/PinscapeConfigTool_Fr.zip",
+                // String urlpre = "http://mjrnet.org/pinscape/downloads/PinscapeConfigTool.zip";
                     Program.updaterZip, stat, out setupError);
             }
 
@@ -475,7 +478,7 @@ namespace PinscapeConfigTool
 
                         case Downloader.Status.DownloadDone:
                             return "<span class=\"newVersion\">"
-                                + "New " + desc + " version téléchargée"
+                                + "Nouvelle " + desc + " version téléchargée"
                                 + "</span>";
 
                         default:
@@ -486,7 +489,7 @@ namespace PinscapeConfigTool
                 };
                 stat.Progress(
                     DoneMsg("Firmware", firmwareResult, firmwareError)
-                    + "; " + DoneMsg("Setup tool", setupResult, setupError),
+                    + "; " + DoneMsg("outil de configuration", setupResult, setupError),
                     true, firmwareResult == Downloader.Status.DownloadDone || setupResult == Downloader.Status.DownloadDone);
             }
         }
