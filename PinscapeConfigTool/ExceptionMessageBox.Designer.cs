@@ -73,10 +73,10 @@
             this.btnDetails.AutoSize = true;
             this.btnDetails.Location = new System.Drawing.Point(54, 63);
             this.btnDetails.Name = "btnDetails";
-            this.btnDetails.Size = new System.Drawing.Size(122, 13);
+            this.btnDetails.Size = new System.Drawing.Size(159, 13);
             this.btnDetails.TabIndex = 9;
             this.btnDetails.TabStop = true;
-            this.btnDetails.Text = "Show technical details...";
+            this.btnDetails.Text = "Afficher les détails techniques ...";
             this.btnDetails.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.btnDetails_LinkClicked);
             // 
             // txtDetails
@@ -106,7 +106,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(712, 136);
+            this.ClientSize = new System.Drawing.Size(712, 225);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.txtDetails);
             this.Controls.Add(this.btnDetails);
