@@ -1,15 +1,14 @@
-﻿using System;
+﻿using CollectionUtils;
+using Plasmoid.Extensions;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using System.Threading;
-using Plasmoid.Extensions;
-using System.IO;
-using CollectionUtils;
+using System.Windows.Forms;
 
 namespace PinscapeConfigTool
 {
@@ -107,7 +106,7 @@ namespace PinscapeConfigTool
             if (barCodeSensor && (cfgVar20 = buf = dev.QueryConfigVar(20)) != null)
             {
                 // read the current offset setting
-                cfgBarCodeOffset = origBarCodeOffset =buf[0] | (buf[1] << 8);
+                cfgBarCodeOffset = origBarCodeOffset = buf[0] | (buf[1] << 8);
                 txtBarCodeOffset.Value = cfgBarCodeOffset;
             }
             else
@@ -338,7 +337,7 @@ namespace PinscapeConfigTool
                 // figure the scaling factor (display pixels per sensor pixel)
                 float s = (float)wid / (npix * zoom);
                 float x = 0;
-                for (int i = 0 ; i < npix ; ++i, x += s)
+                for (int i = 0; i < npix; ++i, x += s)
                 {
                     byte gray = lum[mypix[i]];
                     using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
@@ -390,7 +389,7 @@ namespace PinscapeConfigTool
 
                     // draw the outlines
                     Color colorA = Color.Aqua, colorB = Color.Lime;
-                    float ofsA = reverseOrientation ? -barwid/2.0f : barwid/2.0f;
+                    float ofsA = reverseOrientation ? -barwid / 2.0f : barwid / 2.0f;
                     using (Pen pen = new Pen(colorA, 3.0f))
                         g.DrawLine(pen, halfway + ofsA, 0.0f, halfway + ofsA, ht);
                     using (Pen pen = new Pen(colorB, 3.0f))
@@ -403,9 +402,9 @@ namespace PinscapeConfigTool
                         fmt.Alignment = StringAlignment.Center;
                         fmt.LineAlignment = StringAlignment.Far;
                         using (Brush br = new SolidBrush(colorA))
-                            g.DrawString("A", font, br, halfway + ofsA/2.0f, ht / 2.0f, fmt);
+                            g.DrawString("A", font, br, halfway + ofsA / 2.0f, ht / 2.0f, fmt);
                         using (Brush br = new SolidBrush(colorB))
-                            g.DrawString("B", font, br, halfway - ofsA/2.0f, ht / 2.0f, fmt);
+                            g.DrawString("B", font, br, halfway - ofsA / 2.0f, ht / 2.0f, fmt);
                     }
                 }
             }
@@ -416,8 +415,8 @@ namespace PinscapeConfigTool
                 // get the scaling factor to map sensor pixel positions to 'g' coordinates
                 float gx = (float)wid / npix;
 
-                using (Brush red = new SolidBrush(Color.Red), 
-                    dkred = new SolidBrush(Color.DarkRed), 
+                using (Brush red = new SolidBrush(Color.Red),
+                    dkred = new SolidBrush(Color.DarkRed),
                     pink = new SolidBrush(Color.Pink))
                 {
                     // draw each bar
@@ -468,7 +467,7 @@ namespace PinscapeConfigTool
 
                     // draw on the left side for reversed orientation (-1), 
                     // otherwise on the right side
-                    int y = ht*3/4, rht = ht - y;
+                    int y = ht * 3 / 4, rht = ht - y;
                     if (dir == -1)
                         g.FillRectangle(green, 0, y, gpos, rht);
                     else
@@ -498,9 +497,9 @@ namespace PinscapeConfigTool
                     ltgray = new SolidBrush(Color.LightGray))
                 {
                     // rescale from the position scale to the bitmap 
-                    int lo = (int)Math.Round((double)(jfLo - scrollOfs)*zoom / posScale * wid);
-                    int hi = (int)Math.Round((double)(jfHi - scrollOfs)*zoom / posScale * wid);
-                    int rp = (int)Math.Round((double)(rawPos - scrollOfs)*zoom / posScale * wid);
+                    int lo = (int)Math.Round((double)(jfLo - scrollOfs) * zoom / posScale * wid);
+                    int hi = (int)Math.Round((double)(jfHi - scrollOfs) * zoom / posScale * wid);
+                    int rp = (int)Math.Round((double)(rawPos - scrollOfs) * zoom / posScale * wid);
 
                     // mirror the coordinates if using reversed orientation
                     if (dir == -1)
@@ -560,7 +559,7 @@ namespace PinscapeConfigTool
                         green = new SolidBrush(Color.Green),
                         ltgray = new SolidBrush(Color.LightGray))
                     {
-                        int xTxt = (int)Math.Round((float)(pos - scrollOfs)*zoom / posScale * wid);
+                        int xTxt = (int)Math.Round((float)(pos - scrollOfs) * zoom / posScale * wid);
                         int yTxt = ht * 3 / 4 + (ht / 4 - sz.Height) / 2;
                         if (dir == 1)
                         {
@@ -632,7 +631,7 @@ namespace PinscapeConfigTool
 
                 // figure the drawing position - mirror it if the orientation is reversed
                 int drawpos = (dir == -1 ? posScale - pos : pos);
-                
+
                 // figure the arrow position
                 int xArrow = (int)Math.Round((float)drawpos / posScale * wid - arrowDown.Width / 2);
 
@@ -659,23 +658,23 @@ namespace PinscapeConfigTool
             }
         }
 
-        public static byte[] gamma = new byte[] 
+        public static byte[] gamma = new byte[]
         {
-            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
-            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1, 
-            1,   1,   1,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2, 
-            2,   3,   3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   5,   5,   5, 
-            5,   6,   6,   6,   6,   7,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10, 
-            10,  10,  11,  11,  11,  12,  12,  13,  13,  13,  14,  14,  15,  15,  16,  16, 
-            17,  17,  18,  18,  19,  19,  20,  20,  21,  21,  22,  22,  23,  24,  24,  25, 
-            25,  26,  27,  27,  28,  29,  29,  30,  31,  32,  32,  33,  34,  35,  35,  36, 
-            37,  38,  39,  39,  40,  41,  42,  43,  44,  45,  46,  47,  48,  49,  50,  50, 
-            51,  52,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,  64,  66,  67,  68, 
-            69,  70,  72,  73,  74,  75,  77,  78,  79,  81,  82,  83,  85,  86,  87,  89, 
-            90,  92,  93,  95,  96,  98,  99, 101, 102, 104, 105, 107, 109, 110, 112, 114, 
-            115, 117, 119, 120, 122, 124, 126, 127, 129, 131, 133, 135, 137, 138, 140, 142, 
-            144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 167, 169, 171, 173, 175, 
-            177, 180, 182, 184, 186, 189, 191, 193, 196, 198, 200, 203, 205, 208, 210, 213, 
+            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1,
+            1,   1,   1,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,
+            2,   3,   3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   5,   5,   5,
+            5,   6,   6,   6,   6,   7,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,
+            10,  10,  11,  11,  11,  12,  12,  13,  13,  13,  14,  14,  15,  15,  16,  16,
+            17,  17,  18,  18,  19,  19,  20,  20,  21,  21,  22,  22,  23,  24,  24,  25,
+            25,  26,  27,  27,  28,  29,  29,  30,  31,  32,  32,  33,  34,  35,  35,  36,
+            37,  38,  39,  39,  40,  41,  42,  43,  44,  45,  46,  47,  48,  49,  50,  50,
+            51,  52,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,  64,  66,  67,  68,
+            69,  70,  72,  73,  74,  75,  77,  78,  79,  81,  82,  83,  85,  86,  87,  89,
+            90,  92,  93,  95,  96,  98,  99, 101, 102, 104, 105, 107, 109, 110, 112, 114,
+            115, 117, 119, 120, 122, 124, 126, 127, 129, 131, 133, 135, 137, 138, 140, 142,
+            144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 167, 169, 171, 173, 175,
+            177, 180, 182, 184, 186, 189, 191, 193, 196, 198, 200, 203, 205, 208, 210, 213,
             215, 218, 220, 223, 225, 228, 231, 233, 236, 239, 241, 244, 247, 249, 252, 255
         };
 
@@ -707,7 +706,7 @@ namespace PinscapeConfigTool
             if (msg.Count != 0)
             {
                 if (MessageBox.Show("Vous avez changé le " + msg.SerialJoin() + " réglages."
-                    + " Souhaitez-vous enregistrer le nouveau paramètre" + (msg.Count> 1 ? "s" : "")
+                    + " Souhaitez-vous enregistrer le nouveau paramètre" + (msg.Count > 1 ? "s" : "")
                     + " sur l'appareil?",
                     "Outil de configuration Pinscape", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -1359,7 +1358,7 @@ namespace PinscapeConfigTool
                     pixFile.WriteLine("#");
                     pixFile.WriteLine("# Time(ms)   Position   Pixels...");
                     pixFile.WriteLine();
-                    
+
                     // hide Save and show Stop
                     btnSave.Visible = false;
                     btnStopSave.Visible = true;
@@ -1469,5 +1468,5 @@ namespace PinscapeConfigTool
             scrollTrack = false;
         }
 
-   }
+    }
 }
