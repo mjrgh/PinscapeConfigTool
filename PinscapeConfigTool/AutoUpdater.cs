@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
-using System.Text.RegularExpressions;
-using System.IO.Compression;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 
 namespace PinscapeConfigTool
 {
