@@ -65,7 +65,7 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(116, 16);
             this.lblTitle.TabIndex = 22;
-            this.lblTitle.Text = "Joystick Viewer";
+            this.lblTitle.Text = "Visionneuse de joystick";
             // 
             // lblTitleBar
             // 
@@ -91,7 +91,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 13);
             this.label2.TabIndex = 24;
-            this.label2.Text = "Accelerometer (x,y)";
+            this.label2.Text = "Accéléromètre (x,y)";
             // 
             // lblPlunger
             // 
@@ -109,7 +109,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 13);
             this.label3.TabIndex = 26;
-            this.label3.Text = "Plunger (z)";
+            this.label3.Text = "Piston (z)";
             // 
             // lblXY
             // 
@@ -136,8 +136,8 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(436, 13);
             this.label4.TabIndex = 31;
-            this.label4.Text = "This shows the accelerometer and plunger readings coming directly from the USB in" +
-    "terface.";
+            this.label4.Text = "Cela montre les lectures de l'accéléromètre et du piston provenant directement " +
+    "de l'interface.";
             // 
             // lblTextBoxBar
             // 
@@ -221,7 +221,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(224, 13);
             this.label5.TabIndex = 37;
-            this.label5.Text = "Hold down the CTRL key to capture readings.";
+            this.label5.Text = "Maintenez la touche CTRL enfoncée pour capturer les lectures.";
             // 
             // timer2
             // 
@@ -247,7 +247,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(43, 13);
             this.label6.TabIndex = 41;
-            this.label6.Text = "Buttons";
+            this.label6.Text = "Boutons";
             // 
             // btnHelp
             // 
@@ -261,7 +261,7 @@
             this.btnHelp.Padding = new System.Windows.Forms.Padding(2);
             this.btnHelp.Size = new System.Drawing.Size(75, 31);
             this.btnHelp.TabIndex = 42;
-            this.btnHelp.Text = "Help";
+            this.btnHelp.Text = "Aide";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
@@ -277,7 +277,7 @@
             this.btnClose.Padding = new System.Windows.Forms.Padding(2);
             this.btnClose.Size = new System.Drawing.Size(75, 31);
             this.btnClose.TabIndex = 43;
-            this.btnClose.Text = "Close";
+            this.btnClose.Text = "fermer";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -289,7 +289,7 @@
             this.linkCenter.Size = new System.Drawing.Size(63, 13);
             this.linkCenter.TabIndex = 44;
             this.linkCenter.TabStop = true;
-            this.linkCenter.Text = "Center Now";
+            this.linkCenter.Text = "Centrer maintenant";
             this.linkCenter.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkCenter_LinkClicked);
             // 
             // JoystickViewer
