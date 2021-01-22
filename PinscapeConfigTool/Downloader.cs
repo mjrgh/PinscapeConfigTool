@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.IO;
 using System.Net;
-using StringUtils;
 
 // Downloader - checks for updates to online components (e.g., the 
 // KL25Z firmware .bin file) and downloads as needed.
@@ -19,7 +13,7 @@ namespace PinscapeConfigTool
         }
 
         // status callback interface
-        public interface IStatus 
+        public interface IStatus
         {
             // intermediate status report
             void Progress(String htmlMessage, bool done, bool downloadsFound);
@@ -38,7 +32,7 @@ namespace PinscapeConfigTool
         public Status CheckForUpdates(String desc, String url, String localName, IStatus status, out String errmsg)
         {
             // send a status update
-            Action<String, bool> Progress = (String msg, bool downloadFound) => 
+            Action<String, bool> Progress = (String msg, bool downloadFound) =>
             {
                 // add an implicit "desc: " if it's not there
                 if (msg.IndexOf("{0}") < 0)
@@ -50,7 +44,7 @@ namespace PinscapeConfigTool
                     adesc = adesc.Substring(0, 1).ToUpper() + adesc.Substring(1);
 
                 // format the message
-                status.Progress(String.Format(msg, adesc), false, downloadFound); 
+                status.Progress(String.Format(msg, adesc), false, downloadFound);
             };
 
             // presume success
@@ -68,7 +62,7 @@ namespace PinscapeConfigTool
             if (File.Exists(etagPath))
             {
                 // update our status
-                Progress("Checking for updates to {0}", false);
+                Progress("Vérification des mises à jour de la {0}", false);
                 try
                 {
                     // get the remote file metadata via an HTTP HEAD request
@@ -108,7 +102,7 @@ namespace PinscapeConfigTool
             if (fetch)
             {
                 // update our status
-                Progress("New {0} version available - requesting file", true);
+                Progress(" {0} disponible - demande de fichier", true);
 
                 // request the remote file contents
                 WebRequest req = WebRequest.Create(url);
@@ -120,12 +114,12 @@ namespace PinscapeConfigTool
                         if (resp == null)
                         {
                             result = Status.DownloadFailed;
-                            errmsg = "No HTTP response";
+                            errmsg = "Pas de réponse du site Web HTTP";
                         }
                         else if (resp.StatusCode == HttpStatusCode.OK)
                         {
                             // update status
-                            Progress("Downloading new {0} version", true);
+                            Progress("Téléchargement de la {0} version", true);
 
                             // got it - copy the response stream to the local file
                             Stream streamIn = resp.GetResponseStream();
@@ -151,7 +145,7 @@ namespace PinscapeConfigTool
                         {
                             // report the error
                             result = Status.DownloadFailed;
-                            errmsg = "HTTP error: " + resp.StatusDescription;
+                            errmsg = "Erreur HTTP: " + resp.StatusDescription;
                         }
 
                         // done with the response
@@ -162,12 +156,12 @@ namespace PinscapeConfigTool
                 {
                     result = Status.DownloadFailed;
                     resp = (HttpWebResponse)ex.Response;
-                    errmsg = "HTTP error: " + resp.StatusDescription;
+                    errmsg = "Erreur HTTP: " + resp.StatusDescription;
                 }
             }
 
             // update status
-            Progress("{0}: Done", fetch);
+            Progress("{0}: Fait", fetch);
 
             // return the result
             return result;
