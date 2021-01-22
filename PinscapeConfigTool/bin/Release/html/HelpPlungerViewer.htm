@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Visionneuse de capteur de piston</title>
+</head>
+<body class="help">
+
+<h1>
+   <img style="float: right;" src="h1plunger.png">
+   Visionneuse de capteur de piston (Tire-bille)
+   <img style="visibility: hidden; vertical-align: middle;" src="h1plunger.png">
+</h1>
+
+<div>
+
+   <p>
+      Cette fenêtre est conçue pour vous aider à installer et ajuster votre
+      capteur de piston (tire-bille). Il montre la lecture de la position actuelle
+      et les données d'étalonnage. Si vous utilisez un capteur CCD (tel qu'un 
+      TSL1410R), il montre une vue en temps réel de l'image capturée.
+   </p>
+
+   <h2>Visualisation du capteur en quadrature</h2>
+
+   <p>
+      Pour les capteurs en quadrature (à savoir l'AEDR-8300), la "capture d'image"
+      affiche une visualisation de l'échelle à barres et le capteur se déplace à
+      travers. Les capteurs en quadrature ne prennent pas de photo d'images, il
+      ne s'agit donc que d'une simulation de ce que nous traduisons pour ressembler
+      - ce n'est pas une vraie image photo. Quoi que le capteur voit en fait est
+      essentiellement deux lectures de pixels, espacées de 1/150 de pouce. Étant
+      donné que les barres blanches et noires sur l'échelle sont précisément 1/150"
+      large chacune (ou, du moins, ils devraient l'être, si les choses sont mis en
+      place correctement), nous pouvons en déduire où nous devons être relatifs
+      aux deux barres les plus proches. La visualisation extrapole cela vers le
+      reste des barres voisines, mais le capteur ne les voit pas réellement; il ne
+      voit que les deux barres dans le centre, dans les cases marquées «A» et «B».
+      Ces boîtes représentent les lectures réelles sur les capteurs "A" et "B
+   </p>
+
+   <h2>Instantané du capteur d'imagerie (Capteur CCD)</h2>
+
+   <p>
+      Pour les capteurs d'imagerie, la case "instantané" affiche le pixels d'image
+      capturés par votre capteur. Ceci est mis à jour en continu, afin que vous
+      puissiez voir immédiatement les effets de réglage de la position du capteur
+      ou de la source lumineuse.
+   </p>
+
+   <p>
+      Les pixels sont rendus dans des tons de gris, car les capteurs que nous
+      prenons en charge sont monochromatiques. Les pixels noirs correspondent
+      à l'obscurité totale (ou à l'ombre complète) sur le capteur et blanc,
+      les pixels sont totalement saturés (luminosité maximale au niveau du capteur).
+      Nos types de capteurs sont unidimensionnels, ce qui signifie que le tableau
+      de pixels a une largeur d'un pixel. L'affichage s'étire sur chaque pixel
+      verticalement pour faciliter la visualisation, l'image peut ressembler à un
+      code à barres ou à une série de rayures verticales.
+   </p>
+
+   <p>
+      Pour des performances optimales, ajustez votre capteur et votre éclairage
+      source comme suit:
+   </p>
+   
+   <ul>
+      
+      <li>Positionnez le capteur de sorte pour que le <b> bord d'ombre </b>
+      soit toujours en vue, si le piston est poussé tout en avant ou en arrière.
+      
+      <li>Le bord de l'ombre doit être net et étroit.
+      Il est plus facile d'obtenir un bord net si vous utilisez un point "source"
+      - une source de lumière avec une petite ouverture - et vous le positionnez
+      relativement loin du piston (sur le plancher du pincab, par exemple). La
+      lumière source doit être à peu près centrée sous le capteur et pointant 
+      droit dessus.
+      
+      <li>La luminosité de la source lumineuse doit être réglée de manière
+      qu'il y a un bon degré de contraste entre les régions sombres et claires
+      de l'image. Si l'image est tout noir ou gris foncé, la source lumineuse
+      a besoin d'être plus brillant. Si l'image est entièrement blanche ou
+      transparente, la source de lumière doit être plus faible.
+   </ul>
+   
+   <p>
+      Les statistiques affichées sous l'image vous donnent plus d'informations
+      sur le scan du capteur.
+   </p>
+
+   <p>Les niveaux de luminosité Min et Max sont sur une échelle de 0 à 255.
+      0 est l'obscurité totale, 255 est complètement saturé. Si la source
+      lumineuse est correctement configurée, la valeur Max doit être au 
+      moins 30 ou 40 au-dessus de la valeur Min. Cela indique un bon niveau
+      de contraste entre les zones éclairées et les ombres.
+   </p>
+
+   <h2>Zoom d'image</h2>
+
+   <p>
+      Pour les capteurs d'imagerie qui prennent des photos du piston
+      (TLS1410 / 12, TCD1103), vous pouvez utiliser la commande de zoom pour obtenir
+      une vue rapprochée des pixels du capteur. C'est surtout utile lors du réglage
+      de la mise au point de l'objectif pour les capteurs où comme le TCD1103.
+   </p>
+   <p>
+      Utilisez la zone de liste déroulante Zoom pour sélectionner un facteur de zoom.
+   </p>
+   <p>
+      Lorsque vous effectuez un zoom avant, vous pouvez faire défiler la photo en
+      utilisant la souris pour faire glisser la zone de cliché vers la gauche ou
+      la droite.
+   </p>
+
+
+   <h2>Position du piston (tire-bille)</h2>
+
+   <p>Si le contrôleur est capable de lire la position du piston du capteur, la 
+      position sera affichée comme barre verte en bas de la zone de capture d'écran.
+   </p>
+
+   <p>
+      Si vous ne voyez pas de barre verte, cela signifie que le contrôleur ne peut
+      pas lire la position. Si vous utilisez une imagerie capteur, cela peut être
+      dû au fait que l'image est trop sombre ou trop claire.
+   </p>
+
+   <h2>Affichage d'étalonnage actuel</h2>
+
+   <p>La zone de capture d'écran dessine de petites flèches pour montrer la
+      limites d'étalonnage. Les flèches violettes indiquent la position zero,
+      où le piston se trouve au repos.
+      Les flèches rouges indiquent la position de rétraction maximale.
+      Si le piston est correctement calibré, le piston devrait s'installer
+      et rester à peu près à la position zero lorsque vous ne le déplacez pas.
+   </p>
+
+   <p>Les vrais pistons ont toujours au moins un petit jeu mécanique,
+      pour que votre piston ne s'immobilise pas exactement au même endroit
+      chaque fois que vous le tirez. Il doit être assez cohérent, bien que,
+      si la position de stationnement affichée n'est pas assez proche
+      de la position de repos réelle, recommencez la procédure d'étalonnage.
+   </p>
+      
+
+   <h2>Calibrage</h2>
+
+   <p>Si vous venez d'installer le capteur ou si vous avez réglé sa position,
+      vous devez le calibrer. Vous pouvez aussi recalibrer à tout moment si
+      la position de stationnement affichée ne semble pas correct.
+   </p>
+
+   <p>Pour calibrer, assurez-vous que le piston est au repos avec sa
+      position de stationnement normale. Cliquez ensuite sur le bouton Calibrer,
+      et suivez les instructions à l'écran.
+   </p>
+
+   <p>Notez que l'affichage des pixels est désactivé pendant la processus	
+      d'étalonnage. Il reprendra lorsque l'étalonnage se terminé.
+   </p>
+   
+
+   <h2>Statistiques de synchronisation</h2>
+
+   <p>Le temps de scan vous montre combien de temps cela prend, en moyenne,
+      pour prendre une lecture de position du capteur. Pour un capteur CCD,
+      c'est le temps qu'il faut au capteur pour prendre une photo (pour ainsi
+      dire) puis transférer les pixels de l'image au microcontrôleur. Le 
+      contrôleur doit lire les pixels un par un, de sorte que le transfert de
+      pixels représente généralement la majeure partie du temps de numérisation
+      d'un capteur d'image. Pour un capteur analogique (un LVDT ou potentiomètre,
+      par exemple), le "temps de scrutation" est simplement le temps nécessaire
+      pour échantillonner le niveau de tension analogique sur la sortie du
+      capteur et la transformer en lecture numérique.
+   </p>
+
+   <p>Le temps de capture des images du TSL141R doit être environ 2,5 ms avec
+      le logiciel du contrôleur actuel. C'est environ 400 images par seconde,
+      ce qui serait considéré assez rapide dans un contexte de photographie
+      ou de vidéo ordinaire. Une fréquence d'images élevée est bonne pour
+      capturer des mouvements rapides, ce qui est exactement la situation que 
+      nous avons lorsque vous retirez et relâchez le piston.
+   </p>
+
+   <p>Pour les capteurs non-imageurs, le "temps de scan" est généralement
+      négligeable (dizaines de microsecondes), car il suffit  d'attendre
+      que l'échantillonneur de tension analogique prenne une lecture.
+   </p>
+
+   <p>Le "temps de traitement" indique combien de temps il a fallu au
+      logiciel pour analyser les données brutes de la trame actuelle pour
+      déterminer la position actuelle du piston. Pour une imagerie capteur
+      CCD, cela reflète le temps nécessaire au logiciel pour analyser les
+      pixels de l'image. Pour un capteur analogique, c'est généralement nul
+      (ou assez proche), puisque nous traitons la position du piston comme
+      linéairement proportionnelle au niveau de la tension.
+      En d'autres termes, le "traitement" est simplement un multiplication,
+      qui prend moins d'une microseconde du contrôleur.
+   </p>
+
+   <p>Les statistiques de synchronisation sont fournies principalement à 
+      titre de bon sens, pour aider à déterminer si les choses fonctionnent
+      comme prévu. Vous ne pouvez rien faire dans la configuration pour les 
+      ajuster directement. Si les heures affichées ne sont pas dans le bon
+      status, il pourrait y avoir un problème avec le logiciel ou avec votre
+      configuration qui mérite d'être examinée.
+   </p>
+
+   <p>Quelques notes sur le timing. Tout d'abord, la mise à jour de l'image
+      et de la vitesse que vous voyez dans la fenêtre de configuration sera
+      beaucoup plus lente que ce que vous voyez dans les statistiques. Le
+      transfert USB envoyer vers l'image complète au PC prend beaucoup plus
+      de temps que la lecture de l'image sur le microcontrôleur. Cette
+      surcharge ne s'applique pas pendant les opérations normales - le contrôleur
+      analyse normalement les pixels tout seul et n'envoie jamais sur le PC.
+      Les statistiques reflètent donc vraiment ce continue dans le contrôleur,
+      même si la fenêtre de visualisation est impossible d'afficher les mises
+      à jour à la même vitesse. Deuxièmement, pour le capteur CCD (TSL1410R),
+      le "temps de traitement" et "temps de scan" se produisent simultanément,
+      car le capteur prend déjà la photo suivante et le transférer vers le
+      contrôleur pendant que le contrôleur analyse le précédent. Cela signifie
+      que la vitesse est essentiellement déterminée par le plus long le temps
+      de scan et le temps de traitement.
+   </p>
+
+
+   <h2>Amélioration du contraste</h2>
+
+   <p>
+       Pour un capteur basé sur des pixels, cochez la case "Améliorer le contraste"
+       pour exagérer le niveau de contraste dans la lecture des pixels affichés.
+       Cela rend l'écran d'affichage, les pixels lumineux plus lumineux qu'ils le sont 
+       vraiment, et les pixels sombres sont plus sombres qu’ils ne le sont réellement.
+   </p>
+   <p>
+       Cela peut être utile lors du réglage fin de l'installation de votre capteur.
+       Les routines d'analyse d'image sur le KL25Z fonctionnent généralement en
+       trouvant les régions sombres et claires de l'image et les bords entre les
+       régions. Exagérer le contraste peut rendre la structure plus apparente lorsque
+       le niveau de lumière physique est relativement uniforme. 
+   </p>
+   <p>
+       Le contraste amélioré est purement une option d'affichage. en aucun cas modifie
+       la façon dont les lectures sont prises à partir du capteur, ou comment la KL25Z
+       traite les lectures. En fait, la KL25Z ne sait pas que vous utilisez le
+       contraste amélioré; le seul effet est sur l'affichage à l'écran.
+   </p>
+
+
+   <h2>Pleine résolution et basse résolution</h2>
+   
+   <p>Si vous utilisez un capteur d'image, les paramètres <b> Pleine résolution </b> et
+      Les boutons <b> Basse résolution </b> vous permettent de sélectionner le nombre
+      de pixels que vous souhaitez afficher dans la boîte de dialogue. Cela n'affecte
+      pas la façon dont le contrôleur lit le capteur; cela n'affecte que la 
+      visualisation dans la boîte de dialogue. Le mode basse résolution est proposé
+      simplement pour vous permettre d'accélérer le cadre de taux affiché dans la boîte
+      de dialogue.
+   </p>
+
+   <p>Le paramètre de résolution ne change rien en dehors du dialogue. Cela n'a 
+      absolument aucun effet sur la façon dont le contrôleur lit le capteur ou signale
+      la position du piston en jeu normal. Cela n'a également aucun effet, même dans le
+      dialogue pour les capteurs non imageurs.
+   </p>
+
+   <h2>Filtre de gigue</h2>
+
+   <p>
+       Aucun appareil de mesure n'est parfait, y compris les capteurs à piston.
+       Tous les capteurs ont des inexactitudes inhérentes, ce qui signifie qu'ils
+       n'obtiendra pas toujours exactement la même lecture deux fois de suite, même si
+       le piston lui-même est parfaitement immobile.
+   </p>
+   <p>
+       Sur un pincab, nous n'avons pas simplement à effectuer deux lectures de ligne:
+       nous devons prendre des lectures <i> constamment </i>, des dizaines ou des
+       centaines de fois par seconde. Nous voulons que le jeu réponde immédiatement
+       lorsque vous déplacez le piston, nous devons donc savoir d'où il vient
+       l'instant après instant. Avec une série de lectures aussi rapide, toutes
+       les inexactitudes du capteur deviennent apparentes à l'écran sous forme de "gigue",
+       ce qui signifie que le piston virtuel oscille légèrement même lorsque le vrai
+       piston est parfaitement immobile.
+   </p>
+   <p>
+       Le "Filtre de gigue" est une fonction spéciale du firmware qui permet de filtrez
+       ce type de mouvement aléatoire pour rendre l'affichage à l'écran d'animation plus
+       stable et réaliste. Si votre piston à l'écran tremble sensiblement, vous pouvez
+       utiliser le filtre pour le réduire. Certains des capteurs en ont plus besoin que
+       d'autres, vous n'en aurez donc peut-être pas besoin du tout. Si votre capteur
+       produit une animation stable sans le filtre, vous feriez mieux de garder le
+       filtre désactivé.
+   </p>
+   <p>
+       Le filtre fonctionne en définissant une taille de «fenêtre» pour le mouvement aléatoire.
+       Tout le mouvement dans cette fenêtre est ignoré, de sorte que le piston à l'écran
+       reste immobile même si les lectures du capteur fluctuent dans les limites de la fenêtre.
+       La taille de la fenêtre est définie en fonction de la carte natives pour le capteur,
+       qui sont les mêmes cartes indiquées dans l'affichage du capteur et dans la fenêtre de
+       visualisation du piston.
+   </p>
+   <p>
+       De plus grandes tailles de fenêtre produisent un filtrage plus fort, mais elles
+       réduisant la précision utilisable du piston. Utilisez le réglage le plus bas
+       produit des résultats satisfaisants sur votre machine. Vous pouvez désactiver le filtre
+       entièrement en définissant la taille de la fenêtre sur 0 (zéro).
+   </p>
+   <p>
+       Pour vous aider à configurer le filtre, la fenêtre de visualisation fournit une visualisation
+       du filtre et de ses effets. Lorsque vous activez le filtre (en définissant une taille de
+       fenêtre non nulle), la barre verte en bas de la fenêtre du capteur affiche la position
+       <b> filtrée </b>, qui est ce que l'on voit dans Visual Pinball.
+       Vous verrez également une boîte vert clair à la fin de le bar, cela vous montre les limites
+       actuelles de la fenêtre de filtre. Et dans la boîte, une ligne rouge vous montre la lecture
+       de la position <b> brute </b> à partir du capteur, avant l'application du filtre.
+   </p>
+   <p>
+       Le but est de rendre la fenêtre de filtre juste assez grande pour contenir l'aléatoire
+       mouvement, le cas échéant, de la lecture brute, indiqué par la ligne rouge. Avec le piston à
+       zero, commencez avec un petit paramètre de fenêtre de filtre et observez l'effet pour
+       un petit moment. Si la ligne rouge bouge tellement que la fenêtre pour continuer à sauter
+       pour suivre, augmentez légèrement la taille de la fenêtre, répéter jusqu'à ce que vous 
+       trouviez une fenêtre suffisamment grande pour contenir le bruit aléatoire.
+   </p>
+
+</div>
+
+
+</body>
+</html>
