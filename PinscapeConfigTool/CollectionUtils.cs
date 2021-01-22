@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // Collection Utilities.  This adds severak convenience methods to Arrays 
 // and other collection types, in most cases to provide more uniform
@@ -95,12 +93,12 @@ namespace CollectionUtils
         // index of the first match, or -1 if the pattern isn't found.
         public static int IndexOf<T>(this T[] src, T[] pat)
         {
-            for (int i = 0 ; i < src.Length - pat.Length ; ++i)
+            for (int i = 0; i < src.Length - pat.Length; ++i)
             {
                 bool match = true;
-                for (int j = 0 ; j < pat.Length ; ++j)
+                for (int j = 0; j < pat.Length; ++j)
                 {
-                    if (!src[i+j].Equals(pat[j]))
+                    if (!src[i + j].Equals(pat[j]))
                     {
                         match = false;
                         break;
