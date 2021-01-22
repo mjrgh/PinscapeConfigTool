@@ -606,7 +606,7 @@ public class DeviceInfo : IDisposable
         if (err == 6 || err == 1167)
         {
             // try opening a new handle on the device path
-            Console.WriteLine("invalid handle on read/write - trying to reopen");
+            Console.WriteLine("manipulation invalide en lecture / écriture - tentative de réouverture");
             IntPtr fp2 = OpenFile();
 
             // if that succeeded, replace the old handle with the new one and retry the read
