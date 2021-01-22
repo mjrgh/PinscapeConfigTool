@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace PinscapeConfigToolUpdater
 {
