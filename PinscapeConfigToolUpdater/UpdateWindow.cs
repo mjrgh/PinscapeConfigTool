@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Diagnostics;
@@ -229,7 +222,7 @@ namespace PinscapeConfigToolUpdater
             statusMutex.WaitOne();
             txtStatus.Text = statusMsg;
             statusMutex.ReleaseMutex();
-            
+
             // if the update thread is finished, close the window
             if (done)
                 ActiveForm.Close();
