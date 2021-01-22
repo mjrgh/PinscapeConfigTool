@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using System.IO;
-using System.Text;
-using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
-using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace PinscapeConfigTool
 {
@@ -28,8 +26,8 @@ namespace PinscapeConfigTool
         private const int STD_OUTPUT_HANDLE = -11;
         private const int MY_CODE_PAGE = 437;
 
-        [DllImport("User32.dll", 
-            EntryPoint = "RegisterWindowMessage", 
+        [DllImport("User32.dll",
+            EntryPoint = "RegisterWindowMessage",
             SetLastError = true,
             CharSet = CharSet.Auto,
             CallingConvention = CallingConvention.StdCall)]
@@ -47,7 +45,7 @@ namespace PinscapeConfigTool
             IntPtr wParam,
             IntPtr lParam
         );
-        const UInt32 BSF_POSTMESSAGE  = 0x00000010;
+        const UInt32 BSF_POSTMESSAGE = 0x00000010;
         const UInt32 BSM_APPLICATIONS = 0x00000008;
 
         // Message ID for broadcast notification
@@ -224,6 +222,6 @@ namespace PinscapeConfigTool
             // if anything went wrong, presume we're not in the foreground
             return false;
         }
-    
+
     }
 }
