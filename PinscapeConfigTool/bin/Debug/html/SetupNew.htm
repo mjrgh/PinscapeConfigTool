@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr">>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
    <title>Configuration du contrôleur Pinscape</title>
 </head>
@@ -19,8 +19,8 @@
       Cette procédure configurera votre KL25Z avec le firmware Pinscape.
    </p>
    <p>
-      Si vous avez une autre KL25Z branchée à votre système autre que celle que vous souhaitez
-      configurer, c'est le bon moment pour la débrancher, nous ne voulons pas de faire 
+      Si vous avez une autre KL25Z de branchée à votre système autre que celle que vous souhaitez
+      configurer, c'est le bon moment pour la débrancher, nous ne voulons pas faire de
       confusion sur celle que nous allons initialiser.
    <p>
       Avant de commencer, s'agit-il d'une nouvelle KL25Z neuve sortie d'usine que vous venez de
@@ -28,7 +28,7 @@
    </p>
 
    <div id="NewOrExistingQ">
-      <p><a href="#" id="NewKL25Z">It's brand new!</a></p>
+      <p><a href="#" id="NewKL25Z">C'est une nouvelle!</a></p>
       <p><a href="Install.htm" id="OldKL25Z">J'ai déjà installé Pinscape sur cet appareil</a></p>
    </div>
 </div>
@@ -54,20 +54,20 @@
    <div class="flowStep" style="display: block;">
       <p>
          Pour une toute nouvelle KL25Z, nous devrons peut-être mettre à jour les "fichiers
-	 de démarrage" principals avant que nous puissions installer Pinscape. Nous
-	 Vérifions votre KL25Z pour trouver si cela est nécessaire.
+	      de démarrage" principals avant que nous puissions installer Pinscape. Nous
+	      Vérifions votre KL25Z pour trouver si cela est nécessaire.
       </p>
       <p>
          Veuillez brancher un câble USB sur le <b> port de programmation </b> de la nouvelle
-	 KL25Z comme illustré à droite, et branchez l'autre extrémité sur un port USB 2.0 de
-	 votre PC.
+	      KL25Z comme illustré à droite, et branchez l'autre extrémité sur un port USB 2.0 de
+	      votre PC.
       </p>
       <div id="SDADriveList" style="clear: both;">
          <div></div>
       </div>
       <div id="multiDriveWarning" style="display:none;">
          Attention: plus d'une KL25Z est branchée! Cela serait une bonne idée de les
-	 débrancher toutes sauf la nouvelle que vous souhaitez configurer. 
+	      débrancher toutes sauf la nouvelle que vous souhaitez configurer. 
          le processus d'installation effacera toutes les données existantes sur l'appareil, 
          nous ne voulons pas de confusion sur laquelle nous initialisons.
       </div>
@@ -271,83 +271,109 @@ $("#dismissWarning").click(function(ev) {
          
          <ol id="stepList">
 
-            <li>Dans votre navigateur Web, accédez à <a target="_blank" href="http://pemicro.com/opensda/">
-               http://pemicro.com/opensda/</a>.
-            
-            <li>Recherchez la section <b> OpenSDA Firmware (MSD &amp; Debug)</b>.
-            Recherchez la section <b> OpenSDA Firmware (MSD & amp; Debug) </b>.
-            Cliquez sur le lien <b> Firmware Apps </b>. Vous serez invité à créer un compte gratuit ou à
-            indiquer votre adresse e-mail pour recevoir un lien de téléchargement. Choisissez l'option 
-	    que vous préférez et téléchargez le fichier.
-            
-            <li>Décompressez le fichier téléchargé dans un dossier local sur votre disque dur.
-            
-            <li><b>Débranchez tous les câbles USB de votre KL25Z. </b> Si vous avez d’autres cartes KL25Z
-            déjà installés, débranchez les toutes également.
-            
-            <li>Ouvrez la fenêtre Poste de travail sur votre bureau Windows afin de pouvoir afficher les
-            lecteurs de disque connectés.
-            
-            <li><img src="kl25z-annotated.png" style="float: right; margin: 1em 0px 1em 2em;">
-            <b>Appuyez et maintenez </b> le bouton de réinitialisation KL25Z.
+             <li>Soution 1 (originale) :</li>
+             
+             <li>Dans votre navigateur Web, accédez à <a target="_blank" href="http://pemicro.com/opensda/">
+                     http://pemicro.com/opensda/
+                 </a>.
 
-            <li><b>Maintenez le bouton de réinitialisation enfoncé </b> pendant que vous branchez un câble
-	    USB sur le Port <b> de programmation </b> sur la KL25Z, et branchez l’autre extrémité sur un
-            port USB sur votre ordinateur.
-            
-            <li>Relâchez le bouton de réinitialisation.
-            
-            <li>Vous devriez voir une nouvelle icône de clé USB apparaître dans la fenêtre Poste de travail,
-            avec un nom comme <b> BOOTLOADERAPP </b>. Ceci représente le port de programmation du KL25Z.
-            
-            <li>Dans le logiciel PEMicro que vous avez téléchargé ci-dessus, recherchez le fichier
-            <b> BOOTUPDATEAPP_Pemicro_v111.SDA </b>. (Les chiffres à la fin sont les numéro de version,
-	    afin qu'ils puissent varier.)
-            
-            <li>Faites glisser et déposez ce fichier sur la clé USB de la KL25Z.
-            
-            <li>Attendez que Windows ait fini de copier le fichier, puis débranchez la KL25Z.
-            
-            <li>Nous allons maintenant répéter les étapes ci-dessus avec un fichier .SDA différent. Comme
-            avant, appuyez et maintenez le bouton de réinitialisation sur le KL25Z, et branchez un câble USB
-            entre le port de programmation KL25Z et votre ordinateur. Relâchez le bouton de réinitialisation.
-            Dans les fichiers téléchargés, recherchez <b> MSD-DEBUG-FRDM-KL25Z_Pemicro_v114.SDA </b>, et
-            faites-le glisser sur la clé USB. (Comme précédemment, les chiffres à la fin peuvent varier.)
-            Débranchez le câble USB une fois que Windows a fini de copier le fichier.
-            
-            <li>Pour confirmer que tout a fonctionné, reconnectez le port de programmation de la KL25Z sur
-	    votre PC <b> sans appuyer sur le bouton de réinitialisation </b>. La clé USB doit apparaît à
-            nouveau, mais il devrait maintenant être intitulé <b> FRDM-KL25Z </b>. vous devriez aussi
-            voir un voyant vert fixe (non clignotant) sur la carte lorsqu'elle est branchée.
-            
-            
-            <p><a href="#" class="shower" id="troubleshooting">Ça n'a pas l'air bon!</a>
-               <p class="hider">
-                  <b>Si l'un de ces éléments ne correspond pas à ce que vous voyez, </b> la mise à jour n'a
-		     peut-être pas réussie. <b> Si vous avez tenté la mise à niveau à partir de Windows 8 ou
-		     supérieur, c'est probablement le problème. </b> Le micrologiciel d'usine d'origine est
-		     incompatible avec Windows 8-10 et échouera silencieusement et mystérieusement (sans
-		     message d'erreur) sur ses systèmes. Si vous avez effectué la mise à jour à partir de
-		     Windows 7 ou une version antérieure et que cela ne fonctionne toujours pas, c'est
-                     possible que les procédures aient changé depuis cette rédaction. Essayez de chercher
-                     pour obtenir des instructions (fichiers .txt et / ou .pdf) dans le fichier ZIP téléchargé
-		     pour voir s'il y a des informations sur les nouvelles procédures.
-               </p>
-               
-            <li>Si tout s'est déroulé comme prévu, votre KL25Z est désormais prête à l'emploi! Avec la mise à jour
-            du dernier firmware en place, l'appareil fonctionnera désormais sur toutes les versions de Windows
-	    à partir de XP, de sorte que l'avertissement précédent concernant Windows 8-10 ne s'applique plus.
-            
-            <p>Nous sommes maintenant prêts à passer à l'étape suivante, qui consiste à installer le Logiciel
-	       Pinscape Controller sur la KL25Z.
-            </p>
-            
-            <p><b>Important! </b> À l'avenir, <b> NE PAS </b> appuyer ou maintenir le bouton de réinitialisation
-               tout en branchant le KL25Z. Cela déclenche le processus de mise à jour du fichier de démarrage,
-               que vous avez maintenant terminé! Cela ne sera normalement jamais plus à être répété sur 
-               la même carte.
-            </p>
-            
+             <li>
+                 Recherchez la section <b> OpenSDA Firmware (MSD &amp; Debug)</b>.
+                 Recherchez la section <b> OpenSDA Firmware (MSD & amp; Debug) </b>.
+                 Cliquez sur le lien <b> Firmware Apps </b>. Vous serez invité à créer un compte gratuit ou à
+                 indiquer votre adresse e-mail pour recevoir un lien de téléchargement. Choisissez l'option
+                 que vous préférez et téléchargez le fichier.
+
+             <li>Soution 2 (option) :</li>
+             
+             <li>
+                 Connectez-vous à mon site pour récupérer la dernière version du fichier OpenSDA récupéré
+                 sur le site officiel proposé au dessus, cela vous évite de créé un compte uniquement pour cela.
+                 <a target="_blank" href="http://mescreations.dyndns-free.com/phpBB3/viewtopic.php?f=19&t=174&sid=7c4a7a9fe889d0dad9ad7292f5519a6e">
+                     http://Nicofab18-Mescreations/
+                 </a>.
+             <li>Téléchargez-le et suivant les étapes ci-dessous
+
+             <li>Décompressez le fichier téléchargé dans un dossier local sur votre disque dur.
+
+             <li>
+                 <b>Débranchez tous les câbles USB de votre KL25Z. </b> Si vous avez d’autres cartes KL25Z
+                 déjà installés, débranchez les toutes également.
+
+             <li>
+                 Ouvrez la fenêtre Poste de travail sur votre bureau Windows afin de pouvoir afficher les
+                 lecteurs de disque connectés.
+
+             <li>
+                 <img src="kl25z-annotated.png" style="float: right; margin: 1em 0px 1em 2em;">
+                 <b>Appuyez et maintenez </b> le bouton de réinitialisation KL25Z.
+
+             <li>
+                 <b>Maintenez le bouton de réinitialisation enfoncé </b> pendant que vous branchez un câble
+                 USB sur le Port <b> de programmation </b> sur la KL25Z, et branchez l’autre extrémité sur un
+                 port USB sur votre ordinateur.
+
+             <li>Relâchez le bouton de réinitialisation.
+
+             <li>
+                 Vous devriez voir une nouvelle icône de clé USB apparaître dans la fenêtre Poste de travail,
+                 avec un nom comme <b> BOOTLOADERAPP </b>. Ceci représente le port de programmation du KL25Z.
+
+             <li>
+                 Dans le logiciel PEMicro que vous avez téléchargé ci-dessus, recherchez le fichier
+                 <b> BOOTUPDATEAPP_Pemicro_v111.SDA </b>. (Les chiffres à la fin sont les numéro de version,
+                 afin qu'ils puissent varier.)
+
+             <li>Faites glisser et déposez ce fichier sur la clé USB de la KL25Z.
+
+             <li>Attendez que Windows ait fini de copier le fichier, puis débranchez la KL25Z.
+
+             <li>
+                 Nous allons maintenant répéter les étapes ci-dessus avec un fichier .SDA différent. Comme
+                 avant, appuyez et maintenez le bouton de réinitialisation sur le KL25Z, et branchez un câble USB
+                 entre le port de programmation KL25Z et votre ordinateur. Relâchez le bouton de réinitialisation.
+                 Dans les fichiers téléchargés, recherchez <b> MSD-DEBUG-FRDM-KL25Z_Pemicro_v114.SDA </b>, et
+                 faites-le glisser sur la clé USB. (Comme précédemment, les chiffres à la fin peuvent varier.)
+                 Débranchez le câble USB une fois que Windows a fini de copier le fichier.
+
+             <li>
+                 Pour confirmer que tout a fonctionné, reconnectez le port de programmation de la KL25Z sur
+                 votre PC <b> sans appuyer sur le bouton de réinitialisation </b>. La clé USB doit apparaît à
+                 nouveau, mais il devrait maintenant être intitulé <b> FRDM-KL25Z </b>. vous devriez aussi
+                 voir un voyant vert fixe (non clignotant) sur la carte lorsqu'elle est branchée.
+
+
+                 <p><a href="#" class="shower" id="troubleshooting">Ça n'a pas l'air bon!</a>
+                 <p class="hider">
+                     <b>Si l'un de ces éléments ne correspond pas à ce que vous voyez, </b> la mise à jour n'a
+                     peut-être pas réussie. <b>
+                     Si vous avez tenté la mise à niveau à partir de Windows 8 ou supérieur, c'est probablement
+                     le problème.
+                     </b> Le micrologiciel d'usine d'origine est incompatible avec Windows 8-10 et échouera
+                     silencieusement et mystérieusement (sans message d'erreur) sur ses systèmes. Si vous avez
+                     effectué la mise à jour à partir de Windows 7 ou une version antérieure et que cela ne
+                     fonctionne toujours pas, c'est possible que les procédures aient changé depuis cette
+                     rédaction. Essayez de chercher pour obtenir des instructions (fichiers .txt et / ou .pdf)
+                     dans le fichier ZIP téléchargé pour voir s'il y a des informations sur les nouvelles procédures.
+                 </p>
+
+             <li>
+                 Si tout s'est déroulé comme prévu, votre KL25Z est désormais prête à l'emploi! Avec la mise à jour
+                 du dernier firmware en place, l'appareil fonctionnera désormais sur toutes les versions de Windows
+                 à partir de XP, de sorte que l'avertissement précédent concernant Windows 8-10 ne s'applique plus.
+
+                 <p>
+                     Nous sommes maintenant prêts à passer à l'étape suivante, qui consiste à installer le Logiciel
+                     Pinscape Controller sur la KL25Z.
+                 </p>
+
+                 <p>
+                     <b>Important! </b> À l'avenir, <b> NE PAS </b> appuyer ou maintenir le bouton de réinitialisation
+                     tout en branchant le KL25Z. Cela déclenche le processus de mise à jour du fichier de démarrage,
+                     que vous avez maintenant terminé! Cela ne sera normalement jamais plus à être répété sur
+                     la même carte.
+                 </p>
+
          </ol>
          <div style="margin: 1ex 2em; clear: both;" id="listButtons">
             <a href="#" id="nextStep">Etape suivante</a>
