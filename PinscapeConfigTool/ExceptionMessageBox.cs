@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PinscapeConfigTool
@@ -78,7 +73,7 @@ namespace PinscapeConfigTool
         private void btnDetails_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             List<String> list = new List<String>();
-            for (Exception ecur = exc ; ecur != null ; ecur = ecur.InnerException)
+            for (Exception ecur = exc; ecur != null; ecur = ecur.InnerException)
             {
                 String text = "";
                 if (ecur != exc)
