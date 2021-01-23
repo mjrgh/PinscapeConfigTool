@@ -327,10 +327,7 @@ namespace PinscapeConfigTool
         {
             // status object
             DLStatus stat = new DLStatus(this);
-
-
-            // download URL prefix
-            String urlpre = "http://mjrnet.org/pinscape/downloads/";
+            // string urlpre = "http://www.mjrnet.org/pinscape/downloads/";
 
             // URL prefix for the Config Tool and KL25Z firmware.  For the main
             // release version, these point to the same mjrnet.org location.
@@ -362,7 +359,6 @@ namespace PinscapeConfigTool
             // for Config Tool updates first.
             String buildInfoError;
             Downloader.Status infoResult = downloader.CheckForUpdates(
-
             " nouveau",
             configToolUrlPrefix + "BuildInfo.txt", "BuildInfo.txt", stat, out buildInfoError);
 
@@ -504,7 +500,7 @@ namespace PinscapeConfigTool
                 setupResult = downloader.CheckForUpdates(
 
                     "L'outil de configuration",
-                    configToolUrlPrefix + "PinscapeConfigTool.zip",
+                    configToolUrlPrefix + "PinscapeConfigTool_Fr.zip",
                     Program.updaterZip, stat, out setupError);
             }
 
@@ -532,7 +528,7 @@ namespace PinscapeConfigTool
 
                         case Downloader.Status.DownloadDone:
                             return "<span class=\"newVersion\">"
-                                + "Nouvelle " + desc + " version téléchargée"
+                                + "Nouvelle version " + desc + " téléchargée"
                                 + "</span>";
 
                         default:
@@ -543,7 +539,7 @@ namespace PinscapeConfigTool
                 };
                 stat.Progress(
                     DoneMsg("Firmware", firmwareResult, firmwareError)
-                    + "; " + DoneMsg("outil de configuration", setupResult, setupError),
+                    + "; " + DoneMsg("de l'outil de configuration", setupResult, setupError),
                     true, firmwareResult == Downloader.Status.DownloadDone || setupResult == Downloader.Status.DownloadDone);
             }
         }
