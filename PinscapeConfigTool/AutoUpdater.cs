@@ -57,15 +57,15 @@ namespace PinscapeConfigTool
             if (File.Exists(zipfile))
             {
                 // extract the installer .exe from the updater
-                String doing = "initializing";
+                String doing = "initialisation";
                 try
                 {
                     // open the ZIP file
-                    doing = "opening zip file";
+                    doing = "ouvrir le fichier zip";
                     using (ZipArchive archive = ZipFile.Open(zipfile, ZipArchiveMode.Read))
                     {
                         // read the contents of the Build Number text file
-                        doing = "finding build number";
+                        doing = "trouver le numéro de build";
                         ZipArchiveEntry entry = archive.GetEntry("BuildNumber.txt");
                         int NewBuildNumber = 0;
                         using (StreamReader s = new StreamReader(entry.Open()))
@@ -80,7 +80,7 @@ namespace PinscapeConfigTool
                         if (NewBuildNumber <= int.Parse(VersionInfo.BuildNumber))
                         {
                             // this version is already installed - delete the zip file
-                            doing = "deleting zip file";
+                            doing = "effacer le fichier zip";
                             archive.Dispose();
                             File.Delete(zipfile);
                             return false;
@@ -91,15 +91,15 @@ namespace PinscapeConfigTool
                         if (install)
                         {
                             // find the auto-updater program
-                            doing = "finding updater";
+                            doing = "trouver un programme de mise à jour";
                             entry = archive.GetEntry(exename);
 
                             // extract it to the program fol
-                            doing = "extracting updater";
+                            doing = "extraction du programme de mise à jour";
                             entry.ExtractToFile(exefile, true);
 
                             // run it
-                            doing = "launching updater";
+                            doing = "lancement du programme de mise à jour";
                             Process.Start(exefile,
                                 "\"zip=" + zipfile + "\""
                                 + " \"program=" + Path.Combine(Program.programDir, Program.programFile) + "\""
@@ -113,7 +113,7 @@ namespace PinscapeConfigTool
                 catch (Exception ex)
                 {
                     // failed - ignore for this round
-                    Console.WriteLine("Auto-update failed " + doing + ": " + ex.Message);
+                    Console.WriteLine("La mise à jour automatique a échoué " + doing + ": " + ex.Message);
                     return false;
                 }
             }
