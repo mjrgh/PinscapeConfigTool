@@ -15,6 +15,26 @@
 <h1>New KL25Z Setup</h1>
 
 <div id="NewOrExisting" class="flowStep" style="display: block;">
+   <p style="background-color: yellow; padding: 10px; border: 1px solid red; border-radius: 8px;">
+      <b>Warning to VirtuaPin customers:</b>
+      <span id="VirtuaPinLink">please <a href="#warning">click here</a> for an <b>important warning</b>.</span>
+      <span id="VirtuaPinWarning" style="display: none;">
+         If your KL25Z comes from a VirtuaPin
+         plunger/nudge kit, please be aware that installing the Pinscape firmware
+         on your KL25Z will <b>erase</b> and <b>replace</b> the VirtuaPin firmware
+         that came pre-installed on your board.  The KL25Z cannot run two firmware
+         programs at once - installing new firmware will permanently erase the
+         old software.  I strongly advise that you install Pinscape <b>only</b>
+         on "blank", un-pre-programmed KL25Z boards, which you can find at
+         many retailers (Amazon, Mouser.com, eBay) for only about $15-20.  If
+         you bought your KL25Z from VirtuaPin, you paid extra for the firmware
+         it came with, so please don't erase it unless you're sure that you don't
+         want to use it any more.  VirtuaPin doesn't provide any way to back up
+         their firmware, and they don't allow you to re-install it at home, so
+         if you erase it, the only way to restore it will be to physically
+         ship your board back to VirtuaPin so that they can reinstall it for you.
+      </span>
+   </p>
    <p>
       This procedure will set up your KL25Z with the Pinscape firmware.
    </p>
@@ -80,6 +100,12 @@
 </div>
 
 <script type="text/javascript">
+
+$("#VirtuaPinLink").click(function(ev) {
+    ev.preventDefault();
+    $("#VirtuaPinLink").hide();
+    $("#VirtuaPinWarning").show();
+});
 
 $("#OldKL25Z").click(function(ev) {
     $("#OldKL25ZBranch, #OldKL25ZBranch .flowStep").show();
