@@ -1,11 +1,9 @@
-﻿using System;
+﻿using CollectionUtils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using CollectionUtils;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace PinscapeCmd
@@ -20,43 +18,43 @@ namespace PinscapeCmd
             {
                 helpShown = true;
                 System.Console.WriteLine(
-                    "This is the Pinscape Command tool (PinscapeCmd), which lets you send special\n"
-                    + "command sequences to your Pinscape Controller unit(s).  This program is\n"
-                    + "designed as a command-line utility to make it convenient to use in Windows\n"
-                    + "command shell scripts (.CMD or .BAT files), to help you automate tasks.\n"
+                    "Il s'agit de l'outil de commande Pinscape (PinscapeCmd), qui vous permet d'envoyer des \n "
+                    + "séquences de commandes vers vos unités de contrôleur Pinscape. Ce programme est \n"
+                    + "conçu comme un utilitaire de ligne de commande pour le rendre pratique à utiliser sous Windows \n"
+                    + "scripts shell de commande (fichiers .CMD ou .BAT), pour vous aider à automatiser les tâches. \n"
                     + "\n"
-                    + "To use this tool from the command line, write PinscapeCmd (the program\n"
-                    + "name), then follow it on the same line with one or more of the following\n"
-                    + "items:\n"
+                    + "Pour utiliser cet outil à partir de la ligne de commande, écrivez PinscapeCmd (le programme \n "
+                    + "nom), puis suivez-le sur la même ligne avec un ou plusieurs des éléments suivants \n"
+                    + "éléments: \n"
                     + "\n"
-                    + "Unit=n : direct the items that follow to the specified unit number.  'n'\n"
-                    + "    is the Pinscape unit number you selected in the setup, usually 1 for\n"
-                    + "    the first unit, 2 for the second, etc.  If you have more than one\n"
-                    + "    Pinscape unit, you MUST include this before any other commands to\n"
-                    + "    tell the program which unit you're addressing.  If you only have\n"
-                    + "    one Pinscape unit in your system, this isn't needed, since there's\n"
-                    + "    no ambiguity about which unit you want to use in this case.\n"
+                    + "Unit=n : diriger les éléments qui suivent vers le numéro d'unité spécifié. 'n'\n"
+                    + "est le numéro d'unité Pinscape que vous avez sélectionné dans la configuration, généralement 1 pour\n"
+                    + "la première unité, 2 pour la seconde, etc. Si vous en avez plus d'une\n"
+                    + "Unité Pinscape, vous DEVEZ l'inclure avant toute autre commande à\n"
+                    + "dites au programme à quelle unité vous vous adressez. Si vous n'avez que\n"
+                    + "une unité Pinscape dans votre système, ce n'est pas nécessaire, car il y a\n"
+                    + "pas d'ambiguïté sur l'unité que vous souhaitez utiliser dans ce cas.\n"
                     + "\n"
-                    + "NightMode=state : turn night mode ON or OFF (replace 'state' with ON or\n"
-                    + "    OFF according to which state you want to engage).\n"
+                    + "NightMode = status: active ou désactive le mode nuit (remplacez 'state' par ON ou\n"
+                    + "OFF selon l'état que vous souhaitez engager).\n"
                     + "\n"
-                    + "TVON=mode : turn the TV relay on or off, or pulse it.  'mode' can be ON to\n"
-                    + "    turn the relay on, OFF to turn it off, or PULSE to pulse the relay for\n"
-                    + "    a moment (on and then off), the same way the controller normally pulses\n"
-                    + "    it at system startup to turn on the TVs.  If no mode is supplied at all,\n"
-                    + "    it's the same as TVON=PULSE.  This command only works if the TV ON feature\n"
-                    + "    is enabled.  This only affects the relay; it doesn't send any IR commands.\n"
-                    + "    To do that, use SendIR=n.\n"
+                    + "TVON=mode : activer ou désactiver le relais TV, ou le pulser. 'mode' peut être activé sur\n"
+                    + "activer le relais, OFF pour le désactiver ou PULSE pour impulser le relais pendant\n"
+                    + "un moment (allumé puis éteint), de la même manière que le contrôleur pulse normalement\n"
+                    + "au démarrage du système pour allumer les téléviseurs. Si aucun mode n'est fourni,\n"
+                    + "c'est la même chose que TVON = PULSE. Cette commande ne fonctionne que si la fonction TV ON\n"
+                    + "est activé. Cela n'affecte que le relais; il n'envoie aucune commande IR.\n"
+                    + "Pour ce faire, utilisez SendIR = n. N"
                     + "\n"
-                    + "SendIR=n : transmit IR remote control command #n, using the command\n"
-                    + "    numbering in the setup tool.\n"
+                    + "SendIR=n : transmettre la commande de télécommande IR #n, en utilisant la commande\n"
+                    + "numérotation dans l'outil de configuration.\n"
                     + "\n"
-                    + "Quiet : don't pause before the program exits.  The program normally waits\n"
-                    + "    for you to press a key before exiting when you run it from the Windows\n"
-                    + "    desktop, to allow you to see any messages displayed before the console\n"
-                    + "    window closes.  If you're running the program through an automated\n"
-                    + "    process, such as a command script or a Windows startup shortcut, use\n"
-                    + "    this option to make the program exit immediately when finished."
+                    + "Silencieux: ne faites pas de pause avant la fin du programme. Le programme attend normalement\n"
+                    + "pour que vous appuyiez sur une touche avant de quitter lorsque vous l'exécutez à partir de Windows\n"
+                    + "bureau, pour vous permettre de voir tous les messages affichés avant la console\n"
+                    + "La fenêtre se ferme. Si vous exécutez le programme via un\n"
+                    + "processus automatisé, tel qu'un script de commande ou un raccourci de démarrage Windows, utilisez\n"
+                    + "cette option pour que le programme se termine immédiatement une fois terminé."
                 );
             }
         }
@@ -66,7 +64,7 @@ namespace PinscapeCmd
             uint[] ProcessList,
             uint ProcessCount
         );
-        
+
         static void Main(string[] args)
         {
             // If we're the only process in our console process group, it
@@ -87,11 +85,11 @@ namespace PinscapeCmd
                 // the command line will have to select one explicitly
                 DeviceInfo device = devices.Count == 1 ? devices[0] : null;
                 Exception missingDevice = new Exception(
-                    devices.Count == 0 ? "No Pinscape units are present in your system." :
-                    "Multiple Pinscape units are present in your system, so you have to specify\n"
-                    + "which one you want to address.  Write \"unit=n\", where 'n' is the Pinscape\n"
-                    + "unit number of the unit you're addressing, before any other item in the\n"
-                    + "command list.");
+                    devices.Count == 0 ? "Aucune unité Pinscape n'est présente dans votre système" :
+                    "Plusieurs unités Pinscape sont présentes dans votre système, vous devez donc spécifier\n"
+                    + "celui auquel vous voulez vous adresser. Écrivez \"unit=n\", où 'n' est le Pinscape\n"
+                    + "numéro d'unité de l'unité à laquelle vous vous adressez, avant tout autre élément du\n"
+                    + "liste de commandes.");
 
                 // show help if there aren't any arguments
                 if (args.Length == 0)
@@ -108,15 +106,15 @@ namespace PinscapeCmd
                         int n;
                         if (!int.TryParse(m.Groups[1].Value, out n)) n = -1;
                         if ((device = devices.FirstOrDefault(d => d.PinscapeUnitNo == n)) == null)
-                            throw new Exception("The unit number specified by \"" + a + "\" isn't present.\n"
-                                + (devices.Count == 1 ? "The only unit currently present is #" : "The following units are currently present: ")
+                            throw new Exception("Le numéro d'unité spécifié par \"" + a + "\" n'est pas present.\n"
+                                + (devices.Count == 1 ? "La seule unité actuellement présente est #" : "Les unités suivantes sont actuellement présentes: ")
                                 + devices.Select(d => d.PinscapeUnitNo).SerialJoin()
                                 + ".");
                     }
                     else if (al == "unit")
                     {
-                        throw new Exception("The \"unit\" argument is missing the unit number.  Write this\n"
-                        + "as \"unit=n\", where 'n' is the Pinscape unit number you want to address.");
+                        throw new Exception("l' \"unité\" d'argument n'a pas le numéro d'unité. Écrire cela\n"
+                        + "par \"unit=n\", où 'n' est le numéro d'unité Pinscape que vous souhaitez adresser.");
                     }
                     else if ((m = Regex.Match(al, @"^nightmode=(.+)")).Success)
                     {
@@ -129,13 +127,13 @@ namespace PinscapeCmd
                             device.SpecialRequest(8, new byte[] { 0 });
                         else
                             throw new Exception("The NightMode setting \"" + a + "\" isn't one of the "
-                                + "valid options.\n"
-                                + "Please specify NightMode=ON or NightMode=OFF.");
+                                + "optins valide.\n"
+                                + "Veuillez spécifier NightMode = ON ou NightMode = OFF.");
                     }
                     else if (al == "nightmode")
                     {
-                        throw new Exception("The \"NightMode\" command requires an ON or OFF parameter.  Write\n"
-                            + "this as NightMode=ON or NightMode=OFF.");
+                        throw new Exception("La commande \"NightMode\" nécessite un paramètre ON ou OFF. Écrire\n"
+                            + "comme ceci NightMode=ON ou NightMode=OFF.");
                     }
                     else if (al == "tvon")
                     {
@@ -155,7 +153,7 @@ namespace PinscapeCmd
                         else if (s == "pulse")
                             device.SpecialRequest(11, new byte[] { 2 });
                         else
-                            throw new Exception("The TVON mode isn't one of the valid options.  Please specify\n"
+                            throw new Exception("Le mode TV ON ne fait pas partie des options valides. Veuillez préciser\n"
                                 + "TVON=ON, TVON=OFF, or TVON=PULSE.");
                     }
                     else if ((m = Regex.Match(al, @"^sendir=(.+)")).Success)
@@ -171,13 +169,13 @@ namespace PinscapeCmd
                         // get the number of IR slots
                         byte[] buf = device.QueryConfigVar(252, 0);
                         if (buf == null)
-                            throw new Exception("An error occurred getting the number of IR slots on your Pinscape\n"
-                                + "unit.  You might have older firmware installed that doesn't support IR remotes.");
+                            throw new Exception("Une erreur s'est produite lors de l'obtention du nombre d'emplacements infrarouges sur votre Pinscape\n"
+                                + "unité. Vous avez peut-être installé un micrologiciel plus ancien qui ne prend pas en charge les télécommandes IR.");
 
                         // validate the slot number
                         if (n < 1 || n > buf[0])
-                            throw new Exception("The IR command slot number in \"" + a + "\" isn't within the "
-                                + "valid range\n"
+                            throw new Exception("Le numéro d'emplacement de commande IR dans \"" + a + "\" n'est pas dans le "
+                                + "Plage valide\n"
                                 + "(1 to " + buf[0] + ").");
 
                         // Pause briefly in case an earlier IR command was transmitted.
@@ -201,8 +199,8 @@ namespace PinscapeCmd
                     }
                     else if (al == "sendir")
                     {
-                        throw new Exception("The \"SendIR\" command is incomplete.  Write this as SendIR=n,\n"
-                            + "where n is the IR command slot (using the numbering in the device setup).");
+                        throw new Exception("La commande \"SendIR\" est incomplète. Écrivez ceci comme SendIR=n,\n"
+                            + "où n est l'emplacement de commande IR (en utilisant la numérotation dans la configuration de l'appareil).");
                     }
                     else if (Regex.IsMatch(al, @"/?(help|\?)"))
                     {
@@ -227,7 +225,7 @@ namespace PinscapeCmd
             // pause before exiting, if desired
             if (pause)
             {
-                System.Console.Write("\n[ Press a key to exit (use the QUIET option to skip this next time) ]");
+                System.Console.Write("\n[ Appuyez sur une touche pour quitter (utilisez l'option SILENCIEUX pour sauter la prochaine fois) ]");
                 System.Console.ReadKey();
             }
         }

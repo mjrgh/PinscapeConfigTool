@@ -75,9 +75,9 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(13, 13);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(100, 16);
+            this.label5.Size = new System.Drawing.Size(134, 16);
             this.label5.TabIndex = 23;
-            this.label5.Text = "Button Tester";
+            this.label5.Text = "Testeur de bouton";
             // 
             // bar1
             // 
@@ -109,7 +109,7 @@
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(84, 27);
             this.btnHelp.TabIndex = 26;
-            this.btnHelp.Text = "Help";
+            this.btnHelp.Text = "Aide";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
@@ -127,7 +127,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(91, 27);
             this.btnClose.TabIndex = 25;
-            this.btnClose.Text = "Close";
+            this.btnClose.Text = "Fermer";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -223,49 +223,49 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(4, 56);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.Size = new System.Drawing.Size(59, 13);
             this.label1.TabIndex = 31;
-            this.label1.Text = "Button #";
+            this.label1.Text = "Bouton #";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(63, 56);
+            this.label2.Location = new System.Drawing.Point(65, 56);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
+            this.label2.Size = new System.Drawing.Size(81, 13);
             this.label2.TabIndex = 32;
-            this.label2.Text = "GPIO Pin";
+            this.label2.Text = "Broche GPIO";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(153, 56);
+            this.label3.Location = new System.Drawing.Point(148, 56);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(28, 13);
+            this.label3.Size = new System.Drawing.Size(25, 13);
             this.label3.TabIndex = 33;
-            this.label3.Text = "Key";
+            this.label3.Text = "Clé";
             // 
             // lblShifted
             // 
             this.lblShifted.AutoSize = true;
             this.lblShifted.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShifted.Location = new System.Drawing.Point(187, 56);
+            this.lblShifted.Location = new System.Drawing.Point(177, 56);
             this.lblShifted.Name = "lblShifted";
             this.lblShifted.Size = new System.Drawing.Size(47, 13);
             this.lblShifted.TabIndex = 34;
-            this.lblShifted.Text = "Shifted";
+            this.lblShifted.Text = "Décalé";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(241, 56);
+            this.label6.Location = new System.Drawing.Point(227, 56);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 13);
+            this.label6.Size = new System.Drawing.Size(103, 13);
             this.label6.TabIndex = 35;
-            this.label6.Text = "Pin Status";
+            this.label6.Text = "État des broches";
             // 
             // label7
             // 
@@ -288,18 +288,18 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(333, 208);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(112, 13);
+            this.label8.Size = new System.Drawing.Size(133, 13);
             this.label8.TabIndex = 40;
-            this.label8.Text = "Joystick button status:";
+            this.label8.Text = "État du bouton du joystick:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(333, 52);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 13);
+            this.label4.Size = new System.Drawing.Size(78, 13);
             this.label4.TabIndex = 41;
-            this.label4.Text = "Keyboard status:";
+            this.label4.Text = "État du clavier:";
             // 
             // bar4
             // 

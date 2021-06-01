@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Installer le micrologiciel</title>
+</head
+<body>
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+<h1>
+   <img src="h1UpdateFirmware.png" style="vertical-align: middle; float: right;">
+   Installer le micrologiciel
+   <img src="h1UpdateFirmware.png" style="vertical-align: middle; visibility: hidden;">
+</h1>
+
+<div>
+
+   <div>
+      Cela installe le logiciel Pinscape Controller sur une nouvelle KL25Z.
+   </div>
+
+   <div>
+     <b> Important: </b> si vous n'avez pas déjà mis à niveau les fichiers de démarrage d'usine
+      sur ce KL25Z, veuillez <a href="SetupNew.htm"> revenir en arrière </a> et le faire maintenant.
+      Le processus d'installation du micrologiciel ne fonctionnera pas correctement avant le démarrage
+      des fichiers est mis à jour.
+   </div>
+
+   <hr>
+
+   <div id="Step1" class="flowStep">
+      <h2>Étape 1: Sélectionnez une version du micrologiciel à installer</h2>
+
+      <div>
+	 <div>
+	    <a id="showDocs" href="#"><img class="fileIcon" src="dlFolderIcon.png">Téléchargement de Pinscape</a>:
+	 </div>
+	 
+	 <div id="binFiles">
+	 </div>
+	 <div id="noBinFiles">
+	    (Aucune version de firmware n'a été téléchargée)
+	 </div>
+	 
+	 <div>
+	    <a href="#" id="browseForBin">Rechercher un fichier</a>
+	 </div>
+      </div>
+
+      <div>
+	 Fichier sélectionné: <span id="binToInstall"></span>
+      </div>
+   </div>
+
+   <div id="Step2" class="flowStep">
+      <h2>Étape 2: débranchez les autres KL25Z</h2>
+      <div>
+	 <div>
+	    Cela ressemblera à l'un de ces scripts téléphoniques d'assistance technique pour
+	    mannequins, mais c'est important ...
+	 </div>
+	 
+	 <div>
+	    Si vous possédez plusieurs cartes KL25Z, veuillez <b> déconnectez maintenant toutes les autres cartes </b>.
+	    Assurez-vous que les deux ports sont déconnectés sur tous les appareils. Cela évitera toute confusion sur
+	    quel appareil nous programmons.
+	 </div>
+
+	 <div>
+	    Quand vous êtes prêt, <a href="#" id="step2done">cliquez ici pour continuer</a>.
+	 </div>
+      </div>
+      <div>
+	 Confirmez
+      </div>
+   </div>
+
+   <div id="Step3" class="flowStep">
+      <h2>Étape 3: branchez le port de programmation</h2>
+
+      <div>
+	 <div>
+	    <img src="kl25z-how-to-plug-in-prog.png" style="float: right;">
+	    Branchez le <b> port de programmation </b> sur la nouvelle KL25Z, 
+	    comme indiqué à droite. La petite LED verte à côté du port de programmation
+	    doit être allumé (non clignotant) et un lecteur représentant le périphérique
+        devrait apparaître ci-dessous. Si le voyant vert clignote, débranchez tous les
+	    Câbles USB de la KL25Z, attendez quelques secondes, puis branchez le port de
+	    programmation de retour. Lorsque l'appareil est prêt, cliquez sur le lecteur
+	    ci-dessous pour continuer.
+	 </div>
+	 <div id="SDADriveList">
+	    <div class="nosdadrive">(Aucune entrée de programmation KL25Z n'est détecté en cours.)</div>
+	 </div>
+	 <div id="multiDriveWarning">
+	    <b> Attention: </b> vérifiez que le port de programmation de la KL25Z
+		est branché. Si vous savez lequel est-ce, vous pouvez cliquer dans la liste
+		ci-dessus - mais en cas de doute, le moyen le plus simple de clarifier est
+		de s'assurer qu'un seul cable USB branché est que c'est celui que vous
+		souhaitez programmer.
+	 </div>
+      </div>
+      <div>
+	 Commande de programmation: (<span id="OpenSDADrive"></span>)
+      </div>
+   </div>
+
+   <div id="Step4" class="flowStep">
+      <h2>Étape 4: installer le micrologiciel</h2>
+      <div>
+	 Nous sommes prêts à commencer !
+	 <a href="#" id="installGo">Installation maintenant</a>
+      </div>
+      <div>
+	 Le micrologiciel a été installé avec succès!
+      </div>
+   </div>
+
+   <div id="Step5" class="flowStep">
+      <h2>Étape 5: Branchez le port du joystick</h2>
+      <div>
+	 <img src="kl25z-how-to-plug-in.png" style="float: right;">
+	 Le nouveau firmware a été installé. Veuillez brancher le
+	 Port <b> joystick </b> sur la KL25Z, comme illustré à droite.
+	 <div>
+	 Si vous n'avez qu'un seul câble USB, vous pouvez le débrancher du
+	 port de programmation et déplacez-le vers le port du joystick.
+	 Vous pouvez également laisser les deux ports branchés si vous
+	 avez un deuxième câble.
+	 </div>
+	 <div>
+	 Nous passerons automatiquement à l'étape suivante lorsque nous
+	 détecterons que l'appareil est connecté. Si l'appareil
+	 ne se connecte pas correctement ou ces instructions sont toujours
+	 affiché après l'avoir branché, essayez ces étapes:
+
+	    <ul>
+	       <li>Réinitialisez la KL25Z en appuyant sur son bouton de réinitialisation
+
+	       <li>Débranchez-la complètement (les deux ports), attendez quelques
+			instants, et rebranchez-la
+
+	       <li>Si rien de tout cela ne fonctionne, l'installation du micrologiciel
+			pourrait ne pas avoir fonctionné après tout. Vous pourriez essayer de
+			revenir en arrière et répéter le processus d'installation.
+	    </ul>
+	 </div>
+      </div>
+      <div>
+	 Appareil connecté
+      </div>
+   </div>
+
+   <div id="Step6" class="flowStep">
+      <h2>Fait!</h2>
+
+      <div>
+	 <div>
+	    La mise à jour du micrologiciel a été effectuée avec succès.
+	 </div>
+	 <div>
+	    Vous êtes maintenant prêt à configurer les paramètres de l'appareil. 
+	    Si vous avez d'autres cartes KL25Z, veuillez patienter pour les reconnecter
+	    jusqu'à ce que vous ayez configuré la nouvelle carte et enregistré ses
+	    nouveaux paramètres. Il est particulièrement important que vous attribuiez
+	    un numéro de carte LedWiz unique pour chaque appareil pour éviter tout 
+	    conflits d'USB.
+	 </div>
+	 <div style="margin: 2em; text-align: center;">
+	    <a class="button" id="goConfig">Configurer les paramètres &gt;&gt;</a>
+	 </div>
+      </div>
+      <div>
+      </div>
+   </div>
+
+</div>
+
+<div id="navproxy"></div>
+<div id="nav">
+   <div class="left">
+      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Retourner au menu principal"><img src="homeIcon.png"></a>
+   </div>
+   <div class="navSpacer">
+   </div>
+</div>
+
+<script>
+var CPUID;
+var OpenSDAID, OpenSDADrive;
+var binToInstall;
+$(function()
+{
+    // step entry procedures
+    var steps = {
+	// Step 1 - select the .bin file
+	1: function(step)
+	{
+	    // initialize the .bin file list, then update it periodically
+	    updateBinFiles();
+	    var updater = setInterval(updateBinFiles, 2000);
+	    
+	    // update the file list
+	    function updateBinFiles()
+	    {
+		// get the new file list
+		var l = eval(window.external.ListBinFiles());
+		
+		// Sort by descending filename (excluding path and extension).
+		// Descending order puts the most recent build at the top of the
+		// list.  We'll usually want to select the latest version, so it's
+		// the logical one to put first.
+		l.sort(function(a, b) { return -strcmp(filename(a), filename(b)); });
+		function filename(f) { return filenameAndExt(f).replace(/\.[^.]*$/, ""); }
+		function filenameAndExt(f) { return f.replace(/^.*\\/, ""); }
+		function strcmp(a, b) { return a.localeCompare(b); }
+
+		// sync the live file list and displayed html
+		for (var i = 0, h = $("#binFiles div").first() ; i < l.length || h.length ; )
+		{
+		    // if the current live and display lists match, skip both entries,
+		    // otherwise insert or delete a display item to sync the lists
+		    var li = i < l.length ? l[i] : null;
+		    if (li && h.length && li == h.data("filename"))
+		    {
+			// they match - skip to the next entry in each list
+			++i;
+			h = h.next();
+		    }
+		    else if (!li || (h.length && h.data("filename").localeCompare(li) > 0))
+		    {
+			// we're out of live items, or the current display item sorts before
+			// the current live item: this display item is obsolete, so delete it
+			var nxt = h.next();
+			h.remove();
+			h = nxt;
+		    }
+		    else
+		    {
+			// the current live item is new - insert a display item for it
+			var newitem = $("<div/>").data("filename", li).append(
+			    $("<a/>").attr("href", "#").append(
+				$("<img src=\"binfileIcon.png\">"),
+				$("<span>").text(filename(li))));
+			if (h.length)
+			    h.before(newitem);
+			else
+			    $("#binFiles").append(newitem);
+			++i;
+		    }
+		}
+		
+		// show or hide the "no files" section according to whether we have files
+		$("#noBinFiles").toggle(l.length == 0);
+
+		// attach click handlers to the files
+		$("#binFiles a").off("click").click(function(ev) {
+		    ev.preventDefault();
+		    setBinFile($(this).parent().data("filename"));
+		});
+	    }
+	    
+	    // browse for a .bin file
+	    $("#browseForBin").click(function() {
+		var f = window.external.BrowseForFile("bin");
+		if (f)
+		    setBinFile(f);
+	    });
+	    
+	    // open the Documents folder
+	    $("#showDocs").click(function(ev) {
+		ev.preventDefault();
+		window.external.ShowDocsFolder();
+	    });
+
+	    // set the .bin file and advance to step 2
+	    function setBinFile(f)
+	    {
+		binToInstall = f;
+		$("#binToInstall").text(f);
+		nextStep();
+	    }
+
+	    // on ending the step, stop the .bin file updater
+	    return function() { clearInterval(updater); };
+	},
+
+	// Step 2 - confirm that all other devices are disconnected
+	2: function(step)
+	{
+	    $("#step2done").click(function(ev) {
+		ev.preventDefault();
+		nextStep();
+	    });
+	},
+
+	3: function(step)
+	{
+	    // update the SDA drive list
+	    var updater;
+	    function update()
+	    {
+		var drives = eval(window.external.AllSDADrives(false));
+		drives.sort(function(a, b) { return a.path.localeCompare(b.path); });
+		var h = $("#SDADriveList .sdadrive").first();
+		for (var i = 0 ; i < drives.length || h.length ; )
+		{
+		    // if the current items match, move on, otherwise sync the lists
+		    var d = i < drives.length ? drives[i] : null;
+		    if (d && h.length && d.path == h.data("path"))
+		    {
+			// they're the same - move to the next on each list
+			++i;
+			h = h.next();
+		    }
+		    else if (!d || (h.length && h.data("path").localeCompare(d.path) < 0))
+		    {
+			// we're out of new drives, or this old drive sorts before this
+			// new drive: this old drive is no longer present, so delete it
+			var nxt = h.next();
+			h.remove();
+			h = nxt;
+		    }
+		    else
+		    {
+			// otherwise, the new drive must be new, so insert it before the
+			// current item (or at the end of the list if there's no current item)
+			var newitem = $("<div/>").addClass("sdadrive")
+				      .data("path", d.path)
+				      .data("sdaid", d.sdaid)
+				      .html(
+					  "<a href=\"#\">"
+					  + "<img src=\"kl25zDiskIcon.png\">"
+					  + "<b>" + d.path.htmlify() + "</b>"
+					  + " (" + d.volumeLabel.htmlify() + ")"
+					  + " | OpenSDA ID " + d.sdaid.htmlify()
+					  + "</a>");
+			if (h.length)
+			    h.before(newitem);
+			else
+			    $("#SDADriveList").append(newitem);
+			++i;
+		    }
+		    $("#SDADriveList .nosdadrive").css("display", drives.length ? "none" : "");
+		}
+
+		// show or hide the multi-drive warning
+		$("#multiDriveWarning").toggle(drives.length > 1);
+		
+		// refresh the handlers
+		$("#SDADriveList a").off("click").click(function(ev)
+		{
+		    ev.preventDefault();
+		    
+		    // set the drive path
+		    var div = $(this).parents(".sdadrive");
+		    $("#OpenSDADrive").text(OpenSDADrive = div.data("path"));
+		    
+		    // remember the OpenSDA ID for the drive we're installing onto -
+		    // this will let us connect the joystick port device to the firmware
+		    // installation target device on the next step
+		    OpenSDAID = div.data("sdaid");
+
+		    // move on to the next step
+		    nextStep();
+		});
+	    }
+
+	    // update immediately, and then refresh periodically
+	    update();
+	    updater = setInterval(update, 2000);
+
+	    // on ending the step, cancel the SDA drive updater
+	    return function() { if (updater) clearInterval(updater); };
+	},
+
+	4: function(step)
+	{
+	    // install the firmware
+	    var div = step.children("div").first();
+	    $("#installGo").click(function(ev) { install(ev, $(this)); });
+
+	    function install(ev, self)
+	    {
+		ev.preventDefault();
+		div.html("Installation du micrologiciel...");
+		self.off("click");
+
+		setTimeout(function()
+		{
+		    var stat = eval(window.external.InstallFirmware(OpenSDADrive, binToInstall, null));
+		    if (stat.status == "ok")
+			nextStep();
+		    else {
+			div.html(
+			    "<div>L'installation du micrologiciel a échoué: " + stat.message.htmlify() + "</div>"
+			    + "<div><a href='#' id='retryFirmware'>Try again</a>");
+			$("#retryFirmware").off("click").click(function(ev) { install(ev, $(this)); });
+		    }
+		}, 100);
+	    }
+	},
+
+	5: function(step)
+	{
+	    // check if we're ready
+	    function check()
+	    {
+		// stop if we've moved on
+		if (curStep != 5)
+		    return;
+
+		// look up our device information to see if we're connected
+		window.external.FlushDeviceList();
+		var lst = eval(window.external.GetDeviceList());
+		$.each(lst, function(k, v) {
+		    if (v.OpenSDAID == OpenSDAID) {
+			CPUID = v.CPUID;
+			nextStep();
+			return false;
+		    }
+		});
+
+		// if we didn't find an entry with the same SDAID, try again in a few moments
+		if (!CPUID)
+		    setTimeout(check, 2000);
+	    }
+
+	    // run the initial check
+	    setTimeout(check, 0);
+	},
+
+	6: function(step)
+	{
+	    $("#goConfig").attr("href", "Configure.htm?id=" + CPUID);
+	}
+    };
+    
+    // set up the workflow items
+    $(".flowStep h2").prepend("<span class=\"checkmark\">&#10003;</span>");
+
+    // advance to the given step in the workflow
+    var curStep = 0, curStepEnder;
+    function nextStep()
+    {
+	step(curStep+1);
+    }
+    function step(n)
+    {
+	// get the previous and next step divs
+	var prv = $("#Step" + (n-1));
+	var nxt = $("#Step" + n);
+
+	// mark the previous div as done
+	prv.addClass("done");
+
+	// show the next div and make sure it's in view
+	nxt.css("display", "block");
+	scrollIntoView(nxt, 250);
+
+	// remember the new current step
+	curStep = n;
+
+	// carry out the last step's end procedure
+	if (curStepEnder)
+	    curStepEnder();
+
+	// carry out the step n entry procedure
+	curStepEnder = (steps[n] || function() { })(nxt);
+    }
+
+    // enter step 1
+    step(1);
+});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Testeur TV ON</title>
+</head>
+<body class="help">
+
+<h1>
+   <img style="float: right;" src="h1TvOn.png">
+   Testeur TV ON
+   <img style="visibility: hidden; vertical-align: middle;" src="h1TvOn.png">
+</h1>
+
+<div>
+
+   <p>
+	  Cette fenêtre vous permet de contrôler manuellement le relais TV ON, pour tester
+	  que le relais fonctionne et qu'il contrôle correctement votre téléviseur.
+   </p>
+
+   <p>
+	  Cliquez sur le bouton <b> Relais activé </b> pour activer et désactiver le relais.
+	  Utilisez ceci pour confirmer que le relais fonctionne correctement. Vous devriez
+	  pouvoir entendre le clic du relais chaque fois que vous le basculez.
+   </p>
+
+   <p>
+	  Vous pouvez également cliquer sur le bouton <b> Pulse </b> pour simuler le bref
+	  impulsion marche / arrêt que le micrologiciel utilise lorsque vous allumez le système.
+	  Cela active le relais pendant environ un quart de seconde, puis le désactive.
+	  Vous devriez pouvoir entendre le clic du relais s'allumé puis s'éteindre rapidement
+	  lorsque vous le pulsez.
+   </p>
+
+   <p>
+	  Si vous avez câblé le bouton marche / arrêt de votre téléviseur au relais, le
+	  téléviseur devrait s'allumer ou s'éteindre chaque fois que vous impulsez le relais,
+	  car le téléviseur doit penser que vous appuyez sur le bouton à chaque fois.
+   </p>
+
+   <p>
+	  Si vous utilisez les cartes d'extension, notez que le relais fonctionne sur 
+	  l'alimentation de l'alimentation secondaire (cela signifie que pour alimenter vos
+	  appareils de retour, marqués "PSU2" sur l'extension). Ainsi, le relais ne s'allumera
+	  pas réellement si le PSU2 de l'alimentation est coupée. Il est conçu de cette façon
+	  lors d'une préférence générale dans la conception de la carte d'extension pour garder
+	  tout mécanique (comme le relais) loin de l'alimentation principale de votre PC, car
+	  les choses mécaniques ont tendance à générer du bruit électrique.
+   </p>
+
+</div>
+
+
+</body>
+</html>

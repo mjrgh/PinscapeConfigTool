@@ -80,7 +80,7 @@
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(84, 27);
             this.btnHelp.TabIndex = 32;
-            this.btnHelp.Text = "Help";
+            this.btnHelp.Text = "Aide";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
@@ -98,7 +98,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(91, 27);
             this.btnClose.TabIndex = 31;
-            this.btnClose.Text = "Close";
+            this.btnClose.Text = "Fermer";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -108,9 +108,9 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(12, 14);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(133, 16);
+            this.label5.Size = new System.Drawing.Size(179, 16);
             this.label5.TabIndex = 29;
-            this.label5.Text = "Output Port Tester";
+            this.label5.Text = "Testeur de port de sortie";
             // 
             // bar1
             // 
@@ -126,9 +126,9 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(87, 59);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(25, 13);
+            this.label2.Size = new System.Drawing.Size(47, 13);
             this.label2.TabIndex = 47;
-            this.label2.Text = "Pin";
+            this.label2.Text = "Broche";
             // 
             // label1
             // 
@@ -226,9 +226,9 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(278, 59);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(47, 13);
+            this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 49;
-            this.label3.Text = "Setting";
+            this.label3.Text = "Réglage";
             // 
             // bottomPanel
             // 
@@ -276,7 +276,7 @@
             this.ckNightMode.Name = "ckNightMode";
             this.ckNightMode.Size = new System.Drawing.Size(112, 36);
             this.ckNightMode.TabIndex = 51;
-            this.ckNightMode.Text = "Night Mode";
+            this.ckNightMode.Text = "Mode nuit";
             this.ckNightMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ckNightMode.UseVisualStyleBackColor = true;
             this.ckNightMode.CheckedChanged += new System.EventHandler(this.ckNightMode_CheckedChanged);

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NightMode
@@ -65,20 +63,20 @@ namespace NightMode
             // if we didn't find a unit, return failure
             if (dev == null)
             {
-                MessageBox.Show("The selected unit number (" + unit + ") wasn't found.");
+                MessageBox.Show("Le numéro d'unité sélectionné (" + unit + ") n'a pas été trouvé.");
                 return;
             }
 
             // send the NightMode request
             if (!dev.SpecialRequest(8, new byte[] { (byte)(on ? 1 : 0) }))
-                MessageBox.Show("An error occurred sending the NightMode request to the KL25Z.");
+                MessageBox.Show("Une erreur s'est produite lors de l'envoi de la requête NightMode au KL25Z.");
         }
 
         static void Usage()
         {
             MessageBox.Show("Usage: NightMode <PinscapeUnitNumber> ON|OFF\r\n\r\n"
-                + "For example, \"NightMode 1 ON\" turns on Night Mode on Pinscape unit #1.\r\n\r\n"
-                + "Run without arguments to select interactively.");
-        } 
+                + "Par exemple, \"NightMode 1 ON\" active le mode nuit sur l'unité Pinscape # 1.\r\n\r\n"
+                + "Exécuter sans arguments pour sélectionner de manière interactive.");
+        }
     }
 }

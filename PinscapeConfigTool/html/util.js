@@ -17,7 +17,7 @@ $(function() {
 		slideOpen(d, ev.originalEvent ? 250 : 0, true);
 
 		if (!shower.hasClass("noReHide") && d.find(".reHideButton").length == 0) {
-			var rehider = $("<a href=\"#\" class=\"reHideButton\">Hide these details</a>")
+			var rehider = $("<a href=\"#\" class=\"reHideButton\">Cacher ces détails</a>")
 						  .click(function(ev) {
 				ev.preventDefault();
 				shower.show();
@@ -51,28 +51,28 @@ $(function() {
 		if (vsnMajor < 11)
 		{
 			// IE is older than IE 11 - could be the problem
-			msg = "Internal error!\r\n"
-				  + "An error has occurred within the config tool. "
-				  + "You have an older version of Internet Explorer "
-				  + "installed on your system (IE " + vsnMajor + "."
-				  + vsnMinor + "), which could be the source of the "
-				  + "problem.  This program requires IE 11 or newer "
-				  + "to be installed.  (This is required even if you "
-				  + "don't use IE as your browser, since the program "
-				  + "uses components of IE internally.)"
+			msg = "Erreur interne!\r\n"
+				  + "Une erreur s'est produite dans l'outil de configuration. "
+				  + "Vous disposez d'une ancienne version d'Internet Explorer "
+				  + "installé sur votre système (IE " + vsnMajor + "."
+				  + vsnMinor + "), qui pourrait être la source du "
+				  + "problème. Ce programme nécessite IE 11 ou plus récent "
+				  + "à installer. (Ceci est nécessaire même si vous "
+				  + "n'utilisez pas IE comme navigateur, puisque le programme "
+				  + "utilise des composants d'IE en interne.) "
 				  + "\r\n\r\n"
-				  + "Please update IE to the latest version.  You can "
-				  + "download it from the Microsoft Web site or use "
+				  + "Veuillez mettre à jour IE vers la dernière version. Vous pouvez "
+				  + "le téléchargez sur le site Web de Microsoft ou utilisez "
 				  + "Windows Update.";
 		}
 		else
 		{
 			// IE seems up to date, so we apparently can't point fingers
-			msg = "Internal error!\r\n"
-				  + "An error has occurred within the config tool. "
-				  + "This is probably due to a bug in the program, not "
-				  + "anything you did wrong.\r\n\r\n"
-				  + "Technical details (for debugging):\r\n"
+			msg = "Erreur interne!\r\n"
+				  + "Une erreur s'est produite dans l'outil de configuration. "
+				  + "Ceci est probablement dû à un bogue dans le programme, non "
+				  + "une mauvaise mainupulation de votre part.\r\n\r\n "
+				  + "Détails techniques (pour le débogage):\r\n"
 				  + details;
 		}
 
@@ -350,17 +350,17 @@ function showCallResult(res, handler)
 	// evaluate the string into a javascript object, and apply a default
 	var o = (typeof res == "string" ? eval(res) : res);
 	if (typeof o != "object")
-		o = { status: "error", message: "Unrecognized response: " + res };
+		o = { status: "error", message: "Réponse non reconnue: " + res };
 
 	// show an appropriate message
 	var defHandler = {
 		"cancel": function() { },   // user canceled - no more feedback required
-		"error": function() { alert("An error occurred: " + o.message); },
+		"error": function() { alert("Une erreur s'est produite: " + o.message); },
 		"ok": function() { if (o.message) alert(o.message); }
 	};
 	var func = (handler && handler[o.status])
 			   || defHandler[o.status]
-			   || function() { alert("Unknown result status: " + o.status); };
+			   || function() { alert("État du résultat inconnu: " + o.status); };
 	func(o);
 
 	// return the parsed object

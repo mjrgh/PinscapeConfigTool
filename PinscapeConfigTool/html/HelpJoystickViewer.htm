@@ -1,104 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Joystick Viewer</title>
+   <title>Visionneuse d'entrée du joystick</title>
 </head>
 <body class="help">
 
 <h1>
    <img style="float: right;" src="joystickicon.png">
-   Joystick Input Viewer
+   Visionneuse d'entrée du joystick
    <img style="visibility: hidden; vertical-align: middle;" src="joystickicon.png">
 </h1>
 
 <div>
 
    <p>
-	  This window lets you view the joystick input coming from the
-	  Pinscape Controller unit.  This shows the processed version
-	  of the KL25Z input, in the format seen by Visual Pinball and other
-	  software when reading from the joystick.
+	Cette fenêtre vous permet de visualiser l'entrée du joystick
+	provenant de la carte de contrôle Pinscape. Cela montre la
+	version traitée de l'entrée KL25Z, au format vu par Visual
+	Pinball et autres logiciel lors de la lecture à partir du joystick.
    </p>
 
-   <h2>Accelerometer</h2>
+   <h2>Accéléromètre</h2>
    <p>
-	  The crosshairs show the readings from the KL25Z's on-board
-	  accelerometer.  This senses the motion of the device, so we
-	  use it in pinball emulators to sense when you "nudge" the
-	  cabinet.  If you observe the crosshairs as you move and nudge
-	  the device, you'll see how it responds to cabinet motion.
+	Le réticule montre les lectures de l'accéléromètre.
+	Il détecte le mouvement de l'appareil, donc utilisez-le dans
+	les émulateurs de flipper pour détecter quand vous "poussez" le
+	pincab. Si vous observez le réticule pendant que vous le déplacez,
+	vous verrez comment il réagit au mouvement du pincab.
    </p>
    <p>
-	  The device also picks up any incline of the board, since
-	  gravity is a type of acceleration.  If you have "auto-centering"
-	  enabled in the setup, the firmware automatically cancels out
-	  the incline by zeroing the readings after the board has been
-	  sitting still for a few seconds.  You can adjust the timing
-	  of the automatic centering.
+	'appareil capte également toute inclinaison de la planche, car
+	la gravité est un type d'accélération. Si vous avez un "centrage
+	automatique" activé dans la configuration, le firmware annule
+	automatiquement l'inclinaison en remettant à zéro les lectures
+	après que la planche ait été mise en place pendant quelques secondes.
+	Vous pouvez ajuster le timing du centrage automatique.
    </p>
-   <p>The automatic centering is useful because we want the accelerometer
-	  to report zero acceleration whenever the cabinet is sitting still.
-	  Any non-zero acceleration will show up in the pinball simulation
-	  as an influence on the ball.  We only want this type of influence
-	  to appear in response to nudges and other cabinet motion.
+   <p>  Le centrage automatique est utile car on veut que l'accéléromètre
+	signale une accélération nulle chaque fois que le pincab est immobile.
+	Toute accélération non nulle apparaîtra dans la simulation de flipper
+	comme une influence sur la bille. Nous voulons seulement ce type
+	d'influence uniquement en réponse aux coups de coude et à d'autres
+	mouvements du pincab.
    </p>
    <p>
-	  If you disabled auto-centering in the setup, you can click the
-	  "Center Now" button to zero the accelerometer manually.
-   </p>
-
-   <h2>Plunger</h2>
-   <p>
-	  The plunger readings shown here take into account the
-	  calibration.  If the plunger is calibrated properly, the
-	  reading should be at the zero point, indicated by the arrow,
-	  when the physical plunger is "parked" at its normal resting
-	  position.  The bar should move to the right when you pull
-	  back the plunger.  If the reading isn't showing zero when
-	  the plunger is at its resting position, you should re-run
-	  the calibration process from the Plunger Setup window.
+	Si vous avez désactivé le centrage automatique dans la configuration, 
+	vous pouvez cliquer sur le bouton "Centrer maintenant" 	pour mettre
+	à zéro l'accéléromètre manuellement.
    </p>
 
-   <h2>Joystick buttons</h2>
+   <h2>Piston ou tire-bille</h2>
    <p>
-	  The buttons displayed here are the "mapped" joystick buttons.
-	  These aren't exactly the same as the physical buttons wired
-	  to the controller, because the firmware translates each button
-	  press to the mapping you selected for the button, either as a
-	  joystick button or a keyboard key.  If you assigned a physical
-	  button as a keyboard key, it won't show up here at all when you
-	  press it, because the button sends input to Windows as keyboard
-	  input instead.  If you mapped a physical button to a joystick
-	  button, the assigned button should light up here when you press it.
+	Les lectures du piston indiquées ici prennent en compte l'étalonnage.
+	Si le piston est correctement calibré, la lecture doit être au point
+	zéro, indiqué par la flèche, lorsque le piston physique est «stationné»
+	à sa position de repos normal. La barre doit se déplacer vers la droite
+	lorsque vous tirez sur le piston. Si la lecture ne montre pas zéro quand
+	le piston est à sa position de repos, vous devez recommencer le processus
+	d'étalonnage à partir de la fenêtre "configuration de piston".
+   </p>
+
+   <h2>Boutons du joystick</h2>
+   <p>
+	Les boutons affichés ici sont les boutons du joystick "mappés".
+	Ce ne sont pas exactement les mêmes que les boutons physiques câblés
+	au contrôleur, car le firmware traduit chaque bouton appuyé sur le
+	mappage que vous avez sélectionné pour le bouton, soit comme bouton du
+	joystick ou une touche du clavier. Si vous en avez attribué un comme une
+	touche de clavier, il n'apparaîtra pas du tout ici lorsque vous appuyerez
+	dessus, car le bouton envoie l'entrée à Windows en tant que clavier 
+	d'entrée à la place. Si vous avez mappé un bouton physique sur un joystick
+	bouton, le bouton attribué doit s'allumer ici lorsque vous appuyez dessus.
    </p>
 
    <p>
-	  If you're still setting up your connections, you might find it
-	  helpful to look at the Button Tester and Plunger Tester windows.
-	  Those will give you a more direct view of what's going on at
-	  the hardware level.
+	Si vous configurez toujours vos connexions, vous trouverez peut-être
+	utile de regarder les fenêtres du testeur de bouton et du testeur de piston.
+	Ceux-ci vous donneront une vision plus directe de ce qui se passe au 
+	niveau matériel.
    </p>
 
-   <h2>Capture</h2>
+   <h2>Capturer</h2>
    <p>
-	  The "Capture" option lets you collect readings from the
-	  accelerometer and plunger inputs and save the collected data
-	  to a file.  This is mostly for debugging purposes.  When the
-	  capture section is enabled, hold down the Control key to
-	  collect data.  The new readings are added to the text box.
-	  (Readings are only collected while you're holding down the
-	  Control key to avoid collecting excessive amounts - the
-	  readings come in very fast.  When troubleshooting, you usually
-	  only want to collect readings related to something specific
-	  you're doing, like firing the plunger or nudging the machine.
-	  Filtering with the Control key makes it fairly easy to
-	  collect a focused set of readings around a particular event.)
-	  Once you've collected the readings you're after, you can
-	  save them to a file if desired by clicking the disk icon.
-	  This can be helpful for sharing the data with someone else
-	  who's helping you troubleshoot.
+	L'option «Capturer» vous permet de collecter les lectures d'entrées de
+	l'accéléromètre du piston et enregistrer les données collectées dans un
+	fichier. C'est principalement à des fins de débogage. Quand la section 
+	de capture est activée, maintenez la touche Contrôle enfoncée pour
+	collecter des données. Les nouvelles lectures sont ajoutées à la zone de texte.
+	(Les lectures ne sont collectées que lorsque vous maintenez la touche
+	de contrôle pour éviter de collecter des quantités excessives - les lectures
+	arrivent très rapidement. Lors du dépannage, vous voulez seulement collecter 
+	des lectures liées à quelque chose de spécifique vous faites, comme tirer
+	le piston ou pousser le pincab. Le filtrage avec la touche Contrôle permet
+	de recueillir un ensemble ciblé de lectures autour d'un événement particulier.)
+	Une fois que vous avez collecté les lectures que vous recherchez, vous pouvez
+	les enregistrez dans un fichier si vous le souhaitez en cliquant sur l'icône du disque.
+	Cela peut être utile pour partager les données avec quelqu'un d'autre qui vous
+	aidera à dépanner.
    </p>
 
 </div>

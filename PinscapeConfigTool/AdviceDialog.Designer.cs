@@ -44,7 +44,7 @@
             this.btnOK.MinimumSize = new System.Drawing.Size(90, 0);
             this.btnOK.Name = "btnOK";
             this.btnOK.Padding = new System.Windows.Forms.Padding(1);
-            this.btnOK.Size = new System.Drawing.Size(90, 28);
+            this.btnOK.Size = new System.Drawing.Size(90, 27);
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -54,12 +54,12 @@
             // 
             this.ckHide.AutoSize = true;
             this.ckHide.BackColor = System.Drawing.SystemColors.Control;
-            this.ckHide.Location = new System.Drawing.Point(194, 81);
+            this.ckHide.Location = new System.Drawing.Point(167, 84);
             this.ckHide.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ckHide.Name = "ckHide";
-            this.ckHide.Size = new System.Drawing.Size(270, 20);
+            this.ckHide.Size = new System.Drawing.Size(338, 19);
             this.ckHide.TabIndex = 1;
-            this.ckHide.Text = "Got it; no need to show me this message again";
+            this.ckHide.Text = "Je l'ai, pas besoin de me montrer ce message à nouveau";
             this.ckHide.UseVisualStyleBackColor = false;
             // 
             // txtMessage
@@ -87,7 +87,7 @@
             // 
             // AdviceDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(625, 116);
@@ -97,7 +97,7 @@
             this.Controls.Add(this.ckHide);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.lblGrayBar);
-            this.Font = new System.Drawing.Font("Microsoft MHei", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "AdviceDialog";

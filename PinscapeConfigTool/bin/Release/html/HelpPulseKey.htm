@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Options des boutons</title>
+</head>
+<body class="help">
+<h1>
+   Options des boutons
+</h1>
+
+<h2><img src="PulseOn.png"> Mode d'impulsion</h2>
+
+<p>
+Dans certains cas, vous voudrez peut-être un bouton ou un commutateur pour envoyer une
+frappe sur le PC à chaque fois que l’état du commutateur <b> change </b>, plutôt que
+lorsque le bouton est maintenu enfoncé ou que l'interrupteur est laissé allumé.
+C'est ce qu'on appelle le mode impulsion.
+</p>
+
+<p>
+Si vous réglez un bouton en mode Pulse, le contrôleur enverra <b> une touche
+appuyez sur </b> sur le PC lorsque vous appuyez sur le bouton, puis envoyez
+une autre touche unique appuyez lorsque vous relâchez le bouton. tout dépend
+combien de temps vous maintenez le bouton enfoncé: il y aura toujours
+exactement deux pressions de touche envoyées au PC chaque fois que vous appuyez sur le
+bouton, un lorsqu'il est enfoncé, le second lorsqu'il est relâché.
+</p>
+
+<p>
+En revanche, un bouton de mode normal sans impulsion indique au PC qu'il est 
+maintenue enfoncée en continu tant que le bouton est enfoncé. Pour une touche du clavier,
+cela signifie généralement que Windows répète automatiquement la touche tant que le
+bouton est maintenu enfoncé.
+</p>
+
+<p>
+L'exemple canonique d'un bouton de mode Pulse est la porte à monnaie.
+Le logiciel VPinMAME utilise une touche "bascule".
+Une pression sur la touche "ouvre" la porte de la monnaie virtuelle dans le
+logiciel, et une seconde pression le "ferme". Cette convention fonctionne
+super pour jouer au clavier, mais c'est vraiment gênant pour l'utilisation du pincab,
+où vous souhaitez connecter votre vraie porte à monnaie afin que la ROM de flipper
+sache quand la porte est ouverte.
+Pour une vraie porte à monnaie, il est beaucoup plus facile d'installer un
+interrupteur qui détecte l'<b> état </b> de la porte à monnaie. 
+L'interrupteur est éteint lorsque la porte monnaie est fermée, et allumé lorsque
+la porte est ouverte. Mais cela ne fonctionne pas bien avec VPinMAME attente d'une
+frappe lors de l'ouverture de la porte, et une seconde frappe à la fermeture de la porte.
+</p>
+
+<p>
+L'option Pulse Mode est conçue pour combler cet écart. Il laisse à vous d'installer
+le commutateur physique de la manière simple et traduit ceci à la convention de "clé
+à bascule" de VPinMAME en signalant <b> change </b> l'état du basculement vers le PC.
+Lorsque vous ouvrez la porte de la pièce physique, l'interrupteur physique s'allume,
+de sorte que le bouton Pulse Mode envoie une seule touche au PC.
+VPinMAME lit la clé et bascule la porte de la pièce virtuelle sur «ouverte».
+Tant que la porte de la pièce reste ouverte, il ne se passe plus rien. Quand vous
+fermez la porte de la pièce, l'interrupteur physique s'éteint, donc le bouton 
+Pulse Mode envoie une autre frappe unique au PC.
+VPinMAME lit cette nouvelle clé et active la porte de la pièce virtuelle à "fermé". 
+</p>
+
+<p>
+Vous pouvez sélectionner le mode d'impulsion pour n'importe quelle touche en cliquant
+sur l'impulsion icône de mode <img src="PulseOn.png" style="vertical-align: middle;">
+dans la colonne Options de la clé.
+</p>
+
+<p>
+Le réglage du mode d'impulsion s'applique à la fois au mode normal et décalé
+signification de la clé. Il n'y a aucun moyen d'appliquer le mode impulsion
+uniquement à l'un ou l'autre.
+</p>
+
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+</body>
+</html>

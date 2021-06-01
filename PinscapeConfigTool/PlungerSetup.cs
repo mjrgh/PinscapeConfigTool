@@ -1,15 +1,14 @@
-﻿using System;
+﻿using CollectionUtils;
+using Plasmoid.Extensions;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using System.Threading;
-using Plasmoid.Extensions;
-using System.IO;
-using CollectionUtils;
+using System.Windows.Forms;
 
 namespace PinscapeConfigTool
 {
@@ -111,7 +110,7 @@ namespace PinscapeConfigTool
             if (barCodeSensor && (cfgVar20 = buf = dev.QueryConfigVar(20)) != null)
             {
                 // read the current offset setting
-                cfgBarCodeOffset = origBarCodeOffset =buf[0] | (buf[1] << 8);
+                cfgBarCodeOffset = origBarCodeOffset = buf[0] | (buf[1] << 8);
                 txtBarCodeOffset.Value = cfgBarCodeOffset;
             }
             else
@@ -246,7 +245,7 @@ namespace PinscapeConfigTool
                 pixelSensor & edgeSensor ? "Pixels" :
                 barCodeSensor ? "Bar code stops" :
                 "Native device units";
-            lblJitterUnits.Text = "(" + units + ", 0 to " + posScale + "; use 0 to disable)";
+            lblJitterUnits.Text = "(" + units + ", 0 à " + posScale + "; utiliser 0 pour désactiver)";
 
             // Figure the pixel-to-luminance mapping.  By default, this is
             // just a linear mapping from raw pixel brightness levels to 
@@ -343,7 +342,7 @@ namespace PinscapeConfigTool
                 // figure the scaling factor (display pixels per sensor pixel)
                 float s = (float)wid / (npix * zoom);
                 float x = 0;
-                for (int i = 0 ; i < npix ; ++i, x += s)
+                for (int i = 0; i < npix; ++i, x += s)
                 {
                     byte gray = lum[mypix[i]];
                     using (SolidBrush br = new SolidBrush(Color.FromArgb(gray, gray, gray)))
@@ -395,7 +394,7 @@ namespace PinscapeConfigTool
 
                     // draw the outlines
                     Color colorA = Color.Aqua, colorB = Color.Lime;
-                    float ofsA = reverseOrientation ? -barwid/2.0f : barwid/2.0f;
+                    float ofsA = reverseOrientation ? -barwid / 2.0f : barwid / 2.0f;
                     using (Pen pen = new Pen(colorA, 3.0f))
                         g.DrawLine(pen, halfway + ofsA, 0.0f, halfway + ofsA, ht);
                     using (Pen pen = new Pen(colorB, 3.0f))
@@ -408,9 +407,9 @@ namespace PinscapeConfigTool
                         fmt.Alignment = StringAlignment.Center;
                         fmt.LineAlignment = StringAlignment.Far;
                         using (Brush br = new SolidBrush(colorA))
-                            g.DrawString("A", font, br, halfway + ofsA/2.0f, ht / 2.0f, fmt);
+                            g.DrawString("A", font, br, halfway + ofsA / 2.0f, ht / 2.0f, fmt);
                         using (Brush br = new SolidBrush(colorB))
-                            g.DrawString("B", font, br, halfway - ofsA/2.0f, ht / 2.0f, fmt);
+                            g.DrawString("B", font, br, halfway - ofsA / 2.0f, ht / 2.0f, fmt);
                     }
                 }
             }
@@ -421,8 +420,8 @@ namespace PinscapeConfigTool
                 // get the scaling factor to map sensor pixel positions to 'g' coordinates
                 float gx = (float)wid / npix;
 
-                using (Brush red = new SolidBrush(Color.Red), 
-                    dkred = new SolidBrush(Color.DarkRed), 
+                using (Brush red = new SolidBrush(Color.Red),
+                    dkred = new SolidBrush(Color.DarkRed),
                     pink = new SolidBrush(Color.Pink))
                 {
                     // draw each bar
@@ -473,7 +472,7 @@ namespace PinscapeConfigTool
 
                     // draw on the left side for reversed orientation (-1), 
                     // otherwise on the right side
-                    int y = ht*3/4, rht = ht - y;
+                    int y = ht * 3 / 4, rht = ht - y;
                     if (dir == -1)
                         g.FillRectangle(green, 0, y, gpos, rht);
                     else
@@ -503,9 +502,9 @@ namespace PinscapeConfigTool
                     ltgray = new SolidBrush(Color.LightGray))
                 {
                     // rescale from the position scale to the bitmap 
-                    int lo = (int)Math.Round((double)(jfLo - scrollOfs)*zoom / posScale * wid);
-                    int hi = (int)Math.Round((double)(jfHi - scrollOfs)*zoom / posScale * wid);
-                    int rp = (int)Math.Round((double)(rawPos - scrollOfs)*zoom / posScale * wid);
+                    int lo = (int)Math.Round((double)(jfLo - scrollOfs) * zoom / posScale * wid);
+                    int hi = (int)Math.Round((double)(jfHi - scrollOfs) * zoom / posScale * wid);
+                    int rp = (int)Math.Round((double)(rawPos - scrollOfs) * zoom / posScale * wid);
 
                     // mirror the coordinates if using reversed orientation
                     if (dir == -1)
@@ -532,7 +531,7 @@ namespace PinscapeConfigTool
                         g.DrawRectangle(plg, lo, y, hi - lo - 2, rht - 2);
 
                     // label it
-                    String msg1 = "Jitter Window ";
+                    String msg1 = "Fenêtre de gigue ";
                     String msg2 = String.Format("(Raw={0})", rawPos);
                     using (Font font = SystemFonts.DefaultFont)
                     {
@@ -565,7 +564,7 @@ namespace PinscapeConfigTool
                         green = new SolidBrush(Color.Green),
                         ltgray = new SolidBrush(Color.LightGray))
                     {
-                        int xTxt = (int)Math.Round((float)(pos - scrollOfs)*zoom / posScale * wid);
+                        int xTxt = (int)Math.Round((float)(pos - scrollOfs) * zoom / posScale * wid);
                         int yTxt = ht * 3 / 4 + (ht / 4 - sz.Height) / 2;
                         if (dir == 1)
                         {
@@ -602,7 +601,7 @@ namespace PinscapeConfigTool
                     calModeColor = !calModeColor;
                     flashTime = DateTime.Now;
                 }
-                String msg = "CALIBRATING";
+                String msg = "CALIBRATION";
                 using (Font font = SystemFonts.CaptionFont)
                 {
                     Size sz = g.MeasureString(msg, font).ToSize();
@@ -637,7 +636,7 @@ namespace PinscapeConfigTool
 
                 // figure the drawing position - mirror it if the orientation is reversed
                 int drawpos = (dir == -1 ? posScale - pos : pos);
-                
+
                 // figure the arrow position
                 int xArrow = (int)Math.Round((float)drawpos / posScale * wid - arrowDown.Width / 2);
 
@@ -664,23 +663,23 @@ namespace PinscapeConfigTool
             }
         }
 
-        public static byte[] gamma = new byte[] 
+        public static byte[] gamma = new byte[]
         {
-            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
-            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1, 
-            1,   1,   1,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2, 
-            2,   3,   3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   5,   5,   5, 
-            5,   6,   6,   6,   6,   7,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10, 
-            10,  10,  11,  11,  11,  12,  12,  13,  13,  13,  14,  14,  15,  15,  16,  16, 
-            17,  17,  18,  18,  19,  19,  20,  20,  21,  21,  22,  22,  23,  24,  24,  25, 
-            25,  26,  27,  27,  28,  29,  29,  30,  31,  32,  32,  33,  34,  35,  35,  36, 
-            37,  38,  39,  39,  40,  41,  42,  43,  44,  45,  46,  47,  48,  49,  50,  50, 
-            51,  52,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,  64,  66,  67,  68, 
-            69,  70,  72,  73,  74,  75,  77,  78,  79,  81,  82,  83,  85,  86,  87,  89, 
-            90,  92,  93,  95,  96,  98,  99, 101, 102, 104, 105, 107, 109, 110, 112, 114, 
-            115, 117, 119, 120, 122, 124, 126, 127, 129, 131, 133, 135, 137, 138, 140, 142, 
-            144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 167, 169, 171, 173, 175, 
-            177, 180, 182, 184, 186, 189, 191, 193, 196, 198, 200, 203, 205, 208, 210, 213, 
+            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1,
+            1,   1,   1,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,
+            2,   3,   3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   5,   5,   5,
+            5,   6,   6,   6,   6,   7,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,
+            10,  10,  11,  11,  11,  12,  12,  13,  13,  13,  14,  14,  15,  15,  16,  16,
+            17,  17,  18,  18,  19,  19,  20,  20,  21,  21,  22,  22,  23,  24,  24,  25,
+            25,  26,  27,  27,  28,  29,  29,  30,  31,  32,  32,  33,  34,  35,  35,  36,
+            37,  38,  39,  39,  40,  41,  42,  43,  44,  45,  46,  47,  48,  49,  50,  50,
+            51,  52,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,  64,  66,  67,  68,
+            69,  70,  72,  73,  74,  75,  77,  78,  79,  81,  82,  83,  85,  86,  87,  89,
+            90,  92,  93,  95,  96,  98,  99, 101, 102, 104, 105, 107, 109, 110, 112, 114,
+            115, 117, 119, 120, 122, 124, 126, 127, 129, 131, 133, 135, 137, 138, 140, 142,
+            144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 167, 169, 171, 173, 175,
+            177, 180, 182, 184, 186, 189, 191, 193, 196, 198, 200, 203, 205, 208, 210, 213,
             215, 218, 220, 223, 225, 228, 231, 233, 236, 239, 241, 244, 247, 249, 252, 255
         };
 
@@ -702,19 +701,19 @@ namespace PinscapeConfigTool
             // check for updated config settings
             List<String> msg = new List<String>();
             if (jitterWindow != origJitterWindow)
-                msg.Add("jitter filter");
+                msg.Add("filtre de gigue");
             if (reverseOrientation != origReverseOrientation)
-                msg.Add("reversed orientation");
+                msg.Add("orientation inversée");
             if (cfgBarCodeOffset != origBarCodeOffset)
-                msg.Add("bar code offset");
+                msg.Add("décalage de code à barres");
 
             // ask if they'd like to save jitter filter changes
             if (msg.Count != 0)
             {
-                if (MessageBox.Show("You've changed the " + msg.SerialJoin() + " settings."
-                    + " Would you like to save the new setting" + (msg.Count > 1 ? "s" : "")
-                    + " on the device?",
-                    "Pinscape Config Tool", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Vous avez changé le " + msg.SerialJoin() + " réglages."
+                    + " Souhaitez-vous enregistrer le nouveau paramètre" + (msg.Count > 1 ? "s" : "")
+                    + " sur l'appareil?",
+                    "Outil de configuration Pinscape", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     // Yes, save - send the updated settings to the device
                     if (jitterWindow != origJitterWindow || reverseOrientation != origReverseOrientation)
@@ -1087,7 +1086,7 @@ namespace PinscapeConfigTool
 
                         // Update the sensor scan time information
                         String times = String.Format(
-                            "Average sensor scan time: {0} ms, Curent frame processing time: {1} ms",
+                            "Temps moyen de balayage du capteur: {0} ms, temps de traitement de la trame actuelle: {1} ms",
                             avgScanTime, processingTime);
 
                         // update statistics according to sensor type (imaging or non-imaging)
@@ -1101,35 +1100,35 @@ namespace PinscapeConfigTool
                                 txtInfo_text = String.Format(
                                     "Pixels: {0}, Orientation: {1}, Edge pos: {2}, Release time: {3} ms",
                                     newnpix,
-                                    orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
-                                    reportedPos == 0xFFFF ? "Not detected" : reportedPos.ToString(),
+                                    orientation == 1 ? "Standard" : orientation == -1 ? "Inversé" : "Inconnu",
+                                    reportedPos == 0xFFFF ? "Pas détecté" : reportedPos.ToString(),
                                     tRelease);
                             }
                             else if (barCodeSensor)
                             {
                                 txtInfo_text = String.Format(
-                                    "Pixels: {0}, Plunger position: {1}, Release time: {2} ms",
+                                    "Pixels: {0}, position du piston: {1}, temps de relâchement: {2} ms",
                                     newnpix,
-                                    reportedPos == 0xFFFF ? "Not detected" : reportedPos.ToString(),
+                                    reportedPos == 0xFFFF ? "Pas détecté" : reportedPos.ToString(),
                                     tRelease);
                             }
                             else
                             {
                                 txtInfo_text = String.Format(
-                                    "Pixels: {0}, Orientation: {1}, Plunger pos: {2}, Release time: {3} ms",
+                                    "Pixels: {0}, Orientation: {1}, Position du piston: {2}, Temps de relâchement: {3} ms",
                                     newnpix,
-                                    orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
-                                    reportedPos == 0xFFFF ? "Not detected" : reportedPos.ToString(),
+                                    orientation == 1 ? "Standard" : orientation == -1 ? "Inversé" : "Inconnu",
+                                    reportedPos == 0xFFFF ? "Pas détecté" : reportedPos.ToString(),
                                     tRelease);
                             }
 
                             // line 2 - brightness range
-                            txtInfo2_text = String.Format("Brightness Min: {0}, Max: {1}, % Saturated: {2}, % Zero: {3}",
+                            txtInfo2_text = String.Format("Luminosité Min: {0}, Max: {1}, % Saturation: {2}, % Zero: {3}",
                                     pixMin, pixMax, (int)Math.Round(numSat * 100.0 / newnpix),
                                     (int)Math.Round(numZero * 100.0 / npix));
 
                             if (axcTime > 0)
-                                txtInfo2_text += ", Auto-exposure time " + axcTime + "us";
+                                txtInfo2_text += ", Temps d'exposition automatique " + axcTime + "us";
 
                             // line 3 - scan time
                             txtInfo3_text = times;
@@ -1140,16 +1139,16 @@ namespace PinscapeConfigTool
 
                             // line 1 - position
                             txtInfo_text = String.Format(
-                                "Plunger position: {0}, Orientation: {1}, Release time: {2} ms",
-                                reportedPos == 0xFFFF ? "Unknown" : reportedPos.ToString() + "/" + (posScale - 1),
-                                orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                "Position du piston: {0}, orientation: {1}, temps de relâchement: {2} ms",
+                                reportedPos == 0xFFFF ? "Inconnu" : reportedPos.ToString() + "/" + (posScale - 1),
+                                orientation == 1 ? "Standard" : orientation == -1 ? "Inversé" : "Inconnu",
                                 tRelease);
 
                             // line 2 - scan time
                             txtInfo2_text = times;
 
                             // line 3 - Channel A/B values
-                            txtInfo3_text = String.Format("Quadrature channel A/B: {0}/{1}", quadrature.chA, quadrature.chB);
+                            txtInfo3_text = String.Format("Canal en quadrature A/B: {0}/{1}", quadrature.chA, quadrature.chB);
                         }
                         else
                         {
@@ -1157,9 +1156,9 @@ namespace PinscapeConfigTool
 
                             // line 1 - position
                             txtInfo_text = String.Format(
-                                "Plunger position: {0}, Orientation: {1}, Release time: {2} ms",
-                                reportedPos == 0xFFFF ? "Unknown" : reportedPos.ToString() + "/" + (posScale - 1),
-                                orientation == 1 ? "Standard" : orientation == -1 ? "Reversed" : "Unknown",
+                                "Position du piston: {0}, orientation: {1}, temps de relâchement: {2} ms",
+                                reportedPos == 0xFFFF ? "Inconnu" : reportedPos.ToString() + "/" + (posScale - 1),
+                                orientation == 1 ? "Standard" : orientation == -1 ? "Inversé" : "Inconnu",
                                 tRelease);
 
                             // line 2 - scan time
@@ -1214,34 +1213,34 @@ namespace PinscapeConfigTool
             if (IsCalMode())
             {
                 // calibration is in progress - show instructions
-                lblCal.Text = "Calibration in progress. This will run "
-                    + "for about 15 seconds. While it's running:\r\n\r\n"
-                    + "  • Pull the plunger back\r\n"
-                    + "  • Hold for a moment, then release\r\n"
-                    + "  • Wait for it to come to rest\r\n"
-                    + "  • Repeat a few times as desired\r\n";
+                lblCal.Text = "Calibration en cours. Cela fonctionnera "
+                    + "pendant environ 15 secondes. Pendant son exécution:\r\n\r\n"
+                    + " • Tirez le piston vers l'arrière\r\n"
+                    + " • Tenez un instant, puis relâchez\r\n"
+                    + " • Attendez qu'il s'arrête\r\n"
+                    + " • Répétez plusieurs fois comme vous le souhaitez\r\n";
                 btnCal.Enabled = false;
             }
             else if (calStarted)
             {
                 // calibration done
-                lblCal.Text = "Calibration completed.\r\n\r\n"
-                    + "If you want to repeat the process, make sure the plunger "
-                    + "is at rest at its normal park position, then press the "
-                    + "Calibrate button.";
+                lblCal.Text = "Calibration terminée.\r\n\r\n"
+                    + "Si vous souhaitez répéter le processus, assurez-vous que le piston "
+                    + "est au repos à sa position normale de stationnement, puis appuyez sur le bouton "
+                    + "Bouton Calibrer.";
                 btnCal.Enabled = true;
             }
             else
             {
                 // we haven't done the first calibration with this dialog yet
-                lblCal.Text = "Calibrate the sensor when you "
-                    + "first install it, and whenever you adjust its position. "
-                    + "You should also recalibrate if the \"Park\" arrow shown "
-                    + "above doesn't match the actual plunger rest position."
+                lblCal.Text = "Calibrez le capteur lorsque vous "
+                    + "l'installez d'abord, et chaque fois que vous ajustez sa position. "
+                    + "Vous devez également recalibrer si la flèche \"Park\" est affichée "
+                    + "ci-dessus ne correspond pas à la position de repos réelle du piston."
                     + "\r\n\r\n"
-                    + "To calibrate, make sure the plunger is at rest at its "
-                    + "normal park position, then press Calibrate and follow "
-                    + "the on-screen instructions.";
+                    + "Pour calibrer, assurez-vous que le piston est au repos "
+                    + "position de stationnement normale, puis appuyez sur Calibrer et suivez "
+                    + "les instructions à l'écran.";
                 btnCal.Enabled = true;
             }
         }
@@ -1359,19 +1358,19 @@ namespace PinscapeConfigTool
                     pixFile = new StreamWriter(new FileStream(dlg.FileName, FileMode.Create), Encoding.ASCII);
 
                     // write the file header
-                    pixFile.WriteLine("# Captured sensor pixels");
+                    pixFile.WriteLine("# Pixels du capteur capturés");
                     pixFile.WriteLine("# " + DateTime.Now);
                     pixFile.WriteLine("#");
                     pixFile.WriteLine("# Time(ms)   Position   Pixels...");
                     pixFile.WriteLine();
-                    
+
                     // hide Save and show Stop
                     btnSave.Visible = false;
                     btnStopSave.Visible = true;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred trying to open the file: " + ex.Message);
+                    MessageBox.Show("Une erreur s'est produite lors de la tentative d'ouverture du fichier: " + ex.Message);
                 }
             }
         }
@@ -1474,5 +1473,5 @@ namespace PinscapeConfigTool
             scrollTrack = false;
         }
 
-   }
+    }
 }

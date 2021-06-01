@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PinscapeConfigTool
@@ -94,35 +88,43 @@ namespace PinscapeConfigTool
             };
 
             // Mouse enter/leave handler generators
-            Action<String, bool> SetPinHover = (pin, hilite) => {
+            Action<String, bool> SetPinHover = (pin, hilite) =>
+            {
                 pinDisplay.SetHover(pin, hilite);
             };
-            Func<String, EventHandler> PanelMouseEnter = (pin) => {
-                EventHandler h1 = (object s1, EventArgs e1) => {
+            Func<String, EventHandler> PanelMouseEnter = (pin) =>
+            {
+                EventHandler h1 = (object s1, EventArgs e1) =>
+                {
                     SetPinHover(pin, true);
                     outputListPanel.Focus();
                 };
                 return new EventHandler(h1);
             };
-            Func<String, EventHandler> PanelMouseLeave = (pin) => {
+            Func<String, EventHandler> PanelMouseLeave = (pin) =>
+            {
                 EventHandler h1 = (object s1, EventArgs e1) => { SetPinHover(pin, false); };
                 return new EventHandler(h1);
             };
 
             // TrackBar and CheckBox handler generators
-            Func<int, TrackBar, Label, EventHandler> TrackChange = (port, bar, levelLabel) => {
-                EventHandler h1 = (object s1, EventArgs e1) => { 
+            Func<int, TrackBar, Label, EventHandler> TrackChange = (port, bar, levelLabel) =>
+            {
+                EventHandler h1 = (object s1, EventArgs e1) =>
+                {
                     SetPort(port, bar.Value);
                     levelLabel.Text = bar.Value.ToString();
-                }; 
+                };
                 return new EventHandler(h1);
             };
-            Func<int, TrackBar, Label, MouseEventHandler> TrackMouseDown = (port, bar, levelLabel) => {
-                MouseEventHandler h1 = (object s1, MouseEventArgs e1) => {
+            Func<int, TrackBar, Label, MouseEventHandler> TrackMouseDown = (port, bar, levelLabel) =>
+            {
+                MouseEventHandler h1 = (object s1, MouseEventArgs e1) =>
+                {
                     const int marginLeft = 12, marginRight = 16;
                     double x = Math.Max(0, e1.X - marginLeft);
                     double wid = bar.Width - marginLeft - marginRight;
-                    bar.Value = (int)Math.Round(Math.Min(1.0, x/wid) * (bar.Maximum - bar.Minimum) + bar.Minimum);
+                    bar.Value = (int)Math.Round(Math.Min(1.0, x / wid) * (bar.Maximum - bar.Minimum) + bar.Minimum);
                     SetPort(port, bar.Value);
                     levelLabel.Text = bar.Value.ToString();
                 };
@@ -130,9 +132,10 @@ namespace PinscapeConfigTool
             };
             Func<int, CheckBox, EventHandler> CheckBoxChange = (port, ck) =>
             {
-                EventHandler h1 = (object s1, EventArgs e1) => {
+                EventHandler h1 = (object s1, EventArgs e1) =>
+                {
                     bool on = ck.Checked;
-                    SetPort(port, on ? 255 : 0); 
+                    SetPort(port, on ? 255 : 0);
                     ck.BackColor = on ? Color.Yellow : ck.Parent.BackColor;
                     ck.Text = on ? "ON" : "Off";
                 };
@@ -145,7 +148,7 @@ namespace PinscapeConfigTool
             if (buf != null)
             {
                 byte nOutputs = buf[0];
-                for (byte i = 1 ; i <= nOutputs ; ++i)
+                for (byte i = 1; i <= nOutputs; ++i)
                 {
                     // retrieve this output description
                     buf = dev.QueryConfigVar(255, i);
@@ -169,7 +172,7 @@ namespace PinscapeConfigTool
                         case 1:
                             // KL25Z GPIO PWM
                             klPin = DeviceInfo.WireToPinName(pin);
-                            pinName =  klPin + "\r\n" + "(PWM)";
+                            pinName = klPin + "\r\n" + "(PWM)";
                             pwm = true;
                             break;
 
@@ -295,12 +298,12 @@ namespace PinscapeConfigTool
             byte[] buf = new byte[9] { 0, 200, 0, 0, 0, 0, 0, 0, 0 };
 
             // run through the outputs looking for changes since the last update
-            for (int basePort = 0 ; basePort < newLevel.Length ; basePort += 7, buf[1] += 1)
+            for (int basePort = 0; basePort < newLevel.Length; basePort += 7, buf[1] += 1)
             {
                 // check for changes in this group
                 bool changes = false;
                 int lastPort = Math.Min(basePort + 7, newLevel.Length);
-                for (int i = basePort ; i < lastPort ; ++i)
+                for (int i = basePort; i < lastPort; ++i)
                 {
                     if (oldLevel[i] != newLevel[i])
                     {
@@ -344,7 +347,7 @@ namespace PinscapeConfigTool
 
         // kl25z pin display
         KL25ZPinDisplay pinDisplay;
-        
+
         // layout parameters
         int bar2MarginY;
         int icon1MarginX;
@@ -408,6 +411,6 @@ namespace PinscapeConfigTool
             byte nightMode = (byte)(ckNightMode.Checked ? 1 : 0);
             dev.SpecialRequest(8, new byte[] { nightMode });
         }
-    
+
     }
 }

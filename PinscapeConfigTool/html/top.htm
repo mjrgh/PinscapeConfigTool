@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Pinscape Controller Setup</title>
+   <title>Configuration du contrôleur Pinscape</title>
 </head>
 
 <body>
@@ -14,19 +14,19 @@
 
 <h1>
    <img src="h1logo.png" style="float: right;">
-   Main Menu
+   Menu principal
    <img src="h1logo.png" style="vertical-align: middle; visibility: hidden;">
 </h1>
 
 <div>
 
    <div>
-      <b>Welcome!  This program helps you set up and configure your
-         Pinscape Controller units.</b>
+      <b>Bienvenue! Ce programme va vous aider à installer et configurer votre
+         carte de contrôle Pinscape.</b>
       
       <div class="programUpdateNotice headlineBox">
-         An updated version of this program is available -
-         <a href="#" class="installProgramUpdate">Install Now</a>
+         Une version mise à jour de ce programme est disponible -
+         <a href="#" class="installProgramUpdate">Installer maintenant</a>
       </div>
    </div>
 
@@ -62,30 +62,30 @@ function updateFirmwareNotices()
         {
 			++updateCount;
             self.show();
-            self.html("A newer version of the firmware is available (" + latestFirmwareVsn + ") - "
+            self.html("Une version plus récente du firmware est disponible (" + latestFirmwareVsn + ") - "
                       + "<a href=\"Update.htm?ID=" + self.data("cpuid")
-                      + "&vsn=" + latestFirmwareVsn + "\">Install</a>");
+                      + "&vsn=" + latestFirmwareVsn + "\">Installation</a>");
         }
         else
             self.hide();
     });
 
 	if (updateCount == 0)
-		$("#firmwareUpdateNotice span").html("<span class=\"upToDate\">Up to date</span>");
+		$("#firmwareUpdateNotice span").html("<span class=\"upToDate\">Mettre à jour</span>");
 	else
-		$("#firmwareUpdateNotice span").html("<span class=\"newVersion\">Update available - see the device list above</span>");
+		$("#firmwareUpdateNotice span").html("<span class=\"newVersion\">Mise à jour disponible - voir la liste des appareils ci-dessus</span>");
 }
 
 $(".installProgramUpdate").click(function(ev) {
     ev.preventDefault();
     if (!window.external.InstallProgramUpdate()) {
 		$(this).parents(".programUpdateNotice").html(
-            "Sorry, but an error occurred trying to launch the installer "
-            + "update.  You might need to install it manually.  You can "
-            + "find the update ZIP file in the "
+            "Désolé, mais une erreur s'est produite lors de la tentative de lancement du programme d'installation "
+            + "de mise à jour. Vous devrez peut-être l'installer manuellement. Vous pouvez "
+            + "recherchez le fichier ZIP de mise à jour dans le "
             + "<a href=\"javascript:window.external.ShowDocsFolder();\">"
-            + "Pinscape downloads folder</a>.  Be sure to close this "
-            + "program first.");
+            + "Dossier de téléchargement de Pinscape </a>. Assurez-vous de fermer le "
+            + "programme d'abord.");
     }
 });
 
@@ -97,23 +97,23 @@ $(checkForUpdates);
    <hr>
 
    <div id="devlist" style="margin: 2em 0px;">
-      <div class="working">(Searching for devices...)</div>
+      <div class="working">(Recherche d'appareils...)</div>
    </div>
 
    <hr>
 
    <div>
       <img style="float: right; margin: 0px 1em 1em 2em;" src="kl25z-how-to-plug-in.png">
-      To connect a controller that you've already set up, plug a USB
-      cable into the <b>joystick</b> port on the KL25Z as shown at right,
-      and plug the other end into a free USB port on your PC.
+      Pour connecter un contrôleur que vous avez déjà configuré, branchez le câble USB
+      dans le port <b> joystick </b> de la KL25Z comme illustré à droite,
+      et branchez l'autre extrémité sur un port <b> USB 2.0 </b> libre de votre PC (<b> éviter les ports USB 3.0 </b>).
    </div>
 
    <div>
-      (The other USB connector on the KL25Z is the <b>programming</b> port,
-      which is used for installing and updating the firmware.  It's fine
-      to leave both ports plugged in, but if you only have one cable, connect
-      it to the joystick port during normal use.)
+      (L'autre connecteur USB sur la KL25Z est le port <b> programmation </b>,
+      qui est utilisé pour installer et mettre à jour le firmware. C'est bon
+      pour laisser les deux ports branchés, mais si vous n'avez qu'un seul câble, connectez
+      au port du joystick pendant une utilisation normale.)
    </div>
    
    <div style="clear: both;">
@@ -127,11 +127,11 @@ $(checkForUpdates);
       </div>
       <div>
          <div>
-            <b><a href="SetupNew.htm" class="silent">Set up a new KL25Z</a></b>
+            <b><a href="SetupNew.htm" class="silent">Configurer une nouvelle KL25Z</a></b>
          </div>
          <div>
-            If you have a new KL25Z, this will lead you through the
-            steps to prepare it for use and install the Pinscape firmware.
+            Si vous avez une nouvelle KL25Z, cela vous guidera à travers les
+            étapes pour la préparer à l'utilisation et installer le micrologiciel Pinscape.
          </div>
       </div>
    </div>
@@ -139,69 +139,82 @@ $(checkForUpdates);
    <hr>
 
    <div>
-      <b>Software updates</b> 
+      <b>Mises à jour de logiciel</b> 
       <span style="padding-left: 1em;">
-         <label><input type="checkbox" id="ckAutoDownload"> Enable auto download</label>
+         <label><input type="checkbox" id="ckAutoDownload"> Activer le téléchargement automatique</label>
       </span>
       <span style="padding-left: 1em;">
-         <a href="#" id="showDocs" style="text-decoration: underline;">View downloads folder</a>
+         <a href="#" id="showDocs" style="text-decoration: underline;">Afficher le dossier des téléchargements</a>
       </span>
-      <a href="#" class="shower">More...</a>
+      <a href="#" class="shower">Plus...</a>
       
       <div class="hider">
-         The setup tool can automatically check for and download updates each time you run it.
-         If this feature is enabled, updates to the setup tool and firmware will be downloaded
-         automatically.  You'll be notified when new updates are ready to install.
+         L'outil de configuration peut rechercher et télécharger automatiquement les mises à jour chaque fois que vous l'exécutez.
+         Si cette fonction est activée, les mises à jour de l'outil de configuration et du micrologiciel seront téléchargées
+         automatiquement. Vous serez averti lorsque de nouvelles mises à jour française seront prêtes à être installées.
       </div>
       
       <div id="autoUpdateStatus">
-		 Download status: <span>Initializing</span>
-         <a id="autoUpdateRetry" href="#">Check again</a>
-         | <a href="http://www.mjrnet.org/pinscape/swversions.php" target="_blank">Check manually</a>
+		 Status de téléchargement: <span>Initialisation</span>
+         <a id="autoUpdateRetry" href="#">Revérifier</a>
+         | <a href="http://mescreations.dyndns-free.com/phpBB3/viewtopic.php?f=75&t=172&sid=8a9a72cc67d585580e5f629c5823c033" target="_blank">Revérifier manuellement</a>
       </div>
 	  <div class="programUpdateNotice">
-		 Config tool:
+		 Outil de configuration:
 		 <span class="newVersion">
-			Update available - <a href="#" class="installProgramUpdate">Install Now</a>
+			Mise à jour disponible - <a href="#" class="installProgramUpdate">Installer maintenant</a>
 		 </span>
 	  </div>
 	  <div id="configToolUpToDate">
-		 Config tool: <span class="upToDate">Up to date</span>
+		 Outil de configuration: <span class="upToDate">Mise à jour</span>
 	  </div>
 	  <div id="firmwareUpdateNotice">
-		 Firmware: <span>Checking</span>
+		 Micrologiciel: <span>Vérification</span>
 	  </div>
    </div>
    
    <hr>
 
    <div>
-      <b>Miscellaneous</b>
+      <b>Divers</b>
       <div>
-         <a href="#" id="restoreHiddenDialogs">Restore hidden dialogs</a> <a class="shower" href="#">[?]</a>
+         <a href="#" id="restoreHiddenDialogs">Restaurer les boîtes de dialogue masquées</a> <a class="shower" href="#">[?]</a>
          <div class="hider">
-            Some warning dialogs offer a checkbox saying "Don't show me this message again", in
-            case you're tired of seeing the same advice over and over.  This button un-checks
-            all of those checkboxes so that the dialogs will appear again when appropriate.
+            Certaines boîtes de dialogue d'avertissement proposent une case à cocher "Ne plus afficher ce message", 
+            si vous êtes fatigué de voir les mêmes conseils encore et encore. Ce bouton désactive
+            toutes ces cases à cocher afin que les boîtes de dialogue réapparaissent le cas échéant.
          </div>
       </div>
       <div>
-         <a href="dofR3.htm">Important DOF &amp; LEDWIZ.DLL updates</a>
+         <a href="dofR3.htm">Important DOF &amp; LEDWIZ.DLL Mise à jour</a>
       </div>
    </div>
 
    <hr>
 
    <div>
-      <b>About this project</b> <a id="aboutShower" href="#" class="shower">More...</a>
+      <b>A propos du projet</b> <a id="aboutShower" href="#" class="shower">Plus ...</a>
       <div class="hider">
          <div>
-            This is build <span id="buildNo"></span> of the Config Tool.
+            La construction <span id="buildNo"></span> de l'outil de configuration.
          <div>
-            The Pinscape Controller is a free, open-source software and hardware
-            project.  You can find the source code, documentation, and more on our
+            Le contrôleur Pinscape est un logiciel et un matériel gratuit et open source.
+            Vous pouvez trouver le code source original, la documentation et plus sur notre
             <a href="https://developer.mbed.org/users/mjr/code/Pinscape_Controller_V2/" target="_blank">
-               mbed.org project page</a>.
+            page mbed.org</a>.
+         </div>
+      </div>
+   </div>
+   <div>
+      <font size="2"><b><font face="Times New Roman">Traduction Fr</font face></b></font size> <a id="aboutShower" href="#" class="shower">Plus ...</a>
+      <div class="hider">
+         <div>
+	    Traduit par Nicofab18 - Version : 1.0 - Date : 12/01/2021
+            La traduction de l'outil Pinscape Config Tool V2 <span id="buildNo"></span> est terminée.
+         <div>
+            Si vous trouvez des mots ou phrases incorrectes, merci de me le signaler sur mon site 
+	    (rubrique: tutos pincab/pinscape Config Tool/traduction) :
+	    <a href="http://mescreations.dyndns-free.com/phpBB3/index.php" target="_blank">Nicofab18 - Mes Créations</a>. 
          </div>
       </div>
    </div>
@@ -243,7 +256,7 @@ $(function()
         if (devlist.length == 0)
         {
             // no devices - say so instead of displaying an empty list area
-            div.html("No Pinscape Controller devices are currently connected.");
+            div.html("Aucun appareil Pinscape Controller n'est actuellement connecté.");
         }
         else
         {
@@ -258,34 +271,34 @@ $(function()
                 var plungerButton = "";
                 if (d.PlungerEnabled)
                     plungerButton = "<a class=\"tbButton\" href=\"http://ps/PlungerConfig?ID=" + d.CPUID
-                                    + "\" title=\"View live data from the plunger sensor and run calibration\">"
-                                    + "<img src=\"tbPlunger.png\"><br>Plunger</a> ";
+                                    + "\" title=\"Affichez les données en direct du capteur de piston et exécutez l'étalonnage\">"
+                                    + "<img src=\"tbPlunger.png\"><br>Tire-bille</a> ";
 
                 // joystick data viewer
                 var joystickButton = "";
                 if (d.JoystickEnabled)
                     joystickButton = "<a class=\"tbButton\" href=\"http://ps/JoystickViewer?ID=" + d.CPUID
-                                     + "\" title=\"View live USB joystick input\">"
+                                     + "\" title=\"Afficher l'entrée du joystick USB en direct\">"
                                      + "<img src=\"tbJoystick.png\"><br>Joystick</a> ";
 
                 // TV ON tester
                 var tvOnButton = "";
                 if (d.TvOnEnabled)
                     tvOnButton = "<a class=\"tbButton\" href=\"http://ps/TvOnTester?ID=" + d.CPUID
-                                 + "\" title=\"Test the TV ON relay\">"
-                                 + "<img src=\"tbTVON.png\"><br>TV Relay</a>";
+                                 + "\" title=\"Testez le relais TV ON\">"
+                                 + "<img src=\"tbTVON.png\"><br>Relais TV</a>";
 
                 // button tester
                 var buttonTesterButton =
                     "<a class=\"tbButton\" href=\"http://ps/ButtonTester?ID=" + d.CPUID
-                    + "\" title=\"Test input button wiring\">"
-                    + "<img src=\"tbButton.png\"><br>Buttons</a>";
+                    + "\" title=\"Câblage du bouton d'entrée de test\">"
+                    + "<img src=\"tbButton.png\"><br>Boutons</a>";
 
                 // output tester - TO DO
                 var outputTesterButton = "";
                 outputTesterButton = "<a class=\"tbButton\" href=\"http://ps/OutputTester?ID=" + d.CPUID
-                                     + "\" title=\"Test output ports\">"
-                                     + "<img src=\"tbOutputTester.png\"><br>Outputs</a> ";
+                                     + "\" title=\"Test des ports de sortie\">"
+                                     + "<img src=\"tbOutputTester.png\"><br>Sorties</a> ";
 
                 // note if there's an LedWiz unit number
                 var ledWizUnit, altLedWizUnit;
@@ -314,20 +327,20 @@ $(function()
                            +      "\" data-cpuid=\"" + d.CPUID + "\"></div>"
                            + "<div class=\"diagnosticData\" data-cpuid=\"" + d.CPUID + "\" style=\"display:none;\">"
                            +    "<span></span>"
-                           +    "<a href='#'>Refresh</a>"
+                           +    "<a href='#'>Rafraichir</a>"
                            + "</div>"
                            + "<div>"
                            +   "<div>"
                            +     "<div class=\"devBtnGroup\">"
                            +        "<a class=\"tbButton configureButton\" href=\"Configure.htm?ID=" + d.CPUID
-                           +          "\" title=\"View or set this unit's options and hardware configuration\">"
-                           +          "<img src=\"tbSettings.png\"><br>Settings</a> "
+                           +          "\" title=\"Afficher ou définir les options et la configuration matérielle de cet appareil\">"
+                           +          "<img src=\"tbSettings.png\"><br>Configuration</a> "
                            +        "<a class=\"tbButton\" href=\"BackupRestore.htm?ID=" + d.CPUID
-                           +          "\" title=\"Back up or restore this unit's settings to/from a file on your PC\">"
-                           +          "<img src=\"tbBackupRestore.png\"><br>Backup</a> "
+                           +          "\" title=\"Sauvegarder ou restaurer les paramètres de cet appareil vers / à partir d'un fichier sur votre PC\">"
+                           +          "<img src=\"tbBackupRestore.png\"><br>Sauvegarde</a> "
                            +        "<a class=\"tbButton\" href=\"Update.htm?ID=" + d.CPUID
-                           +          "\" title=\"Install a new Pinscape Controller firmware version on this unit\">"
-                           +          "<img src=\"tbUpdateFirmware.png\"><br>Update</a> "
+                           +          "\" title=\"Installez une nouvelle version du micrologiciel du contrôleur Pinscape sur cet appareil\">"
+                           +          "<img src=\"tbUpdateFirmware.png\"><br>Mise à jour</a> "
                            +     "</div>"
                            +     "<div class=\"devBtnGroup\">"
                            +        plungerButton
@@ -345,13 +358,13 @@ $(function()
                     // old firmware - the only action possible is updating the firmware
                     l.push(hdr
                            + altLedWizUnit
-                           + " | <a href=\"#\" class=\"oldFirmwareVersion\">Old firmware version</a>"
+                           + " | <a href=\"#\" class=\"oldFirmwareVersion\">Ancienne version du firmware</a>"
                            + "<div>"
                            +   "<div>"
                            +     "<div class=\"devBtnGroup\">"
                            +       "<a class=\"button\" href=\"Install.htm\" "
-                           +          "title=\"Install a new Pinscape Controller firmware version on this unit\">"
-                           +          "Update Firmware</a> "
+                           +          "title=\"Installez une nouvelle version du micrologiciel du contrôleur Pinscape sur cet appareil\">"
+                           +          "Mise à jour du firmware</a> "
                            +     "</div>"
                            +   "</div>"
                            + "</div>"
@@ -360,7 +373,7 @@ $(function()
             }
 
             // show the list
-            div.html("Here are the controllers currently connected:"
+            div.html("Voici les contrôleurs actuellement connectés:"
                      + "<div id=\"devlistmain\">"
                      + l.join("")
                      + "</div>");
@@ -369,12 +382,12 @@ $(function()
         // set handlers for the "old firmware version" links, if any
         $("a.oldFirmwareVersion").off("click").click(function(ev) {
             ev.preventDefault();
-            alert("This KL25Z has an older version of the Pinscape Controller firmware "
-                  + "installed. The installed firmware isn't compatible with this "
-                  + "version of the setup tool. If you wish to continue using the "
-                  + "installed firmware version, simply close this program and run the "
-                  + "matching older version of the setup tool to view and configure "
-                  + "this controller.");
+            alert("Cette KL25Z a une ancienne version du firmware du contrôleur Pinscape "
+                  + "d'installée. Le micrologiciel installé n'est pas compatible avec la "
+                  + "version de l'outil de configuration. Si vous souhaitez continuer à utiliser "
+                  + "la version du micrologiciel installée, fermez simplement ce programme et exécutez le "
+                  + "correspondant à l'ancienne version de l'outil de configuration pour afficher et configurer "
+                  + "ce controleur.");
         });
 
         // set handlers for the Configure buttons
@@ -420,7 +433,7 @@ $(function()
     $("#ckAutoDownload").change(function() {
         // save the new setting
         var checked = $(this).prop("checked");
-        window.external.SetOption("CheckForDownloads", checked ? "yes" : "no");
+        window.external.SetOption("CheckForDownloads", checked ? "Oui" : "Non");
         
         // if it's checked, start an update check if we haven't done one before
         if (checked)
@@ -445,7 +458,7 @@ $(function()
     $("#restoreHiddenDialogs").click(function(ev) {
         ev.preventDefault();
         window.external.RestoreHiddenDialogs();
-        alert("All of the hidden dialogs have been restored.");
+        alert("Toutes les boîtes de dialogue masquées ont été restaurées.");
     });
 
     // load/refresh the diagnostic data for a device
@@ -459,15 +472,15 @@ $(function()
             if (diagData.mainLoopIterTime)
             {
                 div.find("span").html(
-                    "Main loop iteration time: " + diagData.mainLoopIterTime + "us<br>"
-                    + "Main loop checkpoints: "
+                    "Temps d'itération de la boucle principale: " + diagData.mainLoopIterTime + "us<br>"
+                    + "Points de contrôle de la boucle principale: "
                     +    $.map(diagData.mainLoopIterCheckpt, function(ele, idx) {
                              return "[" + idx + "] " + ele + "us"
                          }).join(", ") + "<br>"
-                    + "Incoming message processing time: " + diagData.mainLoopMsgTime + "us<br>"
-                    + "PWM update time: " + diagData.pwmUpdateTime + "us<br>"
-                    + "LedWiz flash update time: " + diagData.lwFlashUpdateTime + "us<br>"
-                    + "Plunger scan time: " + diagData.plungerScanTime + "us<br>");
+                    + "Temps de traitement des messages entrants: " + diagData.mainLoopMsgTime + "us<br>"
+                    + "Temps de mise à jour PWM: " + diagData.pwmUpdateTime + "us<br>"
+                    + "Temps de mise à jour du flash LedWiz: " + diagData.lwFlashUpdateTime + "us<br>"
+                    + "Temps de balayage du piston: " + diagData.plungerScanTime + "us<br>");
                 div.show();
             }
         }

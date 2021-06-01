@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Attributions de clés de flipper standard</title>
+</head>
+<body class="help">
+<h1>
+   Attributions de clés de flipper standard
+</h1>
+
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+Visual Pinball utilise les affectations de touches ci-dessous par défaut.
+Les fonctions de base (flippper, piston, Démarrer le jeu) sont presque les mêmes
+que tous les autres programmes de flipper PC.
+
+<div id="keytab">
+1e (1)           Demarrage du jeu
+1f (2)           Extra Ball (Achetez en une)
+22 (5)           insert crédit
+21 (4)           insert crédit (deuxième fente pour pièces)
+23 (6)           insert crédit (quatrième fente pour pièces) (VPinMAME)
+28 (Enter)       Piston (Tire-bille) / Balle de lancement
+29 (Escape)      Sortir du menu (PinballX/HyperPin front ends)
+14 (Q)           Quiteer l'éditeur (within VP)
+E1 (Left Shift)  Flipper gauche
+E5 (Right Shift) Flipper droit
+E0 (Left Ctrl)   MagnaSave gauche
+E4 (Right Ctrl)  MagnaSave droit
+17 (T)           Tit d'inclinaison mécanique
+4A (Home)        Slam Tilt (VPinMAME)
+2C (Spacebar)    Coup de coude devant
+1D (Z)           Coup de coude gauche
+38 (/)           Coup de coude droit
+4D (End)         Ouvrir / fermer la porte à monnaie (VPinMAME)
+24 (7)           Bouton Annuler / Quitter le service (VPinMAME)
+25 (8)           Bouton de service bas / "-" (VPinMAME)
+26 (9)           Bouton de service haut / "+" (VPinMAME)
+27 (0)           Bouton de service "Enter" (VPinMAME)
+2E (=+)          VP Baisser le volume
+2D (-_)          VP Augmentation du volume
+</div>
+
+<h4>Notes</h4>
+
+<ul>
+
+   <li>Vous ne voudrez probablement attribuer aucune des touches de déplacement
+   (Barre d'espace = déplacement vers l'avant, Z = déplacement vers la gauche,
+   / = déplacement vers la droite) si vous utilisez l'accéléromètre pour pousser.
+   Les touches "Coup de coude = nudge" sont utilisés pour produire de faux coups
+   de pouce pendant la lecture sur le bureau où le vrai coup de coude est impossible.
+   L'accéléromètre est meilleur pour les jeux de pincab car il vous permet de 
+   pousser le cabinet de manière naturelle plutôt qu'en appuyant sur des boutons,
+   et il détecte l'intensité et la direction du coup de coude.
+
+   <li>Les clés marquées "VPinMAME" sont en fait interprétées par l'émulateur 
+   ROM plutôt que Visual Pinball, donc ce ne sont pas aussi universel avec d'autres
+   émulateurs en plus de VP.
+
+   <li>La touche Echap est généralement utilisée avec un menu "frontend" système
+   comme PinballX ou HyperPin. Le système de menus intercepte cette touche pour
+   arrêter le programme de flipper et retournez au menu de sélection de jeu.
+   VP a sa propre "sortie" de bouton, réglé sur "Q" par défaut. Il est généralement 
+   préférable de garder la clé de sortie du frontend différente de la clé de sortie
+   VP afin qu'il n'y a aucune confusion sur le programme à lire la clé.
+</ul>
+
+<style type="text/css">
+.keytab {
+    margin: 2em 3em;
+}
+.keytab td {
+    padding: 0px 1em;
+}
+.keytab td:first-of-type {
+    text-align: center;
+}
+</style>
+
+<script type="text/javascript" src="keycaps.js"></script>
+<script type="text/javascript">
+$(function()
+{
+    var div = $("#keytab");
+    var buttons = div.text().split("\n");
+    div.text("");
+    var tab = $("<table>").addClass("keytab");
+    div.append(tab);
+    $.each(buttons, function(idx, ele)
+    {
+	if (/^([^\s]+)\s\(([^)]+)\)\s(.*)$/.test(ele))
+	{
+	    var keycode = RegExp.$1;
+	    var keyname = RegExp.$2;
+	    var desc = RegExp.$3;
+	    
+	    var key = keycaps[parseInt(keycode, 16)];
+	    var pos, wid, ht;
+	    if (key.cx) {
+		wid = (key.cwid || 30) + "px";
+		ht = (key.cht || 31) + "px";
+		pos = (-key.cx) + "px " + (-key.cy) + "px";
+	    }
+	    else {
+		wid = (key.wid || 30) + "px";
+		ht = (key.ht || 31) + "px";
+		pos = (-key.x) + "px " + (-key.y) + "px";
+	    }
+	    
+	    var keycap = $("<div>").addClass("keymapping asKey").css({
+		"backgroundPosition": pos,
+		"width": wid,
+		"height": ht
+	    });
+
+	    var tr = $("<tr>");
+	    tr.append($("<td>").append(keycap));
+	    tr.append($("<td>").html(desc));
+	    tab.append(tr);
+	}
+    });
+});
+</script>
+
+<h2>Boutons du joystick</h2>
+
+Visual Pinball vous permet également d'utiliser les boutons du joystick, mais il n'y
+en a pas pour tout mappage "standard". Au lieu de cela, vous devez manuellement
+attribuez les numéros de bouton dans la boîte de dialogue "Préférences de clavier" de VP. 
+Remarque :
+D'autres émulateurs de flipper pourraient ne pas prendre en charge les boutons du joystick, 
+donc si vous utilisez plusieurs émulateurs, c'est plus facile pour tout configurer à l'aide
+des touches du clavier.
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Broches SPI GPIO</title>
+</head>
+<body class="help">
+<h1>
+   Broches SPI GPIO
+</h1>
+
+<div>
+
+   <p>
+      Si vous utilisez des puces TLC5940 avec la configuration de votre contrôleur, soit avec
+      les cartes d'extension officielles ou avec votre propre circuit personnalisé, vous avez
+      besoin d'attacher quelques broches TLC5940 à des broches spéciales sur le KL25Z qui se
+      connectent en interne à un sous-système embarqué appelé le Contrôleur SPI.
+   </p>
+
+   <p>
+      Le sélecteur de broches sur la page de configuration vous montre automatiquement les
+      choix valides pour chaque broche nécessitant une fonction SPI, donc il vous suffit de
+      choisir parmi les broches disponibles.
+   </p>
+
+   <p>
+      La raison pour laquelle un si petit nombre de broches est affiché pour chaque SPI
+      de connexion est que ce sont les seules broches que la carte KL25Z permet ces fonctions.
+      Le câblage interne de la KL25Z rend le contrôleur SPI accessible uniquement via un
+      ensemble très limité de broches.
+   </p>
+
+   <p>
+      (Vous n'avez pas besoin de connaître les détails suivants pour configurer votre contrôleur,
+      mais au cas où vous seriez curieux: SPI signifie "Serial Peripheral Interface",
+      qui est l'une de ces normes de l'industrie électronique, dans ce cas pour connecter
+      différents appareils numériques ensemble pour les communications, le contrôle et 
+      les fonctions. L'interface de contrôle du TLC5940 est compatible avec SPI, et la KL25Z
+      dispose d'un module matériel SPI dédié, il correspond donc parfaitement pour connecter
+      les deux appareils à l'aide de ce module. Le grand avantage de le faire est que le module
+      SPI fonctionne de manière autonome, libérant le CPU KL25Z pour effectuer d'autres travaux
+      pendant les transferts de données TLC5940.
+      Sans l'assistant matériel, les communications TLC5940 imposent une charge de travail
+	   très élevée au processeur, ce qui réduirait notre capacité à exécuter d'autres fonctions,
+	   telles que la surveillance du piston et envoi des mises à jour du joystick au PC hôte).
+   </p>
+
+</div>
+
+</html>
+</body>

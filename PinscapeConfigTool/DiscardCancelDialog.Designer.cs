@@ -60,9 +60,9 @@
             this.btnDiscard.MinimumSize = new System.Drawing.Size(90, 0);
             this.btnDiscard.Name = "btnDiscard";
             this.btnDiscard.Padding = new System.Windows.Forms.Padding(1);
-            this.btnDiscard.Size = new System.Drawing.Size(90, 28);
+            this.btnDiscard.Size = new System.Drawing.Size(90, 27);
             this.btnDiscard.TabIndex = 2;
-            this.btnDiscard.Text = "&Discard";
+            this.btnDiscard.Text = "&Jeter";
             this.btnDiscard.UseVisualStyleBackColor = true;
             this.btnDiscard.Click += new System.EventHandler(this.btnDiscard_Click);
             // 
@@ -76,9 +76,9 @@
             this.btnCancel.MinimumSize = new System.Drawing.Size(92, 0);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Padding = new System.Windows.Forms.Padding(1);
-            this.btnCancel.Size = new System.Drawing.Size(92, 28);
+            this.btnCancel.Size = new System.Drawing.Size(92, 27);
             this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Text = "Annuler";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -104,7 +104,7 @@
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblGrayBar);
-            this.Font = new System.Drawing.Font("Microsoft MHei", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "DiscardCancelDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

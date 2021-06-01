@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Runtime.InteropServices;
 
 namespace PinscapeConfigTool
 {
@@ -18,7 +13,7 @@ namespace PinscapeConfigTool
         {
             this.dev = dev;
             InitializeComponent();
-            
+
             // set up the key caps translated from the javascript on-screen keyboard
             InitKeyCaps();
 
@@ -141,7 +136,7 @@ namespace PinscapeConfigTool
             // create the key cap and add it to the dictionary for the device key code mapping
             KeyCap kc = new KeyCap(usbkey, vkey, name, x, y, wid, ht, cx, cy, cwid, cht);
             dict.Add(usbkey, kc);
-            
+
             // If it's not already in the Windows vkey mapping dictionary, add it.  Note that
             // some keys have device mappings in both the regular keyboard keys and media keys,
             // but the Windows vkey system unifies them both in one namespace, so we only need
@@ -215,7 +210,8 @@ namespace PinscapeConfigTool
                 n.Padding = l.Padding;
                 return n;
             };
-            Func<PictureBox, PictureBox> CopyPic = (p) => {
+            Func<PictureBox, PictureBox> CopyPic = (p) =>
+            {
                 PictureBox n = new PictureBox();
                 btnPanel.Controls.Add(n);
                 n.Left = p.Left;
@@ -281,17 +277,21 @@ namespace PinscapeConfigTool
 
             // Mouse enter/leave handler generators.  Highlight the associated pin 
             // on the KL25Z diagram.
-            Action<String, bool> SetPinHover = (pin, hilite) => { 
-                pinDisplay.SetHover(pin, hilite); 
+            Action<String, bool> SetPinHover = (pin, hilite) =>
+            {
+                pinDisplay.SetHover(pin, hilite);
             };
-            Func<String,EventHandler> PanelMouseEnter = (pin) => {
-                EventHandler h1 = (object s1, EventArgs e1) => { 
+            Func<String, EventHandler> PanelMouseEnter = (pin) =>
+            {
+                EventHandler h1 = (object s1, EventArgs e1) =>
+                {
                     SetPinHover(pin, true);
                     btnListPanel.Focus();
                 };
                 return new EventHandler(h1);
             };
-            Func<String,EventHandler> PanelMouseLeave = (pin) => {
+            Func<String, EventHandler> PanelMouseLeave = (pin) =>
+            {
                 EventHandler h1 = (object s1, EventArgs e1) => { SetPinHover(pin, false); };
                 return new EventHandler(h1);
             };
@@ -303,7 +303,7 @@ namespace PinscapeConfigTool
                 byte nButtons = buf[0];
                 statusLabels = new Label[nButtons];
                 pinNames = new String[nButtons];
-                for (byte i = 1 ; i <= nButtons ; ++i)
+                for (byte i = 1; i <= nButtons; ++i)
                 {
                     // if this isn't the first row, copy the prototype
                     if (i > 1)
@@ -401,7 +401,7 @@ namespace PinscapeConfigTool
             if (buf != null)
             {
                 int n = buf[3];
-                for (int i = 0, bi = 4, shift = 0 ; i < n ; ++i)
+                for (int i = 0, bi = 4, shift = 0; i < n; ++i)
                 {
                     // pull out this bit
                     bool state = ((buf[bi] >> shift) & 0x01) != 0;
@@ -442,7 +442,8 @@ namespace PinscapeConfigTool
             // by this.  And for unrealted reasons, the GUI keys sometimes miss
             // their WM_KEYUP messages to us as well, because pressing these can
             // shift focus away from our window.
-            Action<uint, Key> CheckKey = (vk, key) => {
+            Action<uint, Key> CheckKey = (vk, key) =>
+            {
                 if (keysDown.ContainsKey(vk) && !Keyboard.IsKeyDown(key))
                 {
                     keysDown.Remove(vk);
@@ -511,21 +512,21 @@ namespace PinscapeConfigTool
             int row = 0, col = 0;
             Rectangle src = new Rectangle(0, 0, wid, ht);
             Font font = menuFont;
-            for (int i = 0 ; i < 32 ; ++i)
+            for (int i = 0; i < 32; ++i)
             {
                 // get the status
                 bool on = (jsState & (1 << i)) != 0;
 
                 // figure the position of this button image
-                int x = padding + col * (wid+padding);
-                int y = padding + row * (ht+padding);
+                int x = padding + col * (wid + padding);
+                int y = padding + row * (ht + padding);
 
                 // draw the ON or OFF image
                 Rectangle dst = new Rectangle(x, y, wid, ht);
                 g.DrawImage(on ? jsOn : jsOff, dst, src, GraphicsUnit.Pixel);
 
                 // draw the button number
-                String num = (i+1).ToString();
+                String num = (i + 1).ToString();
                 g.MeasureString(num, font);
                 g.DrawString(num, font, on ? Brushes.White : Brushes.Gray, new Point(x + wid / 2, y + ht / 2), centerText);
 
@@ -573,7 +574,7 @@ namespace PinscapeConfigTool
                     }
                     return true;
             }
- 	        return base.ProcessKeyPreview(ref msg);
+            return base.ProcessKeyPreview(ref msg);
         }
 
         protected override bool ProcessDialogKey(Keys keyData)

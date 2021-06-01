@@ -1,71 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>IR Learning Mode</title>
+   <title>Mode d'apprentissage IR</title>
 </head>
 <body class="help">
 <h1>
-   IR Learning mode
+   Mode d'apprentissage IR
 </h1>
 
 <div>
-   The Pinscape unit can learn remote control commands through
-   its IR sensor.  To use this feature, you have to set up the
-   IR receiver, as described in the Build Guide.
+   La carte Pinscape peut apprendre les commandes de la télécommande via
+   son capteur IR. Pour utiliser cette fonction, vous devez configurer le
+   Récepteur infrarouge, comme décrit dans le Guide de construction.
 </div>
 
 <div>
-   After bringing up the IR learning dialog, get your remote
-   control ready by pointing it at the Pinscape IR sensor.  Don't
-   press any buttons on the remote yet.  Click the Learn button
-   when you're ready.  When prompted, <b>press and hold</b> the
-   remote control key you want Pinscape to learn.  The dialog
-   window will update automatically as soon as Pinscape learns
-   the code, which usually only takes a second or two.
+   Après avoir ouvert la boîte de dialogue d'apprentissage IR, prenez votre
+   télécommande en la pointant vers le capteur infrarouge Pinscape. Ne pas
+   appuyez encore sur n'importe quel bouton de la télécommande. Cliquez sur
+   le bouton "Apprendre" quand vous êtes prêt. Lorsque vous y êtes invité,
+   <b> appuyez et maintenez </b> le bouton de la télécommande que vous voulez
+   pour que Pinscape apprenne. la fenêtre de dialogue se mettra à jour
+   automatiquement dès que Pinscape apprendra le code, qui ne prend
+   généralement qu'une seconde ou deux.
 </div>
 
 <div>
-   If the learning process fails, you can click "Try Again"
-   to give it another go.  IR transmissions occasionally
-   fail due to momentary problems, such as interference
-   from another light source.  If Pinscape refuses to recognize
-   the code after a couple of tries, though, the remote probably
-   isn't compatible with the Pinscape hardware or software.
-   There are two main possibilities:
+   Si le processus d'apprentissage échoue, vous pouvez cliquer sur "Réessayer"
+   pour lui donner une autre chance. Transmissions IR échoue occasionnellement
+   en raison de problèmes momentanés, tels que des interférences d'une autre
+   source lumineuse. Si Pinscape refuse de reconnaître le code après quelques
+   essais, la télécommande n'est pas compatible avec le matériel ou le logiciel
+   Pinscape. Il existe deux possibilités principales:
 
    <ul>
 
-	  <li>If the pulse display at the bottom of the dialog
-	  shows a series of lines, the sensor is properly detecting
-	  the physical IR signal from your remote, but the Pinscape
-	  software doesn't recognize the data format.  There are
-	  many IR data formats; the Pinscape software recognizes
-	  about 30 of them, which cover most of the major consumer
-	  electronics companies, but there are many other obscure
-	  protocols that Pinscape doesn't recognize.  In this case,
-	  there's hope: the problem is purely a matter of software,
-	  so we might be able to add support for the new protocol
-	  in a future version if you contact the Pinscape developers
-	  and let us know about it.  Tell us the make and model of
-	  the TV or other device, and include the contents of the
-	  "Show Raw Data" window.
+	  <li>Si l'affichage du pouls en bas de la boîte de dialogue montre
+	une série de lignes, le capteur détecte correctement le signal IR
+	physique de votre télécommande, mais le logiciel ne reconnaît pas le
+	format des données. Il y a de nombreux formats de données IR, le
+	logiciel Pinscape reconnaît une trentaine d'entre eux, qui couvrent
+	la plupart des grandes sociétés d'électronique, mais il existe de
+	nombreux autres protocoles que Pinscape ne reconnaît pas. Dans ce cas,
+	il y a de l'espoir: le problème est purement une question de logiciel,
+	afin que nous puissions ajouter la prise en charge du nouveau protocole
+	dans une version future, vous pouvez contacter les développeurs Pinscape
+	et nous le faire savoir. Dites-nous la marque et le modèle du téléviseur
+	ou un autre appareil, et incluez le contenu de la fenêtre "Afficher
+	les données brutes".
 
-	  <li>If the pulse display at the bottom of the dialog is
-	  completely blank, the sensor isn't receiving any signal
-	  at all from the remote.  This might mean that your remote
-	  is using an IR wavelength or modulation frequency that
-	  the Pinscape sensor can't receive.  Unfortunately, this
-	  type of incompatibility is difficult to solve, because
-	  it would require replacing the sensor with one that can
-	  work with your remote.  But replacing the sensor could
-	  create a whole separate problem, in that the Pinscape
-	  software is only designed to work with the recommended
-	  sensor type.  Before giving up, you might want to
-	  double-check that the sensor itself is working, by
-	  trying a remote from different manufacturer.
-
+	  <li>Si l'affichage du pouls en bas de la boîte de dialogue est
+	complètement vide, le capteur ne reçoit aucun signal de la télécommande.
+	Cela peut signifier que votre télécommande utilise une longueur d'onde IR
+	ou une fréquence de modulation que le capteur Pinscape ne peut pas recevoir.
+	Malheureusement, ce type d'incompatibilité est difficile à résoudre, car
+	il faudrait remplacer le capteur par un autre qui peut fonctionner avec
+	votre télécommande. Mais le remplacement du capteur pourrait créer un
+	problème complètement séparé, le logiciel Pinscape est uniquement conçu
+	pour fonctionner avec certains types de capteur.
+	Avant d'abandonner, revérifiez que le capteur lui-même fonctionne,
+	en essayer une télécommande d'un autre fabricant.
    </ul>
 </div>
 

@@ -1,350 +1,327 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Plunger Sensor Viewer</title>
+   <title>Visionneuse de capteur de piston</title>
 </head>
 <body class="help">
 
 <h1>
    <img style="float: right;" src="h1plunger.png">
-   Plunger Sensor Viewer
+   Visionneuse de capteur de piston (Tire-bille)
    <img style="visibility: hidden; vertical-align: middle;" src="h1plunger.png">
 </h1>
 
 <div>
 
    <p>
-      This window is designed to help you install and adjust your
-      plunger sensor.  It shows the current position reading
-      and the calibration data.  If you're using an imaging
-      sensor (such as a TSL1410R), it shows a real-time view of
-      the captured image.
+      Cette fenêtre est conçue pour vous aider à installer et ajuster votre
+      capteur de piston (tire-bille). Il montre la lecture de la position actuelle
+      et les données d'étalonnage. Si vous utilisez un capteur CCD (tel qu'un 
+      TSL1410R), il montre une vue en temps réel de l'image capturée.
    </p>
 
-   <h2>Quadrature sensor visualization</h2>
+   <h2>Visualisation du capteur en quadrature</h2>
 
    <p>
-      For quadrature sensors (namely the AEDR-8300), the "snapshot"
-      box displays a visualization of the bar scale that the sensor
-      moves across.  Quadrature sensors don't take photographic
-      images, so this is just a simulation of what we infer the
-      bar scale to look like - it's not a true photo image.  What
-      the sensor actually sees is essentially two side-by-side
-      pixel readings, 1/150 of an inch apart.  Given that
-      the white and black bars on the scale are precisely 1/150"
-      wide each (or, at least, they should be, if things are
-      set up properly), we can infer where we must be relative
-      to the nearest two bars.  The visualization extrapolates
-      that out to the rest of the nearby bars, but the sensor
-      doesn't actually see those; it only sees the two bars in
-      the center, in the boxes marked "A" and "B".  Those boxes
-      represent the actual readings on the sensor's "A" and "B
-      channels.
+      Pour les capteurs en quadrature (à savoir l'AEDR-8300), la "capture d'image"
+      affiche une visualisation de l'échelle à barres et le capteur se déplace à
+      travers. Les capteurs en quadrature ne prennent pas de photo d'images, il
+      ne s'agit donc que d'une simulation de ce que nous traduisons pour ressembler
+      - ce n'est pas une vraie image photo. Quoi que le capteur voit en fait est
+      essentiellement deux lectures de pixels, espacées de 1/150 de pouce. Étant
+      donné que les barres blanches et noires sur l'échelle sont précisément 1/150"
+      large chacune (ou, du moins, ils devraient l'être, si les choses sont mis en
+      place correctement), nous pouvons en déduire où nous devons être relatifs
+      aux deux barres les plus proches. La visualisation extrapole cela vers le
+      reste des barres voisines, mais le capteur ne les voit pas réellement; il ne
+      voit que les deux barres dans le centre, dans les cases marquées «A» et «B».
+      Ces boîtes représentent les lectures réelles sur les capteurs "A" et "B
    </p>
 
-   <h2>Imaging sensor snapshot</h2>
+   <h2>Instantané du capteur d'imagerie (Capteur CCD)</h2>
 
    <p>
-      For imaging sensors, the "snapshot" box displays the
-      image pixels that your sensor is capturing.  This is updated
-      continuously, so that you can immediately see the effects of
-      adjusting the sensor position or the light source.
+      Pour les capteurs d'imagerie, la case "instantané" affiche le pixels d'image
+      capturés par votre capteur. Ceci est mis à jour en continu, afin que vous
+      puissiez voir immédiatement les effets de réglage de la position du capteur
+      ou de la source lumineuse.
    </p>
 
    <p>
-      The pixels are rendered in shades of gray, since the
-      sensors we support are monochromatic.  Black pixels correspond
-      to full darkness (or full shadow) on the sensor, and white
-      pixels are fully saturated (maximum brightness at the sensor).
-      Our sensor types are one-dimensional, meaning that
-      the pixel array is one pixel wide.  The display stretches
-      out each pixel vertically to make it easier to visualize,
-      so the image might look like a bar code or a series of
-      vertical stripes.
+      Les pixels sont rendus dans des tons de gris, car les capteurs que nous
+      prenons en charge sont monochromatiques. Les pixels noirs correspondent
+      à l'obscurité totale (ou à l'ombre complète) sur le capteur et blanc,
+      les pixels sont totalement saturés (luminosité maximale au niveau du capteur).
+      Nos types de capteurs sont unidimensionnels, ce qui signifie que le tableau
+      de pixels a une largeur d'un pixel. L'affichage s'étire sur chaque pixel
+      verticalement pour faciliter la visualisation, l'image peut ressembler à un
+      code à barres ou à une série de rayures verticales.
    </p>
 
    <p>
-      For optimal performance, adjust your sensor and light
-      source as follows:
+      Pour des performances optimales, ajustez votre capteur et votre éclairage
+      source comme suit:
    </p>
    
    <ul>
       
-      <li>Position the sensor so that the <b>shadow edge</b>
-      is always in view, whether the plunger is pushed all the
-      way forward or pulled all the way back.
+      <li>Positionnez le capteur de sorte pour que le <b> bord d'ombre </b>
+      soit toujours en vue, si le piston est poussé tout en avant ou en arrière.
       
-      <li>The shadow edge should be sharp and narrow.
-      It's easier to get a sharp edge if you use a "point
-      source" - a light source with a small aperture - and
-      you position it relatively far away from the plunger
-      (on the floor of the cabinet, say).  The light
-      source should be roughly centered under the sensor
-      and pointing straight at it.
+      <li>Le bord de l'ombre doit être net et étroit.
+      Il est plus facile d'obtenir un bord net si vous utilisez un point "source"
+      - une source de lumière avec une petite ouverture - et vous le positionnez
+      relativement loin du piston (sur le plancher du pincab, par exemple). La
+      lumière source doit être à peu près centrée sous le capteur et pointant 
+      droit dessus.
       
-      <li>The light source brightness should be set so
-      that there's a good degree of contrast between the
-      dark and light regions in the image.  If the image
-      is all black or dark gray, the light source needs
-      to be brighter.  If the image is all white or
-      washed out, the light source needs to be dimmer.
-      
+      <li>La luminosité de la source lumineuse doit être réglée de manière
+      qu'il y a un bon degré de contraste entre les régions sombres et claires
+      de l'image. Si l'image est tout noir ou gris foncé, la source lumineuse
+      a besoin d'être plus brillant. Si l'image est entièrement blanche ou
+      transparente, la source de lumière doit être plus faible.
    </ul>
    
    <p>
-      The statistics shown under the image give you some more
-      information about the sensor scan.
+      Les statistiques affichées sous l'image vous donnent plus d'informations
+      sur le scan du capteur.
    </p>
 
-   <p>The Min and Max Brightness levels are on a scale from 0 to
-      255.  0 is full darkness, 255 is fully saturated.  If your
-      light source is set up properly, the Max value should be
-      at least 30 or 40 higher than the Min value.  This indicates
-      a good level of contrast between the lit areas and the
-      shadows.
+   <p>Les niveaux de luminosité Min et Max sont sur une échelle de 0 à 255.
+      0 est l'obscurité totale, 255 est complètement saturé. Si la source
+      lumineuse est correctement configurée, la valeur Max doit être au 
+      moins 30 ou 40 au-dessus de la valeur Min. Cela indique un bon niveau
+      de contraste entre les zones éclairées et les ombres.
    </p>
 
-   <h2>Image Zoom</h2>
+   <h2>Zoom d'image</h2>
 
    <p>
-      For the imaging sensors that take pictures of the plunger
-      (TLS1410/12, TCD1103), you can use the Zoom control to get
-      a closer view of the sensor pixels.  This is especially
-      helpful when adjusting the lens focus for sensors where
-      that's a thing, such as the TCD1103.
+      Pour les capteurs d'imagerie qui prennent des photos du piston
+      (TLS1410 / 12, TCD1103), vous pouvez utiliser la commande de zoom pour obtenir
+      une vue rapprochée des pixels du capteur. C'est surtout utile lors du réglage
+      de la mise au point de l'objectif pour les capteurs où comme le TCD1103.
    </p>
    <p>
-      Use the Zoom combo box to select a zoom factor.
+      Utilisez la zone de liste déroulante Zoom pour sélectionner un facteur de zoom.
    </p>
    <p>
-      When zoomed in, you can scroll the image snapshot by
-      using the mouse to drag the snapshot area left or right.
+      Lorsque vous effectuez un zoom avant, vous pouvez faire défiler la photo en
+      utilisant la souris pour faire glisser la zone de cliché vers la gauche ou
+      la droite.
    </p>
 
 
-   <h2>Plunger position</h2>
+   <h2>Position du piston (tire-bille)</h2>
 
-   <p>If the controller is able to read the plunger position
-      from the sensor, the position will be displayed as a
-      green bar across the bottom of the snapshot box.
+   <p>Si le contrôleur est capable de lire la position du piston du capteur, la 
+      position sera affichée comme barre verte en bas de la zone de capture d'écran.
    </p>
 
    <p>
-      If you don't see a green bar, it means that the controller
-      can't read the position.  If you're using an imaging
-      sensor, this might be because the image is too dark
-      or too washed out.
+      Si vous ne voyez pas de barre verte, cela signifie que le contrôleur ne peut
+      pas lire la position. Si vous utilisez une imagerie capteur, cela peut être
+      dû au fait que l'image est trop sombre ou trop claire.
    </p>
 
-   <h2>Current calibration display</h2>
+   <h2>Affichage d'étalonnage actuel</h2>
 
-   <p>The snapshot box draws little arrows to show the current
-      calibration limits.  The purple arrows show the park position,
-      where the plunger sits when at rest. 
-      The red arrows show the maximum retraction position.
-      If the plunger is calibrated properly, the plunger
-      should settle and stay roughly at the park position
-      when you're not moving it.
+   <p>La zone de capture d'écran dessine de petites flèches pour montrer la
+      limites d'étalonnage. Les flèches violettes indiquent la position zero,
+      où le piston se trouve au repos.
+      Les flèches rouges indiquent la position de rétraction maximale.
+      Si le piston est correctement calibré, le piston devrait s'installer
+      et rester à peu près à la position zero lorsque vous ne le déplacez pas.
    </p>
 
-   <p>Real plungers always have at least a little mechanical play,
-      so your plunger won't come to rest at exactly the same spot
-      every time you fire it.  It should be fairly consistent,
-      though.  If the park position shown isn't fairly close
-      to the actual resting position, re-run the calibration
-      procedure.
+   <p>Les vrais pistons ont toujours au moins un petit jeu mécanique,
+      pour que votre piston ne s'immobilise pas exactement au même endroit
+      chaque fois que vous le tirez. Il doit être assez cohérent, bien que,
+      si la position de stationnement affichée n'est pas assez proche
+      de la position de repos réelle, recommencez la procédure d'étalonnage.
    </p>
       
 
-   <h2>Calibrating</h2>
+   <h2>Calibrage</h2>
 
-   <p>If you just installed the sensor, or you've adjusted
-      its position, you should calibrate it.  You can also
-      recalibrate any time if the displayed park position
-      doesn't look right.
+   <p>Si vous venez d'installer le capteur ou si vous avez réglé sa position,
+      vous devez le calibrer. Vous pouvez aussi recalibrer à tout moment si
+      la position de stationnement affichée ne semble pas correct.
    </p>
 
-   <p>To calibrate, make sure the plunger is at rest at its
-      normal park position.  Then click the Calibrate button,
-      and follow the on-screen instructions.
+   <p>Pour calibrer, assurez-vous que le piston est au repos avec sa
+      position de stationnement normale. Cliquez ensuite sur le bouton Calibrer,
+      et suivez les instructions à l'écran.
    </p>
 
-   <p>Note that the pixel display is disabled during the
-      calibration process.  It will resume when the
-      calibration finishes.
+   <p>Notez que l'affichage des pixels est désactivé pendant la processus	
+      d'étalonnage. Il reprendra lorsque l'étalonnage se terminé.
    </p>
    
 
-   <h2>Timing statistics</h2>
+   <h2>Statistiques de synchronisation</h2>
 
-   <p>The scan time shows you how long it takes, on average,
-      to take one position reading from the sensor.  For an imaging
-      sensor, this is the time it takes for the sensor to snap
-      a photo (so to speak) and then transfer the image pixels
-      to the microcontroller.  The controller has to read the pixels
-      one by one, so the pixel transfer is usually the bulk of the
-      scan time for an image sensor.  For an analog sensor (an LVDT
-      or potentiometer, for example), the "scan time" is simply the
-      time it takes to sample the analog voltage level on the
-      sensor output and turn it into a digital reading.
+   <p>Le temps de scan vous montre combien de temps cela prend, en moyenne,
+      pour prendre une lecture de position du capteur. Pour un capteur CCD,
+      c'est le temps qu'il faut au capteur pour prendre une photo (pour ainsi
+      dire) puis transférer les pixels de l'image au microcontrôleur. Le 
+      contrôleur doit lire les pixels un par un, de sorte que le transfert de
+      pixels représente généralement la majeure partie du temps de numérisation
+      d'un capteur d'image. Pour un capteur analogique (un LVDT ou potentiomètre,
+      par exemple), le "temps de scrutation" est simplement le temps nécessaire
+      pour échantillonner le niveau de tension analogique sur la sortie du
+      capteur et la transformer en lecture numérique.
    </p>
 
-   <p>The capture time for images from the TSL141R should be
-      about 2.5ms with the current controller software.  That's
-      about 400 frames per second, which would be considered
-      pretty fast in a regular photography or video context.  A
-      high frame rate is good for capturing fast motion, which
-      is exactly the situation we have when you pull back and
-      release the plunger.
+   <p>Le temps de capture des images du TSL141R doit être environ 2,5 ms avec
+      le logiciel du contrôleur actuel. C'est environ 400 images par seconde,
+      ce qui serait considéré assez rapide dans un contexte de photographie
+      ou de vidéo ordinaire. Une fréquence d'images élevée est bonne pour
+      capturer des mouvements rapides, ce qui est exactement la situation que 
+      nous avons lorsque vous retirez et relâchez le piston.
    </p>
 
-   <p>For non-imaging sensors, the "scan time" is usually
-      negligible (tens of microseconds), since we only have to
-      wait for the analog voltage sampler to take a reading.
+   <p>Pour les capteurs non-imageurs, le "temps de scan" est généralement
+      négligeable (dizaines de microsecondes), car il suffit  d'attendre
+      que l'échantillonneur de tension analogique prenne une lecture.
    </p>
 
-   <p>The "processing time" shows how long it took for the
-      software to analyze the raw data for the current frame to
-      determine the current plunger position.  For an imaging
-      sensor, this reflects the time it takes for the software
-      to analyze the image pixels.  For an analog sensor, this
-      is usually zero (or close enough), since we treat the
-      plunger position as linearly proportional to the voltage
-      level.  In other words, the "processing" is simply a
-      multiplication, which takes less than a microsecond on
-      the controller's CPU.
+   <p>Le "temps de traitement" indique combien de temps il a fallu au
+      logiciel pour analyser les données brutes de la trame actuelle pour
+      déterminer la position actuelle du piston. Pour une imagerie capteur
+      CCD, cela reflète le temps nécessaire au logiciel pour analyser les
+      pixels de l'image. Pour un capteur analogique, c'est généralement nul
+      (ou assez proche), puisque nous traitons la position du piston comme
+      linéairement proportionnelle au niveau de la tension.
+      En d'autres termes, le "traitement" est simplement un multiplication,
+      qui prend moins d'une microseconde du contrôleur.
    </p>
 
-   <p>The timing statistics are provided mostly as a sanity
-      check, to help determine if things are working as expected.
-      There isn't anything you can do in the configuration to
-      adjust these directly.  If the times displayed aren't in
-      the right ballpark, there might be a problem with the
-      software or with your setup that bears looking into.
+   <p>Les statistiques de synchronisation sont fournies principalement à 
+      titre de bon sens, pour aider à déterminer si les choses fonctionnent
+      comme prévu. Vous ne pouvez rien faire dans la configuration pour les 
+      ajuster directement. Si les heures affichées ne sont pas dans le bon
+      status, il pourrait y avoir un problème avec le logiciel ou avec votre
+      configuration qui mérite d'être examinée.
    </p>
 
-   <p>A couple of notes on the timing.  First, the image update
-      rate that you see in the setup window will be much slower
-      than what you see in the statistics.  The USB transfer to
-      send the full image to the PC takes a lot longer than
-      reading the image on the microcontroller.  This overhead
-      doesn't apply during normal operations - the controller
-      normally analyzes the pixels all by itself and never sends
-      them to the PC.  So the statistics really do reflect what's
-      going on in the controller, even though the viewer window
-      can't display updates at the same speed.
-      Second, for the TSL1410R sensor, the
-      "processing time" and "scan time" happen concurrently,
-      because the sensor is already snapping the next photo and
-      transferring it to the controller while the controller is
-      analyzing the previous one.  This means that the true frame
-      rate is basically determined by the longer of the sensor
-      scan time and the processing time.
+   <p>Quelques notes sur le timing. Tout d'abord, la mise à jour de l'image
+      et de la vitesse que vous voyez dans la fenêtre de configuration sera
+      beaucoup plus lente que ce que vous voyez dans les statistiques. Le
+      transfert USB envoyer vers l'image complète au PC prend beaucoup plus
+      de temps que la lecture de l'image sur le microcontrôleur. Cette
+      surcharge ne s'applique pas pendant les opérations normales - le contrôleur
+      analyse normalement les pixels tout seul et n'envoie jamais sur le PC.
+      Les statistiques reflètent donc vraiment ce continue dans le contrôleur,
+      même si la fenêtre de visualisation est impossible d'afficher les mises
+      à jour à la même vitesse. Deuxièmement, pour le capteur CCD (TSL1410R),
+      le "temps de traitement" et "temps de scan" se produisent simultanément,
+      car le capteur prend déjà la photo suivante et le transférer vers le
+      contrôleur pendant que le contrôleur analyse le précédent. Cela signifie
+      que la vitesse est essentiellement déterminée par le plus long le temps
+      de scan et le temps de traitement.
    </p>
 
 
-   <h2>Contrast enhancement</h2>
+   <h2>Amélioration du contraste</h2>
 
    <p>
-	  For a pixel-based sensor, click the "Enhance contrast" checkbox
-	  to exaggerate the contrast level in the displayed pixel readout.
-	  This makes the display show the bright pixels brighter than they
-	  really are, and the dark pixels darker than they really are.
+       Pour un capteur basé sur des pixels, cochez la case "Améliorer le contraste"
+       pour exagérer le niveau de contraste dans la lecture des pixels affichés.
+       Cela rend l'écran d'affichage, les pixels lumineux plus lumineux qu'ils le sont 
+       vraiment, et les pixels sombres sont plus sombres qu’ils ne le sont réellement.
    </p>
    <p>
-	  This can be helpful when fine-tuning your sensor installation.
-	  The image analysis routines on the KL25Z generally work by
-	  finding the dark and light regions in the image, and the edges
-	  between regions.  Exaggerating the contrast can make this
-	  structure more apparent when the physical light level is relatively
-	  uniform. 
+       Cela peut être utile lors du réglage fin de l'installation de votre capteur.
+       Les routines d'analyse d'image sur le KL25Z fonctionnent généralement en
+       trouvant les régions sombres et claires de l'image et les bords entre les
+       régions. Exagérer le contraste peut rendre la structure plus apparente lorsque
+       le niveau de lumière physique est relativement uniforme. 
    </p>
    <p>
-	  Enhanced contrast is purely a display option.  It doesn't in any
-	  way affect the way the readings are taken from the sensor, or how
-	  the KL25Z processes the readings.  In fact, the KL25Z doesn't even
-	  know you're using the enhanced contrast; the only effect is on
-	  the on-screen display.
+       Le contraste amélioré est purement une option d'affichage. en aucun cas modifie
+       la façon dont les lectures sont prises à partir du capteur, ou comment la KL25Z
+       traite les lectures. En fait, la KL25Z ne sait pas que vous utilisez le
+       contraste amélioré; le seul effet est sur l'affichage à l'écran.
    </p>
 
 
-   <h2>Full resolution and low res</h2>
+   <h2>Pleine résolution et basse résolution</h2>
    
-   <p>If you're using an image sensor, the <b>Full resolution</b> and
-      <b>Low resolution</b> buttons let you select how many pixels you
-      want to view in the dialog.  This doesn't affect how the controller
-      reads the sensor; it only affects the visualization in the dialog.
-      The low res mode is offered simply to let you speed up the frame
-      rate displayed in the dialog.
+   <p>Si vous utilisez un capteur d'image, les paramètres <b> Pleine résolution </b> et
+      Les boutons <b> Basse résolution </b> vous permettent de sélectionner le nombre
+      de pixels que vous souhaitez afficher dans la boîte de dialogue. Cela n'affecte
+      pas la façon dont le contrôleur lit le capteur; cela n'affecte que la 
+      visualisation dans la boîte de dialogue. Le mode basse résolution est proposé
+      simplement pour vous permettre d'accélérer le cadre de taux affiché dans la boîte
+      de dialogue.
    </p>
 
-   <p>The resolution setting doesn't change anything
-      outside of the dialog.  It has absolutely no effect on how the
-      controller reads the sensor or reports the plunger position in
-      normal pinball play.  It also has no effect even within the dialog
-      for non-imaging sensors.
+   <p>Le paramètre de résolution ne change rien en dehors du dialogue. Cela n'a 
+      absolument aucun effet sur la façon dont le contrôleur lit le capteur ou signale
+      la position du piston en jeu normal. Cela n'a également aucun effet, même dans le
+      dialogue pour les capteurs non imageurs.
    </p>
 
-   <h2>Jitter Filter</h2>
+   <h2>Filtre de gigue</h2>
 
    <p>
-	  No measuring device is perfect, including the plunger sensors.
-	  All sensors have some inherent inaccuracies, which means that they
-	  won't always get exactly the same reading twice in a row even when
-	  the plunger itself is sitting perfectly still.
+       Aucun appareil de mesure n'est parfait, y compris les capteurs à piston.
+       Tous les capteurs ont des inexactitudes inhérentes, ce qui signifie qu'ils
+       n'obtiendra pas toujours exactement la même lecture deux fois de suite, même si
+       le piston lui-même est parfaitement immobile.
    </p>
    <p>
-	  On a virtual cab, we don't merely have to take two readings in
-	  a row:  we have to take readings <i>constantly</i>, tens or
-	  hundreds of times per second.  We want the game to respond immediately
-	  when you move the plunger, so we have to know where it is from
-	  moment to moment.  With such a rapid series of readings, any
-	  inaccuracies in the sensor become apparent on-screen as "jitter",
-	  meaning that the virtual plunger jiggles around slightly even when
-	  the real plunger is sitting perfectly still.
+       Sur un pincab, nous n'avons pas simplement à effectuer deux lectures de ligne:
+       nous devons prendre des lectures <i> constamment </i>, des dizaines ou des
+       centaines de fois par seconde. Nous voulons que le jeu réponde immédiatement
+       lorsque vous déplacez le piston, nous devons donc savoir d'où il vient
+       l'instant après instant. Avec une série de lectures aussi rapide, toutes
+       les inexactitudes du capteur deviennent apparentes à l'écran sous forme de "gigue",
+       ce qui signifie que le piston virtuel oscille légèrement même lorsque le vrai
+       piston est parfaitement immobile.
    </p>
    <p>
-	  The "jitter filter" is a special feature in the firmware that lets
-	  you filter out this type of random motion to make the on-screen
-	  animation more stable and realistic.  If your on-screen plunger
-	  jitters noticeably, you can use the filter to reduce this.  Some
-	  sensors need this more than others, so you might not need it at all.
-	  If your sensor produces stable animation without the filter,
-	  you're better off keeping the filter disabled.
+       Le "Filtre de gigue" est une fonction spéciale du firmware qui permet de filtrez
+       ce type de mouvement aléatoire pour rendre l'affichage à l'écran d'animation plus
+       stable et réaliste. Si votre piston à l'écran tremble sensiblement, vous pouvez
+       utiliser le filtre pour le réduire. Certains des capteurs en ont plus besoin que
+       d'autres, vous n'en aurez donc peut-être pas besoin du tout. Si votre capteur
+       produit une animation stable sans le filtre, vous feriez mieux de garder le
+       filtre désactivé.
    </p>
    <p>
-	  The filter works by setting a "window" size for random motion.  Any
-	  motion within this window is ignored, so the on-screen plunger will
-	  remain motionless even if the sensor readings are fluctuating within
-	  the boundaries of the window.  The window size is set in terms of the
-	  native units for the sensor, which are the same units shown in the
-	  sensor display in the plunger viewer window.
+       Le filtre fonctionne en définissant une taille de «fenêtre» pour le mouvement aléatoire.
+       Tout le mouvement dans cette fenêtre est ignoré, de sorte que le piston à l'écran
+       reste immobile même si les lectures du capteur fluctuent dans les limites de la fenêtre.
+       La taille de la fenêtre est définie en fonction de la carte natives pour le capteur,
+       qui sont les mêmes cartes indiquées dans l'affichage du capteur et dans la fenêtre de
+       visualisation du piston.
    </p>
    <p>
-	  Larger window sizes produce stronger filtering, but they also
-	  reducing the usable precision of the plunger.  Use the lowest setting that
-	  produces satisfactory results on your machine.  You can disable the filter
-	  entirely by setting the window size to 0 (zero).
+       De plus grandes tailles de fenêtre produisent un filtrage plus fort, mais elles
+       réduisant la précision utilisable du piston. Utilisez le réglage le plus bas
+       produit des résultats satisfaisants sur votre machine. Vous pouvez désactiver le filtre
+       entièrement en définissant la taille de la fenêtre sur 0 (zéro).
    </p>
    <p>
-	  To help you set up the filter, the viewer window provides a visualization
-	  of the filter and its effects.  When you enable the filter (by setting a
-	  non-zero window size), the green bar at the bottom of the sensor window
-	  shows the <b>filtered</b> position, which is
-	  what Visual Pinball sees.  You'll also see a light green box at the end of
-	  the bar; this shows you the current bounds of the filter window.  And
-	  within the box, a red line shows you the <b>raw</b> position reading from
-	  the sensor, before the filter was applied.
+       Pour vous aider à configurer le filtre, la fenêtre de visualisation fournit une visualisation
+       du filtre et de ses effets. Lorsque vous activez le filtre (en définissant une taille de
+       fenêtre non nulle), la barre verte en bas de la fenêtre du capteur affiche la position
+       <b> filtrée </b>, qui est ce que l'on voit dans Visual Pinball.
+       Vous verrez également une boîte vert clair à la fin de le bar, cela vous montre les limites
+       actuelles de la fenêtre de filtre. Et dans la boîte, une ligne rouge vous montre la lecture
+       de la position <b> brute </b> à partir du capteur, avant l'application du filtre.
    </p>
    <p>
-	  The goal is to make the filter window just big enough to contain the random
-	  motion, if any, of the raw reading, shown by the red line.  With the plunger at
-	  rest, start with a small filter window setting, and observe the effect for
-	  a little while.  If the red line jiggles around so much that the window has
-	  to keep jumping around to keep up, increase the window size slightly; repeat
-	  until you find a window big enough to contain the random noise.
+       Le but est de rendre la fenêtre de filtre juste assez grande pour contenir l'aléatoire
+       mouvement, le cas échéant, de la lecture brute, indiqué par la ligne rouge. Avec le piston à
+       zero, commencez avec un petit paramètre de fenêtre de filtre et observez l'effet pour
+       un petit moment. Si la ligne rouge bouge tellement que la fenêtre pour continuer à sauter
+       pour suivre, augmentez légèrement la taille de la fenêtre, répéter jusqu'à ce que vous 
+       trouviez une fenêtre suffisamment grande pour contenir le bruit aléatoire.
    </p>
 
 </div>

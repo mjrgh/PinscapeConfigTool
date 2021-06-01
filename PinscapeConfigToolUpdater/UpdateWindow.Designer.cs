@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.txtStatus = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(85, 50);
+            this.label1.Location = new System.Drawing.Point(32, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(338, 13);
+            this.label1.Size = new System.Drawing.Size(446, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "One moment please while we update your Pinscape Config Tool files...";
+            this.label1.Text = "Un instant s\'il vous plaît pendant que nous mettons à jour vos fichiers Pinscape " +
+    "Config Tool...";
             // 
             // txtStatus
             // 
@@ -48,7 +50,7 @@
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.Size = new System.Drawing.Size(479, 42);
             this.txtStatus.TabIndex = 1;
-            this.txtStatus.Text = "Preparing...";
+            this.txtStatus.Text = "En cours de préparation...";
             this.txtStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timer1
@@ -66,7 +68,7 @@
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.label1);
             this.Name = "UpdateWindow";
-            this.Text = "Pinscape Config Tool Updater";
+            this.Text = "Outil de mise à jour de Pinscape Config Tool";
             this.ResumeLayout(false);
             this.PerformLayout();
 

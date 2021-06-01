@@ -67,7 +67,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(91, 27);
             this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Cancel";
+            this.btnClose.Text = "Annuler";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -85,7 +85,7 @@
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(84, 27);
             this.btnHelp.TabIndex = 11;
-            this.btnHelp.Text = "Help";
+            this.btnHelp.Text = "Aide";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
@@ -119,9 +119,9 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(13, 9);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(197, 16);
+            this.label5.Size = new System.Drawing.Size(273, 16);
             this.label5.TabIndex = 20;
-            this.label5.Text = "Learn IR Remote Command";
+            this.label5.Text = "Apprendre la commande à distance IR";
             // 
             // timerRefresh
             // 
@@ -179,24 +179,24 @@
             // lnkRawData
             // 
             this.lnkRawData.AutoSize = true;
-            this.lnkRawData.Location = new System.Drawing.Point(266, 126);
+            this.lnkRawData.Location = new System.Drawing.Point(242, 126);
             this.lnkRawData.Name = "lnkRawData";
-            this.lnkRawData.Size = new System.Drawing.Size(85, 13);
+            this.lnkRawData.Size = new System.Drawing.Size(135, 13);
             this.lnkRawData.TabIndex = 4;
             this.lnkRawData.TabStop = true;
-            this.lnkRawData.Text = "Show Raw Data";
+            this.lnkRawData.Text = "Afficher les données brutes";
             this.lnkRawData.Visible = false;
             this.lnkRawData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRawData_LinkClicked);
             // 
             // lnkRedo
             // 
             this.lnkRedo.AutoSize = true;
-            this.lnkRedo.Location = new System.Drawing.Point(195, 126);
+            this.lnkRedo.Location = new System.Drawing.Point(169, 126);
             this.lnkRedo.Name = "lnkRedo";
-            this.lnkRedo.Size = new System.Drawing.Size(52, 13);
+            this.lnkRedo.Size = new System.Drawing.Size(57, 13);
             this.lnkRedo.TabIndex = 3;
             this.lnkRedo.TabStop = true;
-            this.lnkRedo.Text = "Try Again";
+            this.lnkRedo.Text = "Réessayer";
             this.lnkRedo.Visible = false;
             this.lnkRedo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRedo_LinkClicked);
             // 
@@ -215,19 +215,20 @@
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.Size = new System.Drawing.Size(527, 71);
             this.lblDetails.TabIndex = 1;
-            this.lblDetails.Text = "Now PRESS AND HOLD the remote control key that you want Pinscape to learn.  Keep " +
-    "the remote pointed at the sensor on the Pinscape unit. ";
+            this.lblDetails.Text = "Maintenant, APPUYEZ ET MAINTENEZ la touche de la télécommande que vous voulez que" +
+    " Pinscape apprenne. Gardez la télécommande pointée vers le capteur de l\'unité Pi" +
+    "nscape.";
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.ForeColor = System.Drawing.Color.Blue;
-            this.lblStatus.Location = new System.Drawing.Point(219, 16);
+            this.lblStatus.Location = new System.Drawing.Point(195, 16);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(108, 13);
+            this.lblStatus.Size = new System.Drawing.Size(148, 13);
             this.lblStatus.TabIndex = 0;
-            this.lblStatus.Text = "*** LEARNING ***";
+            this.lblStatus.Text = "*** APPRENTISSAGE ***";
             // 
             // btnSave
             // 
@@ -242,9 +243,9 @@
             this.btnSave.ForeColor = System.Drawing.Color.Purple;
             this.btnSave.Location = new System.Drawing.Point(351, 281);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(91, 27);
+            this.btnSave.Size = new System.Drawing.Size(92, 27);
             this.btnSave.TabIndex = 23;
-            this.btnSave.Text = "Save";
+            this.btnSave.Text = "Saveugarder";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 

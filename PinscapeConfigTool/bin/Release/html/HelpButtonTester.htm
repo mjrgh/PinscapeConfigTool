@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="Fr">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Testeur de bouton</title>
+</head>
+<body class="help">
+
+<h1>
+   <img style="float: right;" src="h1button.png">
+   Testeur de bouton
+   <img style="visibility: hidden; vertical-align: middle;" src="h1button.png">
+</h1>
+
+<div>
+
+   <p>
+	  Cette fenêtre vous permet de tester le câblage des boutons physiques
+	   de votre carte Pinscape.   
+   </p>
+
+   <p>	  
+	  La liste des boutons montre chaque bouton affecté et sa broche GPIO
+	   sur la KL25Z, ainsi que l'état marche / arrêt de la broche. Si vous
+	   câblé la broche à un bouton-poussoir physique, l'état de la broche
+	   dans la liste des boutons s'affiche ON lorsque vous appuyez sur le
+	   bouton. La broche s'allumera également sur le diagramme KL25Z pour
+	   vous aider à tracer le câblage si nécessaire.
+   </p>
+
+   <p>
+	  Si vous avez besoin d'un rappel de l'emplacement d'un bouton attribué
+	   sur le KL25Z, déplacez la souris sur l'entrée de liste du bouton.
+ 	   Cela mettra en évidence la broche sur le diagramme KL25Z. Alternativement,
+	   en déplaçcant la souris sur une broche sur le diagramme KL25Z affichera
+	   le nom de la broche.
+   </p>
+
+   <p>
+	  L'état de la broche reflète l'état électrique simple de la broche.
+	   Il montre simplement si le bouton est enfoncé ou non. Aucun autre
+	   traitement supplémentaire, tel que le bouton Shift ou la synchronisation
+	   des impulsions, est utilisé pour cet affichage. L'intention est de vous
+	   laisser voir exactement ce qu'il se passe au niveau du câblage de base
+	   sans confusion avec l'un des traitements logiciels.
+   </p>
+
+   <p>
+	  Les affichages des boutons du clavier et du joystick vous permettent de tester 
+	   les clés des boutons affectations. Ces zones affichent les pressions sur les
+	   touches envoyées au PC via les interfaces clavier et joystick de l'unité Pinscape.
+	   Contrairement à l'affichage de l'état des broches physiques, le clavier et le
+	   joystick affichent l'état «logique» des touches, donc elles sont affectées par
+	   l'impulsion minuterie sur un bouton "pulsé" et par le bouton "Shift", si vous en
+	   avez attribué une.
+   </p>
+
+   <p>
+	  Notez que le diagramme du clavier ne peut pas différencier les touches à venir
+	   de la carte Pinscape et ceux provenant de votre clavier habituel, de sorte que
+	   toutes les touches que vous appuyez sur votre clavier apparaîtront sur le diagramme.
+	   Dans le cas contraire, la zone d'état du bouton du joystick n'affiche que le boutons
+	   du joystick de la carte. Il ne montrera les boutons d'aucun autre joysticks que vous
+	   avez peut-être attachés à votre système. De même, l'affichage de l'état physique des
+	   broches n'est pas affecté par les touches activées de votre clavier ou tout autre
+	   appareil.
+   </p>
+
+</div>
+
+</body>
+</html>

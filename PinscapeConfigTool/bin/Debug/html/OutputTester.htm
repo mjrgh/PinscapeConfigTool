@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="fr">>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
+   <link rel="stylesheet" href="main.css"/>
+   <link rel="stylesheet" href="jquery-ui/jquery-ui-1.11.4.css"/>
+   <title>Paramètres du contrôleur Pinscape</title>
+</head>
+<body>
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
+<script type="text/javascript" src="util.js"></script>
+<script type="text/javascript" src="pins.js"></script>
+
+
+<style type="text/css">
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+#outerWrap {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    height: 100vh;
+}
+
+h1 {
+    margin: 0px;
+}
+
+#mainRow {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    padding: 0px;
+    overflow-y: hidden;
+}
+
+#leftCol {
+    flex: 1;
+    min-width: 30em;
+    overflow-y: auto;
+    margin: 0px;
+    padding: 0px;
+}
+
+#rightCol {
+    padding: 0px;
+    margin: 0px;
+}
+
+#footer {
+    text-align: right;
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0px 0px 10px #808080;
+    height: 3.5em;
+    background: #f8f8f8;
+    margin: 0px;
+    padding: 0px;
+}
+    
+#testerTab, #testerTab th, #testerTab td {
+    border-collapse: collapse;
+}
+
+#testerTab {
+    margin: 0px;
+    font-size: 8pt;
+    width: 100%;
+}
+
+#testerTab td, #testerTab th {
+    border: 1px dotted #a0a0a0;
+    padding: .5ex 1ex;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#testerTab th {
+    height: 2em;
+    background: #f0f0f0;
+}
+
+#testerTab td.portFlags {
+    text-align: left;
+}
+
+#testerTab tr:hover td {
+    background: #ffff80;
+    border: 1px dotted #00ff00;
+}
+
+.portControls, .portFlags {
+    white-space: nowrap;
+}
+
+#optsPanel {
+    margin: 0px;
+    padding: 1em;
+    border-bottom: 1px dotted #a0a0a0;
+}
+
+#pinPanel {
+    width: 345px;
+}
+
+.portSlider {
+    display: inline-block;
+    margin-left: 1ex;
+    margin-right: 2em;
+    width: 255px;
+    vertical-align: middle;
+}
+
+.digitalPort .portSlider {
+    visibility: hidden;
+}
+
+.portSlider, .portSlider .ui-slider-handle, .portSlider .ui-slider-range {
+    box-sizing: border-box;
+    font-size: 8pt;
+    line-height: 8pt;
+    height: 10pt;
+}
+
+.portSlider .ui-slider-handle, .portSlider .ui-slider-range {
+}
+
+.portSlider .ui-slider-range {
+    margin-top: 1px;
+    height: calc(8pt - 1px);
+}
+
+.portSlider .ui-slider-handle {
+    margin-top: -1.5pt;
+    padding-top: 4pt;
+    height: 16pt;
+    width: 6ex;
+    text-align: center;
+    color: #1c94c4;
+    background: #f6f6f6;
+}
+.portSlider .ui-slider-range {
+    background: #ffff80;
+}
+
+a.portOnOffButton {
+    margin-right: 0px;
+    width: 6ex;
+    background: #ffffff;
+}
+a.portOnOffButton.statusOn {
+    background: #20ff20;
+    color: #000000;
+}
+
+#nightModeWrap {
+    text-align: center;
+    padding: 1ex;
+    margin: 0px;
+}
+#nightModeButton {
+    display: inline-block;
+    padding: 4px 1.5ex 4px 4px;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    margin: 0px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#nightModeButton:hover {
+    background: #ffff00;
+}
+#nightModeButton:active {
+    background: #00ffff;
+}
+#nightModeButton.statusOn {
+    background: #000080;
+    color: #ffffff;
+}
+#nightModeButton.statusOn:hover {
+    background: #0000ff;
+}
+#nightModeButton.statusOn:active {
+    background: #00008b;
+}
+#nightModeButton img {
+    vertical-align: middle;
+    padding-right: .5ex;
+}
+
+label, input[type=checkbox] {
+    vertical-align: middle;
+}
+</style>
+
+<div id="outerWrap">
+   <h1>
+      <img src="h1OutputTester.png" style="float: right;">
+      Output Tester
+      <img src="h1OutputTester.png" style="vertical-align: middle; visibility: hidden;">
+   </h1>
+   <div id="mainRow">
+      <div id="leftCol">
+         <table id="testerTab">
+            <tr>
+               <th style="padding: 4px;">Port No.</th>
+               <th>Location</th>
+               <th>Desc</th>
+               <!-- <th>Options[<a href="#" id="outPortOptionsHelp">?</a>]</th> -->
+               <th>Setting</th>
+            </tr>
+         </table>
+      </div>
+      <div id="rightCol">
+         <div id="optsPanel">
+            <label><input type="checkbox" id="ckAutoOnOff"> Activez / désactivez les ports avec les curseurs PWM</label>
+            <div id="nightModeWrap">
+               <div id="nightModeButton"><img src="nightModeSmall.png"> Mode nuit</div>
+            </div>
+         </div>
+         <div id="pinPanel" class="kl25zPinSelector">
+            <div class="pinimage">
+               <div>
+                  <img id="pinLayoutImage" src="kl25zPins.png">
+                  <div class="pinoverlay"></div>
+               </div>
+            </div>
+            <div id="pinInfoDebug">
+            </div>
+         </div>
+      </div>
+   </div>
+   <div id="footer">
+      <a class="button" href="#" id="helpButton" title="Show help on this dialog">Aide</a>
+      <a class="button" href="#" id="closeButton" title="Close the output tester">Fermer</a>
+   </div>
+</div>
+
+
+<script type="text/javascript">
+
+// Current port settings, using the device's 0-255 brightness scale.
+// These are the PC-side values, based on the current control settings.
+// We use these to send commands to the KL25Z periodically to sync it
+// with our UI settings.
+//
+// This is indexed by (nominal port number - 1).  The nominal port
+// numbering starts at one; our internal numbering starts at zero.
+var portSettings = [];
+
+// CPU ID of the device we're working with.  This is the ID we use to
+// send commands to the device (such as for activating output ports).
+var CPUID;
+
+// Loaded configuration object
+var gConfig = { };
+
+// Pin header information, indexed by our standard $o codes (see MainSetup.cs)
+var pinInfoMap = { };
+
+// Pin header information for the KL25Z specifically.  We grab this even if
+// we're in an expansion board configuration, as a fallback to display the
+// locations of any GPIO pins that aren't wired to expansion board pins.
+var gpioPinInfoMap = { };
+
+// populate the outputs table
+$(function()
+{
+    if (/[?&]ID=([\da-f\-]+)/i.test(window.location.href))
+    {
+        // set the CPU ID
+        CPUID = RegExp.$1;
+        $("#CPUID").text(CPUID);
+
+        // load the device configuration
+        var c = gConfig = eval(window.external.GetDeviceConfig(CPUID));
+        var xc = JSON.parse(window.external.GetDeviceXConfig(CPUID));
+
+        // use the appropriate output port alias set
+        switch (c.expansionBoards.type)
+        {
+        case 1:
+            outPortAlias = expOutPortAlias;
+            break;
+
+        case 2:
+            outPortAlias = aioOutPortAlias;
+            break;
+
+        case 3:
+            outPortAlias = liteOutPortAlias;
+            break;
+        }
+
+        // populate the outputs table
+        var typeNames = ["Disabled", "PWM", "Digital", "PWM", "Digital", "Virtual", "PWM"];
+        var maxPortNo = 0;
+        for (var portno in c.outputs)
+        {
+            // note the highest port number so far
+            if (+portno > maxPortNo)
+                maxPortNo = +portno;
+    
+            // get the output descriptor
+            var o = c.outputs[portno];
+            var xo = (xc.outputs || { })[portno] || { };
+                
+            // get the internal pin type value and corresponding display name
+            var typval = boundsCheck(o.port.type, typeNames);
+            var typeDisp = typeNames[typval];
+            var pin = o.port.pin;
+            var flags = o.flags;
+
+            // skip disabled pins
+            if (typval == 0)
+                continue;
+        
+            // update the displayed pin name
+            var pinDisp = "";
+            var locDisp = "";
+            var hdrDisp = "";
+            var isPWM = false;
+            var pintype = null;
+            switch(typval)
+            {
+            case 1: // PWM Out (GPIO)
+                locDisp = "KL25Z";
+                hdrDisp = pinToJumper(pin);
+                pinDisp = pin;
+                pintype = "pwm";
+                isPWM = true;
+                break;
+    
+            case 2: // Digital Out (GPIO)
+                locDisp = "KL25Z";
+                hdrDisp = pinToJumper(pin);
+                pinDisp = pin;
+                break;
+
+            case 3: // TLC5940
+                locDisp = "TLC5940 #" + (Math.floor(pin/16)+1);
+                pinDisp = "Out" + (pin % 16) + " (Pin " + [28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15][pin % 16] + ")";
+                hdrDisp = "";
+                isPWM = true;
+                break;
+
+            case 4: // 7HC595
+                locDisp = "74HC595 #" + (Math.floor(pin/8)+1);
+                pinDisp = "Out" + (pin % 8) + " (Pin " + [15, 1, 2, 3, 4, 5, 6, 7][pin % 8] + ")";
+                hdrDisp = "";
+                break;
+
+            case 5: // Virtual
+                locDisp = "N/A";
+                hdrDisp = "";
+                pinDisp = "(Virtual)";
+                break;
+
+            case 6: // TLC59116
+                locDisp = "TLC59116 #" + ((pin >> 4) & 0x0F);
+                pinDisp = "Out" + (pin & 0x0F) + " (Pin " + [6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23][pin & 0x0F] + ")";
+                hdrDisp = "";
+                isPWM = true;
+                break;
+            }
+
+            // if there's an expansion board alias, apply it
+            var alias = outPortAlias["" + typval + "." + pin];
+            if (alias)
+            {
+                // set the alias name
+                alias = alias.split("|");
+                pinDisp = alias[0];
+                typeDisp = alias[1];
+                locDisp = alias[2];
+                hdrDisp = alias[3];
+            }
+
+            // build the options icon list
+            var options = [];
+            if (flags & 0x02)
+                options.push("<img src=\"NoisyOn.png\" title=\"Ce port est désigné comme bruyant aux fins du mode nuit\">");
+            if (flags & 0x04)
+                options.push("<img src=\"GammaOn.png\" title=\"Ce port utilise la correction gamma pour le contrôle visuel de la luminosité\">");
+            if (flags & 0x01)
+                options.push("<img src=\"ActiveLowOn.png\" title=\"Ce port est &quot; actif-bas &quot;. (mise à la terre électriquement quand)\">");
+            if (flags & 0x08)
+                options.push("<img src=\"FlipperLogicOn.png\" title=\"Ce port utilise la &quot; logique flipper &quot; pour protection électromagnétique\">");
+            if (flags & 0x10)
+                options.push("<img src=\"ChimeLogicOn.png\" title=\"Ce port utilise la &quot; logique de carillon &quot; pour protection électromagnétique\">");
+
+            // build the on/off and brightness controls
+            var controls = [];
+            controls.push("<div class=\"portSlider\"></div>");
+            controls.push("<a class=\"portOnOffButton button\" href=\"#\">Off</a>");
+            
+            // build the row
+            var row =
+                "<tr id=\"outPortRow" + portno + "\" "
+                +   "data-portno=\"" + portno + "\" "
+                +   "class=\"outPortRow " + (isPWM ? "pwmPort" : "digitalPort") + "\">"
+                + "<td>" + portno + "</td>"    // nominal port number
+                + "<td>" + locDisp + " " + hdrDisp + "<br>" + pinDisp + "</td>"    // location - board jumper-pin <br> port name
+                + "<td>" + (xo.desc || "") + "</td>"         // port description
+             // omit options to save space //   + "<td class=\"portFlags\">" + options.join("") + "</td>"        // option icons
+                + "<td class=\"portControls\">" + controls.join("") + "</td>" // on/off, brightness controls
+                + "</tr>";
+
+            $("#testerTab").append(row);
+        }
+
+        // Populate our port value list with all OFF (0) values.  Add an extra six
+        // slots to the end, to be sure that the last group of 7 is filled out.
+        // That lets us do easy lookups of 7 ports at a time, for generating the
+        // 7-port update messages used by the USB protocol, without having to
+        // bounds-check every lookup.
+        for (var i = 0; i < maxPortNo + 6; ++i)
+            portSettings.push(0);
+
+        // note the system type
+        var expBoards = gConfig.expansionBoards || { };
+        var sysType = expBoards.type;
+
+        // populate the pin header map according to the system type
+        pinInfoMap = buildPinToHeaderMap(sysType);
+
+        // if we're not in the standalone configuration, also grab the basic
+        // KL25Z GPIO pin map, so that we can display the KL25Z diagram for
+        // any GPIO ports that aren't wired to expansion board pins
+        if (sysType != 0)
+            gpioPinInfoMap = buildPinToHeaderMap(0);
+    }
+
+    // set the initial "auto on/off with pwm" setting
+    var pwmAutoOnOffKey = "OutputTester.autoOnOffWithPwm";
+    var pwmAutoOnOff = /^Y/i.test(window.external.GetOption(pwmAutoOnOffKey) || "Y");
+    if (pwmAutoOnOff)
+        $("#ckAutoOnOff").prop("checked", true);
+
+    // set up the "auto on/off with pwm" click handler
+    $("#ckAutoOnOff").change(function(ev) {
+        pwmAutoOnOff = $(this).prop("checked");
+        window.external.SetOption(pwmAutoOnOffKey, pwmAutoOnOff ? "Y" : "N");
+    });
+
+    // set the pin hover popups
+    $(".outPortRow").hover(
+        function(ev) { showPortPin($(this).data("portno")) },
+        function(ev) { $("#pinPanel .pinButton").remove(); });
+
+    // set up the On/Off button click handlers
+    $(".portOnOffButton").click(function(ev) {
+        // get the port row
+        var self = $(this);
+        var row = self.parents("tr.outPortRow");
+        var portno = row.data("portno");
+
+        // toggle the on/off status
+        self.toggleClass("statusOn");
+
+        // note the new status
+        var on = self.hasClass("statusOn");
+
+        // update the label in the UI
+        self.html(on ? "On" : "Off");
+
+        // if it's a PWM port, and the slider is at zero, set the slider
+        // all the way on, to avoid confusion about why "ON" doesn't actually
+        // turn the port on when the brightness is at zero
+        var slider = row.find(".portSlider");
+        if (slider.length != 0 && slider.slider("value") == 0)
+        {
+            slider.slider("value", 255);
+            slider.find(".ui-slider-handle").text(255);
+        }
+
+        // update the port
+        updatePort(portno);
+
+        // don't process the click any further
+        ev.preventDefault();
+    });
+
+    // set up the sliders
+    $(".portSlider").slider({
+        orientation: "horizontal",
+        min: 0,
+        max: 255,
+        step: 1,
+        range: "min"
+    }).on("slide", function(ev, ui) {
+        // get the port
+        var self = $(this);
+        var portno = self.parents("tr.outPortRow").data("portno");
+
+        // get the new brightness setting
+        var val = ui.value;
+
+        // display the setting on the slider handle
+        self.find(".ui-slider-handle").text(val);
+
+        // apply auto on/off if desired
+        if (pwmAutoOnOff) {
+            var button = self.parents(".portControls").find(".portOnOffButton");
+            var oldOn = button.hasClass("statusOn");
+            var newOn = val != 0;
+            if (oldOn != newOn) {
+                button.toggleClass("statusOn");
+                button.text(newOn ? "On" : "Off");
+            }
+        }
+
+        // Update the live output.  Do this on a timeout, since the
+        // control doesn't reflect the new value until after the event
+        // has finished processing.
+        setTimeout(function() { updatePort(portno); }, 1);
+    }).find(".ui-slider-handle").text("0");
+
+        
+    // set up the night mode button click handler
+    $("#nightModeButton").click(function(ev) {
+        window.external.SetNightMode(CPUID, !$(this).hasClass("statusOn"));
+        updateNightModeStatus();
+    });
+
+    function updateNightModeStatus()
+    {
+        if (window.external.IsNightMode(CPUID))
+            $("#nightModeButton").addClass("statusOn").attr("title", "Le mode nuit est actuellement activé");
+        else
+            $("#nightModeButton").removeClass("statusOn").attr("title", "Le mode nuit est actuellement désactivé");
+    }
+
+    // poll for night mode status
+    setInterval(updateNightModeStatus, 50);
+});
+
+// Show the header pin for a given output port in the board display panel
+function showPortPin(portno)
+{
+    // Look up the port configuration data
+    var o = gConfig.outputs[portno];
+    if (o && o.port)
+    {
+        // get the pin information
+        var pinId = o.port.pin;
+        var pinType = o.port.type;
+        var pinKey = "" + pinType + "." + pinId;
+        var info = pinInfoMap[pinKey];
+
+        // If we didn't find a pin mapping for the current system configuration,
+        // try it as a KL25Z GPIO pin.  That lets us show the basic KL25Z diagram
+        // for any GPIO pins that aren't wired to expansion board pins.
+        if (!info)
+            info = gpioPinInfoMap[pinKey];
+
+        // if we found a pin mapping, display it on the diagram
+        if (info) {
+            var removed = [];
+            $.each($("#pinPanel").attr("class").split(" "), function(i, cl) {
+                if (/^\w+PinSelector$/.test(cl)) { removed.push(cl); $("#pinPanel").removeClass(cl); }
+            });
+            $("#pinPanel").addClass(info.wrapper);
+            $("#pinLayoutImage").attr("src", info.image);
+
+            // remove prior pin displays
+            $("#pinPanel .pinButton").remove();
+
+            // add the new pin display
+            $("#pinPanel .pinoverlay").append(
+                "<div class=\"pinButton available selected\" "
+                + "style=\"left:" + info.x + "px; top:" + info.y + "px;\">"
+                + "</div>");
+        }
+    }
+}
+
+// Queued updates.  The device protocol takes updates in groups of
+// seven ports (0..6, 7..13, 14..20, ...), so we represent the pending
+// updates by the base port in the group (0, 7, 14, ...).  An update
+// is queued if the group base port number (as a string) is set in
+// the map.
+var queuedUpdates = { };
+
+// Is an update timeout pending?
+var updatePending = false;
+
+function updatePort(nominalPortno)
+{
+    // convert from the one-based nominal port numbering to the device's
+    // zero-based port numbering
+    var devicePortno = nominalPortno - 1;
+
+    // look up the port row
+    var row = $("#outPortRow" + nominalPortno);
+
+    // get the slider value and on/off status
+    var isOn = row.find(".portOnOffButton").hasClass("statusOn");
+    var sliderVal = row.find(".portSlider").slider("value");
+
+    // for a non-PWM port, ignore the slider and use a fixed 255 for fully on
+    if (!row.hasClass("pwmPort"))
+        sliderVal = 255;
+
+    // set the new value: 0 for off, slider value for on
+    portSettings[devicePortno] = isOn ? sliderVal : 0;
+
+    // Don't flush the output to the device immediately, since we can get
+    // a rapid flurry of updates as the user slides the slider.  Instead,
+    // queue the change and schedule a timeout, if we don't already have
+    // one pending.
+    var basePort = Math.floor(devicePortno / 7) * 7;
+    queuedUpdates[basePort] = true;
+    if (!updatePending) {
+        setTimeout(function() {
+            // flush each port group
+            $.each(queuedUpdates, function(k) {
+                // convert to a numeric array index
+                k = +k;
+
+                // Output the group of 7 ports starting at the base port k.
+                // Note that we set up the portSettings[] array with six extra
+                // slots of padding after the last real port slot, to make sure
+                // that we don't have to bounds-check the array lookups for the
+                // seven items in a port group when starting from a known-good
+                // port.  And we know that the starting port is good, because
+                // the only way we generate queued updates is to take them from
+                // table rows that we populated at the same time as the array.
+                window.external.SetOutputPorts(
+                    CPUID, k,
+                    portSettings[k],
+                    portSettings[k+1],
+                    portSettings[k+2],
+                    portSettings[k+3],
+                    portSettings[k+4],
+                    portSettings[k+5],
+                    portSettings[k+6]);
+            });
+    
+            // no more updates pending
+            queuedUpdates = { };
+            updatePending = false;
+        }, 10);
+    }
+}
+
+
+</script>
+
+
+<script type="text/javascript">
+$("#closeButton").click(function(ev) {
+    window.external.CloseWindow();
+    ev.preventDefault();
+});
+$("#helpButton").click(function(ev) {
+    window.external.ShowHelp("HelpOutputTester.htm");
+    ev.preventDefault();
+});
+$("#outPortOptionsHelp").click(function(ev) {
+    window.external.ShowHelp("HelpOutPortOptions.htm");
+    ev.preventDefault();
+});
+
+</script>
+
+
+</body>
+</html>

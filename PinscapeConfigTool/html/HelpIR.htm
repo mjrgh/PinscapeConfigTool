@@ -1,211 +1,211 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>IR Setup</title>
+   <title>Configuration IR</title>
 </head>
 <body class="help">
 <h1>
-   IR Setup
+   Configuration IR
 </h1>
 
 <div>
-   The Pinscape unit can send and receive IR commands if you have the
-   necessary extra components attached.  To send commands, you need an
-   IR LED; to receive, you need an IR sensor (TSOP38438 or equivalent).
-   The transmit and receive capabilities are independent, so you can
-   attach either or both components.  The Build Guide has details on
-   what you need and how to attach everything to the KL25Z.
+   La carte Pinscape peut envoyer et recevoir des commandes IR si vous avez les
+   composants supplémentaires nécessaires attachés. Pour envoyer des commandes,
+   vous avez besoin d'une LED IR. Pour recevoir, vous avez besoin d'un capteur
+   IR (TSOP38438 ou équivalent). 
+   Les capacités d'émission et de réception sont indépendantes, vous pouvez donc
+   attachez l'un ou les deux composants. Le guide de construction contient des
+   détails sur ce dont vous avez besoin et comment tout attacher a la KL25Z.
 </div>
 
-<h2>IR Command List</h2>
+<h2>Liste des commandes IR</h2>
 
 <div>
-   You can program the Pinscape device with a list of IR commands
-   learned from the remote controls for your TV(s) and other devices.
+   Vous pouvez programmer l'appareil Pinscape avec une liste de commandes IR
+   pris des télécommandes de votre (vos) téléviseur (s) et autres appareils.
 </div>
 <div>
-   An IR "command" is the signal sent when you push a button on one
-   of your remotes.  Each button generally has a unique IR signal
-   associated with it.  Pinscape can learn these signals and store
-   them in the command list, and then use the stored commands to
-   repeat the same commands via its IR transmitter, and to recognize
-   the commands when they come in on its receiver.
+   Une "commande" IR est le signal envoyé lorsque vous appuyez sur un bouton
+   sur l'une de vos télécommandes. Chaque bouton a généralement un signal IR
+   unique associé avec. Pinscape peut apprendre ces signaux et les stocker
+   dans la liste des commandes, puis utilisez les commandes stockées pour
+   répétez les mêmes commandes via son émetteur IR, et pour reconnaître
+   les commandes lorsqu'elles arrivent sur son récepteur.
 </div>
 <div>
-   Each entry in the IR Command List has the following elements:
+   Chaque entrée de la liste des commandes IR comprend les éléments suivants:
 
    <ul>
-	  <li>IR Code: this is a magic number representing a particular
-	  IR command.  In most cases, you'll want to obtain these codes
-	  using the "learn" function.
+	  <li>Code IR: c'est un nombre magique représentant une Commande IR.
+	  Dans la plupart des cas, vous obtiendrez ces codes en utilisant la
+	  fonction "apprendre".
 
-	  <li>Learn (<img src="irLearn.png" style="vertical-align:middle;">):
-	  Click this button to bring up the "learn" dialog, which lets
-	  Pinscape learn a code by reading the IR signal from one of
-	  your remotes through the Pinscape IR receiver.
+	  <li>Apprendre (<img src="irLearn.png" style="vertical-align: middle;">):
+	  Cliquez sur ce bouton pour faire apparaître la boîte de dialogue
+	  "apprendre", qui permet à Pinscape d'apprendre un code en lisant le
+	  signal IR de l'un de vos télécommandes via le récepteur infrarouge Pinscape.
 
-	  <li>Test (<img src="irTestButton.png" style="vertical-align:middle;">):
-	  Click this button to test a code by transmitting it through the
-	  Pinscape IR LED.  This lets you confirm that the target device
-	  gets the signal when Pinscape sends the code.
+	  <li>Test (<img src="irTestButton.png" style="vertical-align: middle;">):
+	  Cliquez sur ce bouton pour tester un code en le transmettant via la
+	  LED Pinscape IR. Cela vous permet de confirmer que le périphérique cible
+	  reçoit le signal lorsque Pinscape envoie le code.
 
-	  <li>TV ON (<img src="TvOnButton.png" style="vertical-align:middle;">):
-	  Click this to include the IR command in the TV ON sequence when
-	  the system powers up.  This lets you turn on your cabinet TV(s)
-	  with IR commands.
+	  <li>TV ON (<img src="TvOnButton.png" style="vertical-align: middle;">):
+	  Cliquez dessus pour inclure la commande IR dans la séquence TV ON lorsque
+	  le système démarre. Cela vous permet d'allumer votre ou vos téléviseurs
+	  avec des commandes IR.
 
-	  <li>Key (<img src="unusedButton.png" style="vertical-align:middle;">):
-	  Click this to select a keyboard key or joystick button to send
-	  to the PC whenever Pinscape receives the IR code.  This lets you
-	  use a remote control to send key presses to the PC.
+	  <li>Clé (<img src="unusedButton.png" style="vertical-align: middle;">):
+	  Cliquez dessus pour sélectionner une touche du clavier ou un bouton du
+	  joystick à envoyer sur le PC chaque fois que Pinscape reçoit le code IR.
+	  Cela vous permet d'utilisez une télécommande pour envoyer les touches au PC.
 
-	  <li>Description: You can fill this in with the name of the remote
-	  control button programmed into the slot ("Vizio TV ON", say).
-	  This is purely optional.  It's just a memory jogger to help you
-	  keep track of what's programmed where, since the "IR Code" field
-	  is pretty cryptic by itself.
+	  <li>Description: vous pouvez le remplir avec le nom de la télécommande
+	  ou du bouton de commande programmé dans la fente ("Vizio TV ON", par exemple).
+	  Ceci est purement facultatif. C'est juste un aide mémoire pour vous aider
+	  à garder une trace de ce qui est programmé où, depuis le champ "Code IR"
+	  c'est assez cryptique en soi.
    </ul>
 
-<h2>IR Code Numbers</h2>
+<h2>Numéros de code IR</h2>
 
 <div>
-   Each IR Code is a magic number that tells the Pinscape firmware how
-   to read and send a particular remote control code.  It's "magic" in
-   that it's really only meaningful within the Pinscape software.  The
-   number encodes the type of infrared signal protocol the remote uses
-   (these vary by manufacturer, and there are many) and the data bits
-   contained in the IR signal.
+   Chaque code IR est un nombre magique qui indique au micrologiciel Pinscape comment
+   faire pour lire et envoyer un code de télécommande particulier. C'est "magique" 
+   mais c'est vraiment significatif que dans le logiciel Pinscape. le nombre code le
+   type de protocole de signal infrarouge utilisé par la télécommande (ceux-ci
+   varient selon le fabricant, et il y en a beaucoup) et les bits de données
+   contenu dans le signal IR.
 </div>
 <div>
-   The best way to determine a code is to use the "learn" function,
-   which lets Pinscape determine the code for a particular remote button
-   by reading the signal that your remote sends when you press the
-   button.  You can also simply type in a code if you happen to know the
-   number, such as by getting a code from another Pinscape user.
-   But you can't generally use code numbers you might see published in
-   third-party IR code tables on the Internet, since every table uses its
-   own numbering system that probably doesn't match the Pincsape format.
+   La meilleure façon de déterminer un code est d'utiliser la fonction "apprendre",
+   qui permet à Pinscape de déterminer le code d'un bouton particulier de la
+   télécommande en lisant le signal que votre télécommande envoie lorsque vous
+   appuyez sur un bouton. Vous pouvez également taper simplement un code si vous
+   connaissez le numéro, par exemple en obtenant un code d'un autre utilisateur de
+   Pinscape. Mais vous ne pouvez généralement pas utiliser les numéros de code que
+   vous pourriez voir publiés dans tables de codes IR tiers sur Internet, car chaque
+   table utilise son propre système de numérotation qui ne correspond probablement
+   pas au format Pincsape.
 </div>
    
 
-<h2>Things Pinscape can do with IR</h2>
+<h2>Ce que Pinscape peut faire avec IR</h2>
 <div>
-   You can use the IR capabilities in several ways:
+   Vous pouvez utiliser les capacités IR de plusieurs manières:
 
    <ul>
-	  <li>Turn on your cabinet TV(s) when the system starts up
-	  <li>Send key presses to the PC on receiving an IR command
-	  <li>Transmit IR commands when you push a cabinet button
+	<li>Allumez votre (vos) téléviseur (s) du pincab au démarrage du système
+	<li>Appuyez sur la touche d'envoi vers le PC lors de la réception d'une commande IR
+        <li>Transmettez des commandes IR lorsque vous appuyez sur un bouton du pincab
    </ul>
 
-   These are all described in more detail below.
+   Ceux-ci sont tous décrits plus en détail ci-dessous.
 </div>
 
-<h2>TV ON with IR</h2>
+<h2>TV ON avec IR</h2>
 
 <div>
-   The IR transmitter can be used to turn on your cabinet TVs when
-   the system starts up.  This is a less invasive alternative to the
-   hard-wired TV ON feature (where you have to open the TV's case
-   and solder wires to your TV's "on" switch).  With IR, you don't
-   have to do any surgery on the TV.
-</div>
-
-<div>
-   If you haven't already configured the basic TV ON settings, you'll
-   have to set that up first.  Go to the TV ON section in the
-   settings, enable it, set the delay timer, and set up the input pins.
-   If you're not using the Pinscape expansion boards, you'll need to
-   build some external circuitry, which is explained in the Build
-   Guide.  The "Power status input" and "Status latch output" parts
-   are required.  The "Relay output" isn't required if you're only
-   using IR (but it's also okay to use both IR and the relay; they're
-   happy to work together or separately).
+   L'émetteur IR peut être utilisé pour allumer les téléviseurs de votre pincab lorsque
+   le système démarre. Il s'agit d'une alternative moins invasive à la fonction TV ON
+   câblée (où vous devez ouvrir le boîtier du téléviseur et soudez les fils à
+   l'interrupteur «marche» de votre téléviseur). Avec IR, vous n'avez pas à faire
+   d'une intervention chirurgicale à la télévision.
 </div>
 
 <div>
-   Next, set up the Pinscape IR transmitter LED and position it so
-   that your TV can see the commands it emits.  See the Build Guide
-   for instructions on wiring the IR LED.  Position the LED so that
-   it's near to and pointing at the remote control sensor window on
-   the TV.
+   Si vous n'avez pas encore configuré les paramètres de base TV ON, vous
+   devez d'abord les configurer. Accédez à la section TV ON dans les paramètres,
+   activez-le, réglez la minuterie de retard et configurez les broches d'entrée.
+   Si vous n'utilisez pas les cartes d'extension Pinscape, vous devrez construire
+   des circuits externes, ce qui est expliqué dans le Guide de construction.
+   Les parties «Entrée d'état de l'alimentation» et «Sortie de verrouillage d'état»
+   sont requis. La "Sortie relais" n'est pas requise si vous utilisez seulement l'IR
+   (mais il est également possible d'utiliser à la fois l'IR et le relais; ils sont
+   heureux de travailler ensemble ou séparément).
 </div>
 
 <div>
-   All that remains is to program the TV's "ON" command into a slot in
-   the IR code list.  Get out your TV's remote, and program the ON button
-   into a slot as described above.  Click the TV ON icon
-   (<img src="tvOnButton.png" style="vertical-align:middle;">)
-   to include the command in the power-up sequence.  Pinscape will
-   now transmit this command through its IR transmitter when the
-   power comes on, after the delay timer finishes.
+   Ensuite, configurez la LED de l'émetteur Pinscape IR et positionnez-la de manière
+   à ce que votre téléviseur puisse voir les commandes qu'il émet. Voir le guide de
+   construction pour obtenir des instructions sur le câblage de la LED IR. Positionnez
+   la LED de sorte qu'elle soit près de la fenêtre du capteur de la télécommande et
+   pointe vers la télé.
 </div>
 
-<h2>Send a key press on receiving an IR command</h2>
-
 <div>
-   You can program the Pinscape unit to send a key press to the PC on
-   receiving an IR command.
-</div>
-<div>
-   For example, suppose you want to be able to adjust the audio volume
-   on your PC, but you don't have any spare buttons on your cabinet.
-   And suppose you have an old remote control lying around for something
-   you're no longer using, and it has some kind of Up and Down keys.
-   You can program Pinscape so that it sends a keyboard "Volume Up" key
-   to the PC when you press the Up button on the remote, and a keyboard
-   "Volume Down" when you press Down on the remote.
-</div>
-<div>
-   To use this feature, you'll need to set up the Pinscape IR sensor,
-   and position it so that it can see IR light from your remote.  This
-   means positioning the sensor outside the cabinet, or through a hole
-   in the cabinet.  You can't place it entirely inside the cabinet, since
-   IR light from the remote won't penetrate the cabinet walls.
-</div>
-<div>
-   Now go to the IR Command List in the settings.  Program in the
-   remote control button codes, as described above, for the buttons
-   that you want to turn into keystrokes.  For each one, click the
-   "Key" icon (<img src="unusedButton.png" style="vertical-align:middle;">)
-   to select the key to send.  Once that's all set up, Pinscape will
-   "press" the programmed key whenever it receives the corresponding
-   IR command.
+   Il ne reste plus qu'à programmer la commande "ON" du téléviseur dans un emplacement
+   de la liste des codes IR. Sortez la télécommande de votre téléviseur et programmez
+   le bouton ON dans une fente comme décrit ci-dessus. Cliquez sur l'icône TV ON
+   (<img src="tvOnButton.png" style="vertical-align: middle;">) pour inclure la
+   commande dans la séquence de mise sous tension. Pinscape transmettera cette commande
+   via son émetteur IR lorsque l'alimentation se mettra en marche après la fin de la minuterie.
 </div>
 
-<h2>Send an IR command when you press a cabinet button</h2>
+<h2>Envoyer une touche lors de la réception d'une commande IR</h2>
 
 <div>
-   You can program Pinscape to transmit an IR command whenever
-   you press a cabinet button.
+   Vous pouvez programmer l'unité Pinscape pour envoyer une pression de touche au PC pour
+   recevoir une commande IR.
 </div>
 <div>
-   For example, suppose that you want to be able to adjust your TV's
-   volume via cabinet buttons.  To do this, you can configure buttons
-   on your cabinet to send Volume Up and Volume Down commands
-   to the TV via IR.
+   Par exemple, supposons que vous souhaitiez pouvoir régler le volume audio sur votre PC,
+   mais vous n'avez pas de boutons de rechange sur votre armoire.
+   Et supposons que vous ayez une vieille télécommande qui traîne pour un appereil que
+   vous n'utilisez plus, et il a une sorte de touches Haut et Bas. Vous pouvez programmer
+   Pinscape pour qu'il envoie une touche de clavier "Augmenter le volume" sur le PC lorsque
+   vous appuyez sur le bouton "Haut" de la télécommande et une autre touche du clavier
+   "Baisser le volume" lorsque vous appuyez sur "Bas" de la télécommande.
 </div>
 <div>
-   To make this work, you need to set up the Pinscape IR transmitter LED,
-   as explained in the Build Guide, and position the LED so that the
-   TV's remote control sensor can see it.  This is the same arrangement
-   needed for the TV ON feature via IR, so you probably already
-   set that up.
+   Pour utiliser cette fonction, vous devrez configurer le capteur infrarouge Pinscape,
+   et le positionner de manière à ce qu'il puisse voir la lumière infrarouge de votre
+   télécommande. Cela signifie, positionner le capteur à l'extérieur du pincab, ou à 
+    travers un trou dans le pincab. Vous ne pouvez pas le placer entièrement à l'intérieur
+   de pincab, car La lumière infrarouge de la télécommande ne pénètre pas dans les parois
+   de l'armoire.
 </div>
 <div>
-   Now you just need to assign an IR command to each button that you want
-   to use to send IR signals to the TV.  The first step is to program the
-   IR command codes that you want to send.  Program the desired commands
-   into slots in the IR command list as described above.
+   Accédez maintenant à la liste des commandes IR dans les paramètres. Programme dans le
+   codes des boutons de la télécommande, comme décrit ci-dessus, pour les boutons que vous
+   souhaitez transformer en frappes. Pour chacun d'eux, cliquez sur le Icône "Clé"
+   (<img src="unusedButton.png" style="vertical-align: middle;">) pour sélectionner la
+   touche à envoyer. Une fois que tout est configuré, Pinscape "appuiera" sur la touche
+   programmée chaque fois qu'elle recevra le Commande IR.
+</div>
+
+<h2>Envoyer une commande IR lorsque vous appuyez sur un bouton du cabinet</h2>
+
+<div>
+   Vous pouvez programmer Pinscape pour transmettre une commande IR à chaque fois
+   que vous appuyez sur un bouton du pincab.
 </div>
 <div>
-   Once you have the IR commands programmed, go to the Buttons section in
-   the settings.  Find the row for the button that you want to use to send
-   an IR command, and click the IR Command icon in the row
-   (<img src="irButton.png" style="vertical-align:middle;">).  Select
-   the desired IR command from the menu.
+   Par exemple, supposons que vous souhaitiez pouvoir régler le volume de votre téléviseur
+   via les boutons du pincab. Pour ce faire, vous pouvez configurer des boutons sur votre
+   pincab pour envoyer des commandes d'augmentation et de diminution du volume au
+   téléviseur via IR.
+</div>
+<div>
+   Pour faire ce travail, vous devez configurer la LED de l'émetteur Pinscape IR,
+   comme expliqué dans le Guide de construction et positionnez le voyant de sorte que le
+   Le capteur de la télécommande du téléviseur puisse le voir. C'est le même arrangement
+   nécessaire pour la fonction TV ON via IR, donc vous avez probablement déjà dû mettre
+   cela en place.
+</div>
+<div>
+   Il vous suffit maintenant d'assigner une commande IR à chaque bouton que vous souhaitez
+   utiliser pour envoyer des signaux IR au téléviseur. La première étape consiste à
+   programmer le codes de commande IR que vous souhaitez envoyer. Programmer les commandes
+   souhaitées dans les emplacements de la liste de commandes IR comme décrit ci-dessus.
+</div>
+<div>
+   Une fois que vous avez programmé les commandes IR, accédez à la section "Boutons" dans
+   les paramètres. Recherchez la ligne du bouton que vous souhaitez utiliser pour envoyer
+   une commande IR, et cliquez sur l'icône "Commande IR" dans la ligne (<img src="irButton.png" style="vertical-align: middle;">).
+   Sélectionner la commande IR souhaitée dans le menu.
 </div>
 
 </html>

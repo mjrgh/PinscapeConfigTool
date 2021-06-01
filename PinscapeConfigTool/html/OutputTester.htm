@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
    <link rel="stylesheet" href="jquery-ui/jquery-ui-1.11.4.css"/>
-   <title>Pinscape Controller Settings</title>
+   <title>Paramètres du contrôleur Pinscape</title>
 </head>
 <body>
 
@@ -202,7 +202,7 @@ label, input[type=checkbox] {
 <div id="outerWrap">
    <h1>
       <img src="h1OutputTester.png" style="float: right;">
-      Output Tester
+      Testeur de sortie
       <img src="h1OutputTester.png" style="vertical-align: middle; visibility: hidden;">
    </h1>
    <div id="mainRow">
@@ -211,17 +211,17 @@ label, input[type=checkbox] {
             <tr>
                <th style="padding: 4px;">Port No.</th>
                <th>Location</th>
-               <th>Desc</th>
+               <th>Description</th>
                <!-- <th>Options[<a href="#" id="outPortOptionsHelp">?</a>]</th> -->
-               <th>Setting</th>
+               <th>Réglage</th>
             </tr>
          </table>
       </div>
       <div id="rightCol">
          <div id="optsPanel">
-            <label><input type="checkbox" id="ckAutoOnOff"> Turn ports on/off with PWM sliders</label>
+            <label><input type="checkbox" id="ckAutoOnOff">Activez / désactivez les ports avec les curseurs PWM</label>
             <div id="nightModeWrap">
-               <div id="nightModeButton"><img src="nightModeSmall.png"> Night Mode</div>
+               <div id="nightModeButton"><img src="nightModeSmall.png">Mode nuit</div>
             </div>
          </div>
          <div id="pinPanel" class="kl25zPinSelector">
@@ -237,8 +237,8 @@ label, input[type=checkbox] {
       </div>
    </div>
    <div id="footer">
-      <a class="button" href="#" id="helpButton" title="Show help on this dialog">Help</a>
-      <a class="button" href="#" id="closeButton" title="Close the output tester">Close</a>
+      <a class="button" href="#" id="helpButton" title="Show help on this dialog">Aide</a>
+      <a class="button" href="#" id="closeButton" title="Close the output tester">Fermer</a>
    </div>
 </div>
 
@@ -385,15 +385,15 @@ $(function()
             // build the options icon list
             var options = [];
             if (flags & 0x02)
-                options.push("<img src=\"NoisyOn.png\" title=\"This port is designated as noisy for Night Mode purposes\">");
+                options.push("<img src=\"NoisyOn.png\" title=\"Ce port est désigné comme bruyant aux fins du mode nuit\">");
             if (flags & 0x04)
-                options.push("<img src=\"GammaOn.png\" title=\"This port uses gamma correction for visual brightness control\">");
+                options.push("<img src=\"GammaOn.png\" title=\"Ce port utilise la correction gamma pour le contrôle visuel de la luminosité\">");
             if (flags & 0x01)
-                options.push("<img src=\"ActiveLowOn.png\" title=\"This port is &quot;active-low&quot; (electrically grounded when on)\">");
+                options.push("<img src=\"ActiveLowOn.png\" title=\"Ce port est &quot; actif-bas &quot;. (mise à la terre électriquement quand)\">");
             if (flags & 0x08)
-                options.push("<img src=\"FlipperLogicOn.png\" title=\"This port uses &quot;flipper logic&quot; for solenoid protection\">");
+                options.push("<img src=\"FlipperLogicOn.png\" title=\"Ce port utilise la &quot; logique flipper &quot; pour protection électromagnétique\">");
             if (flags & 0x10)
-                options.push("<img src=\"ChimeLogicOn.png\" title=\"This port uses &quot;chime logic&quot; for solenoid protection\">");
+                options.push("<img src=\"ChimeLogicOn.png\" title=\"Ce port utilise la &quot; logique de carillon &quot; pour protection électromagnétique\">");
 
             // build the on/off and brightness controls
             var controls = [];
@@ -532,9 +532,9 @@ $(function()
     function updateNightModeStatus()
     {
         if (window.external.IsNightMode(CPUID))
-            $("#nightModeButton").addClass("statusOn").attr("title", "Night mode is currently ON");
+            $("#nightModeButton").addClass("statusOn").attr("title", "Le mode nuit est actuellement activé");
         else
-            $("#nightModeButton").removeClass("statusOn").attr("title", "Night mode is currently off");
+            $("#nightModeButton").removeClass("statusOn").attr("title", "Le mode nuit est actuellement désactivé");
     }
 
     // poll for night mode status

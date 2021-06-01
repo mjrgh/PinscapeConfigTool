@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">>
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Pinscape Controller Setup</title>
+   <title>Installer le micrologiciel</title>
 </head
 <body>
 
@@ -12,166 +12,165 @@
 
 <h1>
    <img src="h1UpdateFirmware.png" style="vertical-align: middle; float: right;">
-   Install Firmware
+   Installer le micrologiciel
    <img src="h1UpdateFirmware.png" style="vertical-align: middle; visibility: hidden;">
 </h1>
 
 <div>
 
    <div>
-      This installs the Pinscape Controller software onto a new KL25Z.
+      Cela installe le logiciel Pinscape Controller sur une nouvelle KL25Z.
    </div>
 
    <div>
-      <b>Important:</b> if you haven't already upgraded the factory boot loader
-      on this KL25Z, please <a href="SetupNew.htm">go back</a> and do so now.
-      The firmware installation process won't work properly until the boot
-      loader is updated.
+     <b> Important: </b> si vous n'avez pas déjà mis à niveau les fichiers de démarrage d'usine
+      sur ce KL25Z, veuillez <a href="SetupNew.htm"> revenir en arrière </a> et le faire maintenant.
+      Le processus d'installation du micrologiciel ne fonctionnera pas correctement avant le démarrage
+      des fichiers est mis à jour.
    </div>
 
    <hr>
 
    <div id="Step1" class="flowStep">
-      <h2>Step 1: Select a firmware version to install</h2>
+      <h2>Étape 1: Sélectionnez une version du micrologiciel à installer</h2>
 
       <div>
 	 <div>
-	    <a id="showDocs" href="#"><img class="fileIcon" src="dlFolderIcon.png">Pinscape Downloads</a>:
+	    <a id="showDocs" href="#"><img class="fileIcon" src="dlFolderIcon.png">Téléchargement de Pinscape</a>:
 	 </div>
 	 
 	 <div id="binFiles">
 	 </div>
 	 <div id="noBinFiles">
-	    (No firmware versions have been downloaded)
+	    (Aucune version de firmware n'a été téléchargée)
 	 </div>
 	 
 	 <div>
-	    <a href="#" id="browseForBin">Browse for a file</a>
+	    <a href="#" id="browseForBin">Rechercher un fichier</a>
 	 </div>
       </div>
 
       <div>
-	 File selected: <span id="binToInstall"></span>
+	 Fichier sélectionné: <span id="binToInstall"></span>
       </div>
    </div>
 
    <div id="Step2" class="flowStep">
-      <h2>Step 2: Unplug other KL25Z's</h2>
+      <h2>Étape 2: débranchez les autres KL25Z</h2>
       <div>
 	 <div>
-	    This is going to sound like one of those tech support phone scripts for
-	    dummies, but it's important...
+	    Cela ressemblera à l'un de ces scripts téléphoniques d'assistance technique pour
+	    mannequins, mais c'est important ...
 	 </div>
 	 
 	 <div>
-	    If you have more than one KL25Z unit, please
-	    <b>disconnect all of the other units now</b>.  Make sure both ports
-	    are disconnected on all devices.  This will avoid any confusion about
-	    which device we're programming.
+	    Si vous possédez plusieurs cartes KL25Z, veuillez <b> déconnectez maintenant toutes les autres cartes </b>.
+	    Assurez-vous que les deux ports sont déconnectés sur tous les appareils. Cela évitera toute confusion sur
+	    quel appareil nous programmons.
 	 </div>
 
 	 <div>
-	    When you're ready, <a href="#" id="step2done">click here to continue</a>.
+	    Quand vous êtes prêt, <a href="#" id="step2done">cliquez ici pour continuer</a>.
 	 </div>
       </div>
       <div>
-	 Confirmed
+	 Confirmez
       </div>
    </div>
 
    <div id="Step3" class="flowStep">
-      <h2>Step 3: Plug in programming port</h2>
+      <h2>Étape 3: branchez le port de programmation</h2>
 
       <div>
 	 <div>
 	    <img src="kl25z-how-to-plug-in-prog.png" style="float: right;">
-	    Plug in the <b>programming port</b> on the new KL25Z, as shown
-	    at right.  The small green LED next to the programming port
-	    should be on (not flashing), and a drive representing the device
-	    should appear below.  If the green LED is flashing, unplug all
-	    USB cables from the KL25Z, wait a few seconds, then plug the
-	    programming port back in.
-	    When the device is ready, click on the drive below to continue.
+	    Branchez le <b> port de programmation </b> sur la nouvelle KL25Z, 
+	    comme indiqué à droite. La petite LED verte à côté du port de programmation
+	    doit être allumé (non clignotant) et un lecteur représentant le périphérique
+        devrait apparaître ci-dessous. Si le voyant vert clignote, débranchez tous les
+	    Câbles USB de la KL25Z, attendez quelques secondes, puis branchez le port de
+	    programmation de retour. Lorsque l'appareil est prêt, cliquez sur le lecteur
+	    ci-dessous pour continuer.
 	 </div>
 	 <div id="SDADriveList">
-	    <div class="nosdadrive">(No KL25Z programming drives are current detected.)</div>
+	    <div class="nosdadrive">(Aucune entrée de programmation KL25Z n'est détecté en cours.)</div>
 	 </div>
 	 <div id="multiDriveWarning">
-	    <b>Warning:</b> it looks like more than one KL25Z programming port
-	    is plugged in. If you know which one is which, you can click on
-	    it in the list above - but if there's any doubt, the easiest way to
-	    clear it up is to make sure that the only one plugged in is the
-	    one you want to program.
+	    <b> Attention: </b> vérifiez que le port de programmation de la KL25Z
+		est branché. Si vous savez lequel est-ce, vous pouvez cliquer dans la liste
+		ci-dessus - mais en cas de doute, le moyen le plus simple de clarifier est
+		de s'assurer qu'un seul cable USB branché est que c'est celui que vous
+		souhaitez programmer.
 	 </div>
       </div>
       <div>
-	 Programming drive: (<span id="OpenSDADrive"></span>)
+	 Commande de programmation: (<span id="OpenSDADrive"></span>)
       </div>
    </div>
 
    <div id="Step4" class="flowStep">
-      <h2>Step 4: Install firmware</h2>
+      <h2>Étape 4: installer le micrologiciel</h2>
       <div>
-	 We're ready to go!
-	 <a href="#" id="installGo">Install now</a>
+	 Nous sommes prêts à commencer !
+	 <a href="#" id="installGo">Installation maintenant</a>
       </div>
       <div>
-	 The firmware was successfully installed!
+	 Le micrologiciel a été installé avec succès!
       </div>
    </div>
 
    <div id="Step5" class="flowStep">
-      <h2>Step 5: Plug in joystick port</h2>
+      <h2>Étape 5: Branchez le port du joystick</h2>
       <div>
 	 <img src="kl25z-how-to-plug-in.png" style="float: right;">
-	 The new firmware has been installed.  Please plug in the 
-	 <b>joystick</b> port on the KL25Z, as shown at right.
+	 Le nouveau firmware a été installé. Veuillez brancher le
+	 Port <b> joystick </b> sur la KL25Z, comme illustré à droite.
 	 <div>
-	    If you only have one USB cable, you can unplug it from the
-	    programming port and move it over to the joystick port.
-	    It's also okay to leave both ports plugged in if you
-	    have a second cable.
+	 Si vous n'avez qu'un seul câble USB, vous pouvez le débrancher du
+	 port de programmation et déplacez-le vers le port du joystick.
+	 Vous pouvez également laisser les deux ports branchés si vous
+	 avez un deuxième câble.
 	 </div>
 	 <div>
-	    We'll automatically proceed to the next step when we
-	    detect that the device is connected.  If the device
-	    won't connect properly or these instructions are still
-	    displayed after you plug it in, try these steps:
+	 Nous passerons automatiquement à l'étape suivante lorsque nous
+	 détecterons que l'appareil est connecté. Si l'appareil
+	 ne se connecte pas correctement ou ces instructions sont toujours
+	 affiché après l'avoir branché, essayez ces étapes:
 
 	    <ul>
-	       <li>Reset the KL25Z by pressing its reset button
+	       <li>Réinitialisez la KL25Z en appuyant sur son bouton de réinitialisation
 
-	       <li>Unplug it completely (both ports), wait a few
-	       moments, and plug it back in
+	       <li>Débranchez-la complètement (les deux ports), attendez quelques
+			instants, et rebranchez-la
 
-	       <li>If none of that works, the firmware installation
-	       might not have worked after all.  You might try
-	       going back and repeating the installation process.
+	       <li>Si rien de tout cela ne fonctionne, l'installation du micrologiciel
+			pourrait ne pas avoir fonctionné après tout. Vous pourriez essayer de
+			revenir en arrière et répéter le processus d'installation.
 	    </ul>
 	 </div>
       </div>
       <div>
-	 Device connected
+	 Appareil connecté
       </div>
    </div>
 
    <div id="Step6" class="flowStep">
-      <h2>Done!</h2>
+      <h2>Fait!</h2>
 
       <div>
 	 <div>
-	    The firmware update was successfully completed.
+	    La mise à jour du micrologiciel a été effectuée avec succès.
 	 </div>
 	 <div>
-	    You're now ready to configure the device settings.  If
-	    you have other KL25Z units, please wait to reconnect them
-	    until after you've configured the new unit and saved its
-	    new settings.  It's particularly important that you assign
-	    a unique LedWiz unit number to each device to avoid USB
-	    conflicts.
+	    Vous êtes maintenant prêt à configurer les paramètres de l'appareil. 
+	    Si vous avez d'autres cartes KL25Z, veuillez patienter pour les reconnecter
+	    jusqu'à ce que vous ayez configuré la nouvelle carte et enregistré ses
+	    nouveaux paramètres. Il est particulièrement important que vous attribuiez
+	    un numéro de carte LedWiz unique pour chaque appareil pour éviter tout 
+	    conflits d'USB.
 	 </div>
 	 <div style="margin: 2em; text-align: center;">
-	    <a class="button" id="goConfig">Configure settings &gt;&gt;</a>
+	    <a class="button" id="goConfig">Configurer les paramètres &gt;&gt;</a>
 	 </div>
       </div>
       <div>
@@ -183,7 +182,7 @@
 <div id="navproxy"></div>
 <div id="nav">
    <div class="left">
-      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Return to the main menu"><img src="homeIcon.png"></a>
+      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Retourner au menu principal"><img src="homeIcon.png"></a>
    </div>
    <div class="navSpacer">
    </div>
@@ -387,7 +386,7 @@ $(function()
 	    function install(ev, self)
 	    {
 		ev.preventDefault();
-		div.html("Installing firmware...");
+		div.html("Installation du micrologiciel...");
 		self.off("click");
 
 		setTimeout(function()
@@ -397,7 +396,7 @@ $(function()
 			nextStep();
 		    else {
 			div.html(
-			    "<div>Firmware install failed: " + stat.message.htmlify() + "</div>"
+			    "<div>L'installation du micrologiciel a échoué: " + stat.message.htmlify() + "</div>"
 			    + "<div><a href='#' id='retryFirmware'>Try again</a>");
 			$("#retryFirmware").off("click").click(function(ev) { install(ev, $(this)); });
 		    }

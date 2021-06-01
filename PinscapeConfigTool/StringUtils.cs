@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace StringUtils
@@ -30,12 +26,13 @@ namespace StringUtils
         // escape a string for js insertion
         public static String JSStringify(this String s)
         {
-            return Regex.Replace(s, @"[\\""\n\r]", new MatchEvaluator(m => { 
+            return Regex.Replace(s, @"[\\""\n\r]", new MatchEvaluator(m =>
+            {
                 switch (m.Value)
                 {
                     case "\n": return "\\n";
                     case "\r": return "\\r";
-                    default:   return "\\" + m.Value;
+                    default: return "\\" + m.Value;
                 }
             }));
         }

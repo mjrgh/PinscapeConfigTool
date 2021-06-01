@@ -1,137 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Output Port Tester</title>
+   <title>Testeur de port de sortie</title>
 </head>
 <body class="help">
 
 <h1>
    <img style="float: right;" src="h1OutputTester.png">
-   Output Port Tester
+   Testeur de port de sortie
    <img style="visibility: hidden; vertical-align: middle;" src="h1OutputTester.png">
 </h1>
 
 <div>
 
    <p>
-	  This window lets you test the physical output port wiring
-	  on your Pinscape unit.
+	Cette fenêtre vous permet de tester le câblage du port de sortie physique
+	sur votre appareil Pinscape.
    </p>
 
    <p>	  
-	  The list shows each output port and its pin location
-      on the KL25Z, external chip, or expansion boards.
+	La liste montre chaque port de sortie et son emplacement de broche sur la
+	KL25Z, la puce externe ou les cartes d'extension.
    </p>
 
    <p>
-	  If you need a reminder of the pin location for a given
-      output port, move the mouse over the port's row in the
-	  the list on the left.  This will highlight the location
-      of the pin on the diagram of the KL25Z or expansion
-      board on the right.
+	Si vous avez besoin d'un rappel de l'emplacement de la broche pour un
+    port de sortie, déplacez la souris sur la ligne du port dans la liste à
+	gauche. Cela mettra en évidence l'emplacement de la broche sur le schéma
+	du KL25Z ou de l'extension à droite.
    </p>
 
    <p>
-	  Ports can be either PWM-capable or Digital.  PWM outputs
-	  can be set to a range of brightness/intensity levels, while
-	  Digital outputs can only be turned ON and OFF.  The type of
-	  each port depends on the physical output hardware and your
-	  selections on the Settings page.  All KL25Z GPIO pins can
-	  be used as Digital outputs, while only a subset of GPIO pins
-	  are PWM-capable, because the KL25Z hardware only provides
-	  the necessary internal wiring for PWM on certain pins.  The
-	  Settings page lets you assign the mode (PWM or Digital) for
-	  each pin, and only lets you select PWM for pins that have
-	  the necessary internal wiring.  TLC5940 ports are always
-	  PWM, and 74HC595 ports are always digital.
+	Les ports peuvent être compatibles PWM ou numériques. Les sorties PWM
+	peuvent être réglées sur une plage de niveaux de luminosité / intensité,
+	tandis que les sorties numériques peuvent uniquement être activées et 
+	désactivées. Le type de chaque port dépend du matériel de sortie physique
+	et de votre sélection sur la page "Paramètres". Toutes les broches GPIO
+	de la KL25Z peuvent être utilisé comme sorties numériques, alors que seul
+	un sous-ensemble de broches GPIO sont compatibles PWM, car le matériel 
+	de la KL25Z ne fournit le câblage interne nécessaire pour PWM sur certaines
+	broches. La page "Paramètres" vous permet d'attribuer le mode (PWM ou 
+	numérique) pour chaque broche, et ne vous permet de sélectionner PWM que
+	pour les broches qui ont le câblage interne nécessaire. Les ports TLC5940
+	sont toujours des ports PWM et 74HC595 sont toujours numériques.
    </p>
 
    <p>
-      For a PWM port, the output list shows a slider
-	  control that lets you set a brightness level for the port,
-	  from 0 to 255.  0 is OFF and 255 is 100% brightness.
-      There's also an ON/OFF button next to each slider that
-      you can use to switch the port on and off without
-      changing the brightness setting.
+      	Pour un port PWM, la liste de sortie affiche un curseur de contrôle qui
+	vous permet de définir un niveau de luminosité pour le port de 0 à 255.
+	0 est OFF et 255 est une luminosité de 100%. Il y a aussi un bouton ON / OFF
+	à côté de chaque curseur que vous pouvez utiliser pour activer et désactiver
+	le port sans changer le réglage de la luminosité.
    </p>
 
    <p>
-	  For a Digital port, the list only includes an ON/OFF button.
-	  Click the button to toggle the output status.
+	Pour un port numérique, la liste comprend uniquement un bouton ON / OFF.
+	Cliquez sur le bouton pour basculer l'état de sortie.
    </p>
 
-   <h2>Night Mode</h2>
+   <h2>Mode nuit</h2>
 
    <p>
-	  The Night Mode button lets you turn night mode on and off.
-	  This lets you test that the right outputs are marked as
-	  "noisy" in the port setup and that night mode disables
-	  them properly when engaged.  When night mode is engaged,
-	  all ports marked "noisy" in the setup are disabled, so
-	  those physical outputs will stay off even if you turn
-	  them on or turn their brightness up in the list.  Note
-	  that the <b>software</b> on/off and brightness settings
-	  for "noisy" ports aren't affected; the ports are simply
-	  cut off at the physical output pins.  So you can still
-	  adjust the software on/off and brightness settings for
-	  noisy ports while night mode is engaged, and those settings
-	  will be applied to the physical ports as soon as you
-	  disengage night mode.
+	Le bouton Mode nuit vous permet d'activer et de désactiver le mode nuit.
+	Cela vous permet de vérifier que les bonnes sorties sont marquées comme
+	"bruyant" dans la configuration du port et ce mode nuit les désactive
+	correctement lorsqu'ils sont engagés. Lorsque le mode nuit est activé,
+	tous les ports marqués «bruyant» dans la configuration sont désactivés,
+	donc ces sorties physiques resteront éteintes même si vous les allumez
+	ou augmenter leur luminosité dans la liste. 
+	Remarqué que le <b> logiciel </b> marche / arrêt et les paramètres de
+	luminosité pour les ports "bruyants" ne sont pas affectés, les ports sont
+	simplement coupé au niveau des broches de sortie physiques. Donc vous
+	pouvez encore régler l'activation / la désactivation du logiciel et les
+	paramètres de luminosité pour les ports bruyants lorsque le mode nuit est
+	activé, et ces paramètres seront appliqués aux ports physiques dès que 
+	vous désactiver le mode nuit.
    </p>
 
-   <h2>Troubleshooting Visual Pinball, DOF, and other software</h2>
+   <h2>Dépannage de Visual Pinball, DOF et autres émulateurs</h2>
 
    <p>
-	  The Output Tester window can be helpful if you're having problems getting
-	  your output devices to work with your pinball player software.
+	La fenêtre Testeur de sortie peut être utile si vous rencontrez des
+	problèmes pour obtenir vos périphériques de sortie pour fonctionner
+	avec votre émulateur de flipper.
    </p>
 
    <p>
-	  The output tester communicates with the KL25Z directly
-	  via USB.  It doesn't depend on any other shared software
-	  that you might need for other programs, such as DOF,
-	  LEDWIZ.DLL, etc.  That makes it easier to isolate the
-      source of any problems:
+	Le testeur de sortie communique directement avec la KL25Z via USB.
+	Cela ne dépend d'aucun autre logiciel partagé dont vous pourriez avoir
+	besoin pour d'autres programmes, tels que DOF, LEDWIZ.DLL, etc. 
+	Cela permet d'isoler plus facilement les source de tout problème:
    </p>
 
    <ul>
-      <li>If the outputs work properly in the Output Tester
-      window, it confirms that your
-      physical wiring is working properly, that the KL25Z is
-      configured correctly, and that the KL25Z USB connection
-      is working.  That rules out problems with your Pinscape
-      hardware setup, so any problems with other software must
-      lie in the other software.  If you're using Visual Pinball,
-      the place to start looking is usually DOF (DirectOutput
-      Framework).  DOF has its own configuration that you have
-      to set up to match your Pinscape port setup.
+      <li>Si les sorties fonctionnent correctement dans la fenêtre du testeur de
+	  sortie, il confirme que votre câblage physique fonctionne correctement,
+	  que la KL25Z est correctement configuré et que la connexion USB vers la
+	  KL25Z est fonctionnelle.
+	  Cela exclut les problèmes avec votre configuration matérielle donc tout
+	  problème avec d'autres logiciels doit se trouver dans les autres logiciels.
+	  Si vous utilisez Visual Pinball, l'endroit où commencer à chercher est
+	  généralement le DOF (DirectOutput Framework). DOF a sa propre configuration
+	  que vous avez à configurer pour correspondre à la configuration de votre
+	  port Pinscape.
       <p>
-         For help with DOF issues, see the
-         <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=DOF#DOFtroubleshooting"</a>DOF Troubleshooting</a>
-         section in the Pinscape Build Guide.
+         Pour obtenir de l'aide sur les problèmes de DOF, consultez le
+         <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=DOF#DOFtroubleshooting"</a>Dépannage DOF</a>
+         dans le guide de construction Pinscape.
       </p>
 
-      <li>If the outputs aren't working in the output tester, there's
-      probably something wrong with the physical wiring or with
-      the Pinscape firmware configuration.  The first step is to
-      verify that the outputs are configured correctly in the
-      Settings page: make sure that the physical wiring matches
-      the pin assignments, and that there aren't any error or
-      warning icons displayed next to pin assignments anywhere on
-      the Settings page.  The tool does lots of error checking to help
-	  ensure the setup is correct.  It checks that you haven't
-	  assigned the same pin to multiple functions, and that each pin
-	  is capable of performing its assigned function.  If everything
-	  looks right in the settings, the next place to look is the
-	  physical wiring.  Start by verifying that the wiring is what
-	  you intended: that the right things are connected to the right
-	  pins, power supplies, etc.  If everything matches your plans,
-	  a good next step is to get out a voltmeter and check
-	  continuity through each circuit, to make sure there
-	  aren't any loose wires, broken wires, or bad solder
-	  connections.
+     <li>Si les sorties ne fonctionnent pas dans le testeur de sortie, il y a
+     probablement quelque chose qui ne va pas avec le câblage physique ou avec
+     la configuration du micrologiciel Pinscape. La première étape consiste à
+     vérifiez que les sorties sont correctement configurées dans la page
+	 "Paramètres". Assurez-vous que le câblage physique correspond aux affectations
+	 des broches, et qu'il n'y a pas d'erreur ou d'icônes d'avertissement affichées
+	 à côté des attributions de broches n'importe où sur la page "Paramètres".
+	 L'outil effectue de nombreuses vérifications d'erreurs pour vous aider,
+	 assurez-vous que la configuration est correcte. Il vérifie que vous n'avez pas
+	 assigné la même broche à plusieurs fonctions et que chaque broche est capable
+	 de remplir sa fonction assignée. Si tout est "OK" dans les "paramètres", le 
+	 prochain endroit à regarder est le câblage physique. Commencez par vérifier 
+	 que c'est le câblage que vous vouliez: que les bonnes choses soient connectées
+	 aux bonnes broches, blocs d'alimentation, etc. Si tout correspond à vos plans,
+	 la prochaine étape est de sortir un voltmètre et de vérifier la continuité
+	 à travers chaque circuit, pour s'assurer qu'il 'y a pas de fils coupés, de fils
+	 cassés ou de mauvaise soudure de connexions.
    </ul>
 
 </div>

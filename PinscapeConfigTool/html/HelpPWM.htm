@@ -1,86 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>PWM GPIO Pins</title>
+   <title>Broches GPIO PWM</title>
 </head>
 <body class="help">
 <h1>
-   PWM GPIO Pins
+   Broches GPIO PWM
 </h1>
 
 <div>
 
    <p>
-      Certain pin assignments in the configuration require pins with "PWM"
-      capabilities.  PWM stands for Pulse Width Modulation, which is a hardware
-      feature that allows controlling the intensity of an output, such as the
-      brightness of an LED or the speed of a motor.
+      Certaines affectations de broches dans la configuration nécessitent des broches avec des capacités "PWM"
+      PWM signifie Pulse Width Modulation, qui est un matériel fonctionnel qui permet de contrôler l'intensité
+      d'une sortie comme la luminosité d'une LED ou la vitesse d'un moteur.
    </p>
 
    <p>
-      Some - not all - of the external pins on the KL25Z have PWM capabilities.
-      When you select a pin for a feature that requires PWM, the pin selector
-      will limit the selection to show only the PWM-capable pins.
+      Certaines - pas toutes - des broches externes du KL25Z ont des capacités PWM.
+      Lorsque vous sélectionnez une broche pour une fonction qui nécessite PWM, le sélecteur de broche
+      limitera la sélection pour afficher uniquement les broches compatibles PWM.
    </p>
 
    <p>
-      If you see a warning icon (<img src="pinwarn.png" style="vertical-align: middle;">)
-      next to a pin selection, this indicates that the selection has a conflict.
-      Click on the warning to display a detailed message, which will tell you
-      which other usage is in conflict.
+      Si vous voyez une icône d'avertissement (<img src="pinwarn.png" style="vertical-align: middle;">)
+      à côté d'une sélection de broches, cela indique que la sélection a un conflit.
+      Cliquez sur l'avertissement pour afficher un message détaillé, qui vous dira quel autre usage est en conflit.
    </p>
 
    <p>
-      For all pins that you assign, you have to be sure to pick a pin that isn't
-      used for any other purpose.  The pin warning message will tell you if a pin
-      is used more than once.
+      Pour toutes les broches que vous attribuez, vous devez être sûr de choisir une brochee qui n'est pas
+      utilisée à toute autre fin. Le message d'avertissement de broche vous dira si une broche est utilisé
+      plus d'une fois.
    </p>
 
    <p>
-      In the case of PWM pins, the situation is slightly more complicated.
-      You not only have to pick a pin that's free, but also one that's connected
-      to a "PWM channel" that's free.  If you see a conflict message
-      telling you that your selected pin's PWM channel is used more
-      than once, read on to learn more about what this means.
+      Dans le cas des broches PWM, la situation est légèrement plus compliquée.
+      Vous devez non seulement choisir une broche libre, mais aussi une qui est connectée
+      à un "canal PWM" libre. Si vous voyez un message de conflit vous indiquant que le canal PWM de votre
+      broche sélectionnée est utilisé plus d'une fois, lisez la suite pour en savoir plus sur ce que cela
+      signifie.
    </p>
 
-   <h2>Pins and "channels"</h2>
+   <h2>Broches et "Canaux"</h2>
 
    <p>
-      Internally, the KL25Z handles PWM output
-      pins using a hardware module called the PWM controller.  When you assign
-      a pin as a PWM output, the KL25Z internally makes an electrical connection
-      between the selected pin and the PWM controller module.  
-   </p>
-
-   <p>
-      The KL25Z's PWM controller module only has 10 channels.  This means that
-      only 10 independent PWM outputs are possible at any one time.  You might
-      notice that there are considerably more than 10 PWM-capable pins, though.
-      How is this possible?  It's because each channel on the PWM controller is
-      over-committed.  Each channel connects to several pins.  For example,
-      channel "0.2" can be connected to PTA5, PTC3, PTD2, or PTE29.  The word "or"
-      is really important here, though: you can only connect that channel to
-      <b>one</b> of these pins at any one time.
+      En interne, le KL25Z gère la broche de sortie PWM à l'aide d'un module matériel appelé contrôleur PWM.
+      Lorsque vous attribuez une broche comme sortie PWM, la KL25Z effectue une connexion électrique en interne
+      entre la broche sélectionnée et le module contrôleur PWM.  
    </p>
 
    <p>
-      Therein lies the complication.  If you assign PTA5 as a PWM output,
-      this commits PWM channel 0.2 to that pin, and makes PTC3, PTD2, and PTE29
-      unavailable as PWM outputs.  You can still use those other pins for
-      other purposes, but you can't use them as PWM outputs once the channel
-      is in use.
+      Le module contrôleur PWM de la KL25Z ne dispose que de 10 canaux. Cela signifie que seules 10 sorties PWM
+      indépendantes sont possibles à la fois. Vous pourrez noter cependant qu'il y a considérablement plus de 10
+      broches compatibles PWM. Comment est-ce possible? C'est parce que chaque canal du contrôleur PWM est
+      sur-engagé. Chaque canal se connecte à plusieurs broches. Par exemple, le canal "0.2" peut être connecté à
+      PTA5, PTC3, PTD2 ou PTE29. Le mot "ou" est vraiment important ici, cependant: vous ne pouvez connecter ce
+      canal qu'à <b> une </b> de ces broches à la fois.
    </p>
 
    <p>
-      The pin selector tool tries to help by showing you the pins that
-      are unavailable because their respective PWM channels are already
-      assigned to other pins.  It's sometimes also helpful for planning
-      purposes to be able to see the overall connection matrix, so here's
-      a cross-reference of the PWM-capable pins and their associated
-      channels, and vice-versa.
+      C'est là que réside la complication. Si vous affectez PTA5 comme sortie PWM, cela engage le canal PWM 0.2
+      sur cette broche et rend PTC3, PTD2 et PTE29 indisponible en tant que sorties PWM. Vous pouvez toujours
+      utiliser ces autres broches à d'autres fins, mais vous ne pouvez pas les utiliser comme sorties PWM une
+      fois le canal en cours d'utilisation.
+   </p>
+
+   <p>
+      L'outil de sélection de broches essaie de vous aider en vous montrant les broches qui ne sont pas disponibles
+      car leurs canaux PWM respectifs sont déjà assigné à d'autres broches. C'est parfois aussi utile pour la
+      planification pour pouvoir voir la matrice de connexion globale, alors voici une référence croisée des broches
+      compatibles PWM et de leurs canaux, et vice-versa.
    </p>
 
    <style type="text/css">
@@ -99,9 +91,9 @@ div.caption {
    </style>
 
 
-   <div class="caption">PWM-capable pins</div>
+   <div class="caption">Broches compatibles PWM</div>
    <table class="helpPinTab">
-      <tr><th>Pin</th><th>PWM Channel</th></tr>
+      <tr><th>Broche</th><th>Canal PWM</th></tr>
       <tr><td>PTA1</td><td>2.0</td></tr>
       <tr><td>PTA2</td><td>2.1</td></tr>
       <tr><td>PTA4</td><td>0.1</td></tr>
@@ -135,9 +127,9 @@ div.caption {
       <tr><td>PTE31</td><td>0.4</td></tr>
    </table>
 
-   <div class="caption">PWM Channels and associated pins</div>
+   <div class="caption">Canaux PWM et broches associées</div>
    <table class="helpPinTab">
-      <tr><th>PWM Channel</th><th>Connected Pins</th></tr>
+      <tr><th>Canal PWM Channel</th><th>Broches Connectées</th></tr>
 
       <tr><td>0.0</td><td>PTC1, PTD0</td>
       <tr><td>0.1</td><td>PTA4, PTC2, PTD1</td>

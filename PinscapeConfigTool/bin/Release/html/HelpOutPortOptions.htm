@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Options de port de sortie</title>
+</head>
+<body class="help">
+<h1>
+   Options de port de sortie
+</h1>
+
+<div>
+   L'icônes « Option » à côté de chaque port vous permet de sélectionner une gestion
+   spéciale pour le port. Dans la fenêtre Paramètres, vous pouvez cliquer sur une icône
+   d'option pour basculer son état. Notez que certaines options ne sont disponibles 
+   qu'avec certains types de ports, vous ne verrez donc pas nécessairement toutes les
+   icônes d'options répertoriées à côté de chaque port.
+</div>
+<div>
+   (Dans la fenêtre Testeur de sortie, les icônes s'affichent, mais ne peuvent pas être
+   modifiées. Utilisez la fenêtre "Paramètres" si vous souhaitez modifier l'une des
+   options d'un port.)
+</div>
+
+<div>
+
+   <h2><img src="NoisyOn.png">Port bruyant</h2>
+
+   <p>
+      Définissez cette option pour les ports que vous utilisez pour contrôler les
+      périphériques bruyants, tels que les solénoïdes et les moteurs.
+   </p>
+
+   <p>
+      Chaque port marqué de ce drapeau sera désactivé lorsque le mode nuit est activé.
+      Ces ports ne fonctionneront qu'en "Mode Jour", lorsque le Mode Nuit est désactivé.
+   </p>
+
+   <p>
+      Si vous utilisez la fonction de mode nuit, vous devez d'abord parcourir vos appareils
+      et déterminer le port auquel vous allez connecter chaque appareil.
+      Ensuite, définissez le drapeau "Bruyant" pour chaque périphérique faisant du bruit.
+      Lorsque vous activez le mode nuit, ces appareils sont désactivés, vous permettant de
+      jouer plus tranquillement et ainsi ne pas déranger si votre pincab est dans votre
+      salon par exemple.
+   </p>
+
+   <p>
+      Si vous n'utilisez pas la fonction Mode nuit, vous pouvez ignorer cette option.
+   </p>
+
+   <h2><img src="GammaOn.png">Gamma</h2>
+
+   <p>
+      Si cette option est définie, le contrôleur applique une «correction gamma» au port.
+      Cela ajuste le niveau d'intensité du port sur une échelle incurvée afin qu'il
+      corresponde mieux à la façon dont l'œil humain perçoit la luminosité.
+   </p>
+
+   <p>La correction gamma est la meilleure pour les ports connectés pour des appareils
+      d'éclairage tels que des lampes et des LED.
+      Lorsqu'elle est utilisée avec des lumières, la correction gamma donne aux effets
+      de «décoloration» un aspect plus linéaire à l'œil et améliore la précision du
+      mélange des couleurs RVB.
+      Vous ne devez généralement pas utiliser la correction gamma avec d'autres types
+       d'appareils, tels que les solénoïdes et les moteurs.
+   </p>
+
+   <p>
+      L'option de correction gamma n'est disponible que pour les ports avec capacité PWM,
+      car elle n'affecte que les niveaux d'intensité intermédiaires entre complètement
+      désactivé et complètement activé.
+      La correction gamma n'est pas une option sur les ports uniquement numériques, tels
+      que les ports GPIO numériques, les sorties 74HC595 et les sorties de carte de carillon,
+      car ces ports ne peuvent pas faire varier leur intensité.
+   </p>
+
+   <p>
+      Pour simplifier les choses, le contrôleur utilise un gamma fixe de 2,8.
+   </p>
+
+   <h2><img src="ActiveLowOn.png">Actif bas</h2>
+
+   <p>
+      Cette option inverse les niveaux de tension pour ON et OFF pour un port de sortie GPIO.
+   </p>
+
+   <p>
+      Par défaut, les ports sont «actifs haut», ce qui signifie que le contrôleur de sortie
+      règle la broche GPIO du port sur «haut» (3,3 V) lorsque le port logiciel est activé,
+      et le règle sur «bas» (0 V) lorsque le port logiciel est OFF.
+   </p>
+
+   <p>
+      Le réglage de cette option inverse ces tensions.
+      La broche GPIO d'un port «actif bas» est «basse» (0 V) lorsque le port logiciel est activé
+      et «élevée» (3,3 V) lorsque le port logiciel est désactivé.
+   </p>
+
+   <p>
+      <b>N'utilisez pas</b> cette option avec le "circuit booster" MOSFET décrit dans le Guide
+      de construction. Ce circuit est conçu pour le déclenchement "Active High" par défaut.
+   </p>
+
+   <p>
+      Utilisez cette option si vous utilisez un autre type de circuit d'appoint qui nécessite
+      un déclenchement actif-bas. Ceci est assez courant parmi les «cartes relais» tierces
+      conçues pour les projets Arduino, par exemple.
+      Si vous avez une carte de relais qui vous demande de connecter l'entrée de commande à
+      «Ground» ou «GND» ou 0V pour la déclencher, c'est une conception actif bas et vous devez
+      sélectionner cette option.
+   </p>
+
+   <p>
+      Notez que cette option ne fonctionne qu'avec les ports GPIO.
+      Les ports de la carte d'extension et les puces de sortie externes (TLC5940 et 74HC595) 
+      ont des conceptions différentes qui ne peuvent pas utiliser cette fonction.
+      Dans le cas des cartes d'extension, c'est de toute façon inutile, car ces cartes ont
+      leurs propres circuits de rappel intégrés.
+   </p>
+
+   <h2><img src="FlipperLogicOn.png">Logique Flipper (Flipper logic)</h2>
+
+   <p>
+      Cette option définit des propriétés de synchronisation et d'alimentation spéciales pour
+      le port, afin de protéger certains types de bobines et de solénoïdes contre la surchauffe.
+      Lorsque Logique Flipper est activé sur un port, le contrôleur simule le fonctionnement
+      d'une vraie bobine de flipper. Chaque fois que le logiciel du PC active le port, le
+      contrôleur donne brièvement au port la pleine puissance, puis réduit la puissance à un
+      niveau inférieur. Le niveau inférieur est maintenu tant que le logiciel du PC laisse le
+      port activé. Le but est d'obtenir le plein effet mécanique de l'appareil lors de sa première
+      mise en marche, en lui donnant la pleine puissance au départ, mais ensuite protége l'appareil
+      contre la surchauffe en réduisant rapidement la puissance à un niveau durable.
+   </p>
+   <p>
+      Cette option est mutuellement exclusive avec Chime Logic - logique de carillon (voir ci-dessous).
+      logique de carillon sera automatiquement désactivé si vous activez Logique Flipper.
+   </p>
+   <p>
+      Il n'est pas nécessaire d'utiliser cette option avec des appareils conçus pour une activation
+      à long terme, tels que des contacteurs. Cette option est conçue pour les appareils qui
+      surchaufferaient s'ils étaient allumés pendant de longues périodes à pleine puissance.
+   </p>
+   <p>
+      Lorsque vous cliquez sur l'icône Logique Flipper, une boîte de dialogue apparaît pour vous
+      permettre de saisir deux paramètres supplémentaires:
+   </p>
+
+   <ul>
+      <li>Temps initial: la limite de temps pour la rafale initiale de pleine puissance.
+	  Cela peut aller d'un minimum de 50 ms (1/20 de seconde) à 800 ms (0,8 seconde), par incréments
+	  de 50 ms. Chaque fois que le logiciel PC active le port, le port reçoit 100% de puissance
+	  jusqu'à ce que ce le délai expire. (Bien sûr, ce n'est qu'un maximum, pas un minimum: si le PC
+	  éteint le port dans un délai plus court, le port s'éteint simplement immédiatement.)
+
+      <li>Maintenir la puissance: le niveau de puissance réduit donné au port après l'expiration du délai
+	  initial. Il s'agit d'un pourcentage de la pleine puissance, par incréments d'environ 7%.
+      <p>
+         La réduction de puissance est réalisée à l'aide de PWM (modulation de largeur d'impulsion),
+	  vous ne pouvez donc définir qu'un niveau de puissance fractionnaire pour un port compatible PWM.
+	  Pour un port numérique, la puissance de maintien est fixée à 0% et ne peut pas être modifiée (ON ou OFF),
+      </p>
+   </ul>
+
+   <p>
+      Le but de cette fonctionnalité est d'élargir votre gamme de choix d'appareils permettant de simuler des
+      palmes dans votre pincab. Traditionnellement, les constructeurs de flipper étaient limités à des dispositifs
+      tels que des contacteurs capables de supporter de longues périodes d'activation.
+      L'option Logique flipper permet d'utiliser plus de types d'appareils, car elle peut réduire considérablement
+      la charge thermique sur un appareil laissé allumé pendant une longue période.
+   </p>
+   <p>
+      Les bons paramètres dépendent de l'appareil individuel, vous devrez donc expérimenter.
+      Le but est de trouver le réglage de puissance minimum là où le dispositif reste activé mécaniquement,
+      c'est-à-dire là où le piston ou le levier reste en position «marche». Pour la plupart des appareils,
+      vous devriez pouvoir utiliser le temps de pleine puissance minimum de 50 ms, vous ne devriez donc avoir qu'à
+      trouver le bon niveau de puissance de maintien. Commencez au niveau de puissance de maintien le plus bas.
+      Programmez la KL25Z avec de nouveaux paramètres, puis accédez au testeur de sortie et activez le port.
+      S'il reste activé mécaniquement pendant quelques secondes, vous avez trouvé la bonne alimentation de maintien,
+      alors désactivez le port et passez à l'étape suivante ci-dessous.
+      Sinon, revenez à la page des paramètres et essayez le niveau de puissance de maintien supérieur suivant,
+      et répétez jusqu'à ce que vous trouviez un niveau de travail.
+   </p>
+   <p>
+      Il y a encore une étape: vous devez vérifier que le paramètre d'alimentation de maintien sélectionné est sans
+      danger pour l'appareil. Accédez au testeur de sortie et rallumez le port. Surveillez attentivement l'appareil
+      pour vous assurer qu'il ne chauffe pas au toucher. Le chaud, c'est bien, mais vous devriez pouvoir le toucher
+      sans vous brûler. Si l'appareil ne chauffe pas après environ deux minutes, il devrait fonctionner indéfiniment.
+      C'est assez long pour que l'appareil atteigne l'équilibre thermique, où il dégage de la chaleur aussi vite qu'il
+      la génère, auquel cas il ne doit pas surchauffer, peu importe combien de temps vous le laissez allumé.
+   </p>
+   <p>
+      Si l'appareil commence à chauffer dans les premières minutes, éteignez-le immédiatement pour éviter tout dommage.
+      L'appareil n'est probablement pas adapté à une utilisation comme simulateur de flipper dans ce cas, même avec
+      l'option logique Flipper.
+   </p>
+
+   <p>
+      <b>0% de puissance de maintien:</b>
+      Si vous réglez la puissance de maintien sur 0%, le contrôleur éteindra simplement le port complètement après
+      l'expiration du délai initial. Cela simule le "carillon" Pinscape, qui a des minuteries matérielles qui
+      désactivent les ports s'ils restent allumés pendant plus de quelques secondes. Cela ne convient pas aux flippers,
+      car cela générerait un effet de rétroaction "off" prématurément, avant que le joueur ne relâche les boutons du flipper.
+      Mais cela convient parfaitement à de nombreux autres types d'appareils, en particulier les heurtoirs et les carillons
+      de relecture car le logiciel ne doit jamais alimenter ces appareils pendant plus d'une fraction de seconde en premier lieu.
+      Il est probablement également approprié pour les appareils simulant des chocs et autres appareils.
+   </p>
+   <p>
+      Notez que le logiciel PC peut toujours contrôler l'intensité de l'effet.
+      Pendant la période initiale de «pleine puissance», le contrôleur passera en fait par le niveau d'intensité spécifié
+      par le logiciel PC. DOF utilise des niveaux de puissance réduits pour les bruits logiciels des solénoïdes dans certains cas,
+      et cela fonctionnera toujours correctement avec un port logique Flipper, puisque la carte Pinscape utilisera le niveau
+      d'intensité DOF pendant la période initiale de «pleine puissance». Pendant la période de maintien, le PC peut également
+      faire varier la puissance, mais seulement en dessous de la limite donnée par le réglage de la puissance de maintien.
+      Toute puissance plus élevée que le PC essaie de régler pendant la période de maintien sera plafonnée à la puissance de maintien.
+      Il serait inhabituel pour un logiciel PC de le faire avec un solénoïde, car cela ne créerait normalement aucun effet notable,
+      mais le logiciel Pinscape le prend en charge au cas où il en aurait besoin.
+   </p>
+
+   <h2><img src="ChimeLogicOn.png">logique de carillon (Chime Logic)</h2>
+
+   <p>
+      Cette option vous permet de définir des intervalles de temps ON minimum et maximum pour le port.
+   </p>
+   <p>
+      Cette option est mutuellement exclusive avec Logique Flipper (voir ci-dessus).
+      Logique Flipper sera automatiquement désactivé si vous activez Logique de carillon.
+   </p>
+   <p>
+      Les options Logique de carillon vous permettent de définir des intervalles de synchronisation assez précis, en particulier
+      pour des intervalles très courts allant de quelques millisecondes à des dizaines de millisecondes.
+      Le logiciel côté PC n'est pas capable du même degré de précision de synchronisation que le contrôleur peut offrir car le
+      logiciel du PC doit gérer plusieurs couches de logiciels Windows et de matériel USB qui interposent une certaine quantité
+      de flou dans la synchronisation.
+   </p>
+   <p>
+      La définition d'un temps minimum peut être utile pour les dispositifs mécaniques qui nécessitent un certain temps minimum
+      avant que leurs effets atteignent leur pleine puissance. Par exemple, certains contacteurs ne produiront pas un son de "clunk"
+      suffisamment satisfaisant à moins qu'ils ne soient activés pendant au moins 10 ou 20 millisecondes à la fois.
+   </p>
+   <p>
+      La durée maximale peut être utile pour les appareils comme les carillons qui dépendent d'un cycle MARCHE / ARRÊT très rapide.
+      Il peut également être utilisé pour protéger les bobines contre la surchauffe, en faisant le même travail dans le logiciel
+      que les "Cartes logique" Pinscape dans le matériel via leurs circuits limiteurs de temps. Le réglage de la durée maximale est
+      similaire au temps de pleine puissance du Logique Flipper, mais il comporte un compromis. Sur le plan positif, il offre des
+      gradations de temps plus fines à l'extrémité courte de l'échelle, de la milliseconde à la dizaine de millisecondes.
+      Par contre, Logique du carillon ne peut couper complètement l'alimentation du port que lorsque le maximum est atteint,
+      tandis que Logique Flipper peut laisser le port allumé à puissance réduite lorsqu'il est utilisé avec un port PWM.
+   </p>
+   <p>
+      Pour activer Logique du carillon, cliquez sur l'icône de carillon à côté de la rangée de ports pour le port souhaité.
+      Lorsque vous cliquez sur l'icône, une boîte de dialogue apparaît pour vous permettre de saisir les valeurs de temps minimum
+      et maximum. Le temps minimum peut être réglé sur une plage de valeurs de 0 ms à 800 ms. Le temps maximum a une gamme similaire
+      de sélections et peut également être réglé sur "infini" sans aucune limite de temps.
+   </p>
+   <p>
+      Si vous définissez une durée maximale inférieure à la durée minimale, la durée minimale prévaut.
+      L'effet est donc que le port sera toujours activé pendant exactement le temps minimum.	
+   </p>
+
+</div>
+
+</body>
+</html>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8"/>
    <link rel="stylesheet" href="main.css"/>
-   <title>Standard Pinball Key Assignments</title>
+   <title>Attributions de clés de flipper standard</title>
 </head>
 <body class="help">
 <h1>
-   Standard Pinball Key Assignments
+   Attributions de clés de flipper standard
 </h1>
 
 
@@ -15,63 +15,60 @@
 <script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
 <script type="text/javascript" src="util.js"></script>
 
-Visual Pinball uses the key assignments shown below by default.
-The basic functions (flippers, plunger, Start Game) are the same in
-almost all other PC pinball programs.
+Visual Pinball utilise les affectations de touches ci-dessous par défaut.
+Les fonctions de base (flippper, piston, Démarrer le jeu) sont presque les mêmes
+que tous les autres programmes de flipper PC.
 
 <div id="keytab">
-1e (1)           Start Game
-1f (2)           Extra Ball (Buy-In)
-22 (5)           Coin In
-21 (4)           Coin In (second coin slot)
-23 (6)           Coin In (fourth coin slot) (VPinMAME)
-28 (Enter)       Plunger/Launch Ball
-29 (Escape)      Exit to menu (PinballX/HyperPin front ends)
-14 (Q)           Quit to editor (within VP)
-E1 (Left Shift)  Left Flipper
-E5 (Right Shift) Right Flipper
-E0 (Left Ctrl)   Left MagnaSave
-E4 (Right Ctrl)  Right MagnaSave
-17 (T)           Mechanical Tilt Bob
+1e (1)           Demarrage du jeu
+1f (2)           Extra Ball (Achetez en une)
+22 (5)           insert crédit
+21 (4)           insert crédit (deuxième fente pour pièces)
+23 (6)           insert crédit (quatrième fente pour pièces) (VPinMAME)
+28 (Enter)       Piston (Tire-bille) / Balle de lancement
+29 (Escape)      Sortir du menu (PinballX/HyperPin front ends)
+14 (Q)           Quiteer l'éditeur (within VP)
+E1 (Left Shift)  Flipper gauche
+E5 (Right Shift) Flipper droit
+E0 (Left Ctrl)   MagnaSave gauche
+E4 (Right Ctrl)  MagnaSave droit
+17 (T)           Tit d'inclinaison mécanique
 4A (Home)        Slam Tilt (VPinMAME)
-2C (Spacebar)    Forward Nudge
-1D (Z)           Left Nudge
-38 (/)           Right Nudge
-4D (End)         Open/Close Coin Door (VPinMAME)
-24 (7)           Cancel/Exit Service Button (VPinMAME)
-25 (8)           Down/"-" Service Button (VPinMAME)
-26 (9)           Up/"+" Service Button (VPinMAME)
-27 (0)           "Enter" Service Button (VPinMAME)
-2E (=+)          VP Volume Down
-2D (-_)          VP Volume Up
+2C (Spacebar)    Coup de coude devant
+1D (Z)           Coup de coude gauche
+38 (/)           Coup de coude droit
+4D (End)         Ouvrir / fermer la porte à monnaie (VPinMAME)
+24 (7)           Bouton Annuler / Quitter le service (VPinMAME)
+25 (8)           Bouton de service bas / "-" (VPinMAME)
+26 (9)           Bouton de service haut / "+" (VPinMAME)
+27 (0)           Bouton de service "Enter" (VPinMAME)
+2E (=+)          VP Baisser le volume
+2D (-_)          VP Augmentation du volume
 </div>
 
 <h4>Notes</h4>
 
 <ul>
 
-   <li>You probably won't want to assign any of the nudge keys
-   (Spacebar = forward nudge, Z = left nudge, / = right nudge)
-   if you're using the accelerometer for nudging.  The nudge keys
-   are used to produce fake nudges during desktop play where
-   real nudging is impossible.  The accelerometer is better for
-   cabinet play because it lets you nudge the cabinet the natural
-   way rather than by pushing buttons, and it senses the intensity
-   and direction of the nudge.
+   <li>Vous ne voudrez probablement attribuer aucune des touches de déplacement
+   (Barre d'espace = déplacement vers l'avant, Z = déplacement vers la gauche,
+   / = déplacement vers la droite) si vous utilisez l'accéléromètre pour pousser.
+   Les touches "Coup de coude = nudge" sont utilisés pour produire de faux coups
+   de pouce pendant la lecture sur le bureau où le vrai coup de coude est impossible.
+   L'accéléromètre est meilleur pour les jeux de pincab car il vous permet de 
+   pousser le cabinet de manière naturelle plutôt qu'en appuyant sur des boutons,
+   et il détecte l'intensité et la direction du coup de coude.
 
-   <li>Keys marked "VPinMAME" are actually interpreted by the
-   ROM emulator rather than Visual Pinball, so these aren't as
-   universal with other pinball programs besides VP.
+   <li>Les clés marquées "VPinMAME" sont en fait interprétées par l'émulateur 
+   ROM plutôt que Visual Pinball, donc ce ne sont pas aussi universel avec d'autres
+   émulateurs en plus de VP.
 
-   <li>The Escape key is usually used with a "front end" menu
-   system like PinballX or HyperPin.  The menu system will
-   intercept this key to shut down the pinball program and
-   return to the game selection menu.  VP has its own "exit"
-   button, set to "Q" by default.  It's usually best to keep
-   the front end exit key different from the VP exit key so
-   that there's no confusion about which program should read
-   the key.
-
+   <li>La touche Echap est généralement utilisée avec un menu "frontend" système
+   comme PinballX ou HyperPin. Le système de menus intercepte cette touche pour
+   arrêter le programme de flipper et retournez au menu de sélection de jeu.
+   VP a sa propre "sortie" de bouton, réglé sur "Q" par défaut. Il est généralement 
+   préférable de garder la clé de sortie du frontend différente de la clé de sortie
+   VP afin qu'il n'y a aucune confusion sur le programme à lire la clé.
 </ul>
 
 <style type="text/css">
@@ -131,14 +128,15 @@ $(function()
 });
 </script>
 
-<h2>Joystick buttons</h2>
+<h2>Boutons du joystick</h2>
 
-Visual Pinball also lets you use joystick buttons, but there aren't
-any "standard" mappings for those.  Instead, you have to manually
-assign the button numbers in VP's Keyboard Preferences dialog.  Note
-that other pinball emulators might not support the joystick buttons at
-all, so if you're going to use multiple pinball programs, it's easier
-to set everything up using keyboard keys.
+Visual Pinball vous permet également d'utiliser les boutons du joystick, mais il n'y
+en a pas pour tout mappage "standard". Au lieu de cela, vous devez manuellement
+attribuez les numéros de bouton dans la boîte de dialogue "Préférences de clavier" de VP. 
+Remarque :
+D'autres émulateurs de flipper pourraient ne pas prendre en charge les boutons du joystick, 
+donc si vous utilisez plusieurs émulateurs, c'est plus facile pour tout configurer à l'aide
+des touches du clavier.
 
 </body>
 </html>

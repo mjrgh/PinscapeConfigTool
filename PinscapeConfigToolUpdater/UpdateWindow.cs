@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace PinscapeConfigToolUpdater
 {
@@ -56,7 +49,7 @@ namespace PinscapeConfigToolUpdater
             // wait for the parent process to close
             try
             {
-                Status("Waiting for main program to close");
+                Status("En attente de la fermeture du programme principal");
                 Process parent = Process.GetProcessById(parentPid);
 
                 // wait in a loop so we can retry if desired
@@ -68,8 +61,8 @@ namespace PinscapeConfigToolUpdater
 
                     // ask the user if they want to wait
                     if (!AskForRetry(
-                        "Before installing the update, the main program must be closed. Please "
-                        + "make sure that you've closed all Pinscape Config Tool windows."))
+                        "Avant d'installer la mise à jour, le programme principal doit être fermé. S'il vous plaît "
+                        + "assurez-vous que vous avez fermé toutes les fenêtres de Pinscape Config Tool."))
                         return;
                 }
             }
@@ -80,7 +73,7 @@ namespace PinscapeConfigToolUpdater
                 // here is done.
             }
 
-            Status("Opening update ZIP file");
+            Status("Ouverture du fichier ZIP de mise à jour");
 
             // get the program name
             String progfile = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
@@ -120,7 +113,7 @@ namespace PinscapeConfigToolUpdater
                             String entryPath = Path.GetDirectoryName(entryName);
                             if (entryPath != "" && entryPath != null)
                             {
-                                Status("Creating directory " + entryPath);
+                                Status("Création du répertoire " + entryPath);
                                 Directory.CreateDirectory(Path.Combine(progdir, entryPath));
                             }
 
@@ -140,7 +133,7 @@ namespace PinscapeConfigToolUpdater
                                 try
                                 {
                                     // extract the file, overwriting any existing version
-                                    Status("Extracting " + entryName);
+                                    Status("Extraction " + entryName);
                                     entry.ExtractToFile(Path.Combine(progdir, entryName), true);
 
                                     // success - stop the retry loop
@@ -169,12 +162,12 @@ namespace PinscapeConfigToolUpdater
                 {
                     // show the error and offer Retry/Cancel options
                     if (!AskForRetry(
-                        "We're trying to update your Pinscape Config Tool, but an error occurred "
-                        + "extracting new files:\r\n\r\n"
+                        "Nous essayons de mettre à jour votre outil de configuration Pinscape, mais une erreur s'est produite "
+                        + "extraction de nouveaux fichiers:\r\n\r\n"
                         + ex.Message
-                        + "\r\n\r\nIf you'd like to try again, please make sure that you've closed "
-                        + "all Pinscape Config Tool windows and that the tool's program folder ("
-                        + progdir + ") is accessible."))
+                        + "\r\n\r\nSi vous souhaitez réessayer, veuillez vous assurer que vous avez fermé "
+                        + "toutes les fenêtres de Pinscape Config Tool et que le dossier programme de l'outil ("
+                        + progdir + ") est accessible."))
                         return;
                 }
             }
@@ -190,9 +183,9 @@ namespace PinscapeConfigToolUpdater
                 catch (Exception ex)
                 {
                     if (!AskForRetry(
-                        "We're trying to update your Pinscape Config Tool, and it looks like the "
-                        + "new files were successfully installed. But we couldn't launch the "
-                        + "new version of the program (here's the Windows error: " + ex.Message
+                        "Nous essayons de mettre à jour votre outil de configuration Pinscape, et il semble que "
+                        + "de nouveaux fichiers ont été installés avec succès. Mais nous n'avons pas pu lancer le"
+                        + "nouvelle version du programme (voici l'erreur Windows: " + ex.Message
                         + ")."))
                         return;
                 }
@@ -211,12 +204,12 @@ namespace PinscapeConfigToolUpdater
 
             // they canceled - show the cancellation message and tell the caller to abort
             MessageBox.Show(
-                "Okay, the update has been canceled.  The config tool won't try again "
-                + "to install this update on its own."
+                "D'accord, la mise à jour a été annulée. L'outil de configuration n'essaiera plus "
+                + "d'installer seule cette mise à jour."
                 + "\r\n\r\n"
-                + "If you want to install the update yourself later, simply download the "
-                + "latest version from the Pinscape web site and unzip it over your existing "
-                + "config tool program files.",
+                + "Si vous souhaitez installer vous-même la mise à jour ultérieurement, téléchargez simplement la "
+                + "dernière version du site Web Pinscape et décompressez-la sur votre"
+                + "répertoire existants du programme de l'outil de configuration.",
                 Program.caption);
 
             // tell the caller not to retry
@@ -229,7 +222,7 @@ namespace PinscapeConfigToolUpdater
             statusMutex.WaitOne();
             txtStatus.Text = statusMsg;
             statusMutex.ReleaseMutex();
-            
+
             // if the update thread is finished, close the window
             if (done)
                 ActiveForm.Close();
