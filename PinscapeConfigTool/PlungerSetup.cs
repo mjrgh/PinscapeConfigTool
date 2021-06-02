@@ -193,6 +193,13 @@ namespace PinscapeConfigTool
             public int chB;             // channel "B" reading
         }
 
+        // extra data for VCNL4010 sensors
+        struct VCNL4010
+        {
+            public int proxCount;       // proximity count (16-bit unsigned), after jitter filter
+            public int rawProxCount;    // proximity count, raw sensor reading
+        }
+
         // Zoom factor, for optical sensors
         int zoom = 1;
 
@@ -463,6 +470,58 @@ namespace PinscapeConfigTool
                 }
             }
 
+            // for VCNL4010, draw a yellow bar at the top showing the raw proximity count
+            if (plungerType == PlungerTypeVCNL4010)
+            {
+                // rescale from 0..65535 to the bitmap width
+                float x = vcnl4010.proxCount / 65535.0f * (float)wid;
+
+                // draw the bar
+                using (Brush yellow = new SolidBrush(Color.Yellow))
+                {
+                    // draw in the opposite direction from the plunger position bar
+                    int rht = ht / 4;
+                    if (dir == -1)
+                        g.FillRectangle(yellow, x, 0, wid - x, ht);
+                    else
+                        g.FillRectangle(yellow, 0, 0, x, ht);
+                }
+
+                // superimpose the count
+                String msg = "Brightness: " + vcnl4010.proxCount.ToString();
+                using (Font font = SystemFonts.DefaultFont)
+                {
+                    Size sz = g.MeasureString(msg, font).ToSize();
+                    using (SolidBrush brown = new SolidBrush(Color.Brown),
+                        ltgray = new SolidBrush(Color.LightGray))
+                    {
+                        int yTxt = ht/4 + (ht/4 - sz.Height) / 2;
+                        if (dir == -1)
+                        {
+                            if (x + 2 + sz.Width < wid)
+                                g.DrawString(msg, font, brown, x + 2, yTxt);
+                            else
+                            {
+                                GraphicsExtension.FillRoundedRectangle(
+                                    g, ltgray, x - sz.Width - 2, yTxt, sz.Width, sz.Height, 2);
+                                g.DrawString(msg, font, brown, x - sz.Width - 2, yTxt);
+                            }
+                        }
+                        else
+                        {
+                            if (x - sz.Width - 2 > 0)
+                                g.DrawString(msg, font, brown, x - sz.Width - 2, yTxt);
+                            else
+                            {
+                                GraphicsExtension.FillRoundedRectangle(
+                                    g, ltgray, x + 2, yTxt, sz.Width, sz.Height, 2);
+                                g.DrawString(msg, font, brown, x + 2, yTxt);
+                            }
+                        }
+                    }
+                }
+            }
+
             // superimpose a green bar showing the plunger position
             if (pos != 0xFFFF)
             {
@@ -502,54 +561,80 @@ namespace PinscapeConfigTool
                     red = new SolidBrush(Color.Red),
                     ltgray = new SolidBrush(Color.LightGray))
                 {
-                    // rescale from the position scale to the bitmap 
-                    int lo = (int)Math.Round((double)(jfLo - scrollOfs)*zoom / posScale * wid);
-                    int hi = (int)Math.Round((double)(jfHi - scrollOfs)*zoom / posScale * wid);
-                    int rp = (int)Math.Round((double)(rawPos - scrollOfs)*zoom / posScale * wid);
-
-                    // mirror the coordinates if using reversed orientation
-                    if (dir == -1)
-                    {
-                        lo = wid - lo;
-                        hi = wid - hi;
-                    }
-                    if (lo > hi)
-                    {
-                        int tmp = lo;
-                        lo = hi;
-                        hi = tmp;
-                    }
-
-                    // figure the jitter window area over the end of the bar
-                    int y = ht * 3 / 4 - 1, rht = (ht - y);
-
-                    // draw a line at the raw position if known
-                    if (rawPos >= jfLo && rawPos <= jfHi)
-                        g.FillRectangle(red, rp - 1, y + 1, 2, rht - 2);
-
-                    // outline the jitter window
-                    using (Pen plg = new Pen(Color.LightGreen, 2))
-                        g.DrawRectangle(plg, lo, y, hi - lo - 2, rht - 2);
-
-                    // label it
-                    String msg1 = "Jitter Window ";
-                    String msg2 = String.Format("(Raw={0})", rawPos);
                     using (Font font = SystemFonts.DefaultFont)
                     {
+                        // rescale from the position scale to the bitmap 
+                        int lo = (int)Math.Round((double)(jfLo - scrollOfs) * zoom / posScale * wid);
+                        int hi = (int)Math.Round((double)(jfHi - scrollOfs) * zoom / posScale * wid);
+                        int rp = (int)Math.Round((double)(rawPos - scrollOfs) * zoom / posScale * wid);
+                        int nominalRawPos = rawPos;
+
+                        // for VCNL4010, the raw position for jitter is the brightness
+                        if (plungerType == PlungerTypeVCNL4010)
+                            nominalRawPos = vcnl4010.rawProxCount;
+
+                        // mirror the coordinates if using reversed orientation
+                        if (dir == -1)
+                        {
+                            lo = wid - lo;
+                            hi = wid - hi;
+                        }
+                        if (lo > hi)
+                        {
+                            int tmp = lo;
+                            lo = hi;
+                            hi = tmp;
+                        }
+
+                        // figure the jitter window area over the end of the bar
+                        int y = ht * 3 / 4 - 1, rht = (ht - y);
+                        int yTxtBase = y - 2;
+
+                        // build and size the label
+                        String msg1 = "Jitter Window ";
+                        String msg2 = String.Format("(Raw={0})", nominalRawPos);
                         SizeF sz1 = g.MeasureString(msg1, font);
                         SizeF sz2 = g.MeasureString(msg2, font);
+                        float yTxtTop = yTxtBase - sz1.Height;
                         float w = sz1.Width + sz2.Width;
                         float left = (lo + hi - w) / 2;
-                        float top = y - sz1.Height - 2;
                         if (left + w > wid - 5)
                             left = wid - 5 - w;
                         if (left < 5)
                             left = 5;
 
+                        // For VCNL4010, the jitter window applies to the brightness
+                        // reading rather than to the position reading, so adjust the
+                        // drawing position accordingly.
+                        if (plungerType == PlungerTypeVCNL4010)
+                        {
+                            // use the brightness value as the jitter position
+                            rp = (int)Math.Round((double)(vcnl4010.proxCount - scrollOfs) * zoom / posScale * wid);
+
+                            // draw the window above the green bar
+                            y -= ht / 4;
+
+                            // move the label left or right of the window
+                            left = hi + 1;
+                            if (left + w > wid - 5)
+                                left = lo - 2 - w;
+                            if (left < 5)
+                                left = 5;
+                        }
+
+                        // draw a line at the raw position if known
+                        if (rp >= lo && rp <= hi)
+                            g.FillRectangle(red, rp - 1, y + 1, 2, rht - 2);
+
+                        // outline the jitter window
+                        using (Pen plg = new Pen(Color.LightGreen, 2))
+                            g.DrawRectangle(plg, lo, y, hi - lo - 2, rht - 2);
+
+                        // draw the label
                         GraphicsExtension.FillRoundedRectangle(
-                            g, ltgray, left, top, w, sz1.Height, 2);
-                        g.DrawString(msg1, font, green, left, top);
-                        g.DrawString(msg2, font, red, left + sz1.Width, top);
+                            g, ltgray, left, yTxtTop, w, sz1.Height, 2);
+                        g.DrawString(msg1, font, green, left, yTxtTop);
+                        g.DrawString(msg2, font, red, left + sz1.Width, yTxtTop);
                     }
                 }
             }
@@ -947,6 +1032,12 @@ namespace PinscapeConfigTool
                                 quadrature.chA = buf[4];
                                 quadrature.chB = buf[5];
                             }
+                            else if (buf[3] == 4)
+                            {
+                                // VCNL4010 report
+                                vcnl4010.proxCount = buf[4] | (buf[5] << 8);
+                                vcnl4010.rawProxCount = buf[6] | (buf[7] << 8);
+                            }
                         }
 
                         // read the pixel reports if it's an imaging sensor and
@@ -1018,7 +1109,7 @@ namespace PinscapeConfigTool
                             {
                                 try
                                 {
-                                    // write the remaining frames and close the file
+                                    // write the remaining frames
                                     capturedFrames.ForEach(frame => frame.Write(pixFile));
                                 }
                                 catch (Exception)
@@ -1032,6 +1123,12 @@ namespace PinscapeConfigTool
                             // we capture file data more quickly
                             if ((DateTime.Now - t0).TotalMilliseconds < 60.0)
                                 continue;
+                        }
+
+                        // For the VCNL4010, use the pixel file to record brightness data
+                        if (pixFile != null && plungerType == PlungerTypeVCNL4010)
+                        {
+                            pixFile.WriteLine("{0}", vcnl4010.proxCount);
                         }
 
                         // query the calibration data (special request 9 = query config
@@ -1261,7 +1358,7 @@ namespace PinscapeConfigTool
             rbHiRes.Visible = showResCtls;
             rbLowRes.Visible = showResCtls;
             ckEnhance.Visible = pixelSensor;
-            btnSave.Visible = (!btnStopSave.Visible && pixelSensor);
+            btnSave.Visible = (!btnStopSave.Visible && (pixelSensor || plungerType == PlungerTypeVCNL4010));
 
             // show the zoom control only for non-bar-code pixel sensors
             cbZoom.Visible = lblZoom.Visible = pixelSensor && !barCodeSensor;
@@ -1300,6 +1397,7 @@ namespace PinscapeConfigTool
         int jfLo = -1, jfHi = -1;     // bounds of current jitter filter window on the device, if known
         BarCodeInfo barcode;          // bar code descriptor
         QuadratureInfo quadrature;    // quadrature sensor status
+        VCNL4010 vcnl4010;            // VCNL4010 sensor
 
         // Pixel capture file.  The foreground UI thread opens the file when the user 
         // clicks the Save button, and the background thread writes pixels to the file
@@ -1359,11 +1457,19 @@ namespace PinscapeConfigTool
                     pixFile = new StreamWriter(new FileStream(dlg.FileName, FileMode.Create), Encoding.ASCII);
 
                     // write the file header
-                    pixFile.WriteLine("# Captured sensor pixels");
-                    pixFile.WriteLine("# " + DateTime.Now);
-                    pixFile.WriteLine("#");
-                    pixFile.WriteLine("# Time(ms)   Position   Pixels...");
-                    pixFile.WriteLine();
+                    if (pixelSensor)
+                    {
+                        pixFile.WriteLine("# Captured sensor pixels");
+                        pixFile.WriteLine("# " + DateTime.Now);
+                        pixFile.WriteLine("#");
+                        pixFile.WriteLine("# Time(ms)   Position   Pixels...");
+                        pixFile.WriteLine();
+                    }
+                    else if (plungerType == PlungerTypeVCNL4010)
+                    {
+                        pixFile.WriteLine("# Captured VCNL4010 brightness readings");
+                        pixFile.WriteLine();
+                    }
                     
                     // hide Save and show Stop
                     btnSave.Visible = false;

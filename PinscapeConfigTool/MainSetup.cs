@@ -634,7 +634,7 @@ namespace PinscapeConfigTool
             "2 pinscapeID $B",
             "3 joystick {enabled:$B,axisFormat:$B,reportInterval:$D}", 
             "4 accelerometer {orientation:$B,dynamicRange:$B,autoCenterMode:$B,stutter:$B}",
-            "5 plungerType $B",
+            "5 plungerType {type:$B,param1:$B}",
             "6 plungerPins {a:$P,b:$P,c:$P,d:$P}",
             "7 calButtonPins {enabled:$B,button:$P,led:$P}",
             "8 ZBLaunchBall {port:$B,keytype:$B,keycode:$B,pushDistance:$W}",

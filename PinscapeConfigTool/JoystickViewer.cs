@@ -164,6 +164,10 @@ namespace PinscapeConfigTool
             // zero point at 1/6 from the left
             int zprop = (int)(z * (wid*5.0/6.0)/4095.0 + (wid/6.0));
 
+            // don't go beyond the left edge
+            if (zprop < 0)
+                zprop = 0;
+
             // draw a bar showing the plunger position
             g.FillRectangle(Brushes.White, 0, 0, zprop, ht);
             g.FillRectangle(Brushes.Green, zprop, 0, wid, ht);

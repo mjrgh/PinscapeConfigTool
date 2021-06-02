@@ -1817,6 +1817,10 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   </table>
                </div>
             </div>
+            <div>
+               IR LED current: <input type="text" size="4" id="VCNL4010IREDCurrent">
+               <span style="padding-left: 3em;"><i>milliamps (mA); from 10 to 200, in 10mA increments</i></span>
+            </div>
             <div class="expBoardText">
                Connect the sensor to the PLUNGER connector (JP2) on the main interface board:
                <ul>
@@ -2112,7 +2116,6 @@ $("#plungerType").change(function(ev)
         slideRadio($("#plungerPinsVCNL4010"), all, 250, false);
         $("#plungerPinsVCNL4010 .pinselect").data("active", true).data("save", true);
         break;
-
     }
 
     // if this was a UI event, reset the factory defaults for the pin configuration
@@ -2184,6 +2187,7 @@ function setPlungerPinFactoryDefaults(prvPlungerType)
         // VCNL4010 IR proximity sensor
         $("#VCNL4010_SDA .pinval").val("PTE20");
         $("#VCNL4010_SCL .pinval").val("PTE21");
+        $("#VCNL4010IREDCurrent").val("10");
         break;
     }
 }
@@ -2218,7 +2222,8 @@ $("#btnPlungerCal").click(function(ev) {
 
         case 12:
             return $("#VCNL4010_SDA .pinval").val() != config.plungerPins.a
-                || $("#VCNL4010_SCL .pinval").val() != config.plungerPins.b;
+                || $("#VCNL4010_SCL .pinval").val() != config.plungerPins.b
+                || $("#VCNL4010IREDCurrent").val() != config.plungerType.param1;
 
         default:
             return false;
@@ -2226,7 +2231,7 @@ $("#btnPlungerCal").click(function(ev) {
     }
     
     // make sure the config values haven't changed
-    if ($("#plungerType").val() != config.plungerType || pinChanges())
+    if ($("#plungerType").val() != config.plungerType.type || pinChanges())
     {
         if (!window.external.YesNoDialog(
             "You've made changes to the sensor setup that you haven't "
@@ -7881,7 +7886,8 @@ function normalizeConfig(config)
     // set "Not Connected" values for unused plunger sensor fields
     if (!config.plungerPins)
         config.plungerPins = { };
-    switch (config.plungerType)
+    var plungerType = config.plungerType && config.plungerType.type;
+    switch (plungerType)
     {
     case 0:
         // No sensor - set all pins to "NC"
@@ -7930,7 +7936,20 @@ function normalizeConfig(config)
         config.plungerPins.c = "NC";
         config.plungerPins.d = "NC";
         break;
+    }
 
+    // delete unnecessary plungerType.param values
+    switch (plungerType)
+    {
+    case 12:
+        // VCNL4010 - keep param1
+        break;
+
+    default:
+        // all others - no params used
+        if (config.plungerType)
+            delete config.plungerType.param1;
+        break;
     }
 
     // if the TV-ON feature is disabled, clear all fields
@@ -8246,25 +8265,36 @@ function configFunctionSetup()
         // populate it from the field map
         for (var i = 0 ; i < fieldList.length ; ++i)
         {
-            // get this field descriptor and its UI control
+            // get this field descriptor
             var f = fieldList[i];
+
+            // if it's a variant, translate it; skip it if the
+            // variant turns out to be unused for the current settings
+            if (f.variant)
+            {
+                f = f.variant();
+                if (!f)
+                    continue;
+            }
+
+            // get the UI control
             var ctl = $(f.ctl);
 
             // retrieve the value, according to the control type
             var v = f.type.fromUI(ctl);
-
+            
             // apply any declared data conversions on the value
             if (f.datatype)
                 v = f.datatype.fromUI(v);
-
+            
             // if there's a value-from-UI translator, run it
             if (f.fromUI)
                 v = f.fromUI(v);
-
+            
             // apply the filter, if any
             if (f.filter)
                 v = f.filter(v);
-
+            
             // if we ended up with a valid value, add it to the config
             if (typeof v != "undefined")
                 setprop(newconfig, f.prop, v);
@@ -8281,8 +8311,19 @@ function configFunctionSetup()
         // run through the control mappings
         for (var i = 0 ; i < fieldList.length ; ++i)
         {
-            // get this field descriptor and the config property
+            // get this field descriptor
             var f = fieldList[i];
+
+            // if it's a variant, translate it; skip it if the
+            // variant turns out to be unused for the current settings
+            if (f.variant)
+            {
+                f = f.variant();
+                if (!f)
+                    continue;
+            }
+
+            // get the config property
             var v = getprop(configObj, f.prop);
 
             // if we got a property, store it
@@ -8294,11 +8335,11 @@ function configFunctionSetup()
                 // if there's a declared datatype conversion, apply it
                 if (f.datatype)
                     v = f.datatype.toUI(v);
-
+                
                 // if there's a property-to-UI conversion function, call it
                 if (f.toUI)
                     v = f.toUI(v);
-
+                
                 // store the value in the control
                 f.type.toUI(ctl, v);
             }
@@ -8381,7 +8422,27 @@ function configFunctionSetup()
           }
         },
 
-        { prop: "plungerType", ctl: "#plungerType", type: tSelect, datatype: dNumber },
+        { prop: "plungerType.type", ctl: "#plungerType", type: tSelect, datatype: dNumber },
+        {
+            variant: function() {
+                switch (config.plungerType.type)
+                {
+                case 12: // VCNL4010
+                    return {
+                        prop: "plungerType.param1",
+                        ctl: "#VCNL4010IREDCurrent",
+                        type: tText,
+                        datatype: dNumber,
+                        toUI: function(v) { return (parseInt(v) || 10) * 10; },
+                        fromUI: function(v) { return (parseInt(v) / 10) || 10; },
+                    };
+
+                default:
+                    return undefined;
+                }
+            }
+        },
+
         { prop: "calButtonPins.enabled", ctl: "", type: tText, datatype: dNumber,
           fromUI: function(v) {
               return ($("#calBtnEna").prop("checked") ? 0x01 : 0x00)
@@ -8472,7 +8533,6 @@ function configFunctionSetup()
               return mask;
           }
         }
-        
     ];
 
     // Mappings between controls and xconfig variables
