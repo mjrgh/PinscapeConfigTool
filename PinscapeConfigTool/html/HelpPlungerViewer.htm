@@ -23,10 +23,9 @@
       the captured image.
    </p>
 
-   <h2>Quadrature sensor visualization</h2>
-
+   <h2>Quadrature sensor visualization (AEDR-8300)</h2>
    <p>
-      For quadrature sensors (namely the AEDR-8300), the "snapshot"
+      For quadrature sensors (AEDR-8300), the "snapshot"
       box displays a visualization of the bar scale that the sensor
       moves across.  Quadrature sensors don't take photographic
       images, so this is just a simulation of what we infer the
@@ -44,8 +43,35 @@
       channels.
    </p>
 
-   <h2>Imaging sensor snapshot</h2>
+   <h2>Proximity sensor visualization (VCNL4010)</h2>
+   <p>
+      The VCNL4010 proximity sensor doesn't actually measure
+      distance; it measures the brightness of an infrared light
+      beam reflected from the target (the end of the plunger).
+      The amount of reflected light increases as the target gets
+      closer to the sensor, which allows us to infer the distance
+      from the brightness.  To help you see what's really going on
+      at the physical level, the Plunger Viewer displays the
+      brightness level measured on the sensor.  The yellow bar
+      shows the brightness reading - this is a number from 0
+      to 65535, in abstract units, with 0 meaning that the sensor
+      isn't seeing any light at all and 65535 meaning that it's
+      fully saturated (like an overexposed photo).  The green
+      bar superimposed over that shows the distance calculation.
+      Remember that the sensor doesn't actually measure distance -
+      it only measures brightness - so the distance calculation is
+      just the result of doing some math on the brightness.
+      This is based on the calibration data, so the distance reading
+      isn't meaningful until you run the calibration procedure.
+      If the green distance bar is missing or erratic, try calibrating.
+      If the yellow brightness bar is missing, or it doesn't respond
+      as you move the plunger, the software probably isn't connected
+      to the sensor properly - make sure the GPIO pin assignments are
+      correct in the Settings, and check the wiring between the
+      KL25Z and the sensor.
+   </p>
 
+   <h2>Imaging sensor snapshot (TSL1410R, TCD1103)</h2>
    <p>
       For imaging sensors, the "snapshot" box displays the
       image pixels that your sensor is capturing.  This is updated

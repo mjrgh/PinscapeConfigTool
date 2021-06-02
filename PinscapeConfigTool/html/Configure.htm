@@ -8428,8 +8428,8 @@ function configFunctionSetup()
                         ctl: "#VCNL4010IREDCurrent",
                         type: tText,
                         datatype: dNumber,
-                        toUI: function(v) { return (parseInt(v) || 10) * 10; },
-                        fromUI: function(v) { return (parseInt(v) / 10) || 10; },
+                        toUI: function(v) { return parseInt(v) * 10; },
+                        fromUI: function(v) { return parseInt(v) / 10; },
                     };
 
                 default:
