@@ -2218,7 +2218,7 @@ $("#btnPlungerCal").click(function(ev) {
         case 12:
             return $("#VCNL4010_SDA .pinval").val() != config.plungerPins.a
                 || $("#VCNL4010_SCL .pinval").val() != config.plungerPins.b
-                || $("#VCNL4010IREDCurrent").val() != config.plungerType.param1;
+                || $("#VCNL4010IREDCurrent").val() != config.plungerType.param1*10;
 
         default:
             return false;

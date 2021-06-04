@@ -22,27 +22,56 @@ var MaxButtons = 128;   // maximum number of buttons
 //
 // Notes:
 //
-// - One additional port, PTC1, is connected to an external pin, but can't
-//   be connected to anything, because it's reserved by the mbed software
-//   as the real-time clock input.  The pin is thus omitted from the list.
+// - PTD0 is exposed as an external pin, but it's also hardwired on the
+//   Freescale board to the blue segment of the on-board RGB LED.  The
+//   port *can* be used for an external device, but doing so will give
+//   up control over the blue LED for status displays.  The blue LED in
+//   this case will still turn on and off according to the electrical
+//   state of the pin, since there's no way to physically disconnect
+//   the LED in software.  (You'd have to physically remove one of the
+//   SMD resistors from the board, which I wouldn't recommend!)
 //
-// - PTD0 is exposed as an external pin, but is also hardwired on the
-//   Freescale board to the blue on-board LED.  It *can* be used for an
-//   external device, but doing so will give up control over the blue LED
-//   for status displays.  The blue LED in this case will still turn
-//   on and off according to the electrical state of the pin, since there's
-//   no way to physically disconnect the LED.
+// - PTB18 and PTB19 are included among the assignable ports even though
+//   they're not connected to external pins.  We include them because
+//   they're hard-wired to the on-board red and green segments of the RGB
+//   LED (respectively), which makes them usable as LedWiz/DOF outputs.
+//   When these GPIOs are assigned as output ports, the LedWiz or DOF
+//   can control the on-board LED just like any other device.  These
+//   outputs can't be wired to external devices, since the ports aren't
+//   connected to header pins, but DOF access to the RGB LED could be
+//   useful for purposes like debugging and testing.
 //
-// - PTB18 and PTB19 are included even though they're *not* connected to
-//   external pins.  We include them because they're connected to the
-//   on-board red and green LEDs, respectively, which makes them usable as
-//   LedWiz outputs.  When used this way, the LedWiz output controls the
-//   on-board LED.  These outputs can't be wired to any external devices,
-//   since the ports aren't connected to header pins, but it could be
-//   useful in some cases to connect outputs to the on-board LEDs.  For
-//   example, this can be used as a quick way to test software on the PC
-//   to see if it's talking to the output controller properly.
+// - PTC1 is exposed as an external pin, and it's also wired internally
+//   on the KL25Z to SDA_PTD5 (port PTD5 on the *other* CPU on the KL25Z
+//   board, which is the CPU that runs the OpenSDA boot loader and
+//   debugger firwmare).  The mbed platform documentation specifies that
+//   this pin is reserved for the RTC (real-time clock) reference clock
+//   input.  PTC1 is in fact the only GPIO pin that can selected in the
+//   pin mux as the RTC clock input, and it's wired to the SDA CPU so
+//   that the SDA CPU can generate the required reference signal.  Based
+//   on the mbed documentation and technical forum discussons, I thought
+//   that the SDA CPU unconditionally generates the reference signal,
+//   and since PTC1 is hard-wired on the KL25Z to SDA_PTD5, that this
+//   would make PTC1 unusable as a GPIO for any other purpose.  However,
+//   after further investigation, I found that it's only the *mbed*
+//   version of the SDA boot loader that programs the SDA CPU to output
+//   the clock signal.  The OpenSDA firmware that Pinscape users should
+//   all be using is the PEMicro version, which does NOT generate the
+//   clock signal on SDA_PTD5 - it appears to just leave the pin in
+//   high-Z state, so that hard-wired connection to SDA_PTD5 ends up
+//   being an open circuit.  On the KL25Z side, the mbed platform will
+//   assign PTC1 on the pin-mux to RTC input duty, but *only if you
+//   ask it to*, which Pinscape never does.  I previously thought that
+//   the mbed platform always sets up the RTC in its startup code, but
+//   after inspecting the code, I see that it doesn't - the RTC setup
+//   is up to the application, so PTC1 is left unassigned by default.
 //
+//   In other words, PTC1 is free for us to use after all!  Before the
+//   June 2021 release of the config tool, PTC1 was disabled because of
+//   my incorrect understanding that mbed reserved it unconditionally,
+//   but now that I see that that's not true, I enabled it for regular
+//   GPIO use.
+//   
 // A limited subset of pins are capable of being used as PWM outputs,
 // ADC inputs, or either.  The PWM-capable pins have a "pwm" property in
 // the list below.  Likewise, the ADC-capable pins have an "adc"
@@ -147,7 +176,14 @@ var gpioPins = [
                               + "Using this port will supersede the green LED's normal status "
                               + "display function." },
     { name: "PTC0",  adc: "0.14" },
-    // { name: "PTC1",  pwm: "0.0", adc: "0.15", idc: "1.SCL" }, // omitted - reserved by mbed platform for real-time clock input
+
+    // NOTE: PTC1 is also uniquely mux'able as RTC_CLOCK_INPUT.
+    // The Pinscape firmware doesn't use the RTC at all, so this
+    // pin is free for GPIO use.  If we ever add a feature that
+    // depends upon the RTC, we'll have to mark this pin as in
+    // conflict when that feature is enabled.
+    { name: "PTC1",  pwm: "0.0", adc: "0.15", idc: "1.SCL" },
+
     { name: "PTC2",  pwm: "0.1", adc: "0.11", idc: "1.SDA" },
     { name: "PTC3",  pwm: "0.2" },
     { name: "PTC4",  pwm: "0.3" },
@@ -214,7 +250,7 @@ var kl25z_headers = {
     },
     "J10": {
         pins: [["PTE20", "PTE21", "PTE22", "PTE23", "PTE29", "PTE30"],
-               ["PTB0",  "PTB1",  "PTB2",  "PTB3",  "PTC2",  "CLKIN"]],
+               ["PTB0",  "PTB1",  "PTB2",  "PTB3",  "PTC2",  "PTC1"]],
         type: "pinheader",
         pin1: [238, 150],
         pinN: [250, 88]
