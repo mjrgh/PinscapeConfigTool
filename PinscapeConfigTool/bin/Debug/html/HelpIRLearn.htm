@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>IR Learning Mode</title>
+</head>
+<body class="help">
+<h1>
+   IR Learning mode
+</h1>
+
+<div>
+   The Pinscape unit can learn remote control commands through
+   its IR sensor.  To use this feature, you have to set up the
+   IR receiver, as described in the Build Guide.
+</div>
+
+<div>
+   After bringing up the IR learning dialog, get your remote
+   control ready by pointing it at the Pinscape IR sensor.  Don't
+   press any buttons on the remote yet.  Click the Learn button
+   when you're ready.  When prompted, <b>press and hold</b> the
+   remote control key you want Pinscape to learn.  The dialog
+   window will update automatically as soon as Pinscape learns
+   the code, which usually only takes a second or two.
+</div>
+
+<div>
+   If the learning process fails, you can click "Try Again"
+   to give it another go.  IR transmissions occasionally
+   fail due to momentary problems, such as interference
+   from another light source.  If Pinscape refuses to recognize
+   the code after a couple of tries, though, the remote probably
+   isn't compatible with the Pinscape hardware or software.
+   There are two main possibilities:
+
+   <ul>
+
+	  <li>If the pulse display at the bottom of the dialog
+	  shows a series of lines, the sensor is properly detecting
+	  the physical IR signal from your remote, but the Pinscape
+	  software doesn't recognize the data format.  There are
+	  many IR data formats; the Pinscape software recognizes
+	  about 30 of them, which cover most of the major consumer
+	  electronics companies, but there are many other obscure
+	  protocols that Pinscape doesn't recognize.  In this case,
+	  there's hope: the problem is purely a matter of software,
+	  so we might be able to add support for the new protocol
+	  in a future version if you contact the Pinscape developers
+	  and let us know about it.  Tell us the make and model of
+	  the TV or other device, and include the contents of the
+	  "Show Raw Data" window.
+
+	  <li>If the pulse display at the bottom of the dialog is
+	  completely blank, the sensor isn't receiving any signal
+	  at all from the remote.  This might mean that your remote
+	  is using an IR wavelength or modulation frequency that
+	  the Pinscape sensor can't receive.  Unfortunately, this
+	  type of incompatibility is difficult to solve, because
+	  it would require replacing the sensor with one that can
+	  work with your remote.  But replacing the sensor could
+	  create a whole separate problem, in that the Pinscape
+	  software is only designed to work with the recommended
+	  sensor type.  Before giving up, you might want to
+	  double-check that the sensor itself is working, by
+	  trying a remote from different manufacturer.
+
+   </ul>
+</div>
+
+</html>
+</body>

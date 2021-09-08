@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>TV ON Tester</title>
+</head>
+<body class="help">
+
+<h1>
+   <img style="float: right;" src="h1TvOn.png">
+   TV ON Tester
+   <img style="visibility: hidden; vertical-align: middle;" src="h1TvOn.png">
+</h1>
+
+<div>
+
+   <p>
+	  This window lets you manually control the TV ON relay, to test
+	  that the relay is working and that it's properly controlling
+	  your TV.
+   </p>
+
+   <p>
+	  Click the <b>Relay On</b> button to toggle the relay on and off.
+	  Use this to confirm that the relay is operating correctly.  You
+	  should be able to hear the relay click each time you toggle it.
+   </p>
+
+   <p>
+	  You can also click the <b>Pulse</b> button to simulate the brief
+	  on/off pulse that the firmware uses when you turn the system on.
+	  This turns the relay on for about a quarter of a second and then
+	  turns it back off.  You should be able to hear the relay click
+	  on and then quickly off when you pulse it.
+   </p>
+
+   <p>
+	  If you've wired your TV's on/off button to the relay, the TV
+	  should switch on or off each time you pulse the relay, since
+	  the TV should think you're pushing the button each time the
+	  relay fires.
+   </p>
+
+   <p>
+	  If you're using the expansion boards, note that the relay runs
+	  on power from the secondary power supply (the one that's meant
+	  to power your feedback devices, marked "PSU2" on the expansion
+	  boards).  So the relay won't actually turn on if the PSU2
+	  power is off.  It's designed that way out of a general preference
+	  in the expansion board design for keeping everything mechanical
+	  (like the relay) away from your primary PC power supply, since
+	  mechanical things tend to generate electrical noise.
+   </p>
+
+</div>
+
+
+</body>
+</html>

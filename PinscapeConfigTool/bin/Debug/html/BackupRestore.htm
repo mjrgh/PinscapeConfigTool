@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Backup &amp; Restore</title>
+</head>
+
+<body>
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+
+<h1>
+   <img src="configFileIcon.png" style="float: right;">
+   Back up &amp; Restore
+   <img src="configFileIcon.png" style="vertical-align: middle; visibility: hidden;">
+</h1>
+
+<div>
+   <b>Pinscape Unit #<span id="psUnitNo"></span></b>
+   | LedWiz Unit #<span id="lwUnitNo"></span>
+   | CPU ID <span id="CPUID">xxxx-xxxx-xxxxxxxx</span>
+</div>
+<hr>
+
+<div class="bigButtonRow">
+   <div id="backupButton" class="bigButton">
+      <img src="backupButton.png">
+      <br>Save KL25Z settings to a file on your PC
+   </div>
+   <div>
+      Saves the configuration settings from the KL25Z to a file on
+      your PC.  You can use this file as a data backup in case of hardware
+      problems or data loss on the KL25Z.  You can also use it to duplicate
+      this device's settings on other devices, or share your setup with
+      other people.
+   </div>
+</div>
+<hr>
+
+<div class="bigButtonRow">
+   <div id="restoreButton" class="bigButton">
+      <img src="restoreButton.png">
+      <br>Restore KL25Z settings from a backup file on your PC
+   </div>   
+   <div>
+      Restores the KL25Z to the settings saved in a backup file.  You
+      can use this to recover from data loss or hardware failures, or
+      to restore working settings after making experimental or
+      unwanted changes.
+   </div>
+</div>
+
+<div id="navproxy"></div>
+<div id="nav">
+   <div class="left">
+      <a class="iconButton" href="top.htm" id="mainMenuButton" title="Return to the main menu"><img src="homeIcon.png"></a>
+   </div>
+   <div class="navSpacer">
+   </div>
+</div>
+
+<script>
+var CPUID, devInfo;
+$(function()
+{
+    function loadDeviceInfo()
+    {
+	// get the CPU ID from the URL parameters
+	if (/[?&]ID=([\da-f\-]+)/i.test(window.location.href))
+	{
+	    // remember the CPU ID
+	    CPUID = RegExp.$1;
+	    $("#CPUID").text(CPUID);
+	    
+	    // get the basic device info for display
+	    devInfo = window.external.GetDeviceInfo(CPUID);
+	    if (devInfo)
+	    {
+		// update the display
+		devInfo = eval(devInfo);
+		$("#psUnitNo").text(devInfo.PinscapeUnitNum);
+		$("#lwUnitNo").text(devInfo.LedWizUnitNum);
+	    }
+	    else
+	    {
+		$("#psUnitNo, #lwUnitNo").text("Unknown");
+	    }
+	}
+    }
+
+    // load the device information initially
+    loadDeviceInfo();
+
+    // set a timer to reload it periodically, but only when we're the
+    // foreground application
+    setInterval(function()
+    {
+	if (window.external.IsInForeground())
+	{
+	    window.external.FlushDeviceList();
+	    loadDeviceInfo();
+	}
+    }, 2000);
+
+    $("#backupButton").click(function(ev) {
+        showCallResult(window.external.SaveDeviceConfig(CPUID));
+    });
+
+    $("#restoreButton").click(function(ev) {
+	if (window.external.YesNoDialog(
+	    "Warning: this will completely replace the configuration settings on "
+	    + "this KL25Z with saved settings from a file. Are you sure you want "
+	    + "to proceed?"))
+	    showCallResult(window.external.RestoreDeviceConfig(CPUID));
+    });
+});
+</script>
+
+</body>
+</html>

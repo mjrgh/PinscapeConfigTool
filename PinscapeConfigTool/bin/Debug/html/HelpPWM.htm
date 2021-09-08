@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>PWM GPIO Pins</title>
+</head>
+<body class="help">
+<h1>
+   PWM GPIO Pins
+</h1>
+
+<div>
+
+   <p>
+      Certain pin assignments in the configuration require pins with "PWM"
+      capabilities.  PWM stands for Pulse Width Modulation, which is a hardware
+      feature that allows controlling the intensity of an output, such as the
+      brightness of an LED or the speed of a motor.
+   </p>
+
+   <p>
+      Some - not all - of the external pins on the KL25Z have PWM capabilities.
+      When you select a pin for a feature that requires PWM, the pin selector
+      will limit the selection to show only the PWM-capable pins.
+   </p>
+
+   <p>
+      If you see a warning icon (<img src="pinwarn.png" style="vertical-align: middle;">)
+      next to a pin selection, this indicates that the selection has a conflict.
+      Click on the warning to display a detailed message, which will tell you
+      which other usage is in conflict.
+   </p>
+
+   <p>
+      For all pins that you assign, you have to be sure to pick a pin that isn't
+      used for any other purpose.  The pin warning message will tell you if a pin
+      is used more than once.
+   </p>
+
+   <p>
+      In the case of PWM pins, the situation is slightly more complicated.
+      You not only have to pick a pin that's free, but also one that's connected
+      to a "PWM channel" that's free.  If you see a conflict message
+      telling you that your selected pin's PWM channel is used more
+      than once, read on to learn more about what this means.
+   </p>
+
+   <h2>Pins and "channels"</h2>
+
+   <p>
+      Internally, the KL25Z handles PWM output
+      pins using a hardware module called the PWM controller.  When you assign
+      a pin as a PWM output, the KL25Z internally makes an electrical connection
+      between the selected pin and the PWM controller module.  
+   </p>
+
+   <p>
+      The KL25Z's PWM controller module only has 10 channels.  This means that
+      only 10 independent PWM outputs are possible at any one time.  You might
+      notice that there are considerably more than 10 PWM-capable pins, though.
+      How is this possible?  It's because each channel on the PWM controller is
+      over-committed.  Each channel connects to several pins.  For example,
+      channel "0.2" can be connected to PTA5, PTC3, PTD2, or PTE29.  The word "or"
+      is really important here, though: you can only connect that channel to
+      <b>one</b> of these pins at any one time.
+   </p>
+
+   <p>
+      Therein lies the complication.  If you assign PTA5 as a PWM output,
+      this commits PWM channel 0.2 to that pin, and makes PTC3, PTD2, and PTE29
+      unavailable as PWM outputs.  You can still use those other pins for
+      other purposes, but you can't use them as PWM outputs once the channel
+      is in use.
+   </p>
+
+   <p>
+      The pin selector tool tries to help by showing you the pins that
+      are unavailable because their respective PWM channels are already
+      assigned to other pins.  It's sometimes also helpful for planning
+      purposes to be able to see the overall connection matrix, so here's
+      a cross-reference of the PWM-capable pins and their associated
+      channels, and vice-versa.
+   </p>
+
+   <style type="text/css">
+.helpPinTab {
+    margin: 1em auto;
+}
+.helpPinTab td {
+    text-align: center;
+    padding: 0px 1em;
+}
+div.caption {
+    text-align: center;
+    font-weight: bold;
+    margin: 2em 1em 1em 1em;
+}
+   </style>
+
+
+   <div class="caption">PWM-capable pins</div>
+   <table class="helpPinTab">
+      <tr><th>Pin</th><th>PWM Channel</th></tr>
+      <tr><td>PTA1</td><td>2.0</td></tr>
+      <tr><td>PTA2</td><td>2.1</td></tr>
+      <tr><td>PTA4</td><td>0.1</td></tr>
+      <tr><td>PTA5</td><td>0.2</td></tr>
+      <tr><td>PTA12</td><td>1.0</td></tr>
+      <tr><td>PTA13</td><td>1.1</td></tr>
+      <tr><td>PTB0</td><td>1.0</td></tr>
+      <tr><td>PTB1</td><td>1.1</td></tr>
+      <tr><td>PTB2</td><td>2.0</td></tr>
+      <tr><td>PTB3</td><td>2.1</td></tr>
+      <tr><td>PTB18</td><td>2.0</td></tr>
+      <tr><td>PTB19</td><td>2.1</td></tr>
+      <tr><td>PTC1</td><td>0.0</td></tr>
+      <tr><td>PTC2</td><td>0.1</td></tr>
+      <tr><td>PTC3</td><td>0.2</td></tr>
+      <tr><td>PTC4</td><td>0.3</td></tr>
+      <tr><td>PTC8</td><td>0.4</td></tr>
+      <tr><td>PTC9</td><td>0.5</td></tr>
+      <tr><td>PTD0</td><td>0.0</td></tr>
+      <tr><td>PTD1</td><td>0.1</td></tr>
+      <tr><td>PTD2</td><td>0.2</td></tr>
+      <tr><td>PTD3</td><td>0.3</td></tr>
+      <tr><td>PTD4</td><td>0.4</td></tr>
+      <tr><td>PTD5</td><td>0.5</td></tr>
+      <tr><td>PTE20</td><td>1.0</td></tr>
+      <tr><td>PTE21</td><td>1.1</td></tr>
+      <tr><td>PTE22</td><td>2.0</td></tr>
+      <tr><td>PTE23</td><td>2.1</td></tr>
+      <tr><td>PTE29</td><td>0.2</td></tr>
+      <tr><td>PTE30</td><td>0.3</td></tr>
+      <tr><td>PTE31</td><td>0.4</td></tr>
+   </table>
+
+   <div class="caption">PWM Channels and associated pins</div>
+   <table class="helpPinTab">
+      <tr><th>PWM Channel</th><th>Connected Pins</th></tr>
+
+      <tr><td>0.0</td><td>PTC1, PTD0</td>
+      <tr><td>0.1</td><td>PTA4, PTC2, PTD1</td>
+      <tr><td>0.2</td><td>PTA5, PTC3, PTD2, PTE29</td>
+      <tr><td>0.3</td><td>PTC4, PTD3, PTE30</td>
+      <tr><td>0.4</td><td>PTC8, PTD4, PTE31</td>
+      <tr><td>0.5</td><td>PTC9, PTD5</td>
+      <tr><td>1.0</td><td>PTA12, PTB0, PTE20</td>
+      <tr><td>1.1</td><td>PTA13, PTB1, PTE21</td>
+      <tr><td>2.0</td><td>PTA1, PTB18, PTB2, PTE22</td>
+      <tr><td>2.1</td><td>PTA2, PTB19, PTB3, PTE23</td>
+
+   </table>
+	 
+
+
+</div>
+
+</html>
+</body>

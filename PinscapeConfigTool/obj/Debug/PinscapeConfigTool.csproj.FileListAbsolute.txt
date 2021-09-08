@@ -1,0 +1,664 @@
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ActiveLowOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ActiveLowOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\AEAT6012.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\aedr8300.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\aioBoardIn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\aioBoardOut.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\aioBoardPins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\backArrowIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\btnSetupNew.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\chimeBoardOut.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\chimeBoardPins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ChimeLogicOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ChimeLogicOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ClockIconOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ClockIconOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\dofR3.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\expPinSprite.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\FlipperLogicOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\FlipperLogicOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\GammaOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\GammaOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1DOF.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1TvOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpButtonTester.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpIR.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpIRLearn.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpJoystickViewer.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpKeyAssignments.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpOutputTester.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpPulseKey.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpShiftButton.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpTvOnTester.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\homeIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\interruptin.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\irButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\irButtonOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\irLearn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\irTestSending.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\irRemote.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\irTestButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jskeySmallOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jskeySmallOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kbSmall.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\keycaps.js
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\KL25Z-pin-legend.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller-Callout-left.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller-Callout-right.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\liteBoardIn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\liteBoardOut.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\liteBoardPins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\mainBoardIn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\mainBoardOut.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\mainBoardPins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\nightModeOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\nightModeOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\nightModeWayOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\NoisyOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\NoisyOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\noKey.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\OutputTester.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pins.js
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pinscapeAIO.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pinscapeLite.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\powerBoardOut.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\powerBoardPins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\PulseOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\PulseOn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ShiftButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ShiftButtonHere.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ShiftButtonHereFaint.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ShiftButtonSmall.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\slidePot.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbBackupRestore.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbJoystick.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbOutputTester.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbPlunger.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbSettings.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbTVON.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tbUpdateFirmware.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\TCD1103.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tlc59116.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tlc59116Out.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tlc59116Pins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\troubleshoot.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\TSL1401CL.jpg
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\TSL1410R.jpg
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tvOnButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tvOnButtonOff.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\VCNL4010.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\virtualOutSmall.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\VL6180X.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\xpvm.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\zbLaunch32.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\BuildNumber.txt
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\74hc595.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\74hc595out.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\74hc595Pins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\accel-left.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\accel-rear.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\accel-right.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\accel-front.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\addDelRow.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\analogin.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\backupButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\BackupRestore.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\binfileIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\buttonSection.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\calbtn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\configFileIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\Configure.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\digitalin.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\digitalout.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\disconnect.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\dlFolderIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\expansionStack.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpPlungerViewer.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\folderArrow.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1logo.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1options.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1pcb.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1plunger.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1reboot.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1UpdateFirmware.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\hardwareSection.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpOutPortOptions.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\HelpPWM.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\helpSPI.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\Install.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\joystick.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\joystickButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\joystickicon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-1.12.1.js
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_444444_256x240.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_555555_256x240.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_777620_256x240.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_777777_256x240.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_cc0000_256x240.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_ffffff_256x240.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\jquery-ui-1.11.4.css
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jquery-ui\jquery-ui-1.11.4.js
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\jskey.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kb.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\keyboardicon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\keycap.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25z-annotated.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25z-how-to-plug-in-prog.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25z-how-to-plug-in.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25z-reboot-diagram.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25z.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25zDiskIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\kl25zPins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\logo.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\main.css
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\nightModeSection.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\nightModeSmall.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\onBoardLED.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\orientation.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\outputSection.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pinscapeID.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pinSprite.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pinSprite5940.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pinSprite595.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pinwarn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\plungerSection.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pushButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\pwmout.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\restoreButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\saveIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\SetupNew.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\shiftkeycap.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\specialicon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\spiout.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tlc5940.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tlc5940out.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tlc5940Pins.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\toggleSwitch.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\top.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\tvon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\unplugged.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\unusedButton.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\Update.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\usbident.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\util.js
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\virtualout.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\WaitForReboot.htm
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\ZBLaunch.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\zbLaunchSmall.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\infoIcon.ico
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1button.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1OutputTester.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\h1IR.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\warningIcon.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.exe.config
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.exe
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.pdb
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.AdviceDialog.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.ButtonStatus.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.DiscardCancelDialog.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.ExceptionMessageBox.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.JoystickViewer.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.OutputTester.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.IRLearn.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.PlungerSetup.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.MainSetup.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Help.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Properties.Resources.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Resources.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.TextViewer.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.TvOnTester.resources
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.GenerateResource.cache
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.CoreCompileInputs.cache
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.exe
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.pdb
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\RigMaster.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.AssemblyReference.cache
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\RigMasterBoardIn.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\RigMasterBoardOut.png
+C:\Users\arnoz\OneDrive\Documents\GitHub\PinscapeConfigTool\PinscapeConfigTool\bin\Debug\html\RigMasterBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\MolluskBoardOut.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\MolluskBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ActiveLowOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ActiveLowOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\AEAT6012.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\aedr8300.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\aioBoardIn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\aioBoardOut.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\aioBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\backArrowIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\btnSetupNew.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\chimeBoardOut.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\chimeBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ChimeLogicOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ChimeLogicOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ClockIconOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ClockIconOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\dofR3.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\expPinSprite.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\FlipperLogicOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\FlipperLogicOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\GammaOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\GammaOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1DOF.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1TvOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpButtonTester.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpIR.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpIRLearn.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpJoystickViewer.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpKeyAssignments.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpOutputTester.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpPulseKey.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpShiftButton.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpTvOnTester.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\homeIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\interruptin.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\irButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\irButtonOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\irLearn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\irTestSending.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\irRemote.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\irTestButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jskeySmallOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jskeySmallOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kbSmall.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\keycaps.js
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\KL25Z-pin-legend.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller-Callout-left.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller-Callout-right.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\liteBoardIn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\liteBoardOut.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\liteBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\mainBoardIn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\mainBoardOut.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\mainBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\nightModeOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\nightModeOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\nightModeWayOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\NoisyOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\NoisyOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\noKey.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\OutputTester.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pins.js
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pinscapeAIO.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pinscapeLite.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\powerBoardOut.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\powerBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\PulseOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\PulseOn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\RigMaster.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\RigMasterBoardIn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\RigMasterBoardOut.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\RigMasterBoardPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ShiftButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ShiftButtonHere.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ShiftButtonHereFaint.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ShiftButtonSmall.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\slidePot.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbBackupRestore.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbJoystick.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbOutputTester.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbPlunger.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbSettings.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbTVON.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tbUpdateFirmware.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\TCD1103.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tlc59116.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tlc59116Out.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tlc59116Pins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\troubleshoot.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\TSL1401CL.jpg
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\TSL1410R.jpg
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tvOnButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tvOnButtonOff.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\VCNL4010.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\virtualOutSmall.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\VL6180X.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\xpvm.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\zbLaunch32.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\BuildNumber.txt
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\74hc595.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\74hc595out.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\74hc595Pins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\accel-left.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\accel-rear.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\accel-right.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\accel-front.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\addDelRow.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\analogin.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\backupButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\BackupRestore.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\binfileIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\buttonSection.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\calbtn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\configFileIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\Configure.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\digitalin.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\digitalout.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\disconnect.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\dlFolderIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\expansionStack.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpPlungerViewer.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\folderArrow.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1logo.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1options.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1pcb.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1plunger.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1reboot.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1UpdateFirmware.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\hardwareSection.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpOutPortOptions.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\HelpPWM.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\helpSPI.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\Install.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\joystick.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\joystickButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\joystickicon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-1.12.1.js
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_444444_256x240.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_555555_256x240.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_777620_256x240.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_777777_256x240.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_cc0000_256x240.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_ffffff_256x240.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\jquery-ui-1.11.4.css
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jquery-ui\jquery-ui-1.11.4.js
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\jskey.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kb.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\keyboardicon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\keycap.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25z-annotated.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25z-how-to-plug-in-prog.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25z-how-to-plug-in.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25z-reboot-diagram.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25z.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25zDiskIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\kl25zPins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\logo.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\main.css
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\nightModeSection.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\nightModeSmall.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\onBoardLED.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\orientation.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\outputSection.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pinscapeID.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pinSprite.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pinSprite5940.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pinSprite595.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pinwarn.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\plungerSection.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pushButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\pwmout.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\restoreButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\saveIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\SetupNew.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\shiftkeycap.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\specialicon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\spiout.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tlc5940.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tlc5940out.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tlc5940Pins.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\toggleSwitch.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\top.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\tvon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\unplugged.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\unusedButton.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\Update.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\usbident.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\util.js
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\virtualout.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\WaitForReboot.htm
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\ZBLaunch.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\zbLaunchSmall.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\infoIcon.ico
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1button.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1OutputTester.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\h1IR.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\html\warningIcon.png
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.exe.config
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.exe
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.pdb
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.AssemblyReference.cache
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.AdviceDialog.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.ButtonStatus.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.DiscardCancelDialog.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.ExceptionMessageBox.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.JoystickViewer.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.OutputTester.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.IRLearn.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.PlungerSetup.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.MainSetup.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Help.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Properties.Resources.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Resources.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.TextViewer.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.TvOnTester.resources
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.GenerateResource.cache
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.CoreCompileInputs.cache
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.exe
+C:\Users\arnoz\source\repos\PinscapeConfigTool officiel\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.pdb
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ActiveLowOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ActiveLowOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\AEAT6012.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\aedr8300.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\aioBoardIn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\aioBoardOut.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\aioBoardPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\backArrowIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\btnSetupNew.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\chimeBoardOut.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\chimeBoardPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ChimeLogicOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ChimeLogicOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ClockIconOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ClockIconOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\dofR3.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\expPinSprite.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\FlipperLogicOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\FlipperLogicOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\GammaOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\GammaOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1DOF.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1TvOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpButtonTester.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpIR.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpIRLearn.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpJoystickViewer.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpKeyAssignments.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpOutputTester.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpPulseKey.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpShiftButton.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpTvOnTester.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\homeIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\interruptin.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\irButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\irButtonOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\irLearn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\irTestSending.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\irRemote.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\irTestButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jskeySmallOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jskeySmallOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kbSmall.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\keycaps.js
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\KL25Z-pin-legend.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller-Callout-left.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller-Callout-right.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25zPinsSmaller.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\liteBoardIn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\liteBoardOut.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\liteBoardPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\mainBoardIn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\mainBoardOut.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\mainBoardPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\MolluskBoardOut.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\MolluskBoardPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\nightModeOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\nightModeOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\nightModeWayOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\NoisyOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\NoisyOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\noKey.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\OutputTester.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pinscapeAIO.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pinscapeLite.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\powerBoardOut.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\powerBoardPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\PulseOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\PulseOn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\RigMaster.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\RigMasterBoardIn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\RigMasterBoardOut.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\RigMasterBoardPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ShiftButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ShiftButtonHere.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ShiftButtonHereFaint.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ShiftButtonSmall.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\slidePot.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbBackupRestore.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbJoystick.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbOutputTester.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbPlunger.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbSettings.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbTVON.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tbUpdateFirmware.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\TCD1103.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tlc59116.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tlc59116Out.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tlc59116Pins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\troubleshoot.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\TSL1401CL.jpg
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\TSL1410R.jpg
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tvOnButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tvOnButtonOff.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\VCNL4010.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\virtualOutSmall.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\VL6180X.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\xpvm.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\zbLaunch32.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\74hc595.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\74hc595out.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\74hc595Pins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\accel-left.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\accel-rear.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\accel-right.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\accel-front.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\addDelRow.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\analogin.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\backupButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\BackupRestore.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\binfileIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\buttonSection.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\calbtn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\configFileIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\digitalin.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\digitalout.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\disconnect.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\dlFolderIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\expansionStack.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpPlungerViewer.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\folderArrow.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1logo.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1options.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1pcb.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1plunger.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1reboot.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1UpdateFirmware.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\hardwareSection.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpOutPortOptions.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\HelpPWM.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\helpSPI.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\Install.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\joystick.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\joystickButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\joystickicon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-1.12.1.js
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_444444_256x240.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_555555_256x240.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_777620_256x240.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_777777_256x240.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_cc0000_256x240.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\images\ui-icons_ffffff_256x240.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\jquery-ui-1.11.4.css
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jquery-ui\jquery-ui-1.11.4.js
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\jskey.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kb.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\keyboardicon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\keycap.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25z-annotated.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25z-how-to-plug-in-prog.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25z-how-to-plug-in.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25z-reboot-diagram.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25z.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25zDiskIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\kl25zPins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\logo.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\nightModeSection.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\nightModeSmall.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\onBoardLED.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\orientation.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\outputSection.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pinscapeID.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pinSprite.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pinSprite5940.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pinSprite595.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pinwarn.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\plungerSection.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pushButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pwmout.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\restoreButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\saveIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\SetupNew.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\shiftkeycap.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\specialicon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\spiout.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tlc5940.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tlc5940out.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tlc5940Pins.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\toggleSwitch.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\top.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\tvon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\unplugged.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\unusedButton.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\Update.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\usbident.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\util.js
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\virtualout.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\WaitForReboot.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\ZBLaunch.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\zbLaunchSmall.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\infoIcon.ico
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1button.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1OutputTester.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\h1IR.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\warningIcon.png
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\pins.js
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\BuildNumber.txt
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\Configure.htm
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\html\main.css
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.exe.config
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.exe
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\bin\Debug\PinscapeConfigTool.pdb
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.AssemblyReference.cache
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.AdviceDialog.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.ButtonStatus.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.DiscardCancelDialog.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.ExceptionMessageBox.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.JoystickViewer.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.OutputTester.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.IRLearn.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.PlungerSetup.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.MainSetup.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Help.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Properties.Resources.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.Resources.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.TextViewer.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.TvOnTester.resources
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.GenerateResource.cache
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.csproj.CoreCompileInputs.cache
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.exe
+C:\Users\arnoz\Source\Repos\PinscapeConfigTool arnoz github\PinscapeConfigTool\obj\Debug\PinscapeConfigTool.pdb

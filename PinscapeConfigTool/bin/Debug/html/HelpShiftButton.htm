@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Shift Button</title>
+</head>
+<body class="help">
+<h1>
+   Shift Button
+</h1>
+
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+
+<div>
+   You can designate one cabinet button as the <b>local Shift button</b>.
+   This isn't related to your PC keyboard - it's not <i>that</i>
+   Shift key.  But it's a similar concept: it lets you give every
+   physical button on your cabinet a second key assignment that
+   you select by holding down the local Shift button and pressing
+   the other button.
+</div>
+
+<div>
+   This is great if you want to minimize the button clutter on
+   your cabinet, since it lets you double the number of PC commands
+   you can access with your existing buttons.
+</div>
+
+<div>
+   To set up a Shift button, enter the button number that you
+   want to use as the Shift, or just click on the shift icon
+   (<img src="ShiftButtonHere.png" style="vertical-align:middle;">)
+   in the button's row in the table.
+</div>
+
+<div>
+   Once a shift button is assigned, every button in the table
+   will let you enter two key assignments:  a regular key assignment
+   and a shifted key assignment.  The regular key is sent to the PC
+   when you press the button <i>without</i> pressing the Shift button.
+   The shifted key is sent when you press the button while holding
+   down the Shift button.
+</div>
+
+<h2>Mode options</h2>
+
+<div>
+   The Shift button itself can have a regular key assignment, just
+   like any other button.  (It can't have a
+   shifted key assignment, for obvious reasons.)
+</div>
+<div>
+   The handling of the Shift button's key assignment is a little
+   tricky.  It involves some trade-offs, so the controller lets you
+   decide which way you want to handle it with the <b>Shift button
+   mode</b> setting.
+</div>
+<div>
+   <b>Shift OR Key mode:</b>  This is the default.  In this mode, the
+   Shift button serves only <b>one</b> of its two functions on each
+   press: it's <b>either</b> the Shift button, <b>or</b> it's an
+   ordinary button with a key assignment.  Which one it is depends
+   entirely on whether or not you press another key while the Shift
+   button is pressed.
+</div>
+<div>
+   To make this work, the Shift button can't send its assigned key
+   assigned key to the PC immediately when you press it, the way a
+   normal button would.  Instead, it has to wait to see if you're
+   going to press another key while the Shift button is down.
+   Here's how it decides what to do next:
+
+   <ul>
+	  <li>If you press the Shift button, and then release it without
+	  pressing any other buttons in the meantime, the controller assumes
+	  you were using the Shift button for its ordinary key assignment
+	  rather than its Shift function.  In this case, the Shift button
+	  sends its assigned key to the PC <i>when you release it</i>.
+	  It has to wait until then, because that's the only way it knows
+	  you're not going to press another button too.
+
+	  <li>On the other hand, if you do press another button while 
+	  the Shift button is down, the controller decides that you pressed
+	  the Shift button for its Shift function.  In this case, it
+	  <b>doesn't</b> send the Shift button's key to the PC for
+	  this press, even when you release the button.
+   </ul>
+
+   This mode is the default because it lets you safely use any button
+   as the Shift button without any unwanted side effects.  For example,
+   suppose you assigned the "Exit" button as the Shift button.
+   Normally, pressing this button terminates the current pinball
+   table and returns to the selection menu.  When you use Exit as a Shift,
+   though, you probably don't want that to happen.  It would be annoying
+   if you just wanted to adjust the audio volume, say, and it also exited
+   the game.  The "Shift OR Key" mode avoids unwanted side effects like
+   this by skipping the regular key mapping every time the Shift function
+   is used.  The tradeoff is that the normal key press is delayed until
+   you release the button.
+</div>
+<div>
+   <b>Shift AND Key mode:</b>  In this mode, the button sends its
+   ordinary key mapping on every press, <i>in addition to</i> its
+   Shift function.  Since the key is always sent, there's no need
+   in this mode to wait to see if you're going to press another button.
+   This lets the controller send the mapped key immediately when
+   you press the button, just like for any other button.
+</div>
+<div>
+   This mode eliminates the delay in sending the key that you get
+   in the "Shift OR Key" mode - the way the key isn't sent until
+   you <i>release</i> the button rather than when you first press
+   the button.  Some people find that delay confusing or just annoying.
+   If you don't like the delay, this mode lets you get rid of it.
+</div>
+<div>
+   The tradeoff is that the button can't be "smart" about whether
+   or not to send its mapped key on each press.  It just sends it
+   every time.  So if you use this mode, just be careful to select 
+   a button that won't have unwanted side effects when it sends
+   its mapped key.
+</div>   
+
+</body>
+</html>

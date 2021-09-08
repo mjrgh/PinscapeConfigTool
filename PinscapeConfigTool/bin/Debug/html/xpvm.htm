@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Setting up a new board with Windows 8 or later</title>
+</head>
+<body>
+<h1>
+   Setting up a new board with Windows 8 or later
+</h1>
+
+<div>
+
+   <p>
+      Yes, I know how crazy it is that you have to find an old
+      Windows machine to update a brand new KL25Z.  Unfortunately, the
+	  factory firmware installed on new KL25Z boards was written when
+	  Windows 7 was current, and Microsoft made changes in Windows 8
+	  that are incompatible with that old firmware.
+   </p>
+
+   <p>
+	  <b>Once you complete the upgrade, the KL25Z will work with
+	  Windows 8 and later.</b>  But it's a catch-22, because you can't
+      perform the upgrade that makes it work with Windows 8 or 10 from
+	  Windows 8 or 10!
+   </p>
+
+   <p>
+	  The easiest way to deal with this is to find an old machine
+	  running Windows 7 or XP.  But if there's no way you can do that,
+	  there are two solutions.  Both require some extra work,
+	  but they'll let you do the upgrade with your existing machine.
+   </p>
+
+   <h2>Option 1: Tweak your Win 8/10 system</h2>
+
+   <p>
+	  The firmware incompatibility in Windows 8+ is related to the
+	  disk search features that Microsoft added in Windows 8.
+	  When you plug in a USB disk, Windows automatically writes to the
+	  disk to create a hidden search index file.  The older KL25Z
+	  boot loader mistakes this for an attempt to install new firmware
+	  onto the device.  But since the index file isn't a valid firmware
+	  file, the boot loader rejects it, which puts it in an error mode
+	  where it refuses to accept any more requests.  This blocks any
+	  subsequent attempts to download legitimate firmware files.
+   </p>
+
+   <p>
+	  One way to solve this is to disable the Windows search indexing
+	  service that causes the trouble.  This requires messing around
+	  with your Windows system settings, so if RegEdit makes you queasy,
+	  you might want to skip this approach and try a different option.
+   </p>
+
+   <p>
+	  This method was first described (as far as I know) by
+	  Erich Styger on his <a target="_blank" href="https://mcuoneclipse.com/2016/08/01/bricking_and_recovering_opensda_boards_in_windows_8_and_10/">MCU on Eclipse blog</a>.
+	  Please see that article for a more thorough explanation.
+   </p>
+
+   <p>Here are the steps:</p>
+
+   <ul>
+	  <li>Disable removable devices for Windows library search:
+	  <ul>
+		 <li>If you have a "Professional" version of Windows:
+		 <ul>
+			<li>Press Windows+R
+			<li>Type gpedit.msc into the box and press return
+			<li>Navigate to Computer Configuration &gt; Administrative Templates &gt;
+			Windows Components &gt; Search &gt; Do not allow locations on removable drives to be added to libraries
+			<li>Enable the setting (which, in standard Microsoft fashion, disables the feature)
+		 </ul>
+
+		 <li>If you have a "Home" version of Windows:
+		 <ul>
+			<li>Press Windows+S
+			<li>Type regedit into the search box - <b>don't</b> press return
+			<li>A match for <b>regedit</b> should appear; right-click it and select <b>Run as Administrator</b>
+			<li>Navigate to HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search
+			<li>Set the item DisableRemovableDriveIndexing to value 1
+		 </ul>
+	  </ul>
+
+	  <li>Disable search services:
+	  <ul>
+		 <li>Press Windows+S
+		 <li>Type services into the box
+		 <li>Select "View local services"
+		 <li>Find "Storage Service" in the list; right-click it and select Stop
+		 <li>Find "Windows Search" in the list; right-click it and select Stop
+	  </ul>
+   </ul>
+
+   <p>
+	  Now you're ready to attempt the firmware upgrade on the KL25Z.
+	  Be warned, though: you have to do the file copy <b>as quickly as possible</b>
+	  after plugging in the KL25Z.  Apparently, the steps above prevent
+	  Windows from writing the drive right after you plug it in, but Windows
+	  might still try to do a write if you leave the drive plugged in long
+	  enough.  So you should try to move quickly.
+   </p>
+
+   <p>
+	  Other than this race against time, the upgrade itself works just like
+	  in the main instructions.
+
+   <ul>
+	  <li>Hold down the Reset button on the KL25Z and plug in the programming port
+	  <li>Release the Reset button
+	  <li>Drag and drop the firmware upgrade onto the KL25Z
+	  <li>As soon as the copy process finishes, unplug the USB
+   </ul>
+
+   <p>You can now verify the upgrade.  Plug the programming port back in (without
+	  pressing the Reset button).   The KL25Z thumb drive should appear.  Open the
+	  file SDA_INFO.HTM.  Check that the reported firmware version matches what you
+	  just downloaded.
+   </p>
+
+   <h2>Option 2: Run XP or Win 7 in a virtual machine</h2>
+
+   <p>
+	  If you don't want to make the changes to your system settings
+	  described above, or you can't get that approach to work, you can
+	  solve the upgrade problem by running a <b>virtual</b> copy of
+	  XP or Windows 7 on your existing operating system.  This approach
+	  is fairly complicated, but it doesn't require any changes to your
+	  system settings and doesn't require any special timing.
+   </p>
+
+   <p>
+      The first thing you should do is <b>print out the instructions</b>
+      that the Pinscape config tool displays for doing the firmware update.
+      The config tool won't run on XP.  That's okay, because the config
+      tool doesn't really do anything during the update process anyway
+      except display the instructions.  But you can't run it to view the
+      instructions in XP, so you'll want to have a copy handy before you
+      start.  To do this, go to the "Set up a new KL25Z" page, click
+      past the warning about Windows versions, then click "Show All".
+      You can now print the page (there's a button at the bottom
+      to do this).  If you have a two-monitor setup, no need to print;
+      just leave the instructions on one screen while you run the XP VM
+      on the other screen.
+   </p>
+
+   <p>
+      The next step is to download and install <b>VirtualBox</b>, which
+      is a free Virtual Machine manager.  Start here:
+      <a target="_blank" href="http://www.virtualbox.org">virtualbox.org<a>.
+      Download the latest version and go through the setup procedure to
+      install the product on your computer.
+   </p>
+
+   <p>
+      Now we get to the really time-consuming and difficult part.  You
+      need to create an XP or Win 7 VM for VirtualBox.  There are
+      basically two options for doing this:
+   </p>
+
+   <ul>
+
+      <li><b>With an XP or Win7 install CD:</b>  If you have an old copy
+      of XP or 7 on CD, you can use it to install that operating system
+      on a new virtual machine.  To do this, run VirtualBox and click
+      the "New" button on the toolbar.  Follow the steps to create
+      a new VM, selecting the appropriate OS type (XP or 7) from the list
+      when asked.  When you start the  machine, you'll be asked to
+      insert your Windows boot CD into the CD.  The virtual machine
+      will then go through the normal Windows installation procedure.
+      It works just like installing Windows on real hardware, and it's
+      just as lengthy and tedious.
+
+      <li><b>With a pre-built image:</b>  Microsoft currently provides
+      pre-built images of Windows 7 that are designed to allow Web
+      developers to test against old versions of IE.  The URL for this
+      seems to move around frequently, so I'm going to have you do a Web
+      search: "free virtual machines from microsoft".  Look for a
+      microsoft.com link in the results - anything else is likely to be
+      either a warez site or a third-party tutorial site with a broken
+      older link (like I said, Microsoft keeps moving the URLs around).
+      The Microsoft page we're looking for is actually a tool for Web
+      developers who want to test their sites against old IE versions.
+      To make this easier for Web developers, Microsoft provides pre-built
+      virtual machines with the old IE versions all set up.  But they'll
+      work for our purposes equally well.  You'll be asked to select
+      which one you want to download, by selecting an IE version, a
+      Windows version, and a "platform".  Select <b>Windows 7</b> or
+      earlier for the Windows version.  The IE version doesn't matter.
+      Select <b>VirtualBox</b> for the platform.  Once you make your
+      selections, the  page should offer you a file to download and
+      installation instructions.  Downlaod the file, and read and follow
+      the instructions.  You should have a working Windows 7 VM running
+      in VirtualBox when you're done.
+
+   </ul>
+
+   <p>
+      Once you have your XP/7 virtual machine running, shut it down
+      by going to the Start menu within the virtual OS window and
+      clicking Turn Off Computer.  Wait for the VM to shut down.
+      The VM window will close when it's done.
+   </p>
+
+   <p>
+      Now go back to the VirtualBox VM manager window.  Right-click
+      the VM in the list and select Settings.  In the Settings window,
+      select the USB page.  There should be a checkbox at the top labeled
+      "Enable USB Controller".  Make sure it's checked.
+   </p>
+
+   <p>
+      Plug in the KL25Z via the <b>programming</b> port.  Click the
+      "+" button next to the "USB Device Filters" list.  You should
+      see an entry in the pop-up list starting with "PE Microcomputer Systems Inc".
+      That's the KL25Z programming port.  Click it to add it to the
+      list.  Click OK.
+   </p>
+
+   <p>
+      Unplug the KL25Z.
+   </p>
+
+   <p>
+      Launch the VM by double-clicking it.  Wait for it to finish
+      booting.  The XP/Win 7 desktop window should be showing and
+      the disk should be done grinding away at startup tasks.
+      Now plug in the KL25Z.  If all went well, it should appear
+      on the XP/7 desktop and <b>not</b> on your real Windows
+      desktop.
+   </p>
+
+   <p>
+      Now get out that printout we made back at the beginning of
+      this whole mess!  Follow the instructions to download and
+      install the first .SDA file <b>within the XP/7 box</b>.
+   </p>
+
+   <p>
+      At this point in the printed instructions, you'll be asked to
+      unplug and re-plug the KL25Z.  Things get a little hazy here.
+      You <i>might</i> need to add a new VirtualBox USB filter.
+      Try re-plugging the KL25Z and see which desktop it connects
+      to.  If it connects to the XP/7 desktop, all is good.  If
+      it connects to your regular Windows desktop, go to the
+      USB device menu in the VirtualBox controls, find the
+      un-checked "PE Microcomputer Systems" item, and check it.
+      After you check it, unplug the KL25Z and plug it back in.
+      This time it will hopefully connect to the XP/7 desktop
+      rather than your ordinary desktop.  If not, you might have
+      to shut down the VM and repeat the USB Filter process we
+      did earlier from the VirtualBox Settings dialog.
+   </p>
+
+   <p>
+      Once you get through the whole procedure within the XP/7
+      VM, disconnect the KL25Z and shut down the VM (Use "Turn off
+      computer" from the Start menu within the VM window, and wait
+      for the VM window to close).  Now plug the KL25Z back in,
+      via the <b>programming</b> port.
+   </p>
+
+   <p>
+      If all went well, you should have a drive on your Windows
+      desktop labeled <b>FRDM-KL25Z</b>.  The drive label is very
+      important.  If it's FRDM-KL25Z, everything worked and
+      the device should be ready to use in your modern Windows
+      version!  If the label <i>isn't</i> FRDM-KL25Z, something
+      must have gone wrong somewhere along the way.  Try going
+      back through the process above again.  If you can't get it
+      to work after carefully repeating all the steps, post on
+      vpforums.org and hopefully I or someone else will be able
+      to help you troubleshoot.
+   </p>
+      
+
+</div>
+
+</body>
+</html>

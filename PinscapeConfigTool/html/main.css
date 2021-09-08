@@ -12,12 +12,12 @@ body {
     margin: 0px;
     padding: 16px;
 }
-body.help {
-    font: 10pt/15pt SegoecUI, Verdana;
-}
+    body.help {
+        font: 10pt/15pt SegoecUI, Verdana;
+    }
 
-body > div {
-}
+    body > div {
+    }
 
 div {
     margin: 1em 0px;
@@ -26,9 +26,9 @@ div {
 h1, h2, h3 {
 }
 
-h1 img, h2 img, h3 img {
-    vertical-align: middle;
-}
+    h1 img, h2 img, h3 img {
+        vertical-align: middle;
+    }
 
 h1 {
     padding: 1em 16px;
@@ -54,14 +54,14 @@ div.warning {
     border: 1px solid #e0e020;
     border-radius: 4px;
 }
-div.warning > p:first-child {
-    font-weight: bold;
-    font-size: 110%;
-    margin-top: 0px;
-}
-div.warning > p:last-child {
-    margin-bottom: 0px;
-}
+    div.warning > p:first-child {
+        font-weight: bold;
+        font-size: 110%;
+        margin-top: 0px;
+    }
+        div.warning > p:last-child {
+        margin-bottom: 0px;
+    }
 
 ul > li, ol > li {
     margin: 1em 0px;
@@ -128,21 +128,21 @@ a.iconButton {
     padding: 3px;
     border: 1px solid transparent;
 }
-a.iconButton:hover {
-    border: 1px solid #800080;
-    background: #00ffff;
-}
-a.iconButton:active {
-    border: 1px solid #ff00ff;
-    background: #ff0000;
-}
+    a.iconButton:hover {
+        border: 1px solid #800080;
+        background: #00ffff;
+    }
+    a.iconButton:active {
+        border: 1px solid #ff00ff;
+        background: #ff0000;
+    }
 
 a.silent {
     text-decoration: none;
 }
-a.silent:hover {
-    text-decoration: underline;
-}
+    a.silent:hover {
+        text-decoration: underline;
+    }
 
 .popupMenu {
     display: none;
@@ -153,20 +153,20 @@ a.silent:hover {
     border: 1px solid #a0a0a0;
     box-shadow: 1px 1px 4px #000000;
 }
-.popupMenu div, #nav .popupMenu div {
-    padding: 1ex;
-    font-weight: bold;
-}
-.popupMenu div:hover {
-    background: #00ffff;
-}
-.popupMenu div:active {
-    background: #0080ff;
-}
-.popupMenu hr {
-    margin: 0px;
-    border: 1px solid #d0d0d0;
-}
+    .popupMenu div, #nav .popupMenu div {
+        padding: 1ex;
+        font-weight: bold;
+    }
+        .popupMenu div:hover {
+            background: #00ffff;
+        }
+        .popupMenu div:active {
+            background: #0080ff;
+        }
+    .popupMenu hr {
+        margin: 0px;
+        border: 1px solid #d0d0d0;
+    }
 
 a.tbButton {
     display: inline-block;
@@ -177,14 +177,14 @@ a.tbButton {
     text-decoration: none;
     text-align: center;
 }
-a.tbButton:hover {
-    background: #00ffff;
-    border-color: #808020;
-}
-a.tbButton:active {
-    background: #00ffff;
-    border-color: #808020;
-}
+    a.tbButton:hover {
+        background: #00ffff;
+        border-color: #808020;
+    }
+    a.tbButton:active {
+        background: #00ffff;
+        border-color: #808020;
+    }
 
 a.button {
     display: inline-block;
@@ -198,9 +198,9 @@ a.button {
     border: 1px solid #202020;
 }
 
-a.button.iconic {
-    border-color: transparent;
-}
+    a.button.iconic {
+        border-color: transparent;
+    }
 
 
 div > a.button {
@@ -223,9 +223,9 @@ div.devBtnGroup {
     display: inline-block;
     margin: 0px .75em;
 }
-div.devBtnGroup a.button {
-    margin: 1ex .25ex;
-}
+    div.devBtnGroup a.button {
+        margin: 1ex .25ex;
+    }
 
 div.working {
     color: #808080;
@@ -238,8 +238,8 @@ div#devlistmain {
 div.devlistitem {
     padding: .5ex 1em;
 }
-div.devlistitem > div {
-}
+    div.devlistitem > div {
+    }
 
 .devlistitem.first {
     border-left: 8px solid #ff8000;
@@ -258,9 +258,9 @@ div.devlistitem > div {
 }
 
 .firmwareUpdateNotice {
-	display: none;
-	color: #008000;
-	font-weight: bold;
+    display: none;
+    color: #008000;
+    font-weight: bold;
 }
 
 .iconWithTitle {
@@ -275,17 +275,17 @@ div.devlistitem > div {
     cursor: pointer;
     min-width: 13ex;
 }
-.iconWithTitle > img {
-    margin: 1em 1ex 1ex 1ex;
-}
-.iconWithTitle.selected {
-    border: 2px solid #0000ff;
-    background: #e0ffff;
-}
-.iconWithTitle:hover {
-    border: 2px solid #000000;
-    background: #00ffff;
-}
+    .iconWithTitle > img {
+        margin: 1em 1ex 1ex 1ex;
+    }
+        .iconWithTitle.selected {
+        border: 2px solid #0000ff;
+        background: #e0ffff;
+    }
+    .iconWithTitle:hover {
+        border: 2px solid #000000;
+        background: #00ffff;
+    }
 
 hr {
     margin: 2em 0px;
@@ -303,22 +303,22 @@ hr {
 }
 
 .reHideButton {
-	padding-left: 2em;
+    padding-left: 2em;
 }
 
 table.radio {
     margin: 1em auto;
 }
 
-table.radio td {
-    text-align: center;
-    vertical-align: bottom;
-    padding: 1em;
-    border: 1px solid transparent;
-}
-table.radio td.selected {
-    border: 1px solid #ff00ff;
-}
+    table.radio td {
+        text-align: center;
+        vertical-align: bottom;
+        padding: 1em;
+        border: 1px solid transparent;
+    }
+        table.radio td.selected {
+            border: 1px solid #ff00ff;
+        }
 
 img.sectionIcon {
     float: right;
@@ -333,32 +333,32 @@ img.sectionIcon {
 table.inputs {
 }
 
-table.inputs > tbody > tr > td:first-child {
-    text-align: right;
-    padding-right: 2em;
-}
-table.inputs > tbody > tr > td:nth-child(3) {
-    font-style: italic;
-}
-table.inputs > tbody > tr > td {
-    vertical-align: middle;
-}
+    table.inputs > tbody > tr > td:first-child {
+        text-align: right;
+        padding-right: 2em;
+    }
+        table.inputs > tbody > tr > td:nth-child(3) {
+        font-style: italic;
+    }
+            table.inputs > tbody > tr > td {
+        vertical-align: middle;
+    }
 
 div.twocol {
     display: table-row;
 }
 
-div.twocol > div {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 0px 1em;
-}
-div.twocol > div:first-child {
-    padding-left: 0px;
-}
-div.twocol > div:last-child {
-    padding-right: 0px;
-}
+    div.twocol > div {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0px 1em;
+    }
+            div.twocol > div:first-child {
+            padding-left: 0px;
+        }
+        div.twocol > div:last-child {
+            padding-right: 0px;
+        }
 
 div.indented {
     margin-left: 2em;
@@ -367,70 +367,70 @@ div.indented {
 #IRCommandSelector {
     margin: 0px;
     position: absolute;
-	display: inline-block;
+    display: inline-block;
 }
-#IRCommandSelector > div {
-    margin: 0px auto;
-    padding: 0px;
-}
-#IRCommandSelector > div > div:first-child {
-	margin: 0px;
-	padding: 0px;
-	height: 8em;
-}
+    #IRCommandSelector > div {
+        margin: 0px auto;
+        padding: 0px;
+    }
+        #IRCommandSelector > div > div:first-child {
+            margin: 0px;
+            padding: 0px;
+            height: 8em;
+        }
 #IRCommandList {
-	position: absolute;
-	display: inline-block;
-	box-sizing: border-box;
-	margin: 0px;
-	padding: 0px;
-	background: #ffffff;
-	border: 1px solid #e0e0e0;
-	box-shadow: 2px 2px 10px #808080;
-	overflow-y: auto;
+    position: absolute;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 2px 2px 10px #808080;
+    overflow-y: auto;
 }
-#IRCommandList div {
-	white-space: nowrap;
-	padding: 1ex 2em;
-	margin: 0px;
-	cursor: default;
-}
-#IRCommandList div:hover {
-	background: #0000ff;
-	color: #ffffff;
-}
-#IRCommandList .IRidx {
-}
-#IRCommandList .IRCode {
-	padding: 0px 1em;
-}
-#IRCommandList .IRDesc {
-}
-#IRCommandList .IRCheck {
-	display: inline-block;
-	width: 2em;
-	text-align: center;
-}
+    #IRCommandList div {
+        white-space: nowrap;
+        padding: 1ex 2em;
+        margin: 0px;
+        cursor: default;
+    }
+        #IRCommandList div:hover {
+            background: #0000ff;
+            color: #ffffff;
+        }
+    #IRCommandList .IRidx {
+    }
+    #IRCommandList .IRCode {
+        padding: 0px 1em;
+    }
+    #IRCommandList .IRDesc {
+    }
+    #IRCommandList .IRCheck {
+        display: inline-block;
+        width: 2em;
+        text-align: center;
+    }
 
 #keySelector {
     margin: 0px;
     position: absolute;
     width: 100%;
 }
-#keySelector > div {
-    margin: 0px auto;
-    padding: 0px;
-    box-sizing: border-box;
-    border: 1px solid #d0d0d0;
-    border-radius: 6px;
-    box-shadow: 2px 2px 10px #808080;
-    background-color: #f0f0f0;
-}
-#keySelector > div > div:first-child {
-    margin: 0px;
-    padding: 0px;
-    height: 280px;
-}
+    #keySelector > div {
+        margin: 0px auto;
+        padding: 0px;
+        box-sizing: border-box;
+        border: 1px solid #d0d0d0;
+        border-radius: 6px;
+        box-shadow: 2px 2px 10px #808080;
+        background-color: #f0f0f0;
+    }
+        #keySelector > div > div:first-child {
+            margin: 0px;
+            padding: 0px;
+            height: 280px;
+        }
 #oskeyboard, #osjoystick, #osunused, #osspecial {
     position: absolute;
     margin: 0px;
@@ -439,7 +439,7 @@ div.indented {
     overflow: hidden;
     width: 360px;
 }
-    
+
 #oskeyboard {
     background: url(kb.png) 4px 4px no-repeat;
     width: 831px;
@@ -457,15 +457,15 @@ div.indented {
     border: 4px solid transparent;
     border-radius: 4px;
 }
-.keycapBtn:hover {
-    border-color: #ffff00;
-}
-.keycapBtn.selected {
-    border-color: #0000ff;
-}
-.keycapBtn.selected:hover {
-    border-color: #00ffff;
-}
+    .keycapBtn:hover {
+        border-color: #ffff00;
+    }
+        .keycapBtn.selected {
+        border-color: #0000ff;
+    }
+        .keycapBtn.selected:hover {
+            border-color: #00ffff;
+        }
 #keytype {
     height: 36px;
     margin: 0px;
@@ -477,36 +477,36 @@ div.indented {
     text-align: center;
 }
 
-#keytype > img {
-    margin: 0px 1em;
-    border: 3px solid transparent;
-    border-radius: 3px;
-}
-#keytype > img:hover {
-    border: 3px solid #e0e0e0;
-}
-#keytype > img.selected {
-    border: 3px solid #0000ff;
-}
+    #keytype > img {
+        margin: 0px 1em;
+        border: 3px solid transparent;
+        border-radius: 3px;
+    }
+        #keytype > img:hover {
+            border: 3px solid #e0e0e0;
+        }
+        #keytype > img.selected {
+            border: 3px solid #0000ff;
+        }
 
 #osjoystick {
 }
-#osjoystick div.topfill {
-    height: 15px;
-    text-align: center;
-    font-weight: bold;
-}
-#osjoystick div.jsBtnBox {
-    width: 288px;
-    margin: 0px auto;
-    border: 2px solid #c0c0c0;
-    border-radius: 4px;
-    background: #d0d0d0;
-}
-#osjoystick div.jsBtnRow {
-    margin: 0px;
-    padding: 0px;
-}
+    #osjoystick div.topfill {
+        height: 15px;
+        text-align: center;
+        font-weight: bold;
+    }
+    #osjoystick div.jsBtnBox {
+        width: 288px;
+        margin: 0px auto;
+        border: 2px solid #c0c0c0;
+        border-radius: 4px;
+        background: #d0d0d0;
+    }
+        #osjoystick div.jsBtnRow {
+        margin: 0px;
+        padding: 0px;
+    }
 .jsBtn {
     box-sizing: border-box;
     display: inline-block;
@@ -518,18 +518,18 @@ div.indented {
     text-align: center;
     cursor: pointer;
 }
-.jsBtn:hover {
-    background-position: -64px 0px;
-    font-weight: bold;
-}
-.jsBtn.selected {
-    background-position: 0px 0px;
-    font-weight: bold;
-    color: #ffffff;
-}
+    .jsBtn:hover {
+        background-position: -64px 0px;
+        font-weight: bold;
+    }
+    .jsBtn.selected {
+        background-position: 0px 0px;
+        font-weight: bold;
+        color: #ffffff;
+    }
 
 #autoCenterRadioButtons > div {
-	margin: .5ex 2em;
+    margin: .5ex 2em;
 }
 
 
@@ -537,7 +537,7 @@ div.indented {
     cursor: pointer;
 }
 .outPortPin, .dispPinName {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #pinSelector {
@@ -552,16 +552,16 @@ div.indented {
     white-space: nowrap;
     overflow: hidden;
 }
-#pinSelector .pinSelectorPage {
-    box-sizing: border-box;
-    display: inline-block;
-    vertical-align: top;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    white-space: nowrap;
-    width: 496px;
-}
+    #pinSelector .pinSelectorPage {
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        white-space: nowrap;
+        width: 496px;
+    }
 .sizer {
     visibility: hidden;
     white-space: nowrap;
@@ -582,26 +582,26 @@ div.indented {
     font-size: 8pt;
     cursor: pointer;
 }
-#pinTypeSelector img {
-    border-radius: 4px;
-}
-#pinTypeSelector > div {
-    padding: 8px 0px;
-    border: 2px solid transparent;
-    border-radius: 4px;
-    margin: 0px;
-}
-#pinTypeSelector > div:hover {
-    background: #00ffff;
-}
-#pinTypeSelector > div.selected {
-    background: #ffffff;
-    border: 2px solid #0000a0;
-}
-#pinTypeSelector > div.selected:hover {
-    background: #00ffff;
-    border: 2px solid #0000ff;
-}
+    #pinTypeSelector img {
+        border-radius: 4px;
+    }
+        #pinTypeSelector > div {
+        padding: 8px 0px;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        margin: 0px;
+    }
+        #pinTypeSelector > div:hover {
+            background: #00ffff;
+        }
+                #pinTypeSelector > div.selected {
+            background: #ffffff;
+            border: 2px solid #0000a0;
+        }
+            #pinTypeSelector > div.selected:hover {
+                background: #00ffff;
+                border: 2px solid #0000ff;
+            }
 
 .pinlist {
     display: inline-block;
@@ -619,39 +619,39 @@ div.indented {
     border-bottom-left-radius: 8px;
     min-width: 20ex;
 }
-.pinlist > div {
-    margin: 0px;
-    padding: 3px;
-    cursor: default;
-    display: none;
-}
-.pinlist > div.available {
-    display: block;
-}
-.pinlist > div.current {
-    font-weight: bold;
-}
-.pinlist > div.inuse {
-    color: #808080;
-}
-.pinlist > div.pwmInuse {
-    color: #900090;
-}
-.pinlist > div.hover {
-    background: #d0d0d0;
-}
-.pinlist > div.selected {
-    background: #0000ff;
-    color: #ffffff;
-}
-.pinlist > div.selected.hover {
-    background: #0000ff;
-    color: #ffff00;
-}
-.pinlist > div.chipPin {
-    padding-left: 1em;
-    display: block;
-}
+    .pinlist > div {
+        margin: 0px;
+        padding: 3px;
+        cursor: default;
+        display: none;
+    }
+            .pinlist > div.available {
+            display: block;
+        }
+        .pinlist > div.current {
+            font-weight: bold;
+        }
+        .pinlist > div.inuse {
+            color: #808080;
+        }
+        .pinlist > div.pwmInuse {
+            color: #900090;
+        }
+        .pinlist > div.hover {
+            background: #d0d0d0;
+        }
+        .pinlist > div.selected {
+            background: #0000ff;
+            color: #ffffff;
+        }
+            .pinlist > div.selected.hover {
+                background: #0000ff;
+                color: #ffff00;
+            }
+        .pinlist > div.chipPin {
+            padding-left: 1em;
+            display: block;
+        }
 div.chipNo {
     background: #f8f8f8;
     border-bottom: 1px solid #f0f0f0;
@@ -660,14 +660,14 @@ div.chipNo {
     display: block;
     font-weight: bold;
 }
-div.chipNo.header {
-    display: inline-block;
-    box-sizing: border-box;
-    position: absolute;
-    z-index: 1;
-    border-top-left-radius: 8px;
-    width: 100%;
-}
+    div.chipNo.header {
+        display: inline-block;
+        box-sizing: border-box;
+        position: absolute;
+        z-index: 1;
+        border-top-left-radius: 8px;
+        width: 100%;
+    }
 
 /*
  * Pin selector image wrapper structure:
@@ -708,15 +708,18 @@ div.chipNo.header {
     padding: 4px 0px;
 }
 
+.RigMasterBoardPinSelector .pinimage {
+    padding: 4px 0px;
+}
 .pinimage > div {
     position: relative;
     margin: 0px;
     padding: 0px;
 }
-.pinimage > div > img {
-    margin: 0px;
-    padding: 0px;
-}
+    .pinimage > div > img {
+        margin: 0px;
+        padding: 0px;
+    }
 
 .pinLegend {
     position: absolute;
@@ -738,6 +741,10 @@ div.chipNo.header {
     bottom: 28px;
 }
 
+.RigMasterBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
 
 .pinimage .pinoverlay {
     display: inline-block;
@@ -770,30 +777,30 @@ div.chipNo.header {
     width: 100%;
     padding: 0px 4px;
 }
-.chipIndexer.background {
-    opacity: .5;
-    background: #c0c0c0;
-    height: 2.5em;
-    padding: 0px;
-}
-.chipIndexer div {
-    display: inline-block;
-    margin: 0px .75ex;
-    padding: .5ex 1ex;
-    background: #e8e8e8;
-    border: 2px solid #008080;
-    border-radius: 5px;
-    cursor: default;
-}
-.chipIndexer div:hover {
-    background: #00ffff;
-    border-color: #000080;
-}
-.chipIndexer div.selected {
-    background: #0000ff;
-    color: #ffffff;
-    font-weight: bold;
-}
+    .chipIndexer.background {
+        opacity: .5;
+        background: #c0c0c0;
+        height: 2.5em;
+        padding: 0px;
+    }
+    .chipIndexer div {
+        display: inline-block;
+        margin: 0px .75ex;
+        padding: .5ex 1ex;
+        background: #e8e8e8;
+        border: 2px solid #008080;
+        border-radius: 5px;
+        cursor: default;
+    }
+        .chipIndexer div:hover {
+            background: #00ffff;
+            border-color: #000080;
+        }
+        .chipIndexer div.selected {
+            background: #0000ff;
+            color: #ffffff;
+            font-weight: bold;
+        }
 
 .pinButton {
     position: absolute;
@@ -845,6 +852,12 @@ div.chipNo.header {
     left: -6px;
     top: -6px;
 }
+
+.RigMasterBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
 .expBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
@@ -861,9 +874,14 @@ div.chipNo.header {
     height: 12px;
 }
 
+.RigMasterBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
 .pinButton.enabled {
 }
-	
+
 .pinButton.available.inuse {
     background-position: 0px -20px;
 }
@@ -873,24 +891,24 @@ div.chipNo.header {
 .pinButton.available {
     background-position: 0px -60px;
 }
-.pinButton.available.selected {
-    background-position: 0px -80px;
-}
-.pinButton.available.hover {
-    background-position: 0px -100px;
-}
-.pinButton.available.hover.selected {
-    background-position: 0px -120px;
-}
+    .pinButton.available.selected {
+        background-position: 0px -80px;
+    }
+    .pinButton.available.hover {
+        background-position: 0px -100px;
+    }
+        .pinButton.available.hover.selected {
+            background-position: 0px -120px;
+        }
 
 #virtualOutputSelector > div {
     margin: 1em;
     text-align: center;
     white-space: normal;
 }
-#virtualOutputSelector > div:first-child {
-    padding: 50px 1em;
-}
+    #virtualOutputSelector > div:first-child {
+        padding: 50px 1em;
+    }
 
 #unassignedOutputSelector .remarks {
     padding: 1em;
@@ -912,19 +930,19 @@ div.chipNo.header {
     border: 1px solid #e0e0e0;
     border-radius: 2px;
     font: 9pt Arial;
-	cursor: pointer;
+    cursor: pointer;
 }
 .pinwarn {
     visibility: hidden;
 }
-.pinwarn.active {
-    visibility: visible;
-    cursor: pointer;
-}
-.pinwarn img {
-    margin: 0px 1em;
-    vertical-align: middle;
-}
+    .pinwarn.active {
+        visibility: visible;
+        cursor: pointer;
+    }
+        .pinwarn img {
+        margin: 0px 1em;
+        vertical-align: middle;
+    }
 
 .pinlabel.active, .keylabel.active {
     background: #00ffff;
@@ -967,28 +985,28 @@ tr.openDlgRow {
     width: 100%;
     margin: 0px;
 }
-#loadingOverlay > div {
-    display: table;
-    height: 100%;
-    width: 100%;
-    margin: 0px;
-}
-#loadingOverlay > div > div {
-    display: table-cell;
-    height: 100%;
-    width: 100%;
-    vertical-align: middle;
-    text-align: center;
-    font-weight: bold;
-}
-#loadingOverlay > div > div > div {
-    display: inline-block;
-    padding: 8em 12em;
-    border-radius: 10px;
-    background: #ffffff;
-    border: 2px solid #e0e0e0;
-    box-shadow: 2px 2px 10px #a0a0a0;
-}
+    #loadingOverlay > div {
+        display: table;
+        height: 100%;
+        width: 100%;
+        margin: 0px;
+    }
+            #loadingOverlay > div > div {
+            display: table-cell;
+            height: 100%;
+            width: 100%;
+            vertical-align: middle;
+            text-align: center;
+            font-weight: bold;
+        }
+            #loadingOverlay > div > div > div {
+                display: inline-block;
+                padding: 8em 12em;
+                border-radius: 10px;
+                background: #ffffff;
+                border: 2px solid #e0e0e0;
+                box-shadow: 2px 2px 10px #a0a0a0;
+            }
 
 input {
     border: 1px solid #e0e0e0;
@@ -1007,34 +1025,34 @@ option {
 #buttonTab {
     border-collapse: collapse;
 }
-#buttonTab th {
-    padding: 1ex 4px;
-}
+    #buttonTab th {
+        padding: 1ex 4px;
+    }
 
-#buttonTab td {
-    border: none;
-    padding: 0px 4px;
-    margin: 0px;
-    border: none;
-    text-align: center;
-    vertical-align: middle;
-}
-#buttonTab td.wider {
-    padding: 0px 1em;
-}
-#buttonTab span {
-    vertical-align: middle;
-}
+    #buttonTab td {
+        border: none;
+        padding: 0px 4px;
+        margin: 0px;
+        border: none;
+        text-align: center;
+        vertical-align: middle;
+    }
+            #buttonTab td.wider {
+            padding: 0px 1em;
+        }
+    #buttonTab span {
+        vertical-align: middle;
+    }
 
-#buttonTab td.buttonCol {
-    white-space: nowrap;
-}
-.shiftRow .buttonCol.shifted {
-	visibility: hidden;
+    #buttonTab td.buttonCol {
+        white-space: nowrap;
+    }
+    .shiftRow .buttonCol.shifted {
+    visibility: hidden;
 }
 
 #buttonTab td.buttonCol.shifted {
-	border-left: 1px dotted #808080;
+    border-left: 1px dotted #808080;
 }
 
 .buttonCol .keyNightMode {
@@ -1043,47 +1061,47 @@ option {
     height: 24px;
     width: 24px;
     margin-left: 4px;
-	cursor: pointer;
+    cursor: pointer;
 }
-.buttonCol .keyNightMode:hover {
-    background: url(nightModeOff.png) no-repeat;
-}
-.buttonCol.nightMode .keyNightMode {
+    .buttonCol .keyNightMode:hover {
+        background: url(nightModeOff.png) no-repeat;
+    }
+    .buttonCol.nightMode .keyNightMode {
     background: url(nightModeSmall.png) no-repeat;
 }
 
 .keymappingContainer {
     display: inline-block;
-	width: 42px;
-	text-align: center;
+    width: 42px;
+    text-align: center;
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
 }
 .keymapping {
     display: inline-block;
-	width: 42px;
+    width: 42px;
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
     background: 0px 0px no-repeat;
     cursor: pointer;
 }
-.keymapping.asKey, .keymapping.asMediaKey {
-    background-image: url(kb.png);
-}
-.keymapping.asKeyName {
-}
-.keymapping.asMediaKey {
-}
-.keymapping.asNone {
-    background-image: url(unusedButton.png);
-}
-.keymapping.asJoystickButton {
-    background-image: url(joystickButton.png);
-    color: #ffffff;
-}
-.keyname {
+    .keymapping.asKey, .keymapping.asMediaKey {
+        background-image: url(kb.png);
+    }
+        .keymapping.asKeyName {
+    }
+    .keymapping.asMediaKey {
+    }
+    .keymapping.asNone {
+        background-image: url(unusedButton.png);
+    }
+    .keymapping.asJoystickButton {
+        background-image: url(joystickButton.png);
+        color: #ffffff;
+    }
+    .keyname {
     font-size: 10pt;
     font-weight: bold;
     display: inline-block;
@@ -1093,112 +1111,112 @@ option {
 }
 
 #irCommands {
-	padding-top: 2em;
+    padding-top: 2em;
 }
 
 #irCommandTab td {
-	vertical-align: middle;
-	text-align: center;
-	white-space: nowrap;
-	padding: 0px 1em;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    padding: 0px 1em;
 }
-#irCommandTab td.irCode {
-	padding-right: 0px;
-}
-#irCommandTab td.irCodeCtls {
-	padding-left: 0px;
-}
+    #irCommandTab td.irCode {
+        padding-right: 0px;
+    }
+    #irCommandTab td.irCodeCtls {
+        padding-left: 0px;
+    }
 
 #irCommandTab .irLearn, #irCommandTab .irTest {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	border-radius: 3px;
-	cursor: pointer;
-	border: 1px solid transparent;
-	background: center center no-repeat;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: center center no-repeat;
 }
-#irCommandTab .irLearn:hover, #irCommandTab .irTest:hover {
-	border: 1px solid #00b0ff;
-	background-color: #ffff00;
-}
+    #irCommandTab .irLearn:hover, #irCommandTab .irTest:hover {
+        border: 1px solid #00b0ff;
+        background-color: #ffff00;
+    }
 
 #irCommandTab .irLearn {
-	background-image: url("irLearn.png");
+    background-image: url("irLearn.png");
 }
 #irCommandTab .irTest {
-	background-image: url("irTestButton.png");
+    background-image: url("irTestButton.png");
 }
-#irCommandTab .irTest.sending {
-	background-image: url("irTestSending.png");
-	border: 1px solid #ff0000;
-}
+    #irCommandTab .irTest.sending {
+        background-image: url("irTestSending.png");
+        border: 1px solid #ff0000;
+    }
 
 #irCommandTab .irTVON {
-	display: inline-block;
-	width: 28px;
-	height: 28px;
-	background: url("tvOnButtonOff.png") center center no-repeat;
-	border-radius: 3px;
-	border: 1px solid transparent;
-	cursor: pointer;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background: url("tvOnButtonOff.png") center center no-repeat;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    cursor: pointer;
 }
-#irCommandTab .irTVON:hover, #irCommandTab .irTVON.active {
-	background-image: url("tvOnButton.png");
-}
-#irCommandTab .irTVON:hover {
-	border: 1px solid #00b0ff;
-	background-color: #ffff00;
-}
+    #irCommandTab .irTVON:hover, #irCommandTab .irTVON.active {
+        background-image: url("tvOnButton.png");
+    }
+    #irCommandTab .irTVON:hover {
+        border: 1px solid #00b0ff;
+        background-color: #ffff00;
+    }
 
 #irCommandTab .irCode input.error {
-	background-color: #ffd0d0;
+    background-color: #ffd0d0;
 }
 
 #buttonTab .keyIR {
-	display: inline-block;
-	box-sizing: border-box;
-	padding: 0px;
-	margin: 0px;
-	cursor: pointer;
-	width: 28px;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    width: 28px;
 }
-#buttonTab .keyIR .label {
-	display: table-cell;
-	box-sizing: border-box;
-	background: url(irButtonOff.png) center center no-repeat;
-	height: 28px;
-	width: 28px;
-	text-align: left;
-	vertical-align: middle;
-	text-align: center;
-	font-size: 115%;
-	font-weight: bold;
-}
-#buttonTab .keyIR .label.active, #buttonTab .keyIR .label:hover {
-	background: url(irButton.png) center center no-repeat;
-}
+    #buttonTab .keyIR .label {
+        display: table-cell;
+        box-sizing: border-box;
+        background: url(irButtonOff.png) center center no-repeat;
+        height: 28px;
+        width: 28px;
+        text-align: left;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 115%;
+        font-weight: bold;
+    }
+            #buttonTab .keyIR .label.active, #buttonTab .keyIR .label:hover {
+            background: url(irButton.png) center center no-repeat;
+        }
 
 #buttonTab td.keyusage, #buttonTab th.keyusage {
     text-align: left;
     padding: 0px;
     padding-left: 1ex;
-	white-space: nowrap;
+    white-space: nowrap;
 }
 #buttonTab td.keyflags {
     padding: 0px;
 }
-#buttonTab td.keyflags img {
-	cursor: pointer;
-}
+    #buttonTab td.keyflags img {
+        cursor: pointer;
+    }
 #buttonTab td.keyremarks {
     padding: 0px;
 }
 #buttonTab .pinselect {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 #buttonTab td {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 .shiftCol span {
@@ -1212,9 +1230,9 @@ option {
 .shiftCol span {
     background: url(ShiftButtonHereFaint.png) no-repeat;
 }
-.shiftCol span:hover {
-    background: url(ShiftButtonHere.png) no-repeat;
-}
+    .shiftCol span:hover {
+        background: url(ShiftButtonHere.png) no-repeat;
+    }
 
 #zbFields td:nth-child(3) {
     padding-left: 1em;
@@ -1225,77 +1243,77 @@ option {
     border: none;
 }
 
-#outputTab td {
-    padding: 0px 1ex;
-    margin: 0px;
-    border: none;
-    text-align: center;
-    vertical-align: middle;
-    border: none;
-    white-space: nowrap;
-}
-#outputTab td.outPortPin {
-    padding: 0px;
-}
-#outputTab td.outPortRemarks {
-    padding: 0px;
-    width: 16px;
-}
-#outputTab td.outPortOptions {
-    text-align: left;
-}
-#outputTab td.outPortOptions img {
-    padding: 0px 2px;
-	cursor: pointer;
-}
-#outputTab td.rowControls {
-    padding: 0px;
-    text-align: left;
-}
+    #outputTab td {
+        padding: 0px 1ex;
+        margin: 0px;
+        border: none;
+        text-align: center;
+        vertical-align: middle;
+        border: none;
+        white-space: nowrap;
+    }
+        #outputTab td.outPortPin {
+            padding: 0px;
+        }
+        #outputTab td.outPortRemarks {
+            padding: 0px;
+            width: 16px;
+        }
+        #outputTab td.outPortOptions {
+            text-align: left;
+        }
+            #outputTab td.outPortOptions img {
+                padding: 0px 2px;
+                cursor: pointer;
+            }
+        #outputTab td.rowControls {
+            padding: 0px;
+            text-align: left;
+        }
 
-#outputTab .addRow, #outputTab .delRow, #outputTab .moveRow, #outputTab .selectRow {
-    background: url(addDelRow.png) no-repeat;
-    display: inline-block;
-    vertical-align: middle;
-    width: 22px;
-    height: 22px;
-}
-#outputTab .addRow {
-    background-position: 0px 0px;
-}
-#outputTab .addRow:hover {
-    background-position: 0px -22px;
-}
-#outputTab .addRow:active {
-    background-position: 0px -44px;
-}
-#outputTab .delRow {
-    background-position: -22px 0px;
-}
-#outputTab .delRow:hover {
-    background-position: -22px -22px;
-}
-#outputTab .delRow:active, #outputTab tr.selected .delRow {
-    background-position: -22px -44px;
-}
-#outputTab .moveRow {
-    background-position: -44px 0px;
-}
-#outputTab .moveRow:hover {
-    background-position: -44px -22px;
-}
-#outputTab .moveRow:active, #outputTab tr.selected .moveRow {
-    background-position: -44px -44px;
-}
-#outputTab .selectRow {
-    background-position: -66px 0px;
-}
-#outputTab .selectRow:hover {
-    background-position: -66px -22px;
-}
-#outputTab .selectRow:active, #outputTab tr.selected .selectRow {
-    background-position: -66px -44px;
-}
+    #outputTab .addRow, #outputTab .delRow, #outputTab .moveRow, #outputTab .selectRow {
+        background: url(addDelRow.png) no-repeat;
+        display: inline-block;
+        vertical-align: middle;
+        width: 22px;
+        height: 22px;
+    }
+    #outputTab .addRow {
+        background-position: 0px 0px;
+    }
+        #outputTab .addRow:hover {
+            background-position: 0px -22px;
+        }
+        #outputTab .addRow:active {
+            background-position: 0px -44px;
+        }
+    #outputTab .delRow {
+        background-position: -22px 0px;
+    }
+            #outputTab .delRow:hover {
+            background-position: -22px -22px;
+        }
+        #outputTab .delRow:active, #outputTab tr.selected .delRow {
+            background-position: -22px -44px;
+        }
+    #outputTab .moveRow {
+        background-position: -44px 0px;
+    }
+            #outputTab .moveRow:hover {
+            background-position: -44px -22px;
+        }
+        #outputTab .moveRow:active, #outputTab tr.selected .moveRow {
+            background-position: -44px -44px;
+        }
+    #outputTab .selectRow {
+        background-position: -66px 0px;
+    }
+        #outputTab .selectRow:hover {
+            background-position: -66px -22px;
+        }
+        #outputTab .selectRow:active, #outputTab tr.selected .selectRow {
+            background-position: -66px -44px;
+        }
 
 .rowMover {
     margin: 0px;
@@ -1306,32 +1324,32 @@ option {
     white-space: nowrap;
     background: #fafaff;
 }
-.rowMover td {
-    box-sizing: border-box;
-    display: inline-block;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-}
-.rowMover .moveIcon {
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    background: url(addDelRow.png) -44px -44px no-repeat;
-    vertical-align: middle;
-}
+    .rowMover td {
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+    }
+    .rowMover .moveIcon {
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background: url(addDelRow.png) -44px -44px no-repeat;
+        vertical-align: middle;
+    }
 
 .bigButtonRow {
     display: table;
 }
-.bigButtonRow > div {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 0px 3em;
-}
-.bigButtonRow > div:first-child {
-    padding: 0px;
-}
+    .bigButtonRow > div {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0px 3em;
+    }
+            .bigButtonRow > div:first-child {
+            padding: 0px;
+        }
 .bigButton {
     margin: 0px 1em;
     vertical-align: middle;
@@ -1345,19 +1363,19 @@ option {
     box-shadow: 2px 2px 10px #404040;
     cursor: pointer;
 }
-.bigButton img {
-    margin: 1em 0px;
-    vertical-align: middle;
-}
+    .bigButton img {
+        margin: 1em 0px;
+        vertical-align: middle;
+    }
 
-.bigButton:hover {
-    background: #f0ffff;
-    border-color: #00ffff;
-}
-.bigButton:active {
-    background: #e0ffff;
-    border-color: #ffff00;
-}
+    .bigButton:hover {
+        background: #f0ffff;
+        border-color: #00ffff;
+    }
+        .bigButton:active {
+        background: #e0ffff;
+        border-color: #ffff00;
+    }
 
 #binFiles > div, #noBinFiles {
     margin: 1em 2em;
@@ -1369,39 +1387,39 @@ option {
 #binFiles a, a#showDocs {
     text-decoration: none;
 }
-#binFiles a:hover, a#showDocs:hover {
-    text-decoration: underline;
-}
+    #binFiles a:hover, a#showDocs:hover {
+        text-decoration: underline;
+    }
 
 .flowStep {
     display: none;
 }
-.flowStep.done {
-    color: #909090;
-}
-.flowStep.done h2 {
-    color: #60b060;
-}
+    .flowStep.done {
+        color: #909090;
+    }
+        .flowStep.done h2 {
+            color: #60b060;
+        }
 
-.flowStep > div:nth-of-type(1) {
-}
-.flowStep > div:nth-of-type(2) {
-    display: none;
-}
-.flowStep.done > div:nth-of-type(1) {
-    display: none;
-}
-.flowStep.done > div:nth-of-type(2) {
-    display: block;
-}
+    .flowStep > div:nth-of-type(1) {
+    }
+    .flowStep > div:nth-of-type(2) {
+        display: none;
+    }
+    .flowStep.done > div:nth-of-type(1) {
+        display: none;
+    }
+    .flowStep.done > div:nth-of-type(2) {
+        display: block;
+    }
 
-.flowStep .checkmark {
-    padding-right: 1em;
-    display: none;
-}
-.flowStep.done .checkmark {
-    display: inline;
-}
+    .flowStep .checkmark {
+        padding-right: 1em;
+        display: none;
+    }
+    .flowStep.done .checkmark {
+        display: inline;
+    }
 
 #backupError {
     color: #ff0000;
@@ -1419,9 +1437,9 @@ option {
 #SDADriveList a {
     text-decoration: none;
 }
-#SDADriveList a:hover {
-    text-decoration: underline;
-}
+    #SDADriveList a:hover {
+        text-decoration: underline;
+    }
 
 .bootLoaderInfo {
     border: 1px solid #8080ff;
@@ -1451,82 +1469,82 @@ option {
 
 @media print {
     .noPrint {
-	display: none !important;
+        display: none !important;
     }
     #navproxy, #nav {
-	display: none !important;
+        display: none !important;
     }
 }
 
 .diagnosticData {
-	font-size: 80%;
-	margin-left: 1em;
+    font-size: 80%;
+    margin-left: 1em;
 }
 
 #plungerPinGroup > div {
-	margin: 0px;
+    margin: 0px;
 }
 
 #tlc59116_chipsEnabled {
-	display: table;
+    display: table;
 }
-#tlc59116_chipsEnabled > div {
-	display: table-row;
-}
-#tlc59116_chipsEnabled label {
-	display: table-cell;
-	padding: 0px 1em;
-	white-space: nowrap;
-}
+    #tlc59116_chipsEnabled > div {
+        display: table-row;
+    }
+        #tlc59116_chipsEnabled label {
+        display: table-cell;
+        padding: 0px 1em;
+        white-space: nowrap;
+    }
 
 .programUpdateNotice.headlineBox {
-	margin: 1em 0px;
-	display: none;
-	line-height: 1.5;
-	border-radius: 8px;
-	background: #008000;
-	color: #ffffff;
-	font-weight: bold;
-	padding: 1em;
+    margin: 1em 0px;
+    display: none;
+    line-height: 1.5;
+    border-radius: 8px;
+    background: #008000;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 1em;
 }
-.programUpdateNotice.headlineBox a {
-	color: #a0a0ff;
-}
-.programUpdateNotice.headlineBox a:hover {
-	color: #ffa0ff;
-}
+    .programUpdateNotice.headlineBox a {
+        color: #a0a0ff;
+    }
+            .programUpdateNotice.headlineBox a:hover {
+            color: #ffa0ff;
+        }
 #configToolUpToDate {
-	display: none;
+    display: none;
 }
 
 #autoUpdateStatus {
-	margin-bottom: 1ex;
+    margin-bottom: 1ex;
 }
 .programUpdateNotice, #firmwareUpdateNotice, #configToolUpToDate {
-	margin: 1ex 0px;
+    margin: 1ex 0px;
 }
 
 
 #flipperLogicPopup, #chimeLogicPopup {
-	position: absolute;
-	box-sizing: border-box;
-	padding: 1em;
-	background: #ffffff;
-	border: 1px solid #808080;
-	border-radius: 4px;
-	box-shadow: 2px 2px 10px #404040;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 1em;
+    background: #ffffff;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    box-shadow: 2px 2px 10px #404040;
     white-space: nowrap;
 }
-#flipperLogicPopup div, #chimeLogicPopup div {
-	margin: 0px;
-	text-align: center;
-}
+    #flipperLogicPopup div, #chimeLogicPopup div {
+        margin: 0px;
+        text-align: center;
+    }
 
-#flipperLogicPopup .flTime, #flipperLogicPopup .flPower, #chimeLogicPopup .minTime, #chimeLogicPopup .maxTime {
-	display: inline-block;
-	margin: 5px;
-	font-size: 7pt;
-}
-#flipperLogicPopup .flTimeSlider, #flipperLogicPopup .flPowerSlider, #chimeLogicPopup .minTimeSlider, #chimeLogicPopup .maxTimeSlider {
-	margin: 8px auto;
-}
+    #flipperLogicPopup .flTime, #flipperLogicPopup .flPower, #chimeLogicPopup .minTime, #chimeLogicPopup .maxTime {
+        display: inline-block;
+        margin: 5px;
+        font-size: 7pt;
+    }
+        #flipperLogicPopup .flTimeSlider, #flipperLogicPopup .flPowerSlider, #chimeLogicPopup .minTimeSlider, #chimeLogicPopup .maxTimeSlider {
+        margin: 8px auto;
+    }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <link rel="stylesheet" href="main.css"/>
+   <title>Button Options</title>
+</head>
+<body class="help">
+<h1>
+   Button Options
+</h1>
+
+<h2><img src="PulseOn.png"> Pulse Mode</h2>
+
+<p>
+In some cases, you might want a button or switch to send a
+keystroke to the PC every time the switch state <b>changes</b>,
+rather than when the button is held down or the switch is left on.
+This is called Pulse Mode.
+</p>
+
+<p>
+If you set a button to Pulse Mode, the controller will send <b>one key
+press</b> to the PC when you push the button, and will then send
+another single key press when you release the button.  It doesn't
+matter how long you hold the button down: there will always be
+exactly two key presses sent to the PC each time you push the
+button, one when pressed, the second when released.
+</p>
+
+<p>
+In contrast, a regular non-pulse mode button tells the PC it's
+being held down continuously as long as the button is pressed. For a
+keyboard key, this usually means Windows auto-repeats the key as long
+as the button is held down.
+</p>
+
+<p>
+The canonical example of a Pulse Mode button is the coin door
+switch.  The VPinMAME software uses a "toggle" key for the coin
+door.  One press of the key "opens" the virtual coin door in the
+software, and a second press "closes" it.  This convention works
+great for keyboard play, but it's really inconvenient for
+cabinet use, where you want to connect your real coin door to
+the software so that the pinball ROM knows when the door is open.
+For a real coin door, it's much easier to install a physical
+switch that senses the <b>state</b> of the coin door.  That is,
+the switch is off when the coin door is closed, and on when
+the door is open.  But that doesn't work well with VPinMAME's
+expectation of one keystroke on opening the door, and a second
+keystroke on closing the door.
+</p>
+
+<p>
+The Pulse Mode option is designed to bridge this gap.  It lets
+you install the physical switch the simple way, and translates
+this to VPinMAME's "toggle key" convention by reporting
+<b>changes</b> in the switch state to the PC.
+When you open the physical coin door, the physical switch turns on,
+so the Pulse Mode button sends a single keystroke to the PC.
+VPinMAME reads the key and toggles the virtual coin door to "open".
+As long as the coin door stays open, nothing more happens.  When
+you close the coin door, the physical switch turns off, so the
+Pulse Mode button sends another single keystroke to the PC.
+VPinMAME reads this new key and toggles the virtual coin door
+to "closed".  
+</p>
+
+<p>
+You can select Pulse Mode for any key by clicking the pulse
+mode icon <img src="PulseOn.png" style="vertical-align: middle;">
+in the key's Options column.
+</p>
+
+<p>
+The pulse mode setting applies to both the regular and shifted
+meaning of the key.  There's no way to apply pulse mode only to
+one or the other.
+</p>
+
+
+<script type="text/javascript" src="jquery-1.12.1.js"></script>
+<script type="text/javascript" src="jquery-ui/jquery-ui-1.11.4.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+</body>
+</html>
