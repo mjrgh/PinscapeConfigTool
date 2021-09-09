@@ -22,14 +22,9 @@ var MaxButtons = 128;   // maximum number of buttons
 //
 // Notes:
 //
-// - PTD0 is exposed as an external pin, but it's also hardwired on the
-//   Freescale board to the blue segment of the on-board RGB LED.  The
-//   port *can* be used for an external device, but doing so will give
-//   up control over the blue LED for status displays.  The blue LED in
-//   this case will still turn on and off according to the electrical
-//   state of the pin, since there's no way to physically disconnect
-//   the LED in software.  (You'd have to physically remove one of the
-//   SMD resistors from the board, which I wouldn't recommend!)
+// - One additional port, PTC1, is connected to an external pin, but can't
+//   be connected to anything, because it's reserved by the mbed software
+//   as the real-time clock input.  The pin is thus omitted from the list.
 //
 // - PTB18 and PTB19 are included among the assignable ports even though
 //   they're not connected to external pins.  We include them because
@@ -149,73 +144,79 @@ var MaxButtons = 128;   // maximum number of buttons
 // table wrong.
 //
 var gpioPins = [
-    { name: "PTA1",  pwm: "2.0", interrupt: true },
-    { name: "PTA2",  pwm: "2.1", interrupt: true },
-    { name: "PTA4",  pwm: "0.1", i2c: "1.SDA", interrupt: true },
-    { name: "PTA5",  pwm: "0.2", i2c: "1.SCL", interrupt: true },
+    { name: "PTA1", pwm: "2.0", interrupt: true },
+    { name: "PTA2", pwm: "2.1", interrupt: true },
+    { name: "PTA4", pwm: "0.1", i2c: "1.SDA", interrupt: true },
+    { name: "PTA5", pwm: "0.2", i2c: "1.SCL", interrupt: true },
     { name: "PTA12", pwm: "1.0", interrupt: true },
     { name: "PTA13", pwm: "1.1", interrupt: true },
-    { name: "PTA16", interrupt: true  },
-    { name: "PTA17", interrupt: true  },
-    { name: "PTB0",  pwm: "1.0", adc: "0.8" },
-    { name: "PTB1",  pwm: "1.1", adc: "0.9" },
-    { name: "PTB2",  pwm: "2.0", adc: "0.12" },
-    { name: "PTB3",  pwm: "2.1", adc: "0.13" },
-    { name: "PTB8"   },
-    { name: "PTB9"   },
-    { name: "PTB10"  },
-    { name: "PTB11"  },
-    { name: "PTB18", pwm: "2.0", onBoardLED: 1,
+    { name: "PTA16", interrupt: true },
+    { name: "PTA17", interrupt: true },
+    { name: "PTB0", pwm: "1.0", adc: "0.8" },
+    { name: "PTB1", pwm: "1.1", adc: "0.9" },
+    { name: "PTB2", pwm: "2.0", adc: "0.12" },
+    { name: "PTB3", pwm: "2.1", adc: "0.13" },
+    { name: "PTB8" },
+    { name: "PTB9" },
+    { name: "PTB10" },
+    { name: "PTB11" },
+    {
+        name: "PTB18", pwm: "2.0", onBoardLED: 1,
         internal: true, internalName: "Red on-board LED", internalShortName: "Red LED",
         warning: "This port is hard-wired on the KL25Z to the red on-board LED. "
             + "Using this port will supersede the red LED's normal status "
-            + "display function." },
-    { name: "PTB19", pwm: "2.1", onBoardLED: 2,
+            + "display function."
+    },
+    {
+        name: "PTB19", pwm: "2.1", onBoardLED: 2,
         internal: true, internalName: "Green on-board LED", internalShortName: "Green LED",
         warning: "This port is hard-wired on the KL25Z to the green on-board LED. "
             + "Using this port will supersede the green LED's normal status "
-            + "display function." },
-    { name: "PTC0",  adc: "0.14" },
+            + "display function."
+    },
+    { name: "PTC0", adc: "0.14" },
 
     // NOTE: PTC1 is also uniquely mux'able as RTC_CLOCK_INPUT.
     // The Pinscape firmware doesn't use the RTC at all, so this
     // pin is free for GPIO use.  If we ever add a feature that
     // depends upon the RTC, we'll have to mark this pin as in
     // conflict when that feature is enabled.
-    { name: "PTC1",  pwm: "0.0", adc: "0.15", idc: "1.SCL" },
+    { name: "PTC1", pwm: "0.0", adc: "0.15", idc: "1.SCL" },
 
-    { name: "PTC2",  pwm: "0.1", adc: "0.11", idc: "1.SDA" },
-    { name: "PTC3",  pwm: "0.2" },
-    { name: "PTC4",  pwm: "0.3" },
-    { name: "PTC5",  spi: "SCLK" },
-    { name: "PTC6",  spi: "MOSI" },
-    { name: "PTC7",  spi: "MISO" },
-    { name: "PTC8",  pwm: "0.4", i2c: "0.SCL" },
-    { name: "PTC9",  pwm: "0.5", i2c: "0.SDA" },
-    { name: "PTC10", i2c: "1.SCL"  },
-    { name: "PTC11", i2c: "1.SDA"  },
-    { name: "PTC12"  },
-    { name: "PTC13"  },
-    { name: "PTC16"  },
-    { name: "PTC17"  },
-    { name: "PTD0",  pwm: "0.0", interrupt: true },
-    { name: "PTD1",  pwm: "0.1", adc: "0.5b", spi: "SCLK", onBoardLED: 3, interrupt: true,
+    { name: "PTC2", pwm: "0.1", adc: "0.11", idc: "1.SDA" },
+    { name: "PTC3", pwm: "0.2" },
+    { name: "PTC4", pwm: "0.3" },
+    { name: "PTC5", spi: "SCLK" },
+    { name: "PTC6", spi: "MOSI" },
+    { name: "PTC7", spi: "MISO" },
+    { name: "PTC8", pwm: "0.4", i2c: "0.SCL" },
+    { name: "PTC9", pwm: "0.5", i2c: "0.SDA" },
+    { name: "PTC10", i2c: "1.SCL" },
+    { name: "PTC11", i2c: "1.SDA" },
+    { name: "PTC12" },
+    { name: "PTC13" },
+    { name: "PTC16" },
+    { name: "PTC17" },
+    { name: "PTD0", pwm: "0.0", interrupt: true },
+    {
+        name: "PTD1", pwm: "0.1", adc: "0.5b", spi: "SCLK", onBoardLED: 3, interrupt: true,
         remarks: "Blue on-board LED",
         warning: "This port is hard-wired on the KL25Z to the blue on-board LED. "
             + "You can use this port for other purposes, but doing so will "
-            + "supersede the blue LED's normal status display function." },
-    { name: "PTD2",  pwm: "0.2", spi: "MOSI", interrupt: true },
-    { name: "PTD3",  pwm: "0.3", spi: "MISO", interrupt: true },
-    { name: "PTD4",  pwm: "0.4", interrupt: true },
-    { name: "PTD5",  pwm: "0.5", adc: "0.6b", interrupt: true },
-    { name: "PTD6",  adc: "0.7b", interrupt: true },
-    { name: "PTD7",  interrupt: true},
-    { name: "PTE0",  i2c: "1.SDA" },
-    { name: "PTE1",  i2c: "1.SCL" },
-    { name: "PTE2"   },
-    { name: "PTE3"   },
-    { name: "PTE4"   },
-    { name: "PTE5"   },
+            + "supersede the blue LED's normal status display function."
+    },
+    { name: "PTD2", pwm: "0.2", spi: "MOSI", interrupt: true },
+    { name: "PTD3", pwm: "0.3", spi: "MISO", interrupt: true },
+    { name: "PTD4", pwm: "0.4", interrupt: true },
+    { name: "PTD5", pwm: "0.5", adc: "0.6b", interrupt: true },
+    { name: "PTD6", adc: "0.7b", interrupt: true },
+    { name: "PTD7", interrupt: true },
+    { name: "PTE0", i2c: "1.SDA" },
+    { name: "PTE1", i2c: "1.SCL" },
+    { name: "PTE2" },
+    { name: "PTE3" },
+    { name: "PTE4" },
+    { name: "PTE5" },
     { name: "PTE20", pwm: "1.0", adc: "0.0" },
     { name: "PTE21", pwm: "1.1", adc: "0.4a" },
     { name: "PTE22", pwm: "2.0", adc: "0.3" },
@@ -228,29 +229,29 @@ var gpioPins = [
 // KL25Z pin headers
 var kl25z_headers = {
     "J1": {
-        pins: [["PTC7", "PTC0", "PTC3", "PTC4",  "PTC5", "PTC6", "PTC10", "PTC11"],
-        ["PTA1", "PTA2", "PTD4", "PTA12", "PTA4", "PTA5", "PTC8",  "PTC9"]],
+        pins: [["PTC7", "PTC0", "PTC3", "PTC4", "PTC5", "PTC6", "PTC10", "PTC11"],
+        ["PTA1", "PTA2", "PTD4", "PTA12", "PTA4", "PTA5", "PTC8", "PTC9"]],
         type: "pinheader",
         pin1: [26, 88],
         pinN: [14, 174]
     },
     "J2": {
-        pins: [["PTC12", "PTC13", "PTC16", "PTC17", "PTA16", "PTA17", "PTE31", "NC",    "PTD6", "PTD7"],
-        ["PTA13", "PTD5",  "PTD0",  "PTD2",  "PTD3",  "PTD1",  "GND","VREFH", "PTE0", "PTE1"]],
+        pins: [["PTC12", "PTC13", "PTC16", "PTC17", "PTA16", "PTA17", "PTE31", "NC", "PTD6", "PTD7"],
+        ["PTA13", "PTD5", "PTD0", "PTD2", "PTD3", "PTD1", "GND", "VREFH", "PTE0", "PTE1"]],
         type: "pinheader",
         pin1: [26, 194],
         pinN: [14, 306]
     },
     "J9": {
-        pins: [["PTB8",    "PTB9", "PTB10", "PTB11", "PTE2",  "PTE3", "PTE4", "PTE5"],
-        ["SDA_PTD", "P3V3", "RESET", "P3V3",  "USB5V", "GND",  "GND",  "VIN"]],
-        type:   "pinheader",
+        pins: [["PTB8", "PTB9", "PTB10", "PTB11", "PTE2", "PTE3", "PTE4", "PTE5"],
+        ["SDA_PTD", "P3V3", "RESET", "P3V3", "USB5V", "GND", "GND", "VIN"]],
+        type: "pinheader",
         pin1: [238, 262],
         pinN: [250, 175]
     },
     "J10": {
         pins: [["PTE20", "PTE21", "PTE22", "PTE23", "PTE29", "PTE30"],
-        ["PTB0",  "PTB1",  "PTB2",  "PTB3",  "PTC2",  "PTC1"]],
+        ["PTB0", "PTB1", "PTB2", "PTB3", "PTC2", "PTC1"]],
         type: "pinheader",
         pin1: [238, 150],
         pinN: [250, 88]
@@ -267,8 +268,8 @@ var kl25z_headers = {
 
 // TLC5940 pins
 var tlc5940_pins = {
-    pins: ["OUT1",  "OUT2", "OUT3", "OUT4",  "OUT5",  "OUT6", "OUT7", "OUT8", "OUT9",  "OUT10", "OUT11", "OUT12", "OUT13", "OUT14",
-        "OUT15", "XERR", "SOUT", "GSCLK", "DCPRG", "IREF", "VCC",  "GND",  "BLANK", "XLAT",  "SCLK",  "SIN",   "VPRG",  "OUT0"],
+    pins: ["OUT1", "OUT2", "OUT3", "OUT4", "OUT5", "OUT6", "OUT7", "OUT8", "OUT9", "OUT10", "OUT11", "OUT12", "OUT13", "OUT14",
+        "OUT15", "XERR", "SOUT", "GSCLK", "DCPRG", "IREF", "VCC", "GND", "BLANK", "XLAT", "SCLK", "SIN", "VPRG", "OUT0"],
     type: "dip",
     pin1: [73, 46],
     pinN: [197, 368]
@@ -276,8 +277,8 @@ var tlc5940_pins = {
 
 // 74HC595 pins
 var hc595_pins = {
-    pins: ["OUT1",  "OUT2", "OUT3", "OUT4",  "OUT5",  "OUT6", "OUT7", "GND",
-        "OUT7'", "RST",  "SCLK", "LATCH", "ENA",   "SIN",  "OUT0", "VCC"],
+    pins: ["OUT1", "OUT2", "OUT3", "OUT4", "OUT5", "OUT6", "OUT7", "GND",
+        "OUT7'", "RST", "SCLK", "LATCH", "ENA", "SIN", "OUT0", "VCC"],
     type: "dip",
     pin1: [85, 99],
     pinN: [188, 337]
@@ -285,8 +286,8 @@ var hc595_pins = {
 
 // TLC59116 pins
 var tlc59116_pins = {
-    pins: ["REXT", "A0",   "A1",    "A2",    "A3",  "OUT0",  "OUT1",  "OUT2",  "OUT3",  "GND", "OUT4",  "OUT5", "OUT6", "OUT7",
-        "OUT8", "OUT9", "OUT10", "OUT11", "GND", "OUT12", "OUT13", "OUT14", "OUT15", "GND", "RESET", "SCL",  "SDA",  "VCC"],
+    pins: ["REXT", "A0", "A1", "A2", "A3", "OUT0", "OUT1", "OUT2", "OUT3", "GND", "OUT4", "OUT5", "OUT6", "OUT7",
+        "OUT8", "OUT9", "OUT10", "OUT11", "GND", "OUT12", "OUT13", "OUT14", "OUT15", "GND", "RESET", "SCL", "SDA", "VCC"],
     type: "dip",
     pin1: [73, 46],
     pinN: [197, 368]
@@ -305,7 +306,7 @@ var mainBoard_headers = {
 
     "JP11": {
         pins: [["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "+5V"],
-        ["3.0", "3.1", "3.2",  "3.3",  "3.4",  "3.5",  "3.6",  "3.7"]],
+        ["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]],
         type: "pinheader",
         pin1: [91, 137],
         pinN: [82, 77]
@@ -330,7 +331,7 @@ var mainBoard_headers = {
 
     "JP2": {
         pins: [["PTB0", "PTE21", "3.3V", "5V"],
-        ["NC",   "PTE22", "GND",  "PTE20"]],
+        ["NC", "PTE22", "GND", "PTE20"]],
         type: "pinheader",
         pin1: [206, 336],
         pinN: [181, 345]
@@ -338,7 +339,7 @@ var mainBoard_headers = {
 
     "JP1": {
         pins: [["PTC2", "PTB2", "PTE30", "PTE5", "PTE3", "PTB11", "PTB9", "PTC12", "PTC16", "PTA16", "PTE31", "PTD7", "NC"],
-        ["PTB3", "PTB1", "PTC11", "PTE4", "PTE2", "PTB10", "PTB8", "PTC13", "PTC17", "PTA17", "PTD6",  "PTE1", "COMMON"]],
+        ["PTB3", "PTB1", "PTC11", "PTE4", "PTE2", "PTB10", "PTB8", "PTC13", "PTC17", "PTA17", "PTD6", "PTE1", "COMMON"]],
         type: "pinheader",
         pin1: [144, 337],
         pinN: [43, 346]
@@ -709,21 +710,20 @@ var lite_chimeBoard_headers = {
 };
 
 // build a hash of the pin table indexed by name
-var gpioPinsByName = { };
-for (var i = 0 ; i < gpioPins.length ; ++i)
+var gpioPinsByName = {};
+for (var i = 0; i < gpioPins.length; ++i)
     gpioPinsByName[gpioPins[i].name] = gpioPins[i];
 
-$.each(kl25z_headers, function(k, v) {
-    forEachPin(v, function(pin, n, x, y) {
-        var g = gpioPinsByName[pin] || { };
+$.each(kl25z_headers, function (k, v) {
+    forEachPin(v, function (pin, n, x, y) {
+        var g = gpioPinsByName[pin] || {};
         if (g)
             g.pin = { name: k + "-" + n, x: x, y: y };
     });
 });
 
 // get the jumper location for a given pin
-function pinToJumper(pin)
-{
+function pinToJumper(pin) {
     var g = gpioPinsByName[pin] || {};
     return g.internalShortName || (g.pin || {}).name;
 }
@@ -732,34 +732,30 @@ function pinToJumper(pin)
 // names are in the format "1.2", where 1 is the TPM unit
 // number and 2 is the channel number.  We pull out just
 // the TPM unit number ("1" in this case).
-function pwmToTpm(pwm)
-{
+function pwmToTpm(pwm) {
     return /(\d+)\.\d+/.test(pwm) ? RegExp.$1 : null;
 }
 
 // build a hash of PWM channels and the associated pins
-var pwmChannels = { };
-var tpmUnits = { };
-for (var i = 0 ; i < gpioPins.length ; ++i)
-{
+var pwmChannels = {};
+var tpmUnits = {};
+for (var i = 0; i < gpioPins.length; ++i) {
     var g = gpioPins[i];
-    if (g.pwm)
-    {
+    if (g.pwm) {
         var t = pwmChannels[g.pwm];
         if (!t)
             pwmChannels[g.pwm] = t = {
                 name: g.pwm,
-                orList: function() { return serialComma($.map(this.pins, function(ele) { return ele.name; }), "or"); },
+                orList: function () { return serialComma($.map(this.pins, function (ele) { return ele.name; }), "or"); },
                 pins: []
             };
         t.pins.push(g);
 
         var tpm = pwmToTpm(g.pwm);
-        if (!(t = tpmUnits[tpm]))
-        {
+        if (!(t = tpmUnits[tpm])) {
             tpmUnits[tpm] = t = {
                 name: tpm,
-                orList: function() { return serialComma($.map(this.pins, function(ele) { return ele.name; }), "or"); },
+                orList: function () { return serialComma($.map(this.pins, function (ele) { return ele.name; }), "or"); },
                 pins: []
             };
         }
@@ -770,8 +766,7 @@ for (var i = 0 ; i < gpioPins.length ; ++i)
 // Iterate over a pin header object.  Calls func(name, n, x, y), where
 // 'name' is the pin name, 'n' is the pin number (starting at 1), and
 // 'x' and 'y' give the spatial coordinates.
-function forEachPin(header, func)
-{
+function forEachPin(header, func) {
     ({ "dip": forEachDIPPin, "pinheader": forEachHeaderPin })[header.type](header, func);
 }
 
@@ -789,12 +784,11 @@ function forEachPin(header, func)
 // respective pins.  Note that pinN isn't the highest numbered pin:
 // it's actually the diametrically opposed pin, so the first pin
 // in the second row at pin number n/2+1.
-function forEachDIPPin(chip, func)
-{
+function forEachDIPPin(chip, func) {
     // get the number of pins, and the number on each side (it's a DIP,
     // so there are exactly two rows of pins)
     var npins = chip.pins.length;
-    var oneSidePins = npins/2;
+    var oneSidePins = npins / 2;
 
     // get the pin 1 location (pin1=[x,y] position of center of pin 1)
     var x1 = chip.pin1[0];
@@ -810,25 +804,23 @@ function forEachDIPPin(chip, func)
 
     // figure the iteration increments
     var pindx = 0, pindy = 0, rowdx = 0, rowdy = 0;
-    if (horizontal)
-    {
-        if (oneSidePins > 1) pindx = (xN - x1)/(oneSidePins - 1);
+    if (horizontal) {
+        if (oneSidePins > 1) pindx = (xN - x1) / (oneSidePins - 1);
         rowdy = yN - y1;
     }
-    else
-    {
-        if (oneSidePins > 1) pindy = (yN - y1)/(oneSidePins - 1);
+    else {
+        if (oneSidePins > 1) pindy = (yN - y1) / (oneSidePins - 1);
         rowdx = xN - x1;
     }
 
     // go up the first row, starting at pin 1
     var pins = chip.pins;
     var x = x1, y = y1;
-    for (var pin = 0 ; pin < oneSidePins ; ++pin, x += pindx, y += pindy)
+    for (var pin = 0; pin < oneSidePins; ++pin, x += pindx, y += pindy)
         func(pins[pin], pin, x, y);
 
     // go down the second row, reversing direction
-    for (x += rowdx, y += rowdy, x -= pindx, y -= pindy ; pin < npins ; ++pin, x -= pindx, y -= pindy)
+    for (x += rowdx, y += rowdy, x -= pindx, y -= pindy; pin < npins; ++pin, x -= pindx, y -= pindy)
         func(pins[pin], pin, x, y);
 }
 
@@ -877,8 +869,7 @@ function forEachDIPPin(chip, func)
 //            6 4 2          4 3        1 3 5        3 4
 //  mirror    5 3 1          6 5        2 5 6        1 2
 //
-function forEachHeaderPin(header, func)
-{
+function forEachHeaderPin(header, func) {
     // get the number of pin rows in this header, and number of pins in each row
     var nrows = header.pins.length;
     var npins = header.pins[0].length;
@@ -899,32 +890,29 @@ function forEachHeaderPin(header, func)
 
     // figure the column (pin) and row increments for the iteration
     var rowdx = 0, rowdy = 0, pindx = 0, pindy = 0;
-    if (orientation == "horizontal")
-    {
+    if (orientation == "horizontal") {
         // horizontal
-        if (npins > 1) pindx = (xN - x1)/(npins - 1);
-        if (nrows > 1) rowdy = (yN - y1)/(nrows - 1);
+        if (npins > 1) pindx = (xN - x1) / (npins - 1);
+        if (nrows > 1) rowdy = (yN - y1) / (nrows - 1);
     }
-    else
-    {
+    else {
         // vertical
-        if (npins > 1) pindy = (yN - y1)/(npins - 1);
-        if (nrows > 1) rowdx = (xN - x1)/(nrows - 1);
+        if (npins > 1) pindy = (yN - y1) / (npins - 1);
+        if (nrows > 1) rowdx = (xN - x1) / (nrows - 1);
     }
 
     // start at pin 1
     var xrow = x1, yrow = y1;
 
     // process each row
-    for (var row = 0; row < nrows; ++row, xrow += rowdx, yrow += rowdy)
-    {
+    for (var row = 0; row < nrows; ++row, xrow += rowdx, yrow += rowdy) {
         // start at the first pin of the row
-        var pinno = row+1;
+        var pinno = row + 1;
         var x = xrow, y = yrow;
         var pinrow = header.pins[row];
 
         // process each pin in the row
-        for (var pin = 0 ; pin < npins ; ++pin, x += pindx, y += pindy, pinno += nrows)
+        for (var pin = 0; pin < npins; ++pin, x += pindx, y += pindy, pinno += nrows)
             func(pinrow[pin], pinno, x, y);
     }
 }
@@ -978,20 +966,20 @@ var standaloneFactoryConfig = {
     },
     buttons: {
         // use the defaults from earlier versions, where everything was mapped to joystick buttons
-        1:  { pin: "PTC2",  keytype: 1, keycode: 1, flags: 0 },
-        2:  { pin: "PTB3",  keytype: 1, keycode: 2, flags: 0 },
-        3:  { pin: "PTB2",  keytype: 1, keycode: 3, flags: 0 },
-        4:  { pin: "PTB1",  keytype: 1, keycode: 4, flags: 0 },
-        5:  { pin: "PTE30", keytype: 1, keycode: 5, flags: 0 },
-        6:  { pin: "PTE22", keytype: 1, keycode: 6, flags: 0 },
-        7:  { pin: "PTE5",  keytype: 1, keycode: 7, flags: 0 },
-        8:  { pin: "PTE4",  keytype: 1, keycode: 8, flags: 0 },
-        9:  { pin: "PTE3",  keytype: 1, keycode: 9, flags: 0 },
-        10: { pin: "PTE2",  keytype: 1, keycode: 10, flags: 0 },
+        1: { pin: "PTC2", keytype: 1, keycode: 1, flags: 0 },
+        2: { pin: "PTB3", keytype: 1, keycode: 2, flags: 0 },
+        3: { pin: "PTB2", keytype: 1, keycode: 3, flags: 0 },
+        4: { pin: "PTB1", keytype: 1, keycode: 4, flags: 0 },
+        5: { pin: "PTE30", keytype: 1, keycode: 5, flags: 0 },
+        6: { pin: "PTE22", keytype: 1, keycode: 6, flags: 0 },
+        7: { pin: "PTE5", keytype: 1, keycode: 7, flags: 0 },
+        8: { pin: "PTE4", keytype: 1, keycode: 8, flags: 0 },
+        9: { pin: "PTE3", keytype: 1, keycode: 9, flags: 0 },
+        10: { pin: "PTE2", keytype: 1, keycode: 10, flags: 0 },
         11: { pin: "PTB11", keytype: 1, keycode: 11, flags: 0 },
         12: { pin: "PTB10", keytype: 1, keycode: 12, flags: 0 },
-        13: { pin: "PTB9",  keytype: 1, keycode: 13, flags: 0 },
-        14: { pin: "PTB8",  keytype: 1, keycode: 14, flags: 0 },
+        13: { pin: "PTB9", keytype: 1, keycode: 13, flags: 0 },
+        14: { pin: "PTB8", keytype: 1, keycode: 14, flags: 0 },
         15: { pin: "PTC12", keytype: 1, keycode: 15, flags: 0 },
         16: { pin: "PTC13", keytype: 1, keycode: 16, flags: 0 },
         17: { pin: "PTC16", keytype: 1, keycode: 17, flags: 0 },
@@ -999,9 +987,9 @@ var standaloneFactoryConfig = {
         19: { pin: "PTA16", keytype: 1, keycode: 19, flags: 0 },
         20: { pin: "PTA17", keytype: 1, keycode: 20, flags: 0 },
         21: { pin: "PTE31", keytype: 1, keycode: 21, flags: 0 },
-        22: { pin: "PTD6",  keytype: 1, keycode: 22, flags: 0 },
-        23: { pin: "PTD7",  keytype: 1, keycode: 23, flags: 0 },
-        24: { pin: "PTE1",  keytype: 1, keycode: 24, flags: 0 }
+        22: { pin: "PTD6", keytype: 1, keycode: 22, flags: 0 },
+        23: { pin: "PTD7", keytype: 1, keycode: 23, flags: 0 },
+        24: { pin: "PTE1", keytype: 1, keycode: 24, flags: 0 }
     },
     outputs: {
         1: { port: { type: 1, pin: "PTA1" }, flags: 0x00 },     // port 1  = PTA1 (PWM)
@@ -1028,7 +1016,7 @@ var standaloneFactoryConfig = {
         22: { port: { type: 2, pin: "PTE0" }, flags: 0x00 }     // port 22 = PTE0 (Digital)
     }
 };
-var standaloneFactoryXConfig = { };
+var standaloneFactoryXConfig = {};
 
 // Factory configuration for the expansion boards
 var expansionBoardFactoryConfig = {
@@ -1081,20 +1069,20 @@ var expansionBoardFactoryConfig = {
     },
     buttons: {
         // for expansion board mode, use keyboard mappings for the standard VP and VPinMAME keys
-        1:  { pin: "PTC2",  keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
-        2:  { pin: "PTB3",  keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
-        3:  { pin: "PTB2",  keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
-        4:  { pin: "PTB1",  keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
-        5:  { pin: "PTE30", keytype: 2, keycode: 0x23, flags: 0 },  // "6" = coin 4
-        6:  { pin: "PTC11", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
-        7:  { pin: "PTE5",  keytype: 2, keycode: 0x29, flags: 0 },  // Escape = exit
-        8:  { pin: "PTE4",  keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
-        9:  { pin: "PTE3",  keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
-        10: { pin: "PTE2",  keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper
+        1: { pin: "PTC2", keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
+        2: { pin: "PTB3", keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
+        3: { pin: "PTB2", keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
+        4: { pin: "PTB1", keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
+        5: { pin: "PTE30", keytype: 2, keycode: 0x23, flags: 0 },  // "6" = coin 4
+        6: { pin: "PTC11", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
+        7: { pin: "PTE5", keytype: 2, keycode: 0x29, flags: 0 },  // Escape = exit
+        8: { pin: "PTE4", keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
+        9: { pin: "PTE3", keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
+        10: { pin: "PTE2", keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper
         11: { pin: "PTB11", keytype: 2, keycode: 0xE0, flags: 0 },  // left control = left magna
         12: { pin: "PTB10", keytype: 2, keycode: 0xE4, flags: 0 },  // right control = right magna 
-        13: { pin: "PTB9",  keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
-        14: { pin: "PTB8",  keytype: 2, keycode: 0x4A, flags: 0 },  // Home = slam tilt switch
+        13: { pin: "PTB9", keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
+        14: { pin: "PTB8", keytype: 2, keycode: 0x4A, flags: 0 },  // Home = slam tilt switch
         15: { pin: "PTC12", keytype: 2, keycode: 0x2C, flags: 0 },  // Space = keyboard nudge
         16: { pin: "PTC13", keytype: 2, keycode: 0x4D, flags: 0 },  // "End" = coin door
         17: { pin: "PTC16", keytype: 2, keycode: 0x24, flags: 0 },  // "7" = service escape
@@ -1102,24 +1090,24 @@ var expansionBoardFactoryConfig = {
         19: { pin: "PTA16", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
         20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
         21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
-        22: { pin: "PTD6",  keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
-        23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
-        24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
+        22: { pin: "PTD6", keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
+        23: { pin: "PTD7", keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
+        24: { pin: "PTE1", keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
     },
     outputs: {
         // Map the first 16 ports to the flashers & strobe on TLC5940 #1.
         // These are among the most common devices, so we want to map them
         // into the first 32 logical port numbers for LedWiz compatibility.
-        1:  { port: { type: 3, pin: 0  }, flags: 0x04 },
-        2:  { port: { type: 3, pin: 1  }, flags: 0x04 },
-        3:  { port: { type: 3, pin: 2  }, flags: 0x04 },
-        4:  { port: { type: 3, pin: 3  }, flags: 0x04 },
-        5:  { port: { type: 3, pin: 4  }, flags: 0x04 },
-        6:  { port: { type: 3, pin: 5  }, flags: 0x04 },
-        7:  { port: { type: 3, pin: 6  }, flags: 0x04 },
-        8:  { port: { type: 3, pin: 7  }, flags: 0x04 },
-        9:  { port: { type: 3, pin: 8  }, flags: 0x04 },
-        10: { port: { type: 3, pin: 9  }, flags: 0x04 },
+        1: { port: { type: 3, pin: 0 }, flags: 0x04 },
+        2: { port: { type: 3, pin: 1 }, flags: 0x04 },
+        3: { port: { type: 3, pin: 2 }, flags: 0x04 },
+        4: { port: { type: 3, pin: 3 }, flags: 0x04 },
+        5: { port: { type: 3, pin: 4 }, flags: 0x04 },
+        6: { port: { type: 3, pin: 5 }, flags: 0x04 },
+        7: { port: { type: 3, pin: 6 }, flags: 0x04 },
+        8: { port: { type: 3, pin: 7 }, flags: 0x04 },
+        9: { port: { type: 3, pin: 8 }, flags: 0x04 },
+        10: { port: { type: 3, pin: 9 }, flags: 0x04 },
         11: { port: { type: 3, pin: 10 }, flags: 0x04 },
         12: { port: { type: 3, pin: 11 }, flags: 0x04 },
         13: { port: { type: 3, pin: 12 }, flags: 0x04 },
@@ -1131,7 +1119,7 @@ var expansionBoardFactoryConfig = {
         // strobe on output 16 - that makes these two physically adjacent outputs
         // logically adjacent in the port mapping.  Knockers are also quite common,
         // so this belongs in the first 32 ports anyway.  Mark it as noisy.
-        17: { port: { type: 2, pin: "PTC8"}, flags: 0x02 },
+        17: { port: { type: 2, pin: "PTC8" }, flags: 0x02 },
 
         // Map the next 32 ports to the outputs from the first power board.  These
         // are TLC5940 chips #3 and #4 in the daisy chain (the main board has #1
@@ -1203,7 +1191,7 @@ var expansionBoardFactoryConfig = {
         65: { port: { type: 3, pin: 31 }, flags: 0x04 }
     }
 };
-var expansionBoardFactoryXConfig = { };
+var expansionBoardFactoryXConfig = {};
 
 
 // Factory configuration for the Pinscape AIO
@@ -1257,20 +1245,20 @@ var pinscapeAIOFactoryConfig = {
     },
     buttons: {
         // for expansion board mode, use keyboard mappings for the standard VP and VPinMAME keys
-        1:  { pin: "PTC2",  keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
-        2:  { pin: "PTB3",  keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
-        3:  { pin: "PTB2",  keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
-        4:  { pin: "PTB1",  keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
-        5:  { pin: "PTE30", keytype: 2, keycode: 0x23, flags: 0 },  // "6" = coin 4
-        6:  { pin: "PTC11", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
-        7:  { pin: "PTE5",  keytype: 2, keycode: 0x29, flags: 0 },  // Escape = exit
-        8:  { pin: "PTE4",  keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
-        9:  { pin: "PTE3",  keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
-        10: { pin: "PTE2",  keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper
+        1: { pin: "PTC2", keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
+        2: { pin: "PTB3", keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
+        3: { pin: "PTB2", keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
+        4: { pin: "PTB1", keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
+        5: { pin: "PTE30", keytype: 2, keycode: 0x23, flags: 0 },  // "6" = coin 4
+        6: { pin: "PTC11", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
+        7: { pin: "PTE5", keytype: 2, keycode: 0x29, flags: 0 },  // Escape = exit
+        8: { pin: "PTE4", keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
+        9: { pin: "PTE3", keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
+        10: { pin: "PTE2", keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper
         11: { pin: "PTB11", keytype: 2, keycode: 0xE0, flags: 0 },  // left control = left magna
         12: { pin: "PTB10", keytype: 2, keycode: 0xE4, flags: 0 },  // right control = right magna 
-        13: { pin: "PTB9",  keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
-        14: { pin: "PTB8",  keytype: 2, keycode: 0x4A, flags: 0 },  // Home = slam tilt switch
+        13: { pin: "PTB9", keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
+        14: { pin: "PTB8", keytype: 2, keycode: 0x4A, flags: 0 },  // Home = slam tilt switch
         15: { pin: "PTC12", keytype: 2, keycode: 0x2C, flags: 0 },  // Space = keyboard nudge
         16: { pin: "PTC13", keytype: 2, keycode: 0x4D, flags: 0 },  // "End" = coin door
         17: { pin: "PTC16", keytype: 2, keycode: 0x24, flags: 0 },  // "7" = service escape
@@ -1278,24 +1266,24 @@ var pinscapeAIOFactoryConfig = {
         19: { pin: "PTA16", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
         20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
         21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
-        22: { pin: "PTD6",  keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
-        23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
-        24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
+        22: { pin: "PTD6", keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
+        23: { pin: "PTD7", keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
+        24: { pin: "PTE1", keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
     },
     outputs: {
         // Map the first 16 ports to the flashers & strobe on TLC5940 #1.
         // These are among the most common devices, so we want to map them
         // into the first 32 logical port numbers for LedWiz compatibility.
-        1:  { port: { type: 3, pin: 0  }, flags: 0x04 },
-        2:  { port: { type: 3, pin: 1  }, flags: 0x04 },
-        3:  { port: { type: 3, pin: 2  }, flags: 0x04 },
-        4:  { port: { type: 3, pin: 3  }, flags: 0x04 },
-        5:  { port: { type: 3, pin: 4  }, flags: 0x04 },
-        6:  { port: { type: 3, pin: 5  }, flags: 0x04 },
-        7:  { port: { type: 3, pin: 6  }, flags: 0x04 },
-        8:  { port: { type: 3, pin: 7  }, flags: 0x04 },
-        9:  { port: { type: 3, pin: 8  }, flags: 0x04 },
-        10: { port: { type: 3, pin: 9  }, flags: 0x04 },
+        1: { port: { type: 3, pin: 0 }, flags: 0x04 },
+        2: { port: { type: 3, pin: 1 }, flags: 0x04 },
+        3: { port: { type: 3, pin: 2 }, flags: 0x04 },
+        4: { port: { type: 3, pin: 3 }, flags: 0x04 },
+        5: { port: { type: 3, pin: 4 }, flags: 0x04 },
+        6: { port: { type: 3, pin: 5 }, flags: 0x04 },
+        7: { port: { type: 3, pin: 6 }, flags: 0x04 },
+        8: { port: { type: 3, pin: 7 }, flags: 0x04 },
+        9: { port: { type: 3, pin: 8 }, flags: 0x04 },
+        10: { port: { type: 3, pin: 9 }, flags: 0x04 },
         11: { port: { type: 3, pin: 10 }, flags: 0x04 },
         12: { port: { type: 3, pin: 11 }, flags: 0x04 },
         13: { port: { type: 3, pin: 12 }, flags: 0x04 },
@@ -1307,7 +1295,7 @@ var pinscapeAIOFactoryConfig = {
         // strobe on output 16 - that makes these two physically adjacent outputs
         // logically adjacent in the port mapping.  Knockers are also quite common,
         // so this belongs in the first 32 ports anyway.  Mark it as noisy.
-        17: { port: { type: 2, pin: "PTC8"}, flags: 0x02 },
+        17: { port: { type: 2, pin: "PTC8" }, flags: 0x02 },
 
         // Map the next 32 ports to the outputs from the first power board.  These
         // are TLC5940 chips #3 and #4 in the daisy chain (the main board has #1
@@ -1391,7 +1379,7 @@ var pinscapeAIOFactoryConfig = {
         73: { port: { type: 4, pin: 7 }, flags: 0x02 }
     }
 };
-var pinscapeAIOFactoryXConfig = { };
+var pinscapeAIOFactoryXConfig = {};
 
 // Factory configuration for the Pinscape Lite
 var pinscapeLiteFactoryConfig = {
@@ -1607,14 +1595,14 @@ var RigMasterFactoryConfig = {
 var RigMasterFactoryXConfig = {};
 
 // fill out the factory defaults for the maximum output and button table sizes
-(function() {
+(function () {
     function fill(d) {
-        for (var i = 1 ; i <= MaxButtons ; ++i) {
+        for (var i = 1; i <= MaxButtons; ++i) {
             if (!(i in d.buttons)) {
                 d.buttons[i] = { pin: "NC", keytype: 0, keycode: 0, flags: 0 };
             }
         }
-        for (var i = 1 ; i <= MaxOutputs ; ++i) {
+        for (var i = 1; i <= MaxOutputs; ++i) {
             if (!(i in d.outputs)) {
                 d.outputs[i] = { port: { type: 0, pin: 0 } };
             }
@@ -1643,7 +1631,7 @@ var RigMasterFactoryXConfig = {};
 //
 //   Descriptive name|Output type description|Board name|JPx-y|xxxxOutputSelector
 //
-var outPortAlias = { };
+var outPortAlias = {};
 
 // GPIO Port Aliases.  This is similar to the outPortAlias table,
 // but covers only GPIO ports (no peripheral ports), and covers all
@@ -1654,82 +1642,81 @@ var outPortAlias = { };
 //
 //   Descriptive name|JPx-y or Internal
 //
-var gpioPortAlias = { };
+var gpioPortAlias = {};
 
 // build the expansion board out port alias table
 var expOutPortAlias, expGpioPortAlias;
-(function()
-{
+(function () {
     var o = {
-        "3.15":   "Strobe|PWM Mid Power|Main Board|JP9-1|mainBoardPWMOutputSelector",
+        "3.15": "Strobe|PWM Mid Power|Main Board|JP9-1|mainBoardPWMOutputSelector",
 
-        "3.0":    "Flasher 1R|PWM Mid Power|Main Board|JP11-2|mainBoardPWMOutputSelector",
-        "3.1":    "Flasher 1G|PWM Mid Power|Main Board|JP11-4|mainBoardPWMOutputSelector",
-        "3.2":    "Flasher 1B|PWM Mid Power|Main Board|JP11-6|mainBoardPWMOutputSelector",
-        "3.3":    "Flasher 2R|PWM Mid Power|Main Board|JP11-8|mainBoardPWMOutputSelector",
-        "3.4":    "Flasher 2G|PWM Mid Power|Main Board|JP11-10|mainBoardPWMOutputSelector",
-        "3.5":    "Flasher 2B|PWM Mid Power|Main Board|JP11-12|mainBoardPWMOutputSelector",
-        "3.6":    "Flasher 3R|PWM Mid Power|Main Board|JP11-14|mainBoardPWMOutputSelector",
-        "3.7":    "Flasher 3G|PWM Mid Power|Main Board|JP11-16|mainBoardPWMOutputSelector",
-        "3.8":    "Flasher 3B|PWM Mid Power|Main Board|JP11-1|mainBoardPWMOutputSelector",
-        "3.9":    "Flasher 4R|PWM Mid Power|Main Board|JP11-3|mainBoardPWMOutputSelector",
-        "3.10":   "Flasher 4G|PWM Mid Power|Main Board|JP11-5|mainBoardPWMOutputSelector",
-        "3.11":   "Flasher 4B|PWM Mid Power|Main Board|JP11-7|mainBoardPWMOutputSelector",
-        "3.12":   "Flasher 5R|PWM Mid Power|Main Board|JP11-9|mainBoardPWMOutputSelector",
-        "3.13":   "Flasher 5G|PWM Mid Power|Main Board|JP11-11|mainBoardPWMOutputSelector",
-        "3.14":   "Flasher 5B|PWM Mid Power|Main Board|JP11-13|mainBoardPWMOutputSelector",
+        "3.0": "Flasher 1R|PWM Mid Power|Main Board|JP11-2|mainBoardPWMOutputSelector",
+        "3.1": "Flasher 1G|PWM Mid Power|Main Board|JP11-4|mainBoardPWMOutputSelector",
+        "3.2": "Flasher 1B|PWM Mid Power|Main Board|JP11-6|mainBoardPWMOutputSelector",
+        "3.3": "Flasher 2R|PWM Mid Power|Main Board|JP11-8|mainBoardPWMOutputSelector",
+        "3.4": "Flasher 2G|PWM Mid Power|Main Board|JP11-10|mainBoardPWMOutputSelector",
+        "3.5": "Flasher 2B|PWM Mid Power|Main Board|JP11-12|mainBoardPWMOutputSelector",
+        "3.6": "Flasher 3R|PWM Mid Power|Main Board|JP11-14|mainBoardPWMOutputSelector",
+        "3.7": "Flasher 3G|PWM Mid Power|Main Board|JP11-16|mainBoardPWMOutputSelector",
+        "3.8": "Flasher 3B|PWM Mid Power|Main Board|JP11-1|mainBoardPWMOutputSelector",
+        "3.9": "Flasher 4R|PWM Mid Power|Main Board|JP11-3|mainBoardPWMOutputSelector",
+        "3.10": "Flasher 4G|PWM Mid Power|Main Board|JP11-5|mainBoardPWMOutputSelector",
+        "3.11": "Flasher 4B|PWM Mid Power|Main Board|JP11-7|mainBoardPWMOutputSelector",
+        "3.12": "Flasher 5R|PWM Mid Power|Main Board|JP11-9|mainBoardPWMOutputSelector",
+        "3.13": "Flasher 5G|PWM Mid Power|Main Board|JP11-11|mainBoardPWMOutputSelector",
+        "3.14": "Flasher 5B|PWM Mid Power|Main Board|JP11-13|mainBoardPWMOutputSelector",
 
-        "3.16":   "LED 1R|PWM Low Power|Main Board|JP8-1|mainBoardPWMOutputSelector",
-        "3.17":   "LED 1G|PWM Low Power|Main Board|JP8-3|mainBoardPWMOutputSelector",
-        "3.18":   "LED 1B|PWM Low Power|Main Board|JP8-5|mainBoardPWMOutputSelector",
-        "3.19":   "LED 2R|PWM Low Power|Main Board|JP8-7|mainBoardPWMOutputSelector",
-        "3.20":   "LED 2G|PWM Low Power|Main Board|JP8-9|mainBoardPWMOutputSelector",
-        "3.21":   "LED 2B|PWM Low Power|Main Board|JP8-11|mainBoardPWMOutputSelector",
-        "3.22":   "LED 3R|PWM Low Power|Main Board|JP8-2|mainBoardPWMOutputSelector",
-        "3.23":   "LED 3G|PWM Low Power|Main Board|JP8-4|mainBoardPWMOutputSelector",
-        "3.24":   "LED 3B|PWM Low Power|Main Board|JP8-6|mainBoardPWMOutputSelector",
-        "3.25":   "LED 4R|PWM Low Power|Main Board|JP8-8|mainBoardPWMOutputSelector",
-        "3.26":   "LED 4G|PWM Low Power|Main Board|JP8-10|mainBoardPWMOutputSelector",
-        "3.27":   "LED 4B|PWM Low Power|Main Board|JP8-12|mainBoardPWMOutputSelector",
-        "3.28":   "LED 5R|PWM Low Power|Main Board|JP8-13|mainBoardPWMOutputSelector",
-        "3.29":   "LED 5G|PWM Low Power|Main Board|JP8-15|mainBoardPWMOutputSelector",
-        "3.30":   "LED 5B|PWM Low Power|Main Board|JP8-17|mainBoardPWMOutputSelector",
-        "3.31":   "LED 6|PWM Low Power|Main Board|JP8-14|mainBoardPWMOutputSelector"
+        "3.16": "LED 1R|PWM Low Power|Main Board|JP8-1|mainBoardPWMOutputSelector",
+        "3.17": "LED 1G|PWM Low Power|Main Board|JP8-3|mainBoardPWMOutputSelector",
+        "3.18": "LED 1B|PWM Low Power|Main Board|JP8-5|mainBoardPWMOutputSelector",
+        "3.19": "LED 2R|PWM Low Power|Main Board|JP8-7|mainBoardPWMOutputSelector",
+        "3.20": "LED 2G|PWM Low Power|Main Board|JP8-9|mainBoardPWMOutputSelector",
+        "3.21": "LED 2B|PWM Low Power|Main Board|JP8-11|mainBoardPWMOutputSelector",
+        "3.22": "LED 3R|PWM Low Power|Main Board|JP8-2|mainBoardPWMOutputSelector",
+        "3.23": "LED 3G|PWM Low Power|Main Board|JP8-4|mainBoardPWMOutputSelector",
+        "3.24": "LED 3B|PWM Low Power|Main Board|JP8-6|mainBoardPWMOutputSelector",
+        "3.25": "LED 4R|PWM Low Power|Main Board|JP8-8|mainBoardPWMOutputSelector",
+        "3.26": "LED 4G|PWM Low Power|Main Board|JP8-10|mainBoardPWMOutputSelector",
+        "3.27": "LED 4B|PWM Low Power|Main Board|JP8-12|mainBoardPWMOutputSelector",
+        "3.28": "LED 5R|PWM Low Power|Main Board|JP8-13|mainBoardPWMOutputSelector",
+        "3.29": "LED 5G|PWM Low Power|Main Board|JP8-15|mainBoardPWMOutputSelector",
+        "3.30": "LED 5B|PWM Low Power|Main Board|JP8-17|mainBoardPWMOutputSelector",
+        "3.31": "LED 6|PWM Low Power|Main Board|JP8-14|mainBoardPWMOutputSelector"
     };
 
     // add four power boards worth of outputs
-    for (var i = 0 ; i < 128 ; ++i) {
-        o["3." + (i+32)] =
-            "Output " + ((i%32) + 1)
+    for (var i = 0; i < 128; ++i) {
+        o["3." + (i + 32)] =
+            "Output " + ((i % 32) + 1)
             + "|PWM Hi Power"
-            + "|Power Board " + (Math.floor(i/32) + 1)
-            + "|JP" + (Math.floor((i%32)/16)+5)+ "-" + ((i%16)+1)
+            + "|Power Board " + (Math.floor(i / 32) + 1)
+            + "|JP" + (Math.floor((i % 32) / 16) + 5) + "-" + ((i % 16) + 1)
             + "|powerBoardOutputSelector";
     }
 
     // add four chime boards worth of outputs
-    for (i = 0 ; i < 32 ; ++i) {
+    for (i = 0; i < 32; ++i) {
         o["4." + i] =
-            "Output " + ((i%8) + 1)
+            "Output " + ((i % 8) + 1)
             + "|Timed Digital"
-            + "|Chime Board " + (Math.floor(i/8) + 1)
-            + "|JP9-" + ((i%8)+1)
+            + "|Chime Board " + (Math.floor(i / 8) + 1)
+            + "|JP9-" + ((i % 8) + 1)
             + "|chimeBoardOutputSelector";
     }
 
     // Table of all internal GPIO connections on the main expansion board.
     // These generally can't be used for any other purpose.
     var gInternal = {
-        "PTC10":  "TLC5940 XLAT",
-        "PTC6":   "TLC5940 SIN",
-        "PTC5":   "TLC5940 SCLK",
-        "PTC7":   "TLC5940 BLANK",
-        "PTA1":   "TLC5940 GSCLK",
-        "PTC9":   "IR OUT",
-        "PTA13":  "IR IN",
-        "PTD2":   "PSU2 STATUS",
-        "PTD3":   "TV RELAY",
-        "PTE0":   "PSU2 LATCH"
+        "PTC10": "TLC5940 XLAT",
+        "PTC6": "TLC5940 SIN",
+        "PTC5": "TLC5940 SCLK",
+        "PTC7": "TLC5940 BLANK",
+        "PTA1": "TLC5940 GSCLK",
+        "PTC9": "IR OUT",
+        "PTA13": "IR IN",
+        "PTD2": "PSU2 STATUS",
+        "PTD3": "TV RELAY",
+        "PTE0": "PSU2 LATCH"
     };
 
     // Table of all external GPIO connections on the main expansion
@@ -1739,44 +1726,43 @@ var expOutPortAlias, expGpioPortAlias;
     // example, if a plunger sensor isn't being used, all of the
     // plunger input pins can be used as button inputs instead.
     var gExternal = {
-        "PTB0":   "Plunger 1|JP2-1",
-        "PTE23":  "Cal Button LED|JP3-2",
-        "PTE29":  "Cal Button Switch|JP3-1",
-        "PTE22":  "Plunger 4|JP2-4",
-        "PTD5":   "Plunger 4|JP2-4",
-        "PTE21":  "Plunger 3|JP2-3",
-        "PTD0":   "Plunger 3|JP2-3",
-        "PTE20":  "Plunger 2|JP2-8",
-        "PTD4":   "74HC595 ENA|JP5-7",
-        "PTA4":   "74HC595 SCLK|JP5-3",
-        "PTA5":   "74HC595 SOUT|JP5-1",
-        "PTA12":  "74HC595 LATCH|JP5-5",
-        "PTC8":   "Knocker|JP9-2|Timed Digital",
-        "PTC4":   "Extender 1|JP12-1",
-        "PTC3":   "Extender 2|JP12-2",
-        "PTC0":   "Extender 3|JP12-3",
-        "PTA2":   "Extender 4|JP12-4",
+        "PTB0": "Plunger 1|JP2-1",
+        "PTE23": "Cal Button LED|JP3-2",
+        "PTE29": "Cal Button Switch|JP3-1",
+        "PTE22": "Plunger 4|JP2-4",
+        "PTD5": "Plunger 4|JP2-4",
+        "PTE21": "Plunger 3|JP2-3",
+        "PTD0": "Plunger 3|JP2-3",
+        "PTE20": "Plunger 2|JP2-8",
+        "PTD4": "74HC595 ENA|JP5-7",
+        "PTA4": "74HC595 SCLK|JP5-3",
+        "PTA5": "74HC595 SOUT|JP5-1",
+        "PTA12": "74HC595 LATCH|JP5-5",
+        "PTC8": "Knocker|JP9-2|Timed Digital",
+        "PTC4": "Extender 1|JP12-1",
+        "PTC3": "Extender 2|JP12-2",
+        "PTC0": "Extender 3|JP12-3",
+        "PTA2": "Extender 4|JP12-4",
     };
 
     // Build a combined table of the GPIO port aliases for internal and
     // external main board connections.
-    var g = { };
-    $.each(gInternal, function(k, v) { g[k] = v + "|Internal"; });
-    $.each(gExternal, function(k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
+    var g = {};
+    $.each(gInternal, function (k, v) { g[k] = v + "|Internal"; });
+    $.each(gExternal, function (k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
 
     // Add GPIO aliases for all of the buttons
-    $.each(expansionBoardFactoryConfig.buttons, function(k, v) {
+    $.each(expansionBoardFactoryConfig.buttons, function (k, v) {
         g[v.pin] = "Button " + k + "|Digital In|Main Board|JP1-" + k + "|mainBoardInputSelector";
     });
 
     // Add all of the external ports as output aliases.
-    $.each(gExternal, function(k, v)
-    {
+    $.each(gExternal, function (k, v) {
         // break v into fields - Descriptive Name, Jumper, [output type description]
         v = v.split("|");
 
         // if it's a PWM-capable port, add a PWM output type for it
-        var gp = gpioPinsByName[k] || { };
+        var gp = gpioPinsByName[k] || {};
         if (gp.pwm)
             o["1." + k] = [v[0], v[2] || "PWM GPIO", "Main Board", v[1], "mainBoardPWMOutputSelector"].join("|");
 
@@ -1792,124 +1778,123 @@ var expOutPortAlias, expGpioPortAlias;
 
 var aioOutPortAlias, aioGpioPortAlias;
 // build the Pinscape AIO out port alias table
-(function()
-{
+(function () {
     var o = {
-        "3.0":    "Flasher 1R|PWM Mid Power|Pinscape AIO|Flasher 1R|aioBoardPWMOutputSelector",
-        "3.1":    "Flasher 1G|PWM Mid Power|Pinscape AIO|Flasher 1G|aioBoardPWMOutputSelector",
-        "3.2":    "Flasher 1B|PWM Mid Power|Pinscape AIO|Flasher 1B|aioBoardPWMOutputSelector",
-        "3.3":    "Flasher 2R|PWM Mid Power|Pinscape AIO|Flasher 2R|aioBoardPWMOutputSelector",
-        "3.4":    "Flasher 2G|PWM Mid Power|Pinscape AIO|Flasher 2G|aioBoardPWMOutputSelector",
-        "3.5":    "Flasher 2B|PWM Mid Power|Pinscape AIO|Flasher 2B|aioBoardPWMOutputSelector",
-        "3.6":    "Flasher 3R|PWM Mid Power|Pinscape AIO|Flasher 3R|aioBoardPWMOutputSelector",
-        "3.7":    "Flasher 3G|PWM Mid Power|Pinscape AIO|Flasher 3G|aioBoardPWMOutputSelector",
-        "3.8":    "Flasher 3B|PWM Mid Power|Pinscape AIO|Flasher 3B|aioBoardPWMOutputSelector",
-        "3.9":    "Flasher 4R|PWM Mid Power|Pinscape AIO|Flasher 4R|aioBoardPWMOutputSelector",
-        "3.10":   "Flasher 4G|PWM Mid Power|Pinscape AIO|Flasher 4G|aioBoardPWMOutputSelector",
-        "3.11":   "Flasher 4B|PWM Mid Power|Pinscape AIO|Flasher 4B|aioBoardPWMOutputSelector",
-        "3.12":   "Flasher 5R|PWM Mid Power|Pinscape AIO|Flasher 5R|aioBoardPWMOutputSelector",
-        "3.13":   "Flasher 5G|PWM Mid Power|Pinscape AIO|Flasher 5G|aioBoardPWMOutputSelector",
-        "3.14":   "Flasher 5B|PWM Mid Power|Pinscape AIO|Flasher 5B|aioBoardPWMOutputSelector",
-        "3.15":   "Strobe|PWM Mid Power|Pinscape AIO|Flasher Strobe|aioBoardPWMOutputSelector",
+        "3.0": "Flasher 1R|PWM Mid Power|Pinscape AIO|Flasher 1R|aioBoardPWMOutputSelector",
+        "3.1": "Flasher 1G|PWM Mid Power|Pinscape AIO|Flasher 1G|aioBoardPWMOutputSelector",
+        "3.2": "Flasher 1B|PWM Mid Power|Pinscape AIO|Flasher 1B|aioBoardPWMOutputSelector",
+        "3.3": "Flasher 2R|PWM Mid Power|Pinscape AIO|Flasher 2R|aioBoardPWMOutputSelector",
+        "3.4": "Flasher 2G|PWM Mid Power|Pinscape AIO|Flasher 2G|aioBoardPWMOutputSelector",
+        "3.5": "Flasher 2B|PWM Mid Power|Pinscape AIO|Flasher 2B|aioBoardPWMOutputSelector",
+        "3.6": "Flasher 3R|PWM Mid Power|Pinscape AIO|Flasher 3R|aioBoardPWMOutputSelector",
+        "3.7": "Flasher 3G|PWM Mid Power|Pinscape AIO|Flasher 3G|aioBoardPWMOutputSelector",
+        "3.8": "Flasher 3B|PWM Mid Power|Pinscape AIO|Flasher 3B|aioBoardPWMOutputSelector",
+        "3.9": "Flasher 4R|PWM Mid Power|Pinscape AIO|Flasher 4R|aioBoardPWMOutputSelector",
+        "3.10": "Flasher 4G|PWM Mid Power|Pinscape AIO|Flasher 4G|aioBoardPWMOutputSelector",
+        "3.11": "Flasher 4B|PWM Mid Power|Pinscape AIO|Flasher 4B|aioBoardPWMOutputSelector",
+        "3.12": "Flasher 5R|PWM Mid Power|Pinscape AIO|Flasher 5R|aioBoardPWMOutputSelector",
+        "3.13": "Flasher 5G|PWM Mid Power|Pinscape AIO|Flasher 5G|aioBoardPWMOutputSelector",
+        "3.14": "Flasher 5B|PWM Mid Power|Pinscape AIO|Flasher 5B|aioBoardPWMOutputSelector",
+        "3.15": "Strobe|PWM Mid Power|Pinscape AIO|Flasher Strobe|aioBoardPWMOutputSelector",
 
-        "3.16":   "LED 1R|PWM Low Power|Pinscape AIO|Small LED 1R|aioBoardPWMOutputSelector",
-        "3.17":   "LED 1G|PWM Low Power|Pinscape AIO|Small LED 1G|aioBoardPWMOutputSelector",
-        "3.18":   "LED 1B|PWM Low Power|Pinscape AIO|Small LED 1B|aioBoardPWMOutputSelector",
-        "3.19":   "LED 2R|PWM Low Power|Pinscape AIO|Small LED 2R|aioBoardPWMOutputSelector",
-        "3.20":   "LED 2G|PWM Low Power|Pinscape AIO|Small LED 2G|aioBoardPWMOutputSelector",
-        "3.21":   "LED 2B|PWM Low Power|Pinscape AIO|Small LED 2B|aioBoardPWMOutputSelector",
-        "3.22":   "LED 3R|PWM Low Power|Pinscape AIO|Small LED 3R|aioBoardPWMOutputSelector",
-        "3.23":   "LED 3G|PWM Low Power|Pinscape AIO|Small LED 3G|aioBoardPWMOutputSelector",
-        "3.24":   "LED 3B|PWM Low Power|Pinscape AIO|Small LED 3B|aioBoardPWMOutputSelector",
-        "3.25":   "LED 4R|PWM Low Power|Pinscape AIO|Small LED 4R|aioBoardPWMOutputSelector",
-        "3.26":   "LED 4G|PWM Low Power|Pinscape AIO|Small LED 4G|aioBoardPWMOutputSelector",
-        "3.27":   "LED 4B|PWM Low Power|Pinscape AIO|Small LED 4B|aioBoardPWMOutputSelector",
-        "3.28":   "LED 5R|PWM Low Power|Pinscape AIO|Small LED 5R|aioBoardPWMOutputSelector",
-        "3.29":   "LED 5G|PWM Low Power|Pinscape AIO|Small LED 5G|aioBoardPWMOutputSelector",
-        "3.30":   "LED 5B|PWM Low Power|Pinscape AIO|Small LED 5B|aioBoardPWMOutputSelector",
-        "3.31":   "LED 6|PWM Low Power|Pinscape AIO|Small LED 6|aioBoardPWMOutputSelector",
+        "3.16": "LED 1R|PWM Low Power|Pinscape AIO|Small LED 1R|aioBoardPWMOutputSelector",
+        "3.17": "LED 1G|PWM Low Power|Pinscape AIO|Small LED 1G|aioBoardPWMOutputSelector",
+        "3.18": "LED 1B|PWM Low Power|Pinscape AIO|Small LED 1B|aioBoardPWMOutputSelector",
+        "3.19": "LED 2R|PWM Low Power|Pinscape AIO|Small LED 2R|aioBoardPWMOutputSelector",
+        "3.20": "LED 2G|PWM Low Power|Pinscape AIO|Small LED 2G|aioBoardPWMOutputSelector",
+        "3.21": "LED 2B|PWM Low Power|Pinscape AIO|Small LED 2B|aioBoardPWMOutputSelector",
+        "3.22": "LED 3R|PWM Low Power|Pinscape AIO|Small LED 3R|aioBoardPWMOutputSelector",
+        "3.23": "LED 3G|PWM Low Power|Pinscape AIO|Small LED 3G|aioBoardPWMOutputSelector",
+        "3.24": "LED 3B|PWM Low Power|Pinscape AIO|Small LED 3B|aioBoardPWMOutputSelector",
+        "3.25": "LED 4R|PWM Low Power|Pinscape AIO|Small LED 4R|aioBoardPWMOutputSelector",
+        "3.26": "LED 4G|PWM Low Power|Pinscape AIO|Small LED 4G|aioBoardPWMOutputSelector",
+        "3.27": "LED 4B|PWM Low Power|Pinscape AIO|Small LED 4B|aioBoardPWMOutputSelector",
+        "3.28": "LED 5R|PWM Low Power|Pinscape AIO|Small LED 5R|aioBoardPWMOutputSelector",
+        "3.29": "LED 5G|PWM Low Power|Pinscape AIO|Small LED 5G|aioBoardPWMOutputSelector",
+        "3.30": "LED 5B|PWM Low Power|Pinscape AIO|Small LED 5B|aioBoardPWMOutputSelector",
+        "3.31": "LED 6|PWM Low Power|Pinscape AIO|Small LED 6|aioBoardPWMOutputSelector",
 
-        "3.32":   "Output 1|PWM Hi Power|Pinscape AIO|Power 1|aioBoardPWMOutputSelector",
-        "3.33":   "Output 2|PWM Hi Power|Pinscape AIO|Power 2|aioBoardPWMOutputSelector",
-        "3.34":   "Output 3|PWM Hi Power|Pinscape AIO|Power 3|aioBoardPWMOutputSelector",
-        "3.35":   "Output 4|PWM Hi Power|Pinscape AIO|Power 4|aioBoardPWMOutputSelector",
-        "3.36":   "Output 5|PWM Hi Power|Pinscape AIO|Power 5|aioBoardPWMOutputSelector",
-        "3.37":   "Output 6|PWM Hi Power|Pinscape AIO|Power 6|aioBoardPWMOutputSelector",
-        "3.38":   "Output 7|PWM Hi Power|Pinscape AIO|Power 7|aioBoardPWMOutputSelector",
-        "3.39":   "Output 8|PWM Hi Power|Pinscape AIO|Power 8|aioBoardPWMOutputSelector",
-        "3.40":   "Output 9|PWM Hi Power|Pinscape AIO|Power 9|aioBoardPWMOutputSelector",
-        "3.41":   "Output 10|PWM Hi Power|Pinscape AIO|Power 10|aioBoardPWMOutputSelector",
-        "3.42":   "Output 11|PWM Hi Power|Pinscape AIO|Power 11|aioBoardPWMOutputSelector",
-        "3.43":   "Output 12|PWM Hi Power|Pinscape AIO|Power 12|aioBoardPWMOutputSelector",
-        "3.44":   "Output 13|PWM Hi Power|Pinscape AIO|Power 13|aioBoardPWMOutputSelector",
-        "3.45":   "Output 14|PWM Hi Power|Pinscape AIO|Power 14|aioBoardPWMOutputSelector",
-        "3.46":   "Output 15|PWM Hi Power|Pinscape AIO|Power 15|aioBoardPWMOutputSelector",
-        "3.47":   "Output 16|PWM Hi Power|Pinscape AIO|Power 16|aioBoardPWMOutputSelector",
+        "3.32": "Output 1|PWM Hi Power|Pinscape AIO|Power 1|aioBoardPWMOutputSelector",
+        "3.33": "Output 2|PWM Hi Power|Pinscape AIO|Power 2|aioBoardPWMOutputSelector",
+        "3.34": "Output 3|PWM Hi Power|Pinscape AIO|Power 3|aioBoardPWMOutputSelector",
+        "3.35": "Output 4|PWM Hi Power|Pinscape AIO|Power 4|aioBoardPWMOutputSelector",
+        "3.36": "Output 5|PWM Hi Power|Pinscape AIO|Power 5|aioBoardPWMOutputSelector",
+        "3.37": "Output 6|PWM Hi Power|Pinscape AIO|Power 6|aioBoardPWMOutputSelector",
+        "3.38": "Output 7|PWM Hi Power|Pinscape AIO|Power 7|aioBoardPWMOutputSelector",
+        "3.39": "Output 8|PWM Hi Power|Pinscape AIO|Power 8|aioBoardPWMOutputSelector",
+        "3.40": "Output 9|PWM Hi Power|Pinscape AIO|Power 9|aioBoardPWMOutputSelector",
+        "3.41": "Output 10|PWM Hi Power|Pinscape AIO|Power 10|aioBoardPWMOutputSelector",
+        "3.42": "Output 11|PWM Hi Power|Pinscape AIO|Power 11|aioBoardPWMOutputSelector",
+        "3.43": "Output 12|PWM Hi Power|Pinscape AIO|Power 12|aioBoardPWMOutputSelector",
+        "3.44": "Output 13|PWM Hi Power|Pinscape AIO|Power 13|aioBoardPWMOutputSelector",
+        "3.45": "Output 14|PWM Hi Power|Pinscape AIO|Power 14|aioBoardPWMOutputSelector",
+        "3.46": "Output 15|PWM Hi Power|Pinscape AIO|Power 15|aioBoardPWMOutputSelector",
+        "3.47": "Output 16|PWM Hi Power|Pinscape AIO|Power 16|aioBoardPWMOutputSelector",
 
-        "3.48":   "Output 17|PWM Hi Power|Pinscape AIO|Power 17|aioBoardPWMOutputSelector",
-        "3.49":   "Output 18|PWM Hi Power|Pinscape AIO|Power 18|aioBoardPWMOutputSelector",
-        "3.50":   "Output 19|PWM Hi Power|Pinscape AIO|Power 19|aioBoardPWMOutputSelector",
-        "3.51":   "Output 20|PWM Hi Power|Pinscape AIO|Power 20|aioBoardPWMOutputSelector",
-        "3.52":   "Output 21|PWM Hi Power|Pinscape AIO|Power 21|aioBoardPWMOutputSelector",
-        "3.53":   "Output 22|PWM Hi Power|Pinscape AIO|Power 22|aioBoardPWMOutputSelector",
-        "3.54":   "Output 23|PWM Hi Power|Pinscape AIO|Power 23|aioBoardPWMOutputSelector",
-        "3.55":   "Output 24|PWM Hi Power|Pinscape AIO|Power 24|aioBoardPWMOutputSelector",
-        "3.56":   "Output 25|PWM Hi Power|Pinscape AIO|Power 25|aioBoardPWMOutputSelector",
-        "3.57":   "Output 26|PWM Hi Power|Pinscape AIO|Power 26|aioBoardPWMOutputSelector",
-        "3.58":   "Output 27|PWM Hi Power|Pinscape AIO|Power 27|aioBoardPWMOutputSelector",
-        "3.59":   "Output 28|PWM Hi Power|Pinscape AIO|Power 28|aioBoardPWMOutputSelector",
-        "3.60":   "Output 29|PWM Hi Power|Pinscape AIO|Power 29|aioBoardPWMOutputSelector",
-        "3.61":   "Output 30|PWM Hi Power|Pinscape AIO|Power 30|aioBoardPWMOutputSelector",
-        "3.62":   "Output 31|PWM Hi Power|Pinscape AIO|Power 31|aioBoardPWMOutputSelector",
-        "3.63":   "Output 32|PWM Hi Power|Pinscape AIO|Power 32|aioBoardPWMOutputSelector",
+        "3.48": "Output 17|PWM Hi Power|Pinscape AIO|Power 17|aioBoardPWMOutputSelector",
+        "3.49": "Output 18|PWM Hi Power|Pinscape AIO|Power 18|aioBoardPWMOutputSelector",
+        "3.50": "Output 19|PWM Hi Power|Pinscape AIO|Power 19|aioBoardPWMOutputSelector",
+        "3.51": "Output 20|PWM Hi Power|Pinscape AIO|Power 20|aioBoardPWMOutputSelector",
+        "3.52": "Output 21|PWM Hi Power|Pinscape AIO|Power 21|aioBoardPWMOutputSelector",
+        "3.53": "Output 22|PWM Hi Power|Pinscape AIO|Power 22|aioBoardPWMOutputSelector",
+        "3.54": "Output 23|PWM Hi Power|Pinscape AIO|Power 23|aioBoardPWMOutputSelector",
+        "3.55": "Output 24|PWM Hi Power|Pinscape AIO|Power 24|aioBoardPWMOutputSelector",
+        "3.56": "Output 25|PWM Hi Power|Pinscape AIO|Power 25|aioBoardPWMOutputSelector",
+        "3.57": "Output 26|PWM Hi Power|Pinscape AIO|Power 26|aioBoardPWMOutputSelector",
+        "3.58": "Output 27|PWM Hi Power|Pinscape AIO|Power 27|aioBoardPWMOutputSelector",
+        "3.59": "Output 28|PWM Hi Power|Pinscape AIO|Power 28|aioBoardPWMOutputSelector",
+        "3.60": "Output 29|PWM Hi Power|Pinscape AIO|Power 29|aioBoardPWMOutputSelector",
+        "3.61": "Output 30|PWM Hi Power|Pinscape AIO|Power 30|aioBoardPWMOutputSelector",
+        "3.62": "Output 31|PWM Hi Power|Pinscape AIO|Power 31|aioBoardPWMOutputSelector",
+        "3.63": "Output 32|PWM Hi Power|Pinscape AIO|Power 32|aioBoardPWMOutputSelector",
 
-        "4.0":    "Output 1|Timed Digital|Pinscape AIO|Chime 1|aioBoardDigitalOutputSelector",
-        "4.1":    "Output 2|Timed Digital|Pinscape AIO|Chime 2|aioBoardDigitalOutputSelector",
-        "4.2":    "Output 3|Timed Digital|Pinscape AIO|Chime 3|aioBoardDigitalOutputSelector",
-        "4.3":    "Output 4|Timed Digital|Pinscape AIO|Chime 4|aioBoardDigitalOutputSelector",
-        "4.4":    "Output 5|Timed Digital|Pinscape AIO|Chime 5|aioBoardDigitalOutputSelector",
-        "4.5":    "Output 6|Timed Digital|Pinscape AIO|Chime 6|aioBoardDigitalOutputSelector",
-        "4.6":    "Output 7|Timed Digital|Pinscape AIO|Chime 7|aioBoardDigitalOutputSelector",
-        "4.7":    "Output 8|Timed Digital|Pinscape AIO|Chime 8|aioBoardDigitalOutputSelector"
+        "4.0": "Output 1|Timed Digital|Pinscape AIO|Chime 1|aioBoardDigitalOutputSelector",
+        "4.1": "Output 2|Timed Digital|Pinscape AIO|Chime 2|aioBoardDigitalOutputSelector",
+        "4.2": "Output 3|Timed Digital|Pinscape AIO|Chime 3|aioBoardDigitalOutputSelector",
+        "4.3": "Output 4|Timed Digital|Pinscape AIO|Chime 4|aioBoardDigitalOutputSelector",
+        "4.4": "Output 5|Timed Digital|Pinscape AIO|Chime 5|aioBoardDigitalOutputSelector",
+        "4.5": "Output 6|Timed Digital|Pinscape AIO|Chime 6|aioBoardDigitalOutputSelector",
+        "4.6": "Output 7|Timed Digital|Pinscape AIO|Chime 7|aioBoardDigitalOutputSelector",
+        "4.7": "Output 8|Timed Digital|Pinscape AIO|Chime 8|aioBoardDigitalOutputSelector"
     };
 
     // add four power boards worth of outputs
-    for (var i = 0 ; i < 128 ; ++i) {
-        o["3." + (i+64)] =
-            "Output " + ((i%32) + 1)
+    for (var i = 0; i < 128; ++i) {
+        o["3." + (i + 64)] =
+            "Output " + ((i % 32) + 1)
             + "|PWM Hi Power"
-            + "|Power Board " + (Math.floor(i/32) + 1)
-            + "|JP" + (Math.floor((i%32)/16)+5)+ "-" + ((i%16)+1)
+            + "|Power Board " + (Math.floor(i / 32) + 1)
+            + "|JP" + (Math.floor((i % 32) / 16) + 5) + "-" + ((i % 16) + 1)
             + "|powerBoardOutputSelector";
     }
 
     // add four chime boards worth of outputs
-    for (i = 0 ; i < 32 ; ++i) {
-        o["4." + (i+8)] =
-            "Output " + ((i%8) + 1)
+    for (i = 0; i < 32; ++i) {
+        o["4." + (i + 8)] =
+            "Output " + ((i % 8) + 1)
             + "|Timed Digital"
-            + "|Chime Board " + (Math.floor(i/8) + 1)
-            + "|JP9-" + ((i%8)+1)
+            + "|Chime Board " + (Math.floor(i / 8) + 1)
+            + "|JP9-" + ((i % 8) + 1)
             + "|chimeBoardOutputSelector";
     }
 
     // Table of all internal GPIO connections on the main expansion board.
     // These generally can't be used for any other purpose.
     var gInternal = {
-        "PTC10":  "TLC5940 XLAT",
-        "PTC6":   "TLC5940 SIN",
-        "PTC5":   "TLC5940 SCLK",
-        "PTC7":   "TLC5940 BLANK",
-        "PTA1":   "TLC5940 GSCLK",
-        "PTD4":   "74HC595 ENA",
-        "PTA4":   "74HC595 SCLK",
-        "PTA5":   "74HC595 SOUT",
-        "PTA12":  "74HC595 LATCH",
-        "PTC9":   "IR OUT",
-        "PTA13":  "IR IN",
-        "PTD2":   "PSU2 STATUS",
-        "PTD3":   "TV RELAY",
-        "PTE0":   "PSU2 LATCH"
+        "PTC10": "TLC5940 XLAT",
+        "PTC6": "TLC5940 SIN",
+        "PTC5": "TLC5940 SCLK",
+        "PTC7": "TLC5940 BLANK",
+        "PTA1": "TLC5940 GSCLK",
+        "PTD4": "74HC595 ENA",
+        "PTA4": "74HC595 SCLK",
+        "PTA5": "74HC595 SOUT",
+        "PTA12": "74HC595 LATCH",
+        "PTC9": "IR OUT",
+        "PTA13": "IR IN",
+        "PTD2": "PSU2 STATUS",
+        "PTD3": "TV RELAY",
+        "PTE0": "PSU2 LATCH"
     };
 
     // Table of all external GPIO connections on the main expansion
@@ -1919,40 +1904,39 @@ var aioOutPortAlias, aioGpioPortAlias;
     // example, if a plunger sensor isn't being used, all of the
     // plunger input pins can be used as button inputs instead.
     var gExternal = {
-        "PTE23":  "Calibration LED-|LED-",
-        "PTE29":  "Calibration A|A",
-        "PTE22":  "Plunger CHB|CHB",
-        "PTD5":   "Plunger CHB|CHB",
-        "PTE21":  "Plunger CHA/SCL|CHA/SCL",
-        "PTD0":   "Plunger CHA/SCL|CHA/SCL",
-        "PTE20":  "Plunger SDA|SDA",
-        "PTB0":   "Plunger Wiper/INT|Wiper/INT",
-        "PTC8":   "Knocker|Knocker|Timed Digital",
-        "PTC4":   "Expansion C4|C4",
-        "PTC3":   "Expansion C3|C3",
-        "PTC0":   "Expansion C0|C0",
-        "PTA2":   "Expansion A2|A2"
+        "PTE23": "Calibration LED-|LED-",
+        "PTE29": "Calibration A|A",
+        "PTE22": "Plunger CHB|CHB",
+        "PTD5": "Plunger CHB|CHB",
+        "PTE21": "Plunger CHA/SCL|CHA/SCL",
+        "PTD0": "Plunger CHA/SCL|CHA/SCL",
+        "PTE20": "Plunger SDA|SDA",
+        "PTB0": "Plunger Wiper/INT|Wiper/INT",
+        "PTC8": "Knocker|Knocker|Timed Digital",
+        "PTC4": "Expansion C4|C4",
+        "PTC3": "Expansion C3|C3",
+        "PTC0": "Expansion C0|C0",
+        "PTA2": "Expansion A2|A2"
     };
 
     // Build a combined table of the GPIO port aliases for internal and
     // external Pinscape AIO board connections.
-    var g = { };
-    $.each(gInternal, function(k, v) { g[k] = v + "|Internal"; });
-    $.each(gExternal, function(k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
+    var g = {};
+    $.each(gInternal, function (k, v) { g[k] = v + "|Internal"; });
+    $.each(gExternal, function (k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
 
     // Add GPIO aliases for all of the buttons
-    $.each(pinscapeAIOFactoryConfig.buttons, function(k, v) {
+    $.each(pinscapeAIOFactoryConfig.buttons, function (k, v) {
         g[v.pin] = "Button " + k + "|Digital In|Pinscape AIO|Button Inputs-" + k + "|aioBoardInputSelector";
     });
 
     // Add all of the external ports as output aliases.
-    $.each(gExternal, function(k, v)
-    {
+    $.each(gExternal, function (k, v) {
         // break v into fields - Descriptive Name, Jumper, [output type description]
         v = v.split("|");
 
         // if it's a PWM-capable port, add a PWM output type for it
-        var gp = gpioPinsByName[k] || { };
+        var gp = gpioPinsByName[k] || {};
         if (gp.pwm)
             o["1." + k] = [v[0], v[2] || "PWM GPIO", "Pinscape AIO", v[1], "aioBoardPWMOutputSelector"].join("|");
 
@@ -2091,14 +2075,14 @@ var RigMasterOutPortAlias, RigMasterGpioPortAlias;
             + "|Mollusk PWM out"
             + "|Mollusk " + (Math.floor(i / 16) + 1)
             + "|Mollusk" + (Math.floor((i % 16) / 16) + 1) + " Out " + ((i % 16) + 1)
-        + "|MolluskBoardOutputSelector";
+            + "|MolluskBoardOutputSelector";
     }
     // Table of all internal GPIO connections on the main expansion board.
     // These generally can't be used for any other purpose.
     var gInternal = {
         "PTC10": "TLC5940 XLAT",
-        "PTC6":  "TLC5940 SIN",
-        "PTC5":  "TLC5940 SCLK",
+        "PTC6": "TLC5940 SIN",
+        "PTC5": "TLC5940 SCLK",
         "PTC11": "TLC5940 BLANK",
         "PTA13": "TLC5940 GSCLK",
     };
@@ -2110,23 +2094,23 @@ var RigMasterOutPortAlias, RigMasterGpioPortAlias;
     // example, if a plunger sensor isn't being used, all of the
     // plunger input pins can be used as button inputs instead.
     var gExternal = {
-        "PTB0":  "Plunger Wiper/INT|Wiper/INT",
-        "PTB1":  "Power 1|Power 1|Digital GPIO",
-        "PTB2":  "Power 2|Power 2|Digital GPIO",
-        "PTB3":  "Power 3|Power 3|Digital GPIO",
-        "PTB8":  "Power 4|Power 4|Digital GPIO",
-        "PTB9":  "Power 5|Power 5|Digital GPIO",
+        "PTB0": "Plunger Wiper/INT|Wiper/INT",
+        "PTB1": "Power 1|Power 1|Digital GPIO",
+        "PTB2": "Power 2|Power 2|Digital GPIO",
+        "PTB3": "Power 3|Power 3|Digital GPIO",
+        "PTB8": "Power 4|Power 4|Digital GPIO",
+        "PTB9": "Power 5|Power 5|Digital GPIO",
         "PTB10": "Power 6|Power 6|Digital GPIO",
         "PTB11": "Power 7|Power 7|Digital GPIO",
         "PTA17": "Power 8|Power 8|Digital GPIO",
-        "PTA1":  "Power 9|Power 9|PWM GPIO",
-        "PTA2":  "Power 10|Power 10|PWM GPIO",
-        "PTA4":  "Power 11|Power 11|PWM GPIO",
-        "PTA5":  "Power 12|Power 12|PWM GPIO",
-        "PTD0":  "Power 13|Power 13|PWM GPIO",
-        "PTC4":  "Power 14|Power 14|PWM GPIO",
-        "PTC8":  "Power 15|Power 15|PWM GPIO",
-        "PTC9":  "Power 16|Power 16|PWM GPIO"
+        "PTA1": "Power 9|Power 9|PWM GPIO",
+        "PTA2": "Power 10|Power 10|PWM GPIO",
+        "PTA4": "Power 11|Power 11|PWM GPIO",
+        "PTA5": "Power 12|Power 12|PWM GPIO",
+        "PTD0": "Power 13|Power 13|PWM GPIO",
+        "PTC4": "Power 14|Power 14|PWM GPIO",
+        "PTC8": "Power 15|Power 15|PWM GPIO",
+        "PTC9": "Power 16|Power 16|PWM GPIO"
     };
 
     // Build a combined table of the GPIO port aliases for internal and
@@ -2174,11 +2158,9 @@ var RigMasterOutPortAlias, RigMasterGpioPortAlias;
 //     x: x,                      // x coordinate of pin in diagram
 //     y: y                       // y coordinate of pin in diagram
 //  }
-function buildPinToHeaderMap(sysType)
-{
-    var pinInfoMap = { };
-    switch (sysType)
-    {
+function buildPinToHeaderMap(sysType) {
+    var pinInfoMap = {};
+    switch (sysType) {
         case 0:
             //
             // standalone KL2Z
@@ -2187,8 +2169,8 @@ function buildPinToHeaderMap(sysType)
             // Populate the KL25Z pins.  For PWM-capable pins, index them
             // by both 1.x and 2.x keys, since those pins can be used both
             // ways.
-            $.each(kl25z_headers, function(hdrName, hdrInfo) {
-                forEachPin(hdrInfo, function(pin, n, x, y) {
+            $.each(kl25z_headers, function (hdrName, hdrInfo) {
+                forEachPin(hdrInfo, function (pin, n, x, y) {
                     var o = {
                         board: "kl25z",
                         header: hdrName,
@@ -2208,11 +2190,11 @@ function buildPinToHeaderMap(sysType)
             // Populate TLC5940, 74HC595, and TLC59116 pins.  Allow for
             // eight copies of each board.
             $.each({
-                "tlc5940":  { pins: tlc5940_pins, nPins: 16, image: "tlc5940Pins.png", wrapper: "tlc5940PinSelector", typePrefix: "3." },
-                "74hc595":  { pins: hc595_pins, nPins: 8, image: "74hc595Pins.png", wrapper: "hc595PinSelector", typePrefix: "4." },
+                "tlc5940": { pins: tlc5940_pins, nPins: 16, image: "tlc5940Pins.png", wrapper: "tlc5940PinSelector", typePrefix: "3." },
+                "74hc595": { pins: hc595_pins, nPins: 8, image: "74hc595Pins.png", wrapper: "hc595PinSelector", typePrefix: "4." },
                 "tlc59116": { pins: tlc59116_pins, nPins: 16, image: "tlc59116Pins.png", wrapper: "tlc59116PinSelector", typePrefix: "6." },
-            }, function(chipName, chipInfo) {
-                forEachPin(chipInfo.pins, function(pin, n, x, y) {
+            }, function (chipName, chipInfo) {
+                forEachPin(chipInfo.pins, function (pin, n, x, y) {
                     // all of the chips use "OUTn" as the pin name for output pins
                     if (/OUT(\d+)/.test(pin)) {
                         // infer the pin number from the OUTn name
@@ -2241,9 +2223,9 @@ function buildPinToHeaderMap(sysType)
                 "expansion main": { headers: mainBoard_headers, image: "mainBoardPins.png", copies: 1 },
                 "expansion power": { headers: powerBoard_headers, image: "powerBoardPins.png", copies: 4 },
                 "expansion chime": { headers: chimeBoard_headers, image: "chimeBoardPins.png", copies: 4 },
-            }, function(boardName, boardInfo) {
-                $.each(boardInfo.headers, function(headerName, headerInfo) {
-                    forEachPin(headerInfo, function(pinName, n, x, y) {
+            }, function (boardName, boardInfo) {
+                $.each(boardInfo.headers, function (headerName, headerInfo) {
+                    forEachPin(headerInfo, function (pinName, n, x, y) {
                         for (var i = 1; i <= boardInfo.copies; ++i) {
                             var o = {
                                 board: boardName + (boardInfo.copies > 1 ? " #" + i : ""),
@@ -2283,9 +2265,9 @@ function buildPinToHeaderMap(sysType)
                 "expansion main": { headers: aioBoard_headers, image: "aioBoardPins.png", copies: 1 },
                 "expansion power": { headers: aio_powerBoard_headers, image: "powerBoardPins.png", copies: 4 },
                 "expansion chime": { headers: aio_chimeBoard_headers, image: "chimeBoardPins.png", copies: 4 },
-            }, function(boardName, boardInfo) {
-                $.each(boardInfo.headers, function(headerName, headerInfo) {
-                    forEachPin(headerInfo, function(pinName, n, x, y) {
+            }, function (boardName, boardInfo) {
+                $.each(boardInfo.headers, function (headerName, headerInfo) {
+                    forEachPin(headerInfo, function (pinName, n, x, y) {
                         for (var i = 1; i <= boardInfo.copies; ++i) {
                             var o = {
                                 board: boardName + (boardInfo.copies > 1 ? " #" + i : ""),
