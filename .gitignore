@@ -1,0 +1,12 @@
+﻿################################################################################
+# Ce fichier .gitignore a été automatiquement créé par Microsoft(R) Visual Studio.
+################################################################################
+
+/IncBuildNumber/obj
+/IncBuildNumber/bin/Debug
+/NightMode/obj
+/PinscapeCmd/obj
+/PinscapeConfigTool/bin/Debug
+/PinscapeConfigTool/obj/Debug
+/PinscapeConfigToolUpdater/obj
+/PinscapeConfigTool/obj/Release

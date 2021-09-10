@@ -435,6 +435,8 @@
     <Content Include="html\mainBoardPins.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\MolluskBoardOut.png" />
+    <Content Include="html\MolluskBoardPins.png" />
     <Content Include="html\nightModeOff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -480,6 +482,10 @@
     <Content Include="html\PulseOn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="html\RigMaster.png" />
+    <Content Include="html\RigMasterBoardIn.png" />
+    <Content Include="html\RigMasterBoardOut.png" />
+    <Content Include="html\RigMasterBoardPins.png" />
     <Content Include="html\ShiftButton.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
