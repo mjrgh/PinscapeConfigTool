@@ -643,7 +643,7 @@ namespace PinscapeConfigTool
             "11 HC595 {nchips:$B,SIN:$P,SCLK:$P,LATCH:$P,ENA:$P}",
             "12 disconnectRebootTime $B",
             "13 plungerCal {zero:$W,max:$W,tRelease:$B,calibrated:$B}",
-            "14 expansionBoards {type:$B,version:$B,ext0:$B,ext1:$B,ext2:$B}",
+            "14 expansionBoards {type:$B,version:$B,ext0:$B,ext1:$B,ext2:$B,ext3:$B}",
             "15 nightMode {button:$B,flags:$B,output:$B}",
             "16 shiftButton {index:$B,mode:$B}",
             "17 IRRemote {sensorPin:$P,ledPin:$P}",
