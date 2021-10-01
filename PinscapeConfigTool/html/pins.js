@@ -1674,7 +1674,7 @@ var RigMasterFactoryXConfig = {};
 var KLShieldFactoryConfig = {
     expansionBoards: {
         version: "0",
-        ext0: "0",
+        ext0: "1",
         ext1: "0",
         ext2: "0",
         ext3: "0"
