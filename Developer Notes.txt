@@ -9,15 +9,15 @@ To set up the build environment, you'll need:
 * Microsoft Visual Studio.  You can download the free Community
 Edition from the Microsoft Web site.  I don't think any special
 install options are required.  I'm currently building this
-project with VS 2013, which is an older version, but it will
-happily co-exist on your system alongside newer versions.  To
-get VS 2013, go here:
+project with VS 2019.  You can download the free Community
+Edition here:
 
-https://visualstudio.microsoft.com/vs/older-downloads/
+  https://visualstudio.microsoft.com/
 
-and then select 2013 from the version list and proceed to the
-download.  See Visual Studio Versions below for more on using
-a newer VS update if you prefer.
+If you need an older version (VS 2017, VS 2015, etc), Microsoft makes
+them available as well:
+
+  https://visualstudio.microsoft.com/vs/older-downloads/
 
 If you want to create binary releases using the MakeRelease.bat
 script, you'll also need a command-line ZIP tool.  I use Info-ZIP
@@ -36,35 +36,35 @@ menu and select Build > Build Solution.
 
 3. Visual Studio versions
 
-As of this writing (9/2020), I'm building with Visual Studio 2013.
-That's quite out of date at this point, but you can still download it
-from the Microsoft site:
+As of this writing (7/2021), I'm building with Visual Studio 2019.
+You can download it here:
 
-https://visualstudio.microsoft.com/vs/older-downloads/
+  https://visualstudio.microsoft.com/
 
-You can also try building from a newer VS version if you prefer.  I
-don't expect any significant problems migrating to newer versions,
-since C# is usually pretty forward-compatible across versions.
-However, there are often a few small changes needed when moving across
-VS updates, and these can sometimes be quite subtle and require some
-effort to figure out the *correct* fix.  If you don't know what you're
-doing, attempting a fix that just "shuts up the compiler" and gets it
-to compile can also often make the program stop working.
+VS 2019 is current as of this writing, but if the link above points to
+something newer by the time you read this, you should be able to find
+older releases here:
 
-So: If you're an experienced developer, and you like messing with that
-stuff, feel free to try VS 2019 or whatever other version you like.
-However, if you just want to get it built without a lot of fuss and
-without worrying about whether there are going to be hidden gotchas in
-the built copy, use VS 2013.
+  https://visualstudio.microsoft.com/vs/older-downloads/
+
+You can also try building from a newer VS version if you prefer.
+That's usually no problem with C# - Microsoft is pretty careful about
+maintaining backwards compatibility so that existing programs continue
+to build correctly.  But if you do run into any weird compiler issues,
+or the program doesn't function as expected once built, you should
+probably stick with the same VS version I'm using.  In the cases where
+there are version incompatibilities across VS releases, it can be
+tricky to figure out the right way to address them.
 
 If you *do* do decide to try it with a newer VS version, you should be
 able to simply open the solution (.sln) file without any changes.
 However, VS sometimes requires a one-way format update to open an old
 project in a new VS version, and this conversion will render the
-solution (.sln) and/or project (.csproj) files incompatible with the
-original VS 2013.  If this type of one-way conversion is necessary, VS
-*should* show you a warning message.  If VS shows such a warning when
-you open the project, CANCEL and use this procedure instead:
+solution (.sln) and/or project (.csproj) files incompatible with older
+VS versions.  If this type of one-way conversion is necessary, VS will
+usually show you a warning message before making the change.  If VS
+shows such a warning when you open the project, CANCEL and use this
+procedure instead:
 
   - Whatever you do, DON'T migrate the ORIGINAL project/solution 
     files
@@ -73,8 +73,8 @@ you open the project, CANCEL and use this procedure instead:
     to be converted
 
   - Name the copies to indicate the new VS version they'll be used
-    with: e.g., copy PinscapeConfigTool.sln and name the copy 
-    PinscapeConfigTool-vs2019.sln
+    with: e.g., copy PinscapeConfigTool.sln and name the copy to
+    signify the new VS year (e.g., PinscapeConfigTool-vs2023.sln)
 
   - Open the NEW COPIES in the new VS, and allow VS to convert
     those to the new format
