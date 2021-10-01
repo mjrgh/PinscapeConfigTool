@@ -544,7 +544,7 @@ div.indented {
     margin: 0px;
     padding: 0px;
     position: absolute;
-    height: 428px;
+    height: 460px;
     background: #e0e0e0;
     border: 2px solid #808080;
     border-radius: 8px;
@@ -690,10 +690,11 @@ div.chipNo.header {
     margin: 0px;
     padding: 0px;
     width: 345px;
+    height: 100%;
 }
 .kl25zPinSelector .pinimage {
     margin: 0px;
-    padding: 8px 32px;
+    padding: 4px 32px;
 }
 .tlc5940PinSelector .pinimage, .hc595PinSelector .pinimage, .tlc59116PinSelector .pinimage {
     padding: 4px 32px;
@@ -720,22 +721,21 @@ div.chipNo.header {
 
 .pinLegend {
     position: absolute;
-    bottom: 32px;
+    bottom: -2px;
     left: -32px;
-    padding: 0px;
     margin: 0px;
 }
+.kl25zPinSelector .pinLegend {
+}
+
 .expBoardPinSelector .pinLegend {
     left: 0px;
-    bottom: 28px;
 }
 .aioBoardPinSelector .pinLegend {
     left: 0px;
-    bottom: 28px;
 }
 .liteBoardPinSelector .pinLegend {
     left: 0px;
-    bottom: 28px;
 }
 
 
@@ -769,6 +769,9 @@ div.chipNo.header {
     margin: 0px;
     width: 100%;
     padding: 0px 4px;
+}
+.chipIndexer.foreground .label {
+    padding-right: 1ex;
 }
 .chipIndexer.background {
     opacity: .5;

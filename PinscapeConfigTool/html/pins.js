@@ -1678,7 +1678,7 @@ var aioOutPortAlias, aioGpioPortAlias;
             + "|PWM Hi Power"
             + "|Power Board " + (Math.floor(i/32) + 1)
             + "|JP" + (Math.floor((i%32)/16)+5)+ "-" + ((i%16)+1)
-            + "|powerBoardOutputSelector";
+            + "|aioPowerBoardOutputSelector";
     }
 
     // add four chime boards worth of outputs
@@ -1688,7 +1688,7 @@ var aioOutPortAlias, aioGpioPortAlias;
             + "|Timed Digital"
             + "|Chime Board " + (Math.floor(i/8) + 1)
             + "|JP9-" + ((i%8)+1)
-            + "|chimeBoardOutputSelector";
+            + "|aioChimeBoardOutputSelector";
     }
 
     // Table of all internal GPIO connections on the main expansion board.
@@ -1792,7 +1792,7 @@ var liteOutPortAlias, liteGpioPortAlias;
             + "|PWM Hi Power"
             + "|Power Board " + (Math.floor(i / 32) + 1)
             + "|JP" + (Math.floor((i % 32) / 16) + 5) + "-" + ((i % 16) + 1)
-            + "|powerBoardOutputSelector";
+            + "|litePowerBoardOutputSelector";
     }
 
     // add four chime boards worth of outputs
