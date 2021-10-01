@@ -296,7 +296,15 @@ $(function()
         case 3:
             outPortAlias = liteOutPortAlias;
             break;
-        }
+
+        case 4:
+			outPortAlias = RigMasterOutPortAlias;
+			break;
+
+		case 5:
+			outPortAlias = KLShieldOutPortAlias;
+			break;
+       }
 
         // populate the outputs table
         var typeNames = ["Disabled", "PWM", "Digital", "PWM", "Digital", "Virtual", "PWM"];
