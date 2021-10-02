@@ -306,17 +306,20 @@ hr {
 	padding-left: 2em;
 }
 
-table.radio {
+#systemTypeSelector {
     margin: 1em auto;
+    text-align: center;
 }
 
-table.radio td {
+#systemTypeSelector > div > div {
+    display: inline-block;
     text-align: center;
     vertical-align: bottom;
     padding: 1em;
     border: 1px solid transparent;
 }
-table.radio td.selected {
+
+#systemTypeSelector > div > div.selected {
     border: 1px solid #ff00ff;
 }
 
@@ -959,6 +962,29 @@ tr.openDlgRow {
     height: 100%;
     opacity: .1;
     background: #000000;
+}
+
+#waitOverlay {
+    position: fixed;
+    z-index: 3;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    background: #000000;
+    opacity: .5;
+    display: none;
+}
+#waitOverlay div {
+    position: fixed;
+    height: 3em;
+    width: 100%;
+    top: 48%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 150%;
+    color: #ffffff;
 }
 
 #loadingOverlay {
