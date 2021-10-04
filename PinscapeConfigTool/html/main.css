@@ -707,13 +707,13 @@ div.chipNo.header {
 .liteBoardPinSelector .pinimage {
     padding: 4px 0px;
 }
-.RigMasterBoardPinSelector .pinimage {
+.rigMasterBoardPinSelector .pinimage {
     padding: 4px 0px;
 }
-.KLShieldBoardPinSelector .pinimage {
+.klShieldBoardPinSelector .pinimage {
     padding: 4px 0px;
 }
-.MolluskBoardPinSelector .pinimage {
+.molluskBoardPinSelector .pinimage {
     padding: 4px 0px;
 }
 
@@ -746,15 +746,15 @@ div.chipNo.header {
     left: 0px;
     bottom: 28px;
 }
-.RigMasterBoardPinSelector .pinLegend {
+.rigMasterBoardPinSelector .pinLegend {
     left: 0px;
     bottom: 28px;
 }
-.KLShieldBoardPinSelector .pinLegend {
+.klShieldBoardPinSelector .pinLegend {
     left: 0px;
     bottom: 28px;
 }
-.MolluskBoardPinSelector .pinLegend {
+.molluskBoardPinSelector .pinLegend {
     left: 0px;
     bottom: 28px;
 }
@@ -866,17 +866,17 @@ div.chipNo.header {
     left: -6px;
     top: -6px;
 }
-.RigMasterBoardPinSelector .pinoverlay {
+.rigMasterBoardPinSelector .pinoverlay {
     /* offset by negative half of pin image size */
     left: -6px;
     top: -6px;
 }
-.KLShieldBoardPinSelector .pinoverlay {
+.klShieldBoardPinSelector .pinoverlay {
     /* offset by negative half of pin image size */
     left: -6px;
     top: -6px;
 }
-.MolluskBoardPinSelector .pinoverlay {
+.molluskBoardPinSelector .pinoverlay {
     /* offset by negative half of pin image size */
     left: -6px;
     top: -6px;
@@ -896,17 +896,17 @@ div.chipNo.header {
     width: 12px;
     height: 12px;
 }
-.RigMasterBoardPinSelector .pinButton {
+.rigMasterBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;
 }
-.KLShieldBoardPinSelector .pinButton {
+.klShieldBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;
 }
-.MolluskBoardPinSelector .pinButton {
+.molluskBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;

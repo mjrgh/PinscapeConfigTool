@@ -504,7 +504,7 @@ var liteBoard_headers = {
     },
 };
 // RigMaster board headers
-var RigMasterBoard_headers = {
+var rigMasterBoard_headers = {
 
     "Boutons": {
         pins: [["PTE30", "PTE29", "PTE23", "PTE22", "PTE21", "PTE20", "PTE5", "PTE4", "PTE3", "PTE2", "PTE1", "PTE0", "PTD7"]],
@@ -566,8 +566,8 @@ var RigMasterBoard_headers = {
     },
 };
 
-// KLShield board headers
-var KLShieldBoard_headers = {
+// klShield board headers
+var klShieldBoard_headers = {
 
     "BOUTON 1": {
         pins: [["GND", "PTE30", "PTE29", "PTE23", "PTE22", "PTE21", "PTE20", "PTE5", "PTE4", "PTE3", "PTE2", "GND"]],
@@ -629,7 +629,7 @@ var KLShieldBoard_headers = {
     },
 
 };
-var MolluskBoard_headers = {
+var molluskBoard_headers = {
     "OUT1-8": {
         pins: [["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]],
         type: "pinheader",
@@ -1569,7 +1569,7 @@ var pinscapeLiteFactoryConfig = {
 var pinscapeLiteFactoryXConfig = {};
 
 // Factory configuration for the RigMaster
-var RigMasterFactoryConfig = {
+var rigMasterFactoryConfig = {
     expansionBoards: {
         version: "0",
         ext0: "1",
@@ -1668,10 +1668,10 @@ var RigMasterFactoryConfig = {
 
     }
 };
-var RigMasterFactoryXConfig = {};
+var rigMasterFactoryXConfig = {};
 
-// Factory configuration for the KLShield
-var KLShieldFactoryConfig = {
+// Factory configuration for the klShield
+var klShieldFactoryConfig = {
     expansionBoards: {
         version: "0",
         ext0: "1",
@@ -1752,7 +1752,7 @@ var KLShieldFactoryConfig = {
 
     }
 };
-var KLShieldFactoryXConfig = {};
+var klShieldFactoryXConfig = {};
 
 // fill out the factory defaults for the maximum output and button table sizes
 (function() {
@@ -1771,8 +1771,8 @@ var KLShieldFactoryXConfig = {};
     fill(expansionBoardFactoryConfig);
     fill(pinscapeAIOFactoryConfig);
     fill(pinscapeLiteFactoryConfig);
-    fill(RigMasterFactoryConfig);
-    fill(KLShieldFactoryConfig);
+    fill(rigMasterFactoryConfig);
+    fill(klShieldFactoryConfig);
     fill(standaloneFactoryConfig);
 })();
     
@@ -2227,7 +2227,7 @@ var liteOutPortAlias, liteGpioPortAlias;
     liteGpioPortAlias = g;
 })();
 
-var RigMasterOutPortAlias, RigMasterGpioPortAlias;
+var rigMasterOutPortAlias, rigMasterGpioPortAlias;
 // build the Pinscape RigMaster out port alias table
 (function () {
     var o = {
@@ -2240,7 +2240,7 @@ var RigMasterOutPortAlias, RigMasterGpioPortAlias;
             + "|Mollusk PWM out"
             + "|Mollusk " + (Math.floor(i / 16) + 1)
             + "|Mollusk" + (Math.floor(i / 16) + 1) + " Out " + ((i % 16) + 1)
-            + "|MolluskBoardOutputSelector";
+            + "|molluskBoardOutputSelector";
     }
     // Table of all internal GPIO connections on the main expansion board.
     // These generally can't be used for any other purpose.
@@ -2285,8 +2285,8 @@ var RigMasterOutPortAlias, RigMasterGpioPortAlias;
     $.each(gExternal, function (k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
 
     // Add GPIO aliases for all of the buttons
-    $.each(RigMasterFactoryConfig.buttons, function (k, v) {
-        g[v.pin] = "Button " + k + "|Digital In|RigMaster|Button Inputs-" + k + "|RigMasterBoardInputSelector";
+    $.each(rigMasterFactoryConfig.buttons, function (k, v) {
+        g[v.pin] = "Button " + k + "|Digital In|RigMaster|Button Inputs-" + k + "|rigMasterBoardInputSelector";
     });
 
     // Add all of the external ports as output aliases.
@@ -2297,19 +2297,19 @@ var RigMasterOutPortAlias, RigMasterGpioPortAlias;
         // if it's a PWM-capable port, add a PWM output type for it
         var gp = gpioPinsByName[k] || {};
         if (gp.pwm)
-            o["1." + k] = [v[0], v[2] || "PWM GPIO", "RigMaster", v[1], "RigMasterBoardPWMOutputSelector"].join("|");
+            o["1." + k] = [v[0], v[2] || "PWM GPIO", "RigMaster", v[1], "rigMasterBoardPWMOutputSelector"].join("|");
 
         // add a Digital Out type for it
-        o["2." + k] = [v[0], v[2] || "Digital GPIO", "RigMaster", v[1], "RigMasterBoardDigitalOutputSelector"].join("|");
+        o["2." + k] = [v[0], v[2] || "Digital GPIO", "RigMaster", v[1], "rigMasterBoardDigitalOutputSelector"].join("|");
     });
 
     // remember these
-    RigMasterOutPortAlias = o;
-    RigMasterGpioPortAlias = g;
+    rigMasterOutPortAlias = o;
+    rigMasterGpioPortAlias = g;
 })();
 
-var KLShieldOutPortAlias, KLShieldGpioPortAlias;
-// build the Pinscape KLShield out port alias table
+var klShieldOutPortAlias, klShieldGpioPortAlias;
+// build the Pinscape klShield out port alias table
 (function () {
     var o = {
     };
@@ -2321,7 +2321,7 @@ var KLShieldOutPortAlias, KLShieldGpioPortAlias;
             + "|Mollusk PWM out"
             + "|Mollusk " + (Math.floor(i / 16) + 1)
             + "|Mollusk" + (Math.floor(i / 16) + 1) + " Out " + ((i % 16) + 1)
-            + "|MolluskBoardOutputSelector";
+            + "|molluskBoardOutputSelector";
     }
     // Table of all internal GPIO connections on the main expansion board.
     // These generally can't be used for any other purpose.
@@ -2374,8 +2374,8 @@ var KLShieldOutPortAlias, KLShieldGpioPortAlias;
     $.each(gExternal, function (k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
 
     // Add GPIO aliases for all of the buttons
-    $.each(KLShieldFactoryConfig.buttons, function (k, v) {
-        g[v.pin] = "Button " + k + "|KLShield BUTTON|KLShield|Button Inputs-" + k + "|KLShieldBoardInputSelector";
+    $.each(klShieldFactoryConfig.buttons, function (k, v) {
+        g[v.pin] = "Button " + k + "|KLShield BUTTON|KLShield|Button Inputs-" + k + "|klShieldBoardInputSelector";
     });
 
     // Add all of the external ports as output aliases.
@@ -2386,15 +2386,15 @@ var KLShieldOutPortAlias, KLShieldGpioPortAlias;
         // if it's a PWM-capable port, add a PWM output type for it
         var gp = gpioPinsByName[k] || {};
         if (gp.pwm)
-            o["1." + k] = [v[0], v[2] || "PWM GPIO", "KLShield", v[1], "KLShieldBoardPWMOutputSelector"].join("|");
+            o["1." + k] = [v[0], v[2] || "PWM GPIO", "KLShield", v[1], "klShieldBoardPWMOutputSelector"].join("|");
 
         // add a Digital Out type for it
-        o["2." + k] = [v[0], v[2] || "Digital GPIO", "KLShield", v[1], "KLShieldBoardDigitalOutputSelector"].join("|");
+        o["2." + k] = [v[0], v[2] || "Digital GPIO", "KLShield", v[1], "klShieldBoardDigitalOutputSelector"].join("|");
     });
 
     // remember these
-    KLShieldOutPortAlias = o;
-    KLShieldGpioPortAlias = g;
+    klShieldOutPortAlias = o;
+    klShieldGpioPortAlias = g;
 })();
 
 // Build a master map of pin to header info mappings for the given
@@ -2601,10 +2601,8 @@ function buildPinToHeaderMap(sysType)
         // Arnoz RigMaster.  Populate each board, allowing
         // for up to seven copies of Mollusk board.
         $.each({
-            "expansion main": { headers: RigMasterBoard_headers, image: "RigMasterBoardPins.png", copies: 1 },
-            "expansion power": { headers: lite_powerBoard_headers, image: "powerBoardPins.png", copies: 0 },
-            "expansion chime": { headers: lite_chimeBoard_headers, image: "chimeBoardPins.png", copies: 0 },
-            "expansion Mollusk": { headers: MolluskBoard_headers, image: "MolluskBoardPins.png", copies: 7 },
+            "expansion main": { headers: rigMasterBoard_headers, image: "RigMasterBoardPins.png", copies: 1 },
+            "expansion mollusk": { headers: molluskBoard_headers, image: "MolluskBoardPins.png", copies: 7 },
         }, function (boardName, boardInfo) {
             $.each(boardInfo.headers, function (headerName, headerInfo) {
                 forEachPin(headerInfo, function (pinName, n, x, y) {
@@ -2614,7 +2612,7 @@ function buildPinToHeaderMap(sysType)
                             header: headerName,
                             pinNum: n,
                             image: boardInfo.image,
-                            wrapper: "RigMasterBoardPinSelector",
+                            wrapper: "rigMasterBoardPinSelector",
                             x: x,
                             y: y
                         };
@@ -2644,10 +2642,8 @@ function buildPinToHeaderMap(sysType)
         // Arnoz KLShield.  Populate each board, allowing
         // for up to seven copies of Mollusk board.
         $.each({
-            "expansion main": { headers: KLShieldBoard_headers, image: "KLShieldBoardPins.png", copies: 1 },
-            "expansion power": { headers: lite_powerBoard_headers, image: "powerBoardPins.png", copies: 0 },
-            "expansion chime": { headers: lite_chimeBoard_headers, image: "chimeBoardPins.png", copies: 0 },
-            "expansion Mollusk": { headers: MolluskBoard_headers, image: "MolluskBoardPins.png", copies: 8 },
+            "expansion main": { headers: klShieldBoard_headers, image: "KLShieldBoardPins.png", copies: 1 },
+            "expansion mollusk": { headers: molluskBoard_headers, image: "MolluskBoardPins.png", copies: 8 },
         }, function (boardName, boardInfo) {
         $.each(boardInfo.headers, function (headerName, headerInfo) {
             forEachPin(headerInfo, function (pinName, n, x, y) {
@@ -2657,7 +2653,7 @@ function buildPinToHeaderMap(sysType)
                         header: headerName,
                         pinNum: n,
                         image: boardInfo.image,
-                        wrapper: "KLShieldBoardPinSelector",
+                        wrapper: "klShieldBoardPinSelector",
                         x: x,
                         y: y
                     };

@@ -7,3 +7,5 @@
 /PinscapeConfigTool/bin/Debug
 /PinscapeConfigTool/obj
 /PinscapeConfigToolUpdater/obj
+PinscapeConfigTool/BuildNumber.txt
+PinscapeConfigTool/VersionInfo.cs

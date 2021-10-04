@@ -142,19 +142,18 @@ var ConfigSource = {
                   <td><input type="text" id="numMainBoards" size="4" value="1">
                </tr>
                -->
-               <tr>
-                  <td class="RigMasterBoardHide">Number of MOSFET power boards:</td>
-                  <td class="RigMasterBoardHide"><input type="text" id="numPowerBoards" size="4" value="0">
-               </tr>
-               <tr>
-                  <td class="RigMasterBoardHide">Number of chime boards:</td>
-                  <td class="RigMasterBoardHide"><input type="text" id="numChimeBoards" size="4" value="0">
-               </tr>
-               <tr class="RigMasterBoardText">
+               <tr class="molluskinput">
                   <td>Number of Mollusk boards:</td>
-                  <td><input type="text" id="numMolluskBoards" size="4" value="0">
+                  <td><input type="text" id="nummolluskBoards" size="4" value="0">
                </tr>
-
+               <tr class="pinscapeexpboardinput">
+                  <td>Number of MOSFET power boards:</td>
+                  <td><input type="text" id="numPowerBoards" size="4" value="0">
+               </tr>
+               <tr class="pinscapeexpboardinput">
+                  <td>Number of chime boards:</td>
+                  <td><input type="text" id="numChimeBoards" size="4" value="0">
+               </tr>
             </table>
 
             <div>
@@ -246,11 +245,11 @@ $("input:radio[name=hardwareType]").change(function(ev)
 			slideToggle(d, true, 250, fromUI);
 
 			// use the RigMaster output port aliases
-			outPortAlias = RigMasterOutPortAlias;
-			gpioPortAlias = RigMasterGpioPortAlias;
+			outPortAlias = rigMasterOutPortAlias;
+			gpioPortAlias = rigMasterGpioPortAlias;
 
 			if (fromUI)
-				configToUI(RigMasterFactoryConfig, RigMasterFactoryXConfig, ConfigSource.Factory);
+				configToUI(rigMasterFactoryConfig, rigMasterFactoryXConfig, ConfigSource.Factory);
 
 			// hide KL25Z pin assignments by default
 			$("#ckExpBoardShowPins").prop("checked", false);
@@ -264,11 +263,11 @@ $("input:radio[name=hardwareType]").change(function(ev)
 			slideToggle(d, true, 250, fromUI);
 
 			// use the Pinscape Lite output port aliases
-			outPortAlias = KLShieldOutPortAlias;
-			gpioPortAlias = KLShieldGpioPortAlias;
+			outPortAlias = klShieldOutPortAlias;
+			gpioPortAlias = klShieldGpioPortAlias;
 
 			if (fromUI)
-				configToUI(KLShieldFactoryConfig, KLShieldFactoryXConfig, ConfigSource.Factory);
+				configToUI(klShieldFactoryConfig, klShieldFactoryXConfig, ConfigSource.Factory);
 
 			// hide KL25Z pin assignments by default
 			$("#ckExpBoardShowPins").prop("checked", false);
@@ -334,8 +333,10 @@ function updatePinVisibility()
         $(".expBoardAlt").hide();
         $(".expBoardText").hide();
         $(".aioBoardText").hide();
-		$(".RigMasterBoardText").hide();
-		$(".RigMasterBoardHide").show();
+		$(".rigMasterBoardText").hide();
+		$(".klShieldBoardText").hide();
+		$(".molluskinput").hide();
+		$(".pinscapeexpboardinput").show();
         break;
 
     case 1:
@@ -346,8 +347,10 @@ function updatePinVisibility()
         $(".expBoardAlt").show();
         $(".expBoardText").show();
         $(".aioBoardText").hide();
-		$(".RigMasterBoardText").hide();
-		$(".RigMasterBoardHide").show();
+		$(".rigMasterBoardText").hide();
+		$(".klShieldBoardText").hide();
+		$(".molluskinput").hide();
+		$(".pinscapeexpboardinput").show();
         break;
 
     case 2:
@@ -359,37 +362,43 @@ function updatePinVisibility()
         $(".expBoardAlt").show();
         $(".expBoardText").hide();
         $(".aioBoardText").show();
-		$(".RigMasterBoardText").hide();
-		$(".RigMasterBoardHide").show();
+		$(".rigMasterBoardText").hide();
+		$(".klShieldBoardText").hide();
+		$(".molluskinput").hide();
+		$(".pinscapeexpboardinput").show();
         break;
 
     case 4:
-	    // RigMaster board mode - show the Pinscape AIO alternate text,
+	    // RigMaster board mode - show the RigMaster alternate text,
 	    // and hide the regular pin selectors, *unless* the "show pins anyway"
 	    // box is checked
 	    $(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
 	    $(".expBoardAlt").show();
 	    $(".expBoardText").hide();
 	    $(".aioBoardText").hide();
-	    $(".RigMasterBoardText").show();
-	    $(".RigMasterBoardHide").hide();
+	    $(".rigMasterBoardText").show();
+		$(".klShieldBoardText").hide();
+		$(".molluskinput").show();
+		$(".pinscapeexpboardinput").hide();
 	    break;
     case 5:
-	    // KLShield board mode - show the Pinscape AIO alternate text,
+	    // KLShield board mode - show the KLShield alternate text,
 	    // and hide the regular pin selectors, *unless* the "show pins anyway"
 	    // box is checked
 	    $(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
 	    $(".expBoardAlt").show();
 	    $(".expBoardText").hide();
 	    $(".aioBoardText").hide();
-	    $(".RigMasterBoardText").show();
-	    $(".RigMasterBoardHide").hide();
+	    $(".rigMasterBoardText").hide();
+		$(".klShieldBoardText").show();
+		$(".molluskinput").show();
+		$(".pinscapeexpboardinput").hide();
 	    break;
 
     }
 }
 
-		  $("#numMainBoards,#numPowerBoards,#numChimeBoards,#numMolluskBoards").change(function()
+		  $("#numMainBoards,#numPowerBoards,#numChimeBoards,#nummolluskBoards").change(function()
 {
     // make sure we have a valid number
     var v = $(this).val().trim();
@@ -435,12 +444,12 @@ function expBoardAdjustChips()
         break;
     case 4:   // RigMaster Board
 	    // adjust the TLC5940 count: 1 per Mollusk board
-	    $("#tlc_nchips").val($("#numMolluskBoards").val()).change();
+	    $("#tlc_nchips").val($("#nummolluskBoards").val()).change();
 	    break;
 
     case 5:   // KLShield Board
 	    // adjust the TLC5940 count: 1 per Mollusk board
-	    $("#tlc_nchips").val($("#numMolluskBoards").val()).change();
+	    $("#tlc_nchips").val($("#nummolluskBoards").val()).change();
 	    break;
 
     }
@@ -1696,8 +1705,11 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Sensor SI to SDA
                </ul>
             </div>
-            <div class="RigMasterBoardText">
+            <div class="rigMasterBoardText">
                 You can't use that with RigMaster !!!
+            </div>
+            <div class="klShieldBoardText">
+                Use <b>Expert mode</b> to configure that sensor manually.
             </div>
          </div>
          <div id="plungerPinsPot">
@@ -1758,8 +1770,21 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                analog output pin to Wiper.  Connect sensor power to 3.3V and
                sensor ground to GND.
             </div>
-            <div class="RigMasterBoardText">
-                Connect the Potar to the Plunger connection on RigMaster or KLShield.
+            <div class="rigMasterBoardText">
+                Connect the Potar to the Plunger connection on RigMaster.
+                <ul>
+                   <li>Plunger to Plunger
+                   <li>3.3V to 3.3V
+                   <li>GND to GND
+                </ul>
+            </div>
+            <div class="klShieldBoardText">
+                Connect the Potar to the Plunger connection on KLShield.
+                <ul>
+                   <li>Plunger to Plunger
+                   <li>3.3V to 3.3V
+                   <li>GND to GND
+                </ul>
             </div>
          </div>
          <div id="plungerPinsQuad">
@@ -1817,8 +1842,11 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Sensor 5V to 5V (if required)
                </ul>
             </div>
-            <div class="RigMasterBoardText">
+            <div class="rigMasterBoardText">
                 You can't use that with RigMaster !!!
+            </div>
+            <div class="klShieldBoardText">
+                Use <b>Expert mode</b> to configure that sensor manually.
             </div>
          </div>
 
@@ -1884,8 +1912,11 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Sensor GND to GND
                </ul>
             </div>
-            <div class="RigMasterBoardText">
+            <div class="rigMasterBoardText">
                 You can't use that with RigMaster !!!
+            </div>
+            <div class="klShieldBoardText">
+                Use <b>Expert mode</b> to configure that sensor manually.
             </div>
          </div>
 
@@ -1944,8 +1975,11 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Sensor GND to GND
                </ul>
             </div>
-            <div class="RigMasterBoardText">
+            <div class="rigMasterBoardText">
                 You can't use that with RigMaster !!!
+            </div>
+            <div class="klShieldBoardText">
+                Use <b>Expert mode</b> to configure that sensor manually.
             </div>
          </div>
 
@@ -2029,8 +2063,11 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                   <li>Level shifter HV (device supply) to 5V
                </ul>
             </div>
-            <div class="RigMasterBoardText">
+            <div class="rigMasterBoardText">
                 You can't use that with RigMaster !!!
+            </div>
+            <div class="klShieldBoardText">
+                Use <b>Expert mode</b> to configure that sensor manually.
             </div>
          </div>
 
@@ -2107,8 +2144,11 @@ $("#autoCenterRadioButtons input:radio[name=autoCenterMode]").change(function(ev
                cable to connect the sensor circuit board to the PLUNGER connections
                 on the Pinscape AIO or Pinscape Lite.
             </div>
-            <div class="RigMasterBoardText">
+            <div class="rigMasterBoardText">
                 You can't use that with RigMaster !!!
+            </div>
+            <div class="klShieldBoardText">
+                Use <b>Expert mode</b> to configure that sensor manually.
             </div>
          </div>
 
@@ -2408,9 +2448,13 @@ $("#btnPlungerCal").click(function(ev) {
          Connect the calibration button to the Calibration connections
          on the Pinscape AIO or Pinscape Lite.
       </div>
-      <div class="RigMasterBoardText">
-          Connect the Calibre or Brain boardto the connections
-          on the RigMaster or KLShield.
+      <div class="rigMasterBoardText">
+          Connect the Calibre or Brain board to the connection.
+          on RigMaster.
+      </div>
+      <div class="klShieldBoardText">
+          Connect the Calibre or Brain board to the connection.
+          on KLShield.
       </div>
    </div>
 
@@ -3511,8 +3555,11 @@ $(function() {
       <div class="aioBoardText">
           The TLC5940 configuration is automatically set up for your Pinscape AIO or Pinscape Lite.
       </div>
-      <div class="RigMasterBoardText">
-          The TLC5940 configuration is automatically set up for your RigMaster or KLShield.
+      <div class="rigMasterBoardText">
+          The TLC5940 configuration is automatically set up for your RigMaster.
+      </div>
+      <div class="klShieldBoardText">
+          The TLC5940 configuration is automatically set up for your KLShield.
       </div>
       <div class="expBoardPin">
          <table class="inputs">
@@ -3639,10 +3686,13 @@ $("#tlc_nchips").change(function(ev)
                   addresses to indicate that no chips are present.
                </div>
             </div>
-            <div class="RigMasterBoardText">
-                You can't use TLC59116 with RigMaster !!! It's OK with KLSHIELD
+            <div class="rigMasterBoardText">
+                You can't use TLC59116 with RigMaster.
             </div>
-            <div id="tlc59116_chipsEnabled">
+            <div class="klShieldBoardText">
+                Use <b>Expert mode</b> to configure TLC59116 manually with KLSHIELD.
+            </div>
+           <div id="tlc59116_chipsEnabled">
                <div>
                   <label><input type="checkbox" data-address="0"> 0 (0000)</label>
                   <label><input type="checkbox" data-address="1"> 1 (0001)</label>
@@ -3792,8 +3842,11 @@ $("#tlc59116_chipsEnabled input").change(function(ev)
       <div class="aioBoardText">
           The 74HC595 configuration is automatically set up for your Pinscape AIO or Pinscape Lite.
       </div>
-      <div class="RigMasterBoardText">
-          You can't use 74HC595 with RigMaster !!! It's OK with KLSHIELD
+      <div class="rigMasterBoardText">
+          You can't use 74HC595 with RigMaster.
+      </div>
+      <div class="klShieldBoardText">
+          Use <b>Expert mode</b> to configure 74HC595 manually with KLSHIELD.
       </div>
       <div class="expBoardPin">
          <table class="inputs">
@@ -5494,7 +5547,7 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
-      <div id="RigMasterBoardDigitalOutputSelector" class="pinSelectorPage RigMasterBoardPinSelector" data-pagetype="board">
+      <div id="rigMasterBoardDigitalOutputSelector" class="pinSelectorPage rigMasterBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">Digital Outputs</div>
          <div class="pinlist"></div>
          <div class="pinimage">
@@ -5505,7 +5558,7 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
-      <div id="RigMasterBoardPWMOutputSelector" class="pinSelectorPage RigMasterBoardPinSelector" data-pwm="true" data-pagetype="board">
+      <div id="rigMasterBoardPWMOutputSelector" class="pinSelectorPage rigMasterBoardPinSelector" data-pwm="true" data-pagetype="board">
          <div class="chipNo header" data-chip="0">PWM Outputs</div>
          <div class="pinlist"></div>
          <div class="pinimage">
@@ -5516,7 +5569,7 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
-      <div id="KLShieldBoardDigitalOutputSelector" class="pinSelectorPage KLShieldBoardPinSelector" data-pagetype="board">
+      <div id="klShieldBoardDigitalOutputSelector" class="pinSelectorPage klShieldBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">Digital Outputs</div>
          <div class="pinlist"></div>
          <div class="pinimage">
@@ -5527,7 +5580,7 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
-      <div id="KLShieldBoardPWMOutputSelector" class="pinSelectorPage KLShieldBoardPinSelector" data-pwm="true" data-pagetype="board">
+      <div id="klShieldBoardPWMOutputSelector" class="pinSelectorPage klShieldBoardPinSelector" data-pwm="true" data-pagetype="board">
          <div class="chipNo header" data-chip="0">PWM Outputs</div>
          <div class="pinlist"></div>
          <div class="pinimage">
@@ -5571,7 +5624,7 @@ $("#printButton").click(function(ev) {
           <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
           </div>
       </div>
-      <div id="RigMasterBoardInputSelector" class="pinSelectorPage RigMasterBoardPinSelector" data-pagetype="board">
+      <div id="rigMasterBoardInputSelector" class="pinSelectorPage rigMasterBoardPinSelector" data-pagetype="board">
           <div class="chipNo header" data-chip="0">N/C</div>
           <div class="pinlist"></div>
           <div class="pinimage">
@@ -5582,7 +5635,7 @@ $("#printButton").click(function(ev) {
           <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
           </div>
       </div>
-      <div id="KLShieldBoardInputSelector" class="pinSelectorPage KLShieldBoardPinSelector" data-pagetype="board">
+      <div id="klShieldBoardInputSelector" class="pinSelectorPage klShieldBoardPinSelector" data-pagetype="board">
           <div class="chipNo header" data-chip="0">N/C</div>
           <div class="pinlist"></div>
           <div class="pinimage">
@@ -5606,14 +5659,14 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
-      <div id="MolluskBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
+      <div id="molluskBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">Board 1</div>
          <div class="pinlist"></div>
          <div class="pinimage">
             <div>
                <div class="chipIndexer background"></div>
                <div class="chipIndexer foreground"></div>
-               <img src="MolluskBoardPins.png">
+               <img src="molluskBoardPins.png">
                <div class="pinoverlay"></div>
             </div>
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
@@ -5717,19 +5770,19 @@ $("#printButton").click(function(ev) {
             <img src="liteBoardOut.png"><br>
             Pinscape Lite<br>Digital Out
          </div>
-         <div id="pinTypeRigMasterBoardPWMOut" data-page="RigMasterBoardPWMOutputSelector" data-pintype="1">
+         <div id="pinTyperigMasterBoardPWMOut" data-page="rigMasterBoardPWMOutputSelector" data-pintype="1">
             <img src="RigMasterBoardOut.png"><br>
             RigMaster<br>PWM Out
          </div>
-         <div id="pinTypeRigMasterBoardDigitalOut" data-page="RigMasterBoardDigitalOutputSelector" data-pintype="2">
+         <div id="pinTyperigMasterBoardDigitalOut" data-page="rigMasterBoardDigitalOutputSelector" data-pintype="2">
             <img src="RigMasterBoardOut.png"><br>
             RigMaster<br>Digital Out
          </div>
-         <div id="pinTypeKLShieldBoardPWMOut" data-page="KLShieldBoardPWMOutputSelector" data-pintype="1">
+         <div id="pinTypeklShieldBoardPWMOut" data-page="klShieldBoardPWMOutputSelector" data-pintype="1">
             <img src="KLShieldBoardOut.png"><br>
             KLShield<br>PWM Out
          </div>
-         <div id="pinTypeKLShieldBoardDigitalOut" data-page="KLShieldBoardDigitalOutputSelector" data-pintype="2">
+         <div id="pinTypeklShieldBoardDigitalOut" data-page="klShieldBoardDigitalOutputSelector" data-pintype="2">
             <img src="KLShieldBoardOut.png"><br>
             KLShield<br>Digital Out
          </div>
@@ -5745,11 +5798,11 @@ $("#printButton").click(function(ev) {
             <img src="liteBoardIn.png"><br>
             Pinscape Lite
          </div>
-         <div id="pinTypeRigMasterBoardIn" data-page="RigMasterBoardInputSelector">
+         <div id="pinTyperigMasterBoardIn" data-page="rigMasterBoardInputSelector">
             <img src="RigMasterBoardIn.png"><br>
             RigMaster
          </div>
-         <div id="pinTypeKLShieldBoardIn" data-page="KLShieldBoardInputSelector">
+         <div id="pinTypeklShieldBoardIn" data-page="klShieldBoardInputSelector">
             <img src="KLShieldBoardIn.png"><br>
             KLShield
          </div>
@@ -5757,7 +5810,7 @@ $("#printButton").click(function(ev) {
             <img src="powerBoardOut.png"><br>
             Power Board
          </div>
-         <div id="pinTypeMolluskBoardOut" data-page="MolluskBoardOutputSelector">
+         <div id="pinTypemolluskBoardOut" data-page="molluskBoardOutputSelector">
             <img src="MolluskBoardOut.png"><br>
             Mollusk
          </div>
@@ -6018,7 +6071,7 @@ $(function() {
     configFunctionSetup();
 
     // set up number input "spinner" controls
-	$("#numMainBoards,#numPowerBoards,#numChimeBoards,#numMolluskBoards").spinner({min: 0, max: 8});
+	$("#numMainBoards,#numPowerBoards,#numChimeBoards,#nummolluskBoards").spinner({min: 0, max: 8});
     $("#txtRebootTime").spinner({min: 1, max: 255});
     $("#zbPort").spinner({min: 1, max: 128});
     $("#tlc_nchips").spinner({min: 0, max: 8});
@@ -6029,7 +6082,7 @@ $(function() {
     $("#tvDelay").spinner({min: 1, max: 60});
 
     // set spinner change listeners
-	$("#numMainBoards, #numPowerBoards, #numChimeBoards,#numMolluskBoards, #zbPort, #tlc_nchips, "
+	$("#numMainBoards, #numPowerBoards, #numChimeBoards,#nummolluskBoards, #zbPort, #tlc_nchips, "
       + "#hc595_nchips, #nightModeButtonNo, #nightModeOutputNo, #shiftButton").on(
         "spinstop", function() { $(this).change(); });
 
@@ -6588,14 +6641,14 @@ $(function() {
         }
 
 		// figure the hover name for a main board pin list item
-		function RigMasterBoardHoverName(pin) {
+		function rigMasterBoardHoverName(pin) {
 			// if there's an out port alias, return the jumper entry
 			var alias = outPortAlias[pin];
 			return alias ? alias.split("|")[3] : undefined;
 		}
 
 		// figure the hover name for a main board pin list item
-		function KLShieldBoardHoverName(pin) {
+		function klShieldBoardHoverName(pin) {
 			// if there's an out port alias, return the jumper entry
 			var alias = outPortAlias[pin];
 			return alias ? alias.split("|")[3] : undefined;
@@ -6674,32 +6727,32 @@ $(function() {
         buildBoardPinButtons($("#liteBoardDigitalOutputSelector"), liteBoard_headers, true, liteGpioPortAlias, liteOutPortAlias);
             
         // Build the RigMaster digital output list
-        buildGroupedPinList($("#RigMasterBoardDigitalOutputSelector"), [
+        buildGroupedPinList($("#rigMasterBoardDigitalOutputSelector"), [
             {
               groups: [0], pins: 4, header: "Digital Outputs 1-4",
               pinname: function (pin) { return ["Digital Outputs 1", "Digital Outputs 2", "Digital Outputs 3", "Digital Outputs 4"][pin]; },
               pinid: function (pin) { return ["PTB1", "PTB2", "PTB3", "PTB8"][pin]; },
-              hovername: RigMasterBoardHoverName
+              hovername: rigMasterBoardHoverName
             },
             {
               groups: [0], pins: 4, header: "Digital Outputs 5-8",
               pinname: function (pin) { return ["Digital Outputs 5", "Digital Outputs 6", "Digital Outputs 7", "Digital Outputs 8"][pin]; },
               pinid: function (pin) { return ["PTB9", "PTB10", "PTB11", "PTA17"][pin]; },
-              hovername: RigMasterBoardHoverName
+              hovername: rigMasterBoardHoverName
             },
         ]);
-        buildBoardPinButtons($("#RigMasterBoardDigitalOutputSelector"), RigMasterBoard_headers, true, RigMasterGpioPortAlias, RigMasterOutPortAlias);
+        buildBoardPinButtons($("#rigMasterBoardDigitalOutputSelector"), rigMasterBoard_headers, true, rigMasterGpioPortAlias, rigMasterOutPortAlias);
 
         // Build the KLShield digital output list
-        buildGroupedPinList($("#KLShieldBoardDigitalOutputSelector"), [
+        buildGroupedPinList($("#klShieldBoardDigitalOutputSelector"), [
             {
               groups: [0], pins: 15, header: "Digital Outputs",
 			  pinname: function (pin) { return ["PTB1", "PTB2", "PTB3", "PTB8", "PTB9", "PTB10", "PTB11", "PTA17", "PTC0", "PTC1", "PTC2", "PTC3", "PTA17", "PTA16", "PTA12"][pin]; },
 			  pinid: function (pin) { return ["PTB1", "PTB2", "PTB3", "PTB8", "PTB9", "PTB10", "PTB11", "PTA17", "PTC0", "PTC1", "PTC2", "PTC3", "PTA17", "PTA16", "PTA12"][pin]; },
-               hovername: KLShieldBoardHoverName
+               hovername: klShieldBoardHoverName
             },
         ]);
-        buildBoardPinButtons($("#KLShieldBoardDigitalOutputSelector"), KLShieldBoard_headers, true, KLShieldGpioPortAlias, KLShieldOutPortAlias);
+        buildBoardPinButtons($("#klShieldBoardDigitalOutputSelector"), klShieldBoard_headers, true, klShieldGpioPortAlias, klShieldOutPortAlias);
 
        // Build the main board PWM output list
         buildGroupedPinList($("#mainBoardPWMOutputSelector"), [
@@ -6794,32 +6847,32 @@ $(function() {
         buildBoardPinButtons($("#liteBoardPWMOutputSelector"), liteBoard_headers, true, liteGpioPortAlias, liteOutPortAlias);  
 
         // Build the RigMaster board PWM output list
-        buildGroupedPinList($("#RigMasterBoardPWMOutputSelector"), [
+        buildGroupedPinList($("#rigMasterBoardPWMOutputSelector"), [
             {
               groups: [0], pins: 4, header: "PWM Outputs 9-12",
               pinname: function (pin) { return ["PWM Outputs 9", "PWM Outputs 10", "PWM Outputs 11", "PWM Outputs 12"][pin]; },
               pinid: function (pin) { return ["PTA1", "PTA2", "PTA4", "PTA5"][pin]; },
-              hovername: RigMasterBoardHoverName
+              hovername: rigMasterBoardHoverName
             },
             {
               groups: [0], pins: 4, header: "PWM Outputs 13-16",
               pinname: function (pin) { return ["PWM Outputs 13", "PWM Outputs 14", "PWM Outputs 15", "PWM Outputs 16"][pin]; },
               pinid: function (pin) { return ["PTD0", "PTC4", "PTC8", "PTC9"][pin]; },
-              hovername: RigMasterBoardHoverName
+              hovername: rigMasterBoardHoverName
             },
         ]);
-        buildBoardPinButtons($("#RigMasterBoardPWMOutputSelector"), RigMasterBoard_headers, true, RigMasterGpioPortAlias, RigMasterOutPortAlias);
+        buildBoardPinButtons($("#rigMasterBoardPWMOutputSelector"), rigMasterBoard_headers, true, rigMasterGpioPortAlias, rigMasterOutPortAlias);
 
         // Build the KLShield board PWM output list
-        buildGroupedPinList($("#KLShieldBoardPWMOutputSelector"), [
+        buildGroupedPinList($("#klShieldBoardPWMOutputSelector"), [
             {
 			  groups: [0], pins: 8, header: "PWM MOS",
 			  pinname: function (pin) { return ["PWM MOS Outputs 1", "PWM MOS Outputs 2", "PWM MOS Outputs 3", "PWM MOS Outputs 4", "PWM MOS Outputs 5", "PWM MOS Outputs 6", "PWM MOS Outputs 7", "PWM MOS Outputs 8"][pin]; },
 			  pinid: function (pin) { return ["PTA1", "PTA2", "PTA4", "PTA5", "PTD0", "PTC4", "PTC8", "PTC9"][pin]; },
-              hovername: KLShieldBoardHoverName
+              hovername: klShieldBoardHoverName
             },
         ]);
-        buildBoardPinButtons($("#KLShieldBoardPWMOutputSelector"), KLShieldBoard_headers, true, KLShieldGpioPortAlias, KLShieldOutPortAlias);
+        buildBoardPinButtons($("#klShieldBoardPWMOutputSelector"), klShieldBoard_headers, true, klShieldGpioPortAlias, klShieldOutPortAlias);
 
         // Build the main board input list
         buildGroupedPinList($("#mainBoardInputSelector"), [
@@ -6888,80 +6941,80 @@ $(function() {
         buildBoardPinButtons($("#liteBoardInputSelector"), liteBoard_headers, true, liteGpioPortAlias, liteOutPortAlias);
 
         // Build the RigMaster board input list
-        buildGroupedPinList($("#RigMasterBoardInputSelector"), [
+        buildGroupedPinList($("#rigMasterBoardInputSelector"), [
             {
               groups: [0], pins: 4, header: "Plunger",
               pinname: function (pin) { return ["Launch Ball", "GND", "Plunger", "3.3V"][pin]; },
               pinid: function (pin) { return ["PTE21", "GND", "PTB0", "3.3V"][pin]; },
-              hovername: RigMasterBoardHoverName
+              hovername: rigMasterBoardHoverName
             },
             {
               groups: [0], pins: 13, header: "Boutons",
               pinname: function (pin) { return ["Start", "Extra Ball", "Coin 1", "Coin 2", "Launch Ball", "Exit", "Quit", "Left Flipper", "Right Flipper", "Left Magnasave", "Right Magnasave", "Fire", "Tilt"][pin]; },
               pinid: function (pin) { return ["PTE30", "PTE29", "PTE23", "PTE22", "PTE21", "PTE20", "PTE5", "PTE4", "PTE3", "PTE2", "PTE1", "PTE0", "PTD7"][pin]; },
-              hovername: RigMasterBoardHoverName
+              hovername: rigMasterBoardHoverName
             },
             {
               groups: [0], pins: 12, header: "Brain",
               pinname: function (pin) { return ["Service Door", "Service Exit", "Service -", "Service +", "Service Enter", "NightMode", "Volume -", "Volume +", "GND", "5V", "Calib Led", "Calib Bouton"][pin]; },
               pinid: function (pin) { return ["PTD6", "PTD5", "PTD4", "PTD3", "PTD2", "PTC7", "PTC17", "PTC16", "GND", "5V", "PTC13", "PTC12"][pin]; },
-              hovername: RigMasterBoardHoverName
+              hovername: rigMasterBoardHoverName
              },
         ]);
-        buildBoardPinButtons($("#RigMasterBoardInputSelector"), RigMasterBoard_headers, true, RigMasterGpioPortAlias, RigMasterOutPortAlias);
+        buildBoardPinButtons($("#rigMasterBoardInputSelector"), rigMasterBoard_headers, true, rigMasterGpioPortAlias, rigMasterOutPortAlias);
 
         // Build the KLShield board input list
-        buildGroupedPinList($("#KLShieldBoardInputSelector"), [
+        buildGroupedPinList($("#klShieldBoardInputSelector"), [
             {
               groups: [0], pins: 12, header: "BOUTON 1",
               pinname: function (pin) { return ["GND", "Start", "Extra Ball", "Coin 1", "Coin 2", "Launch Ball", "Exit", "Quit", "Left Flipper", "Right Flipper", "Left Magnasave", "GND"][pin]; },
               pinid: function (pin) { return ["GND", "PTE30", "PTE29", "PTE23", "PTE22", "PTE21", "PTE20", "PTE5", "PTE4", "PTE3", "PTE2", "GND"][pin]; },
-              hovername: KLShieldBoardHoverName
+              hovername: klShieldBoardHoverName
             },
             {
               groups: [0], pins: 12, header: "BOUTON 2",
               pinname: function (pin) { return ["Night Mode", "Volume +", "Volume -", "Service Enter", "Service +", "Service -", "Service Exit", "Service Door", "Tilt", "Fire", "Right Magnasave", "GND"][pin]; },
               pinid: function (pin) { return ["PTC16", "PTC17", "PTC7", "PTD2", "PTD3", "PTD4", "PTD5", "PTD6", "PTD7", "PTE0", "PTE1", "GND"][pin]; },
-              hovername: KLShieldBoardHoverName
+              hovername: klShieldBoardHoverName
             },
 			{
 			  groups: [0], pins: 7, header: "PLUNGER",
 			  pinname: function (pin) { return ["3.3V", "Plunger", "GND", "GND", "5V", "Calibre LED", "Calibre Bouton"][pin]; },
 			  pinid: function (pin) { return ["P3V3", "PTB0", "GND", "GND", "USB5V", "PTC13", "PTC12"][pin]; },
-			  hovername: KLShieldBoardHoverName
+			  hovername: klShieldBoardHoverName
 			},
 			{
 			  groups: [0], pins: 7, header: "EXTENSION",
 			  pinname: function (pin) { return ["GSCLK", "SCLK", "SOUT", "XLAT", "BLANK", "USB5V", "GND"][pin]; },
 			  pinid: function (pin) { return ["PTA13", "PTC5", "PTC6", "PTC10", "PTC11", "USB5V", "GND"][pin]; },
-			  hovername: KLShieldBoardHoverName
+			  hovername: klShieldBoardHoverName
 			},
 			{
 			  groups: [0], pins: 4, header: "VOLTS",
 			  pinname: function (pin) { return ["VREFH", "VIN", "USB5V", "P3V3"][pin]; },
 			  pinid: function (pin) { return ["VREFH", "VIN", "USB5V", "P3V3"][pin]; },
-			  hovername: KLShieldBoardHoverName
+			  hovername: klShieldBoardHoverName
 			},
 			{
 			  groups: [0], pins: 9, header: "PWM MOS",
 			  pinname: function (pin) { return ["1-PTA1", "2-PTA2", "3-PTA4", "4-PTA5", "5-PTD0", "6-PTC4", "7-PTC8", "8-PTC9", "GND"][pin]; },
 			  pinid: function (pin) { return ["PTA1", "PTA2", "PTA4", "PTA5", "PTD0", "PTC4", "PTC8", "PTC9", "GND"][pin]; },
-			  hovername: KLShieldBoardHoverName
+			  hovername: klShieldBoardHoverName
 			},
 			{
 			  groups: [0], pins: 12, header: "OUT 1",
 			  pinname: function (pin) { return ["GND", "PTB11", "PTB10", "PTB9", "PTB8", "PTB3", "PTB2", "PTB1", "PTA17", "PTA16", "PTA12", "GND"][pin]; },
 			  pinid: function (pin) { return ["GND", "PTB11", "PTB10", "PTB9", "PTB8", "PTB3", "PTB2", "PTB1", "PTA17", "PTA16", "PTA12", "GND"][pin]; },
-			  hovername: KLShieldBoardHoverName
+			  hovername: klShieldBoardHoverName
 			},
 			{
 			  groups: [0], pins: 12, header: "OUT 2",
 			  pinname: function (pin) { return ["GND", "PTC0", "PTC1", "PTC2", "PTC3", "PTE31", "PTB0", "SDA_PTD", "PTD1", "RESET", "GND", "GND"][pin]; },
 			  pinid: function (pin) { return ["GND", "PTC0", "PTC1", "PTC2", "PTC3", "PTE31", "PTB0", "SDA_PTD", "PTD1", "RESET", "GND", "GND"][pin]; },
-			  hovername: KLShieldBoardHoverName
+			  hovername: klShieldBoardHoverName
 			},
         ]);
-        buildBoardPinButtons($("#KLShieldBoardInputSelector"), KLShieldBoard_headers, true, KLShieldGpioPortAlias, KLShieldOutPortAlias);
+        buildBoardPinButtons($("#klShieldBoardInputSelector"), klShieldBoard_headers, true, klShieldGpioPortAlias, klShieldOutPortAlias);
 
         // Build the power board pin list
         buildBoardPinButtons($("#powerBoardOutputSelector"), powerBoard_headers, false, expGpioPortAlias, expOutPortAlias);
@@ -6973,13 +7026,13 @@ $(function() {
             "powerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 64);
 
         // Build the Mollusk board pin list
-        buildBoardPinButtons($("#MolluskBoardOutputSelector"), MolluskBoard_headers, false, RigMasterGpioPortAlias, RigMasterOutPortAlias);
+        buildBoardPinButtons($("#molluskBoardOutputSelector"), molluskBoard_headers, false, rigMasterGpioPortAlias, rigMasterOutPortAlias);
         initBoardPinPageAdjustor(
-            "MolluskBoardOutputSelector", $("#numMolluskBoards"), "3.", 16, 0);
+            "molluskBoardOutputSelector", $("#nummolluskBoards"), "3.", 16, 0);
 
-         buildBoardPinButtons($("#MolluskBoardOutputSelector"), MolluskBoard_headers, false, RigMasterGpioPortAlias, RigMasterOutPortAlias);
+         buildBoardPinButtons($("#molluskBoardOutputSelector"), molluskBoard_headers, false, rigMasterGpioPortAlias, rigMasterOutPortAlias);
          initBoardPinPageAdjustor(
-             "MolluskBoardOutputSelector", $("#numMolluskBoards"), "3.", 16, 0);
+             "molluskBoardOutputSelector", $("#nummolluskBoards"), "3.", 16, 0);
 
         // Build the chime board pin list when we add or remove board
         buildBoardPinButtons($("#chimeBoardOutputSelector"), chimeBoard_headers, false, expGpioPortAlias, expOutPortAlias);
@@ -7280,11 +7333,11 @@ $(function() {
                 break;
 
 			case 4:   // RigMaster
-				selector = "RigMasterBoardInputSelector";
+				selector = "rigMasterBoardInputSelector";
 				break;
 
 			case 5:   // KLShield
-				selector = "KLShieldBoardInputSelector";
+				selector = "klShieldBoardInputSelector";
 				break;
             }
             
@@ -7408,25 +7461,25 @@ $(function() {
                     vis = (hwType == 3);
                     break;
 
-				case "RigMasterBoardDigitalOutputSelector":
+				case "rigMasterBoardDigitalOutputSelector":
                     // RigMaster digital outputs.  Enable in RigMaster
                     // board mode.
                     vis = (hwType == 4);
                     break;
 
-				case "RigMasterBoardPWMOutputSelector":
+				case "rigMasterBoardPWMOutputSelector":
                     // RigMaster PWM outputs.  Enable in RigMaster
                     // board mode.
                     vis = (hwType == 4);
                     break;
 
-				case "KLShieldBoardDigitalOutputSelector":
+				case "klShieldBoardDigitalOutputSelector":
                     // KLShield digital outputs.  Enable in KLShield
                     // board mode.
                     vis = (hwType == 5);
                     break;
 
-				case "KLShieldBoardPWMOutputSelector":
+				case "klShieldBoardPWMOutputSelector":
                     // KLShield PWM outputs.  Enable in KLShield
                     // board mode.
                     vis = (hwType == 5);
@@ -7435,19 +7488,19 @@ $(function() {
                 case "powerBoardOutputSelector":
                     // Power board outputs.  Enable in expansion board mode if we
                     // have at least one power board.
-                    vis = ((hwType == 1 || hwType == 2 || hwType == 3 || hwType == 4 || hwType == 5) && +$("#numPowerBoards").val() > 0);
+                    vis = ((hwType == 1 || hwType == 2 || hwType == 3) && +$("#numPowerBoards").val() > 0);
                     break;
 
                 case "chimeBoardOutputSelector":
                     // Chime board outputs.  Enable in expansion board mode if we
                     // have at least one chime board.
-                    vis = ((hwType == 1 || hwType == 2 || hwType == 3 || hwType == 4 || hwType == 5) && +$("#numChimeBoards").val() > 0);
+                    vis = ((hwType == 1 || hwType == 2 || hwType == 3) && +$("#numChimeBoards").val() > 0);
                     break;
 
-                case "MolluskBoardOutputSelector":
+                case "molluskBoardOutputSelector":
                     // Mollusk board outputs.  Enable in expansion board mode if we
                     // have at least one Mollusk board.
-                    vis = ((hwType == 1 || hwType == 2 || hwType == 3 || hwType == 4 || hwType == 5) && +$("#numMolluskBoards").val() > 0);
+                    vis = ((hwType == 4 || hwType == 5) && +$("#nummolluskBoards").val() > 0);
                     break;
 
                  }
@@ -7554,15 +7607,15 @@ $(function() {
             case "aioBoardPWMOutputSelector":
             case "liteBoardDigitalOutputSelector":
             case "liteBoardPWMOutputSelector":
-			case "RigMasterBoardDigitalOutputSelector":
-			case "RigMasterBoardPWMOutputSelector":
-			case "KLShieldBoardDigitalOutputSelector":
-			case "KLShieldBoardPWMOutputSelector":
+			case "rigMasterBoardDigitalOutputSelector":
+			case "rigMasterBoardPWMOutputSelector":
+			case "klShieldBoardDigitalOutputSelector":
+			case "klShieldBoardPWMOutputSelector":
             case "mainBoardInputSelector":
             case "aioBoardInputSelector":
             case "liteBoardInputSelector":
             case "powerBoardOutputSelector":
-			case "MolluskBoardOutputSelector":
+			case "molluskBoardOutputSelector":
             case "chimeBoardOutputSelector":
                 // show the chip pin selector
                 showChipPinPage(pagename, page, initial, button.data("pintype"));
@@ -8954,7 +9007,7 @@ function configFunctionSetup()
           }
         },
 
-        { prop: "expansionBoards.ext3", ctl: "#numMolluskBoards", type: tText, datatype: dNumber,
+        { prop: "expansionBoards.ext3", ctl: "#nummolluskBoards", type: tText, datatype: dNumber,
           fromUI: function(v) { 
               var hwType = $("input:radio[name=hardwareType]:checked").val();
 			  return (hwType == 1 || hwType == 2 || hwType == 3 || hwType == 4 || hwType == 5) ? v : undefined;
