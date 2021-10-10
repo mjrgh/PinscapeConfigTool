@@ -333,10 +333,10 @@ function updatePinVisibility()
         $(".expBoardAlt").hide();
         $(".expBoardText").hide();
         $(".aioBoardText").hide();
-		$(".rigMasterBoardText").hide();
-		$(".klShieldBoardText").hide();
-		$(".molluskinput").hide();
-		$(".pinscapeexpboardinput").show();
+	$(".rigMasterBoardText").hide();
+	$(".klShieldBoardText").hide();
+	$(".molluskinput").hide();
+	$(".pinscapeexpboardinput").show();
         break;
 
     case 1:
@@ -347,10 +347,10 @@ function updatePinVisibility()
         $(".expBoardAlt").show();
         $(".expBoardText").show();
         $(".aioBoardText").hide();
-		$(".rigMasterBoardText").hide();
-		$(".klShieldBoardText").hide();
-		$(".molluskinput").hide();
-		$(".pinscapeexpboardinput").show();
+	$(".rigMasterBoardText").hide();
+	$(".klShieldBoardText").hide();
+	$(".molluskinput").hide();
+	$(".pinscapeexpboardinput").show();
         break;
 
     case 2:
@@ -362,43 +362,43 @@ function updatePinVisibility()
         $(".expBoardAlt").show();
         $(".expBoardText").hide();
         $(".aioBoardText").show();
-		$(".rigMasterBoardText").hide();
-		$(".klShieldBoardText").hide();
-		$(".molluskinput").hide();
-		$(".pinscapeexpboardinput").show();
+	$(".rigMasterBoardText").hide();
+	$(".klShieldBoardText").hide();
+	$(".molluskinput").hide();
+	$(".pinscapeexpboardinput").show();
         break;
 
     case 4:
-	    // RigMaster board mode - show the RigMaster alternate text,
-	    // and hide the regular pin selectors, *unless* the "show pins anyway"
-	    // box is checked
-	    $(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
-	    $(".expBoardAlt").show();
-	    $(".expBoardText").hide();
-	    $(".aioBoardText").hide();
-	    $(".rigMasterBoardText").show();
-		$(".klShieldBoardText").hide();
-		$(".molluskinput").show();
-		$(".pinscapeexpboardinput").hide();
-	    break;
+	// RigMaster board mode - show the RigMaster alternate text,
+	// and hide the regular pin selectors, *unless* the "show pins anyway"
+	// box is checked
+	$(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
+	$(".expBoardAlt").show();
+	$(".expBoardText").hide();
+	$(".aioBoardText").hide();
+	$(".rigMasterBoardText").show();
+	$(".klShieldBoardText").hide();
+	$(".molluskinput").show();
+	$(".pinscapeexpboardinput").hide();
+	break;
     case 5:
-	    // KLShield board mode - show the KLShield alternate text,
-	    // and hide the regular pin selectors, *unless* the "show pins anyway"
-	    // box is checked
-	    $(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
-	    $(".expBoardAlt").show();
-	    $(".expBoardText").hide();
-	    $(".aioBoardText").hide();
-	    $(".rigMasterBoardText").hide();
-		$(".klShieldBoardText").show();
-		$(".molluskinput").show();
-		$(".pinscapeexpboardinput").hide();
-	    break;
+	// KLShield board mode - show the KLShield alternate text,
+	// and hide the regular pin selectors, *unless* the "show pins anyway"
+	// box is checked
+	$(".expBoardPin").toggle(!!$("#ckExpBoardShowPins").prop("checked"));
+	$(".expBoardAlt").show();
+	$(".expBoardText").hide();
+	$(".aioBoardText").hide();
+	$(".rigMasterBoardText").hide();
+	$(".klShieldBoardText").show();
+	$(".molluskinput").show();
+	$(".pinscapeexpboardinput").hide();
+	break;
 
     }
 }
 
-		  $("#numMainBoards,#numPowerBoards,#numChimeBoards,#nummolluskBoards").change(function()
+	$("#numMainBoards,#numPowerBoards,#numChimeBoards,#nummolluskBoards").change(function()
 {
     // make sure we have a valid number
     var v = $(this).val().trim();
@@ -5855,7 +5855,7 @@ $("#printButton").click(function(ev) {
          <div id="pinTypeAioChimeBoardOut" data-page="aioChimeBoardOutputSelector">
             <img src="chimeBoardOut.png"><br>
             Chime Board
-         </div>         
+         </div>
          <div id="pinTypeVirtOut" data-page="virtualOutputSelector" data-pintype="5">
             <img src="virtualout.png"><br>
             Virtual Out
@@ -7535,11 +7535,11 @@ $(function() {
                     vis = ((hwType == 1 || hwType == 2 || hwType == 3) && +$("#numChimeBoards").val() > 0);
                     break;
 
-				case "aioChimeBoardOutputSelector":
-					// Chime board outputs for AIO.  Enable in expansion board mode
-					// if we're in AIO mode with at least one chime board.
-					vis = ((hwType == 2) && +$("#numChimeBoards").val() > 0);
-					break;
+		case "aioChimeBoardOutputSelector":
+		    // Chime board outputs for AIO.  Enable in expansion board mode
+		    // if we're in AIO mode with at least one chime board.
+		    vis = ((hwType == 2) && +$("#numChimeBoards").val() > 0);
+		    break;
 
                 case "molluskBoardOutputSelector":
                     // Mollusk board outputs.  Enable in expansion board mode if we
