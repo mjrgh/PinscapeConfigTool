@@ -176,17 +176,17 @@ var ConfigSource = {
 
 $("input:radio[name=hardwareType]").change(function(ev)
 {
-    $("#waitOverlay").show();
-    setTimeout(function() {
-        // check which hardware configuration is now selected
-        var d = $("#expansionBoardOptions");
-        var v = $("input:radio[name=hardwareType]:checked").val();
-        var fromUI = !!ev.originalEvent;
+	$("#waitOverlay").show();
+	setTimeout(function () {
+		// check which hardware configuration is now selected
+		var d = $("#expansionBoardOptions");
+		var v = $("input:radio[name=hardwareType]:checked").val();
+		var fromUI = !!ev.originalEvent;
 
-         // set up defaults for the new configuration
+		// set up defaults for the new configuration
         switch (+v)
         {
-        case 1:
+		case 1:
             // Pinscape Expansion Boards, first release
 
             // use the expansion board settings view
@@ -221,62 +221,62 @@ $("input:radio[name=hardwareType]").change(function(ev)
             $("#ckExpBoardShowPins").prop("checked", false);
             break;
 
-            case 3:
-                // Pinscape Lite
+	    case 3:
+		    // Pinscape Lite
 
-        case 3:
-    		// Pinscape Lite
-
-	    	// use the expansion board settings view
-	    	// future function to later enable this
+		    // use the expansion board settings view
+		    // future function to later enable this
 		    slideToggle(d, false, 250, fromUI);
 
-    		// use the Pinscape Lite output port aliases
-	    	outPortAlias = liteOutPortAlias;
-	    	gpioPortAlias = liteGpioPortAlias;
+		    // use the Pinscape Lite output port aliases
+		    outPortAlias = liteOutPortAlias;
+		    gpioPortAlias = liteGpioPortAlias;
 
-    		if (fromUI)
-			configToUI(pinscapeLiteFactoryConfig, pinscapeLiteFactoryXConfig, ConfigSource.Factory);
+		    if (fromUI)
+		    	configToUI(pinscapeLiteFactoryConfig, pinscapeLiteFactoryXConfig, ConfigSource.Factory);
 
-	    	// hide KL25Z pin assignments by default
-	    	$("#ckExpBoardShowPins").prop("checked", false);
-	    	break;
+		    // hide KL25Z pin assignments by default
+		    $("#ckExpBoardShowPins").prop("checked", false);
+		    break;
 
-    	case 4:
-	    	// RigMaster
+	    case 4:
+		    // RigMaster
 
-	    	// use the expansion board settings view
-	    	// future function to later enable this
-	    	slideToggle(d, true, 250, fromUI);
+		    // use the expansion board settings view
+		    // future function to later enable this
+		    slideToggle(d, true, 250, fromUI);
 
-	    	// use the RigMaster output port aliases
-	    	outPortAlias = rigMasterOutPortAlias;
-	    	gpioPortAlias = rigMasterGpioPortAlias;
-        
-	    	if (fromUI)
-	    		configToUI(rigMasterFactoryConfig, rigMasterFactoryXConfig, ConfigSource.Factory);
+		    // use the RigMaster output port aliases
+		    outPortAlias = rigMasterOutPortAlias;
+		    gpioPortAlias = rigMasterGpioPortAlias;
 
-	    	// hide KL25Z pin assignments by default
-	    	$("#ckExpBoardShowPins").prop("checked", false);
+		    if (fromUI)
+			configToUI(rigMasterFactoryConfig, rigMasterFactoryXConfig, ConfigSource.Factory);
+
+		    // hide KL25Z pin assignments by default
+		    $("#ckExpBoardShowPins").prop("checked", false);
 		    break;
 
 	    case 5:
-    		// KLShield
+		    // KLShield
 
-    		// use the expansion board settings view
-    		// future function to later enable this
-    		slideToggle(d, true, 250, fromUI);
+		    // use the expansion board settings view
+		    // future function to later enable this
+		    slideToggle(d, true, 250, fromUI);
 
-	    	// use the Pinscape Lite output port aliases
-	    	outPortAlias = klShieldOutPortAlias;
-	    	gpioPortAlias = klShieldGpioPortAlias;
+		    // use the Pinscape Lite output port aliases
+		    outPortAlias = klShieldOutPortAlias;
+		    gpioPortAlias = klShieldGpioPortAlias;
 
-	    	if (fromUI)
-	    		configToUI(klShieldFactoryConfig, klShieldFactoryXConfig, ConfigSource.Factory);
+		    if (fromUI)
+		    	configToUI(klShieldFactoryConfig, klShieldFactoryXConfig, ConfigSource.Factory);
 
-	    	// hide KL25Z pin assignments by default
-	    	$("#ckExpBoardShowPins").prop("checked", false);
-	    	break;
+		    // hide KL25Z pin assignments by default
+		    $("#ckExpBoardShowPins").prop("checked", false);
+		    break;
+
+        default:
+            // plain KL25Z or unknown
 
             // use the standalone settings view
             slideToggle(d, false, 250, fromUI);
@@ -291,24 +291,28 @@ $("input:radio[name=hardwareType]").change(function(ev)
             break;
         }
 
-        // show/hide items globally according to the type
-	    $(".expBoardOnly").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "" : "none");
-	    $(".expBoardExclude").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "none" : "");
+    // show/hide items globally according to the type
+	$(".expBoardOnly").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "" : "none");
+	$(".expBoardExclude").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "none" : "");
 
-        // If the change came from a UI event, reset plunger pin assignments
-        // for the new factory defaults.  Pass -1 for the previous type, since
-        // the previous type is irrelevant: it's the pin wiring that's changing,
-        // not the plunger type, so we need to reassign the pins no matter what
-        // type is selected.
-        if (fromUI)
-            setPlungerPinFactoryDefaults(-1);
+    // update pin displays - this shows the pin selectors in standalone
+    // mode, and hides them in expansion board mode, except when the "show
+    // pins anyway" box is checked
+    updatePinVisibility();
 
-        // update pin warnings
-        updatePinWarnings();
+    // If the change came from a UI event, reset plunger pin assignments
+    // for the new factory defaults.  Pass -1 for the previous type, since
+    // the previous type is irrelevant: it's the pin wiring that's changing,
+    // not the plunger type, so we need to reassign the pins no matter what
+    // type is selected.
+    if (fromUI)
+        setPlungerPinFactoryDefaults(-1);
 
-        // remove the busy overlay
-        setTimeout(function() { $("#waitOverlay").hide(); }, 20);
-    }, 16);
+    // update pin warnings
+    updatePinWarnings();
+	// remove the busy overlay
+	    setTimeout(function () { $("#waitOverlay").hide(); }, 20);
+	    }, 16);
 });
 
 // "Show pin assignments" box - expansion board option.  By default, when
@@ -5384,7 +5388,6 @@ $("#printButton").click(function(ev) {
 });
 
 </script>
-
 <!-- Busy overlay ------------------------------------------------------->
 <div id="waitOverlay">
    <div>Working...</div>
@@ -5715,19 +5718,6 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
-      <div id="aioChimeBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
-         <div class="chipNo header" data-chip="0">Board 1</div>
-         <div class="pinlist"></div>
-         <div class="pinimage">
-            <div>
-               <div class="chipIndexer background"></div>
-               <div class="chipIndexer foreground"></div>
-               <img src="chimeBoardPins.png">
-               <div class="pinoverlay"></div>
-            </div>
-            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
-         </div>
-      </div>
       <div id="virtualOutputSelector" class="pinSelectorPage">
          <div>
             A "virtual" output is a software port that isn't connected to
@@ -6043,12 +6033,12 @@ function uiDirty()
 // Compare two values, doing a deep comparison of properties of objects
 function valEq(a, b)
 {
-    // Show debugging alerts?  (Helps identify the source of a mismatch,
-    // when spurious mismatches are detected.)
+	// Show debugging alerts?  (Helps identify the source of a mismatch,
+	// when spurious mismatches are detected.)
     var debugAlert = false;
-    
-    // NaN == NaN requires a special test
-    if (isNaN(a) && isNaN(b) && typeof a == "number" && typeof b == "number")
+
+     // NaN == NaN requires a special test
+     if (isNaN(a) && isNaN(b) && typeof a == "number" && typeof b == "number")
         return true;
     
     // if they're identical primitives, they're equal
@@ -6091,7 +6081,7 @@ function valEq(a, b)
         // check that all properties of a are in b
         for (var p in a) {
             if (!(p in b)) {
-                if (debugAlert) alert("p not in b: " + p); // [debug]
+				if (debugAlert) alert("p not in b: " + p); // [debug]
                 return false;
             }
         }
@@ -6099,7 +6089,7 @@ function valEq(a, b)
         // all a.p are in b; now check that all b.p equal a.p
         for (var p in b) {
             if (!(p in a) || !valEq(a[p], b[p])) {
-                if (debugAlert) alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
+				if (debugAlert) alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
                 return false;
             }
         }
@@ -6493,7 +6483,7 @@ $(function() {
         function buildChipIndexer(page, chipList, pinsPerChip, labelBase)
         {
             // build the list of chip index buttons
-            var idxlst = ["<span class=\"label\">Board:</span>"];
+            var idxlst = [];
             for (var i = 0 ; i < chipList.length ; ++i)
             {
                 idxlst.push(
@@ -7080,19 +7070,9 @@ $(function() {
         initBoardPinPageAdjustor(
             "powerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 32);
 
-        // Build the alternative power board pin list for the AIO setup.  The AIO
-        // port assignments are different from the standard expansion boards because
-        // of the additional TLC5940 ports built into the main AIO board.  To
-        // accommodate the different TLC5940 port numbering, we need a separate
-        // set of board pages for the AIO version.
-        buildBoardPinButtons($("#aioPowerBoardOutputSelector"), aio_powerBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
+        buildBoardPinButtons($("#powerBoardOutputSelector"), powerBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
         initBoardPinPageAdjustor(
-            "aioPowerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 64);
-
-        // Likewise for the Pinscape Lite power board list
-        buildBoardPinButtons($("#litePowerBoardOutputSelector"), lite_powerBoard_headers, false, liteGpioPortAlias, liteOutPortAlias);
-        initBoardPinPageAdjustor(
-            "litePowerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 64);
+            "powerBoardOutputSelector", $("#numPowerBoards"), "3.", 32, 64);
 
         // Build the Mollusk board pin list
         buildBoardPinButtons($("#molluskBoardOutputSelector"), molluskBoard_headers, false, rigMasterGpioPortAlias, rigMasterOutPortAlias);
@@ -7108,12 +7088,10 @@ $(function() {
         initBoardPinPageAdjustor(
             "chimeBoardOutputSelector", $("#numChimeBoards"), "4.", 8, 0);
 
-        // Build the alternative chime board pin list for the AIO setup.  As with
-        // the power boards, the chime board layout is different for the AIO setup,
-        // so we need a separate set of selector pages.
-        buildBoardPinButtons($("#aioChimeBoardOutputSelector"), aio_chimeBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
+        buildBoardPinButtons($("#chimeBoardOutputSelector"), chimeBoard_headers, false, aioGpioPortAlias, aioOutPortAlias);
         initBoardPinPageAdjustor(
-            "aioChimeBoardOutputSelector", $("#numChimeBoards"), "4.", 8, 8);
+            "chimeBoardOutputSelector", $("#numChimeBoards"), "4.", 8, 8);
+
 
         // Initialize the page adjustor for one of the output boards
         function initBoardPinPageAdjustor(
@@ -7559,33 +7537,20 @@ $(function() {
                 case "powerBoardOutputSelector":
                     // Power board outputs.  Enable in expansion board mode if we
                     // have at least one power board.
-                    vis = ((hwType == 1) && +$("#numPowerBoards").val() > 0);
-                    break;
-
-                case "aioPowerBoardOutputSelector":
-                    // Power board outputs for AIO.  Enable if we're in AIO mode
-                    // with at least one power board.
-                    vis = ((hwType == 2) && +$("#numPowerBoards").val() > 0);
-                    break;
-
-                case "litePowerBoardOutputSelector":
-                    // Power board outputs for Lite.  Enable if we're in Lite mode
-                    // with at least one power board.
-                    vis = ((hwType == 3) && +$("#numPowerBoards").val() > 0);
+                    vis = ((hwType == 1 || hwType == 2 || hwType == 3) && +$("#numPowerBoards").val() > 0);
                     break;
 
                 case "chimeBoardOutputSelector":
                     // Chime board outputs.  Enable in expansion board mode if we
-                    // have at least one chime board.  The same selector list is
-                    // shared in Lite mode.
-                    vis = ((hwType == 1 || hwType == 3) && +$("#numChimeBoards").val() > 0);
+                    // have at least one chime board.
+                    vis = ((hwType == 1 || hwType == 2 || hwType == 3) && +$("#numChimeBoards").val() > 0);
                     break;
 
-		        case "aioChimeBoardOutputSelector":
-	        	    // Chime board outputs for AIO.  Enable in expansion board mode
-	        	    // if we're in AIO mode with at least one chime board.
-	        	    vis = ((hwType == 2) && +$("#numChimeBoards").val() > 0);
-	        	    break;
+		case "aioChimeBoardOutputSelector":
+		    // Chime board outputs for AIO.  Enable in expansion board mode
+		    // if we're in AIO mode with at least one chime board.
+		    vis = ((hwType == 2) && +$("#numChimeBoards").val() > 0);
+		    break;
 
                 case "molluskBoardOutputSelector":
                     // Mollusk board outputs.  Enable in expansion board mode if we
@@ -7707,8 +7672,6 @@ $(function() {
             case "powerBoardOutputSelector":
 			case "molluskBoardOutputSelector":
             case "chimeBoardOutputSelector":
-            case "aioPowerBoardOutputSelector":
-            case "aioChimeBoardOutputSelector":
                 // show the chip pin selector
                 showChipPinPage(pagename, page, initial, button.data("pintype"));
                 break;
@@ -8639,7 +8602,7 @@ function normalizeConfig(config)
             config.expansionBoards.ext0 = 0;
             config.expansionBoards.ext1 = 0;
             config.expansionBoards.ext2 = 0;
-            config.expansionBoards.ext3 = 0;
+			config.expansionBoards.ext3 = 0;
         }
     }
 
@@ -9652,9 +9615,9 @@ $("input[type='text']").keydown(function(event) {
 });
 
 // update highlighting on selection change in a radio button table
-$("#systemTypeSelector input:radio").change(function() {
-    $("#systemTypeSelector > div > div").each(function() {
-        $(this).toggleClass("selected", $("input:radio", $(this)).prop("checked"));
+    $("#systemTypeSelector > div > div").each(function () {
+        $("#systemTypeSelector > div > div").each(function () {
+            $(this).toggleClass("selected", $("input:radio", $(this)).prop("checked"));
     });
 });
 
