@@ -76,60 +76,60 @@ var ConfigSource = {
             can set the individual pin assignments to match your wiring.
          </div>
 
-         <table class="radio">
-            <tr>
-               <td>
-                  <label>
-                     <img src="kl25z.png"><br>
-                     <input type="radio" name="hardwareType" value="0">
-                     Stand-alone KL25Z<br>
-                     (or your own custom boards)
-                  </label>
-               </td>
-               <td>
-                  <label>
-                     <img src="expansionStack.png"><br>
-                     <input type="radio" name="hardwareType" value="1">
-                     Pinscape Expansion Boards<br>
-                    &nbsp;
+         <div id="systemTypeSelector">
+             <div>
+                 <div>
+                     <label>
+                         <img src="kl25z.png"><br>
+                         <input type="radio" name="hardwareType" value="0">
+                         Stand-alone KL25Z<br>
+                         (or your own custom boards)
                      </label>
-                 </td>
-                 <td>
+                 </div>
+                 <div>
+                     <label>
+                         <img src="expansionStack.png"><br>
+                         <input type="radio" name="hardwareType" value="1">
+                         Pinscape Expansion Boards<br>
+                         &nbsp;
+                     </label>
+                 </div>
+                 <div>
                      <label>
                          <img src="pinscapeAIO.png"><br>
                          <input type="radio" name="hardwareType" value="2">
                          Pinscape All-in-One<br>
                          &nbsp;
                      </label>
-                 </td>
-                 <td>
+                 </div>
+                 <div>
                      <label>
                          <img src="pinscapeLite.png"><br>
                          <input type="radio" name="hardwareType" value="3">
                          Pinscape Lite<br>
                          &nbsp;
                      </label>
-                 </td>
-                 <td>
+                 </div>
+                 <div>
                      <label>
                          <img src="RigMaster.png"><br>
                          <input type="radio" name="hardwareType" value="4">
                          RigMaster<br>
                          &nbsp;
                      </label>
-                 </td>
-                 <td>
+                 </div>
+                 <div>
                      <label>
                          <img src="KLShield.png"><br>
                          <input type="radio" name="hardwareType" value="5">
                          KLShield<br>
                          &nbsp;
                      </label>
-                 </td>
-
-             </tr>
-         </table>
+                 </div>
+             </div>
+         </div>
          <input type="hidden" id="expBoardVersion">
+
 
          <!-- expansion board options - initially hidden -->
          <div id="expansionBoardOptions" style="height: 0px; overflow: hidden; margin: 1em 2em;">
@@ -219,59 +219,59 @@ $("input:radio[name=hardwareType]").change(function(ev)
         $("#ckExpBoardShowPins").prop("checked", false);
         break;
 
-		case 3:
-			// Pinscape Lite
+	case 3:
+		// Pinscape Lite
 
-			// use the expansion board settings view
-			// future function to later enable this
-			slideToggle(d, false, 250, fromUI);
+		// use the expansion board settings view
+		// future function to later enable this
+		slideToggle(d, false, 250, fromUI);
 
-			// use the Pinscape Lite output port aliases
-			outPortAlias = liteOutPortAlias;
-			gpioPortAlias = liteGpioPortAlias;
+		// use the Pinscape Lite output port aliases
+		outPortAlias = liteOutPortAlias;
+		gpioPortAlias = liteGpioPortAlias;
 
-			if (fromUI)
-				configToUI(pinscapeLiteFactoryConfig, pinscapeLiteFactoryXConfig, ConfigSource.Factory);
+		if (fromUI)
+			configToUI(pinscapeLiteFactoryConfig, pinscapeLiteFactoryXConfig, ConfigSource.Factory);
 
-			// hide KL25Z pin assignments by default
-			$("#ckExpBoardShowPins").prop("checked", false);
-			break;
+		// hide KL25Z pin assignments by default
+		$("#ckExpBoardShowPins").prop("checked", false);
+		break;
 
-		case 4:
-			// RigMaster
+	case 4:
+		// RigMaster
 
-			// use the expansion board settings view
-			// future function to later enable this
-			slideToggle(d, true, 250, fromUI);
+		// use the expansion board settings view
+		// future function to later enable this
+		slideToggle(d, true, 250, fromUI);
 
-			// use the RigMaster output port aliases
-			outPortAlias = rigMasterOutPortAlias;
-			gpioPortAlias = rigMasterGpioPortAlias;
+		// use the RigMaster output port aliases
+		outPortAlias = rigMasterOutPortAlias;
+		gpioPortAlias = rigMasterGpioPortAlias;
 
-			if (fromUI)
-				configToUI(rigMasterFactoryConfig, rigMasterFactoryXConfig, ConfigSource.Factory);
+		if (fromUI)
+			configToUI(rigMasterFactoryConfig, rigMasterFactoryXConfig, ConfigSource.Factory);
 
-			// hide KL25Z pin assignments by default
-			$("#ckExpBoardShowPins").prop("checked", false);
-			break;
+		// hide KL25Z pin assignments by default
+		$("#ckExpBoardShowPins").prop("checked", false);
+		break;
 
-		case 5:
-			// KLShield
+	case 5:
+		// KLShield
 
-			// use the expansion board settings view
-			// future function to later enable this
-			slideToggle(d, true, 250, fromUI);
+		// use the expansion board settings view
+		// future function to later enable this
+		slideToggle(d, true, 250, fromUI);
 
-			// use the Pinscape Lite output port aliases
-			outPortAlias = klShieldOutPortAlias;
-			gpioPortAlias = klShieldGpioPortAlias;
+		// use the Pinscape Lite output port aliases
+		outPortAlias = klShieldOutPortAlias;
+		gpioPortAlias = klShieldGpioPortAlias;
 
-			if (fromUI)
-				configToUI(klShieldFactoryConfig, klShieldFactoryXConfig, ConfigSource.Factory);
+		if (fromUI)
+			configToUI(klShieldFactoryConfig, klShieldFactoryXConfig, ConfigSource.Factory);
 
-			// hide KL25Z pin assignments by default
-			$("#ckExpBoardShowPins").prop("checked", false);
-			break;
+		// hide KL25Z pin assignments by default
+		$("#ckExpBoardShowPins").prop("checked", false);
+		break;
 
     default:
         // plain KL25Z or unknown
@@ -5659,6 +5659,32 @@ $("#printButton").click(function(ev) {
             <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
          </div>
       </div>
+       <div id="aioPowerBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Board 1</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="powerBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
+      <div id="litePowerBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
+         <div class="chipNo header" data-chip="0">Board 1</div>
+         <div class="pinlist"></div>
+         <div class="pinimage">
+            <div>
+               <div class="chipIndexer background"></div>
+               <div class="chipIndexer foreground"></div>
+               <img src="powerBoardPins.png">
+               <div class="pinoverlay"></div>
+            </div>
+            <div class="pinLegend"><img src="KL25Z-pin-legend.png"></div>
+         </div>
+      </div>
       <div id="molluskBoardOutputSelector" class="pinSelectorPage expBoardPinSelector" data-pagetype="board">
          <div class="chipNo header" data-chip="0">Board 1</div>
          <div class="pinlist"></div>
@@ -5810,6 +5836,14 @@ $("#printButton").click(function(ev) {
             <img src="powerBoardOut.png"><br>
             Power Board
          </div>
+        <div id="pinTypeAioPowerBoardOut" data-page="aioPowerBoardOutputSelector">
+            <img src="powerBoardOut.png"><br>
+            Power Board
+         </div>
+         <div id="pinTypeLitePowerBoardOut" data-page="litePowerBoardOutputSelector">
+            <img src="powerBoardOut.png"><br>
+            Power Board
+         </div>
          <div id="pinTypemolluskBoardOut" data-page="molluskBoardOutputSelector">
             <img src="MolluskBoardOut.png"><br>
             Mollusk
@@ -5818,7 +5852,10 @@ $("#printButton").click(function(ev) {
             <img src="chimeBoardOut.png"><br>
             Chime Board
          </div>
-         <div id="pinTypeVirtOut" data-page="virtualOutputSelector" data-pintype="5">
+         <div id="pinTypeAioChimeBoardOut" data-page="aioChimeBoardOutputSelector">
+            <img src="chimeBoardOut.png"><br>
+            Chime Board
+         </div>         <div id="pinTypeVirtOut" data-page="virtualOutputSelector" data-pintype="5">
             <img src="virtualout.png"><br>
             Virtual Out
          </div>
@@ -7496,6 +7533,12 @@ $(function() {
                     // have at least one chime board.
                     vis = ((hwType == 1 || hwType == 2 || hwType == 3) && +$("#numChimeBoards").val() > 0);
                     break;
+
+				case "aioChimeBoardOutputSelector":
+					// Chime board outputs for AIO.  Enable in expansion board mode
+					// if we're in AIO mode with at least one chime board.
+					vis = ((hwType == 2) && +$("#numChimeBoards").val() > 0);
+					break;
 
                 case "molluskBoardOutputSelector":
                     // Mollusk board outputs.  Enable in expansion board mode if we

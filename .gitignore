@@ -1,11 +1,3 @@
 .vs
-/IncBuildNumber/bin/Debug
-/IncBuildNumber/obj/Debug
-/IncBuildNumber/obj/Release
-/NightMode/obj
-/PinscapeCmd/obj
-/PinscapeConfigTool/bin/Debug
-/PinscapeConfigTool/obj
-/PinscapeConfigToolUpdater/obj
-PinscapeConfigTool/BuildNumber.txt
-PinscapeConfigTool/VersionInfo.cs
+**/bin/**
+**/obj/**
