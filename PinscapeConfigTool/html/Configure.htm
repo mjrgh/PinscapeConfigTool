@@ -176,17 +176,17 @@ var ConfigSource = {
 
 $("input:radio[name=hardwareType]").change(function(ev)
 {
-	$("#waitOverlay").show();
-	setTimeout(function () {
-		// check which hardware configuration is now selected
-		var d = $("#expansionBoardOptions");
-		var v = $("input:radio[name=hardwareType]:checked").val();
-		var fromUI = !!ev.originalEvent;
+    $("#waitOverlay").show();
+    setTimeout(function () {
+        // check which hardware configuration is now selected
+        var d = $("#expansionBoardOptions");
+        var v = $("input:radio[name=hardwareType]:checked").val();
+        var fromUI = !!ev.originalEvent;
 
-		// set up defaults for the new configuration
+        // set up defaults for the new configuration
         switch (+v)
         {
-		case 1:
+        case 1:
             // Pinscape Expansion Boards, first release
 
             // use the expansion board settings view
@@ -221,8 +221,8 @@ $("input:radio[name=hardwareType]").change(function(ev)
             $("#ckExpBoardShowPins").prop("checked", false);
             break;
 
-	    case 3:
-		    // Pinscape Lite
+        case 3:
+                    // Pinscape Lite
 
 		    // use the expansion board settings view
 		    // future function to later enable this
@@ -240,40 +240,40 @@ $("input:radio[name=hardwareType]").change(function(ev)
 		    break;
 
 	    case 4:
-		    // RigMaster
+                // RigMaster
 
-		    // use the expansion board settings view
-		    // future function to later enable this
-		    slideToggle(d, true, 250, fromUI);
+                // use the expansion board settings view
+                // future function to later enable this
+                slideToggle(d, true, 250, fromUI);
 
-		    // use the RigMaster output port aliases
-		    outPortAlias = rigMasterOutPortAlias;
-		    gpioPortAlias = rigMasterGpioPortAlias;
+                // use the RigMaster output port aliases
+                outPortAlias = rigMasterOutPortAlias;
+                gpioPortAlias = rigMasterGpioPortAlias;
 
-		    if (fromUI)
-			configToUI(rigMasterFactoryConfig, rigMasterFactoryXConfig, ConfigSource.Factory);
+                if (fromUI)
+                    configToUI(rigMasterFactoryConfig, rigMasterFactoryXConfig, ConfigSource.Factory);
 
-		    // hide KL25Z pin assignments by default
-		    $("#ckExpBoardShowPins").prop("checked", false);
-		    break;
+                // hide KL25Z pin assignments by default
+                $("#ckExpBoardShowPins").prop("checked", false);
+                break;
 
 	    case 5:
-		    // KLShield
+                // KLShield
 
-		    // use the expansion board settings view
-		    // future function to later enable this
-		    slideToggle(d, true, 250, fromUI);
+                // use the expansion board settings view
+                // future function to later enable this
+                slideToggle(d, true, 250, fromUI);
 
-		    // use the Pinscape Lite output port aliases
-		    outPortAlias = klShieldOutPortAlias;
-		    gpioPortAlias = klShieldGpioPortAlias;
+                // use the Pinscape Lite output port aliases
+                outPortAlias = klShieldOutPortAlias;
+                gpioPortAlias = klShieldGpioPortAlias;
 
-		    if (fromUI)
-		    	configToUI(klShieldFactoryConfig, klShieldFactoryXConfig, ConfigSource.Factory);
+                if (fromUI)
+                    configToUI(klShieldFactoryConfig, klShieldFactoryXConfig, ConfigSource.Factory);
 
-		    // hide KL25Z pin assignments by default
-		    $("#ckExpBoardShowPins").prop("checked", false);
-		    break;
+                // hide KL25Z pin assignments by default
+                $("#ckExpBoardShowPins").prop("checked", false);
+                break;
 
         default:
             // plain KL25Z or unknown
@@ -292,12 +292,12 @@ $("input:radio[name=hardwareType]").change(function(ev)
         }
 
     // show/hide items globally according to the type
-	$(".expBoardOnly").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "" : "none");
-	$(".expBoardExclude").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "none" : "");
+        $(".expBoardOnly").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "" : "none");
+        $(".expBoardExclude").css("display", (v == 1 || v == 2 || v == 3 || v == 4 || v == 5) ? "none" : "");
 
-    // update pin displays - this shows the pin selectors in standalone
-    // mode, and hides them in expansion board mode, except when the "show
-    // pins anyway" box is checked
+        // update pin displays - this shows the pin selectors in standalone
+        // mode, and hides them in expansion board mode, except when the "show
+        // pins anyway" box is checked
     updatePinVisibility();
 
     // If the change came from a UI event, reset plunger pin assignments
@@ -6033,12 +6033,12 @@ function uiDirty()
 // Compare two values, doing a deep comparison of properties of objects
 function valEq(a, b)
 {
-	// Show debugging alerts?  (Helps identify the source of a mismatch,
-	// when spurious mismatches are detected.)
+    // Show debugging alerts?  (Helps identify the source of a mismatch,
+    // when spurious mismatches are detected.)
     var debugAlert = false;
 
-     // NaN == NaN requires a special test
-     if (isNaN(a) && isNaN(b) && typeof a == "number" && typeof b == "number")
+    // NaN == NaN requires a special test
+    if (isNaN(a) && isNaN(b) && typeof a == "number" && typeof b == "number")
         return true;
     
     // if they're identical primitives, they're equal
@@ -6081,7 +6081,7 @@ function valEq(a, b)
         // check that all properties of a are in b
         for (var p in a) {
             if (!(p in b)) {
-				if (debugAlert) alert("p not in b: " + p); // [debug]
+                if (debugAlert) alert("p not in b: " + p); // [debug]
                 return false;
             }
         }
@@ -6089,7 +6089,7 @@ function valEq(a, b)
         // all a.p are in b; now check that all b.p equal a.p
         for (var p in b) {
             if (!(p in a) || !valEq(a[p], b[p])) {
-				if (debugAlert) alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
+                if (debugAlert) alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
                 return false;
             }
         }
@@ -8602,7 +8602,7 @@ function normalizeConfig(config)
             config.expansionBoards.ext0 = 0;
             config.expansionBoards.ext1 = 0;
             config.expansionBoards.ext2 = 0;
-			config.expansionBoards.ext3 = 0;
+            config.expansionBoards.ext3 = 0;
         }
     }
 
@@ -9615,9 +9615,9 @@ $("input[type='text']").keydown(function(event) {
 });
 
 // update highlighting on selection change in a radio button table
+$("#systemTypeSelector > div > div").each(function () {
     $("#systemTypeSelector > div > div").each(function () {
-        $("#systemTypeSelector > div > div").each(function () {
-            $(this).toggleClass("selected", $("input:radio", $(this)).prop("checked"));
+        $(this).toggleClass("selected", $("input:radio", $(this)).prop("checked"));
     });
 });
 
