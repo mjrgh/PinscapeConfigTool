@@ -504,6 +504,169 @@ var liteBoard_headers = {
     },
 };
 
+// Arnoz RigMaster board headers
+var rigMasterBoard_headers = {
+
+    "Boutons": {
+        pins: [["PTE30", "PTE29", "PTE23", "PTE22", "PTE21", "PTE20", "PTE5", "PTE4", "PTE3", "PTE2", "PTE1", "PTE0", "PTD7"]],
+        type: "pinheader",
+        pin1: [219, 325],
+        pinN: [295, 325],
+        orientation: "horizontal"
+    },
+
+    "Brain": {
+        pins: [["PTD6", "PTD5", "PTD4", "PTD3", "PTD2", "PTC7", "PTC17", "PTC16", "GND", "5V", "PTC13", "PTC12"]],
+        type: "pinheader",
+        pin1: [14, 234],
+        pinN: [14, 300]
+    },
+
+    "Plunger": {
+        pins: [["PTE21", "GND", "PTB0", "3.3V"]],
+        type: "pinheader",
+        pin1: [335, 258],
+        pinN: [335, 280]
+    },
+
+    "Extension": {
+        pins: [["PTA13", "PTC5", "PTC6", "PTC10", "PTC11", "5V", "GND"]],
+        type: "pinheader",
+        pin1: [58, 325],
+        pinN: [98, 325],
+        orientation: "horizontal"
+    },
+
+    "Digital Outputs 1-4": {
+        pins: [["PTB1", "PTB2", "PTB3", "PTB8"]],
+        type: "pinheader",
+        pin1: [68, 80],
+        pinN: [84, 80],
+        orientation: "horizontal"
+    },
+    "Digital Outputs 5-8": {
+        pins: [["PTB9", "PTB10", "PTB11", "PTA17"]],
+        type: "pinheader",
+        pin1: [128, 80],
+        pinN: [146, 80],
+        orientation: "horizontal"
+    },
+    "PWM Outputs 9-12": {
+        pins: [["PTA1", "PTA2", "PTA4", "PTA5"]],
+        type: "pinheader",
+        pin1: [188, 80],
+        pinN: [204, 80],
+        orientation: "horizontal"
+    },
+    "PWM Outputs 13-16": {
+        pins: [["PTD0", "PTC4", "PTC8", "PTC9"]],
+        type: "pinheader",
+        pin1: [264, 80],
+        pinN: [282, 80],
+        orientation: "horizontal"
+    },
+};
+
+// Arnoz KLShield board headers
+var klShieldBoard_headers = {
+
+    "BOUTON 1": {
+        pins: [["GND", "PTE30", "PTE29", "PTE23", "PTE22", "PTE21", "PTE20", "PTE5", "PTE4", "PTE3", "PTE2", "GND"]],
+        type: "pinheader",
+        pin1: [13, 80],
+        pinN: [13, 205],
+    },
+
+    "BOUTON 2": {
+        pins: [["PTC16", "PTC17", "PTC7", "PTD2", "PTD3", "PTD4", "PTD5", "PTD6", "PTD7", "PTE0", "PTE1", "GND"]],
+        type: "pinheader",
+        pin1: [110, 80],
+        pinN: [110, 215],
+    },
+
+    "OUT 1": {
+        pins: [["GND", "PTB11", "PTB10", "PTB9", "PTB8", "PTB3", "PTB2", "PTB1", "PTA17", "PTA16", "PTA12", "GND"]],
+        type: "pinheader",
+        pin1: [330, 95],
+        pinN: [330, 218],
+    },
+
+    "OUT 2": {
+        pins: [["GND", "PTC0", "PTC1", "PTC2", "PTC3", "PTE31", "PTB0", "SDA_PTD", "PTD1", "RESET", "GND", "GND"]],
+        type: "pinheader",
+        pin1: [230, 85],
+        pinN: [230, 218],
+    },
+
+    "PLUNGER": {
+        pins: [["P3V3", "PTB0", "GND", "GND", "USB5V", "PTC13", "PTC12"]],
+        type: "pinheader",
+        pin1: [13, 230],
+        pinN: [13, 300]
+    },
+
+    "EXTENSION": {
+        pins: [["PTA13", "PTC5", "PTC6", "PTC10", "PTC11", "USB5V", "GND"]],
+        type: "pinheader",
+        pin1: [97, 347],
+        pinN: [165, 347],
+        orientation: "horizontal"
+    },
+
+    "PWM MOS": {
+        pins: [["PTA1", "PTA2", "PTA4", "PTA5", "PTD0", "PTC4", "PTC8", "PTC9", "GND"]],
+        type: "pinheader",
+        pin1: [190, 347],
+        pinN: [277, 347],
+        orientation: "horizontal"
+    },
+
+    "VOLTS": {
+        pins: [["VREFH", "VIN", "USB5V", "P3V3"]],
+        type: "pinheader",
+        pin1: [240, 200],
+        pinN: [240, 220],
+        orientation: "horizontal"
+    },
+
+};
+
+// Arnoz Mollusk board
+var molluskBoard_headers = {
+    "OUT1-8": {
+        pins: [["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]],
+        type: "pinheader",
+        pin1: [80, 120],
+        pinN: [170, 120],
+        orientation: "horizontal"
+    },
+
+    "OUT9-16": {
+        pins: [["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]],
+        type: "pinheader",
+        pin1: [210, 120],
+        pinN: [300, 120],
+        orientation: "horizontal"
+    }
+
+    // for reference only - these pins aren't assignable
+    //"DATA-in": {
+    //    pins: [["GSCLK",  "SCLK", "SIN", "XLAT", "BLANK", "5V", "GND"],
+    //    type: "pinheader",
+    //    pin1: [318, 212],
+    //    pinN: [327, 246],
+    //    orientation: "horizontal"
+    //},
+    //"DATA-out": {
+    //    pins: [["GSCLK",  "SCLK", "SOUT", "XLAT", "BLANK", "5V", "GND"],
+    //    type: "pinheader",
+    //    pin1: [318, 292],
+    //    pinN: [327, 327],
+    //    orientation: "horizontal"
+    //}
+};
+
+// Pinscape expansion boards - Power Board
 var powerBoard_headers = {
     "JP5": {
         pins: [["3.32", "3.33", "3.34", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43", "3.44", "3.45", "3.46", "3.47"]],
@@ -840,7 +1003,8 @@ var standaloneFactoryConfig = {
         version: "0",
         ext0: "0",
         ext1: "0",
-        ext2: "0"
+        ext2: "0",
+        ext3: "0"
     },
     calButtonPins: {
         enabled: 0x03,
@@ -940,7 +1104,8 @@ var expansionBoardFactoryConfig = {
         version: "0",
         ext0: "1",
         ext1: "1",
-        ext2: "0"
+        ext2: "0",
+        ext3: "0"
     },
     calButtonPins: {
         enabled: 0x03,
@@ -1115,7 +1280,8 @@ var pinscapeAIOFactoryConfig = {
         version: "0",
         ext0: "1",
         ext1: "0",
-        ext2: "0"
+        ext2: "0",
+        ext3: "0"
     },
     calButtonPins: {
         enabled: 0x03,
@@ -1301,7 +1467,8 @@ var pinscapeLiteFactoryConfig = {
         version: "0",
         ext0: "1",
         ext1: "0",
-        ext2: "0"
+        ext2: "0",
+        ext3: "0"
     },
     calButtonPins: {
         enabled: 0x0,
@@ -1405,6 +1572,192 @@ var pinscapeLiteFactoryConfig = {
 };
 var pinscapeLiteFactoryXConfig = {};
 
+// Factory configuration for Arnoz RigMaster
+var rigMasterFactoryConfig = {
+    expansionBoards: {
+        version: "0",
+        ext0: "1",
+        ext1: "0",
+        ext2: "0",
+        ext3: "0"
+    },
+    calButtonPins: {
+        enabled: 0x0,
+        button: "PTC12",
+        led: "PTC13"
+    },
+    nightMode: {
+        button: 19,
+        flags: 0,
+        output: 0
+    },
+    plungerType: {
+        type: 0,
+        param1: 0,
+    },
+    TVon: {
+        statusPin: "NC",
+        latchPin: "NC",
+        relayPin: "NC",
+        delay: 0
+    },
+    TLC5940: {
+        SIN: "PTC6",
+        SCLK: "PTC5",
+        XLAT: "PTC10",
+        BLANK: "PTC11",
+        GSCLK: "PTA13"
+    },
+    HC595: {
+        SIN: "NC",
+        SCLK: "NC",
+        LATCH: "NC",
+        ENA: "NC"
+    },
+    TLC59116: {
+        chipMask: 0,
+        SDA: "NC",
+        SCL: "NC",
+        RESET: "NC"
+    },
+    ZBLaunchBall: {
+        port: 0,
+        keytype: 2,             // keyboard key
+        keycode: 0x28,          // Enter key
+        pushDistance: 63        // .063" ~ 1/16"
+    },
+    buttons: {
+        // for expansion board mode, use keyboard mappings for the standard VP and VPinMAME keys
+        1: { pin: "PTE30", keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
+        2: { pin: "PTE29", keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
+        3: { pin: "PTE23", keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
+        4: { pin: "PTE22", keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
+        5: { pin: "PTE21", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
+        6: { pin: "PTE20", keytype: 2, keycode: 0x29, flags: 0 },  // // Escape = exit
+        7: { pin: "PTE5", keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
+        8: { pin: "PTE4", keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
+        9: { pin: "PTE3", keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper 
+        10: { pin: "PTE2", keytype: 2, keycode: 0xE0, flags: 0 },  // left control = left magna
+        11: { pin: "PTE1", keytype: 2, keycode: 0xE4, flags: 0 },  // right control = right magna 
+        12: { pin: "PTE0", keytype: 2, keycode: 0x76, flags: 0 },  // Fire 
+        13: { pin: "PTD7", keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
+        14: { pin: "PTD6", keytype: 2, keycode: 0x4D, flags: 0 },  // // "End" = coin door
+        15: { pin: "PTD5", keytype: 2, keycode: 0x24, flags: 0 },  // "7" = service escape
+        16: { pin: "PTD4", keytype: 2, keycode: 0x25, flags: 0 },  // "8" = service down/-
+        17: { pin: "PTD3", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
+        18: { pin: "PTD2", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
+        19: { pin: "PTC16", keytype: 0, keycode: 0, flags: 0 },  // NightMode
+        20: { pin: "PTC7", keytype: 3, keycode: 0xE9, flags: 0 },  // Volume-
+        21: { pin: "PTC17", keytype: 3, keycode: 0xEA, flags: 0 },  // Volume+
+    },
+    outputs: {
+        // Map the 16 GPIOs that connect to MOSFET power outputs
+        // Only the last 8 are PWM capable
+        1: { port: { type: 2, pin: "PTB1" }, flags: 0x04 },     // port 1  = PTB1 (Digital)
+        2: { port: { type: 2, pin: "PTB2" }, flags: 0x04 },    // port 2  = PTB2 (Digital)
+        3: { port: { type: 2, pin: "PTB3" }, flags: 0x00 },     // port 3 = PTB3 (Digital)
+        4: { port: { type: 2, pin: "PTB8" }, flags: 0x00 },     // port 4 = PTD3 (Digital)
+        5: { port: { type: 2, pin: "PTB9" }, flags: 0x00 },     // port 5 = PTB8 (Digital)
+        6: { port: { type: 2, pin: "PTB10" }, flags: 0x00 },     // port 6 = PTB10 (Digital)
+        7: { port: { type: 2, pin: "PTB11" }, flags: 0x00 },     // port 7 = PTB11 (Digital)
+        8: { port: { type: 2, pin: "PTA17" }, flags: 0x00 },     // port 8 = PTA17 (Digital)
+        9: { port: { type: 1, pin: "PTA1" }, flags: 0x00 },     // port 9 = PTA1 (PWM)
+        10: { port: { type: 1, pin: "PTA2" }, flags: 0x00 },   // port 10 = PTA2 (PWM)
+        11: { port: { type: 1, pin: "PTA4" }, flags: 0x00 },   // port 11 = PTA4 (PWM)
+        12: { port: { type: 1, pin: "PTA5" }, flags: 0x00 },    // port 12 = PTA5 (PWM)
+        13: { port: { type: 1, pin: "PTD0" }, flags: 0x00 },    // port 13 = " (PWM)
+        14: { port: { type: 1, pin: "PTC4" }, flags: 0x00 },    // port 14 = PTC4 (PWM)
+        15: { port: { type: 1, pin: "PTC8" }, flags: 0x00 },    // port 15 = PTC8 (PWM)
+        16: { port: { type: 1, pin: "PTC9" }, flags: 0x00 },    // port 16 = PTC9 (PWM)
+
+    }
+};
+var rigMasterFactoryXConfig = {};
+
+// Factory configuration for Arnoz KLShield
+var klShieldFactoryConfig = {
+    expansionBoards: {
+        version: "0",
+        ext0: "1",
+        ext1: "0",
+        ext2: "0",
+        ext3: "0"
+    },
+    calButtonPins: {
+        enabled: 0x0,
+        button: "PTC12",
+        led: "PTC13"
+    },
+    nightMode: {
+        button: 19,
+        flags: 0,
+        output: 0
+    },
+    plungerType: {
+        type: 0,
+        param1: 0,
+    },
+    TVon: {
+        statusPin: "NC",
+        latchPin: "NC",
+        relayPin: "NC",
+        delay: 0
+    },
+    TLC5940: {
+        SIN: "PTC6",
+        SCLK: "PTC5",
+        XLAT: "PTC10",
+        BLANK: "PTC11",
+        GSCLK: "PTA13"
+    },
+    HC595: {
+        SIN: "NC",
+        SCLK: "NC",
+        LATCH: "NC",
+        ENA: "NC"
+    },
+    TLC59116: {
+        chipMask: 0,
+        SDA: "NC",
+        SCL: "NC",
+        RESET: "NC"
+    },
+    ZBLaunchBall: {
+        port: 0,
+        keytype: 2,             // keyboard key
+        keycode: 0x28,          // Enter key
+        pushDistance: 63        // .063" ~ 1/16"
+    },
+    buttons: {
+        // for expansion board mode, use keyboard mappings for the standard VP and VPinMAME keys
+        1: { pin: "PTE30", keytype: 2, keycode: 0x1E, flags: 0 },  // "1" = start
+        2: { pin: "PTE29", keytype: 2, keycode: 0x1F, flags: 0 },  // "2" = extra ball
+        3: { pin: "PTE23", keytype: 2, keycode: 0x22, flags: 0 },  // "5" = coin 1
+        4: { pin: "PTE22", keytype: 2, keycode: 0x21, flags: 0 },  // "4" = coin 2
+        5: { pin: "PTE21", keytype: 2, keycode: 0x28, flags: 0 },  // Enter = launch ball
+        6: { pin: "PTE20", keytype: 2, keycode: 0x29, flags: 0 },  // // Escape = exit
+        7: { pin: "PTE5", keytype: 2, keycode: 0x14, flags: 0 },  // "Q" = quit 
+        8: { pin: "PTE4", keytype: 2, keycode: 0xE1, flags: 0 },  // left shift = left flipper 
+        9: { pin: "PTE3", keytype: 2, keycode: 0xE5, flags: 0 },  // right shift = right flipper 
+        10: { pin: "PTE2", keytype: 2, keycode: 0xE0, flags: 0 },  // left control = left magna
+        11: { pin: "PTE1", keytype: 2, keycode: 0xE4, flags: 0 },  // right control = right magna 
+        12: { pin: "PTE0", keytype: 2, keycode: 0x76, flags: 0 },  // Fire 
+        13: { pin: "PTD7", keytype: 2, keycode: 0x17, flags: 0 },  // "T" = tilt bob  
+        14: { pin: "PTD6", keytype: 2, keycode: 0x4D, flags: 0 },  // // "End" = coin door
+        15: { pin: "PTD5", keytype: 2, keycode: 0x24, flags: 0 },  // "7" = service escape
+        16: { pin: "PTD4", keytype: 2, keycode: 0x25, flags: 0 },  // "8" = service down/-
+        17: { pin: "PTD3", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
+        18: { pin: "PTD2", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
+        19: { pin: "PTC16", keytype: 0, keycode: 0, flags: 0 },  // NightMode
+        20: { pin: "PTC7", keytype: 3, keycode: 0xE9, flags: 0 },  // Volume-
+        21: { pin: "PTC17", keytype: 3, keycode: 0xEA, flags: 0 },  // Volume+
+    },
+    outputs: {
+
+    }
+};
+var klShieldFactoryXConfig = {};
+
 // fill out the factory defaults for the maximum output and button table sizes
 (function() {
     function fill(d) {
@@ -1422,6 +1775,8 @@ var pinscapeLiteFactoryXConfig = {};
     fill(expansionBoardFactoryConfig);
     fill(pinscapeAIOFactoryConfig);
     fill(pinscapeLiteFactoryConfig);
+    fill(rigMasterFactoryConfig);
+    fill(klShieldFactoryConfig);
     fill(standaloneFactoryConfig);
 })();
     
@@ -1876,6 +2231,176 @@ var liteOutPortAlias, liteGpioPortAlias;
     liteGpioPortAlias = g;
 })();
 
+// build the Pinscape RigMaster out port alias table
+var rigMasterOutPortAlias, rigMasterGpioPortAlias;
+(function () {
+    var o = {
+    };
+
+    // add seven Mollusk boards worth of outputs
+    for (var i = 0; i < 128; ++i) {
+        o["3." + (i)] =
+            "Output " + ((i % 16) + 1)
+            + "|Mollusk PWM out"
+            + "|Mollusk " + (Math.floor(i / 16) + 1)
+            + "|Mollusk" + (Math.floor(i / 16) + 1) + " Out " + ((i % 16) + 1)
+            + "|molluskBoardOutputSelector";
+    }
+    // Table of all internal GPIO connections on the main expansion board.
+    // These generally can't be used for any other purpose.
+    var gInternal = {
+        "PTC10": "TLC5940 XLAT",
+        "PTC6": "TLC5940 SIN",
+        "PTC5": "TLC5940 SCLK",
+        "PTC11": "TLC5940 BLANK",
+        "PTA13": "TLC5940 GSCLK",
+    };
+
+    // Table of all external GPIO connections on the main expansion
+    // board.  These KL25Z pins are connected more or less directly
+    // to external headers on the board, so they can be re-purposed
+    // (sometimes with restrictions) for other external uses.  For
+    // example, if a plunger sensor isn't being used, all of the
+    // plunger input pins can be used as button inputs instead.
+    var gExternal = {
+        "PTB0": "Plunger Wiper/INT|Wiper/INT",
+        "PTB1": "Power 1|Power 1|Digital GPIO",
+        "PTB2": "Power 2|Power 2|Digital GPIO",
+        "PTB3": "Power 3|Power 3|Digital GPIO",
+        "PTB8": "Power 4|Power 4|Digital GPIO",
+        "PTB9": "Power 5|Power 5|Digital GPIO",
+        "PTB10": "Power 6|Power 6|Digital GPIO",
+        "PTB11": "Power 7|Power 7|Digital GPIO",
+        "PTA17": "Power 8|Power 8|Digital GPIO",
+        "PTA1": "Power 9|Power 9|PWM GPIO",
+        "PTA2": "Power 10|Power 10|PWM GPIO",
+        "PTA4": "Power 11|Power 11|PWM GPIO",
+        "PTA5": "Power 12|Power 12|PWM GPIO",
+        "PTD0": "Power 13|Power 13|PWM GPIO",
+        "PTC4": "Power 14|Power 14|PWM GPIO",
+        "PTC8": "Power 15|Power 15|PWM GPIO",
+        "PTC9": "Power 16|Power 16|PWM GPIO"
+    };
+
+    // Build a combined table of the GPIO port aliases for internal and
+    // external Pinscape Lite board connections.
+    var g = {};
+    $.each(gInternal, function (k, v) { g[k] = v + "|Internal"; });
+    $.each(gExternal, function (k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
+
+    // Add GPIO aliases for all of the buttons
+    $.each(rigMasterFactoryConfig.buttons, function (k, v) {
+        g[v.pin] = "Button " + k + "|Digital In|RigMaster|Button Inputs-" + k + "|rigMasterBoardInputSelector";
+    });
+
+    // Add all of the external ports as output aliases.
+    $.each(gExternal, function (k, v) {
+        // break v into fields - Descriptive Name, Jumper, [output type description]
+        v = v.split("|");
+
+        // if it's a PWM-capable port, add a PWM output type for it
+        var gp = gpioPinsByName[k] || {};
+        if (gp.pwm)
+            o["1." + k] = [v[0], v[2] || "PWM GPIO", "RigMaster", v[1], "rigMasterBoardPWMOutputSelector"].join("|");
+
+        // add a Digital Out type for it
+        o["2." + k] = [v[0], v[2] || "Digital GPIO", "RigMaster", v[1], "rigMasterBoardDigitalOutputSelector"].join("|");
+    });
+
+    // remember these
+    rigMasterOutPortAlias = o;
+    rigMasterGpioPortAlias = g;
+})();
+
+var klShieldOutPortAlias, klShieldGpioPortAlias;
+// build the Pinscape KLShield out port alias table
+(function () {
+    var o = {
+    };
+
+    // add eight Mollusk boards worth of outputs
+    for (var i = 0; i < 128; ++i) {
+        o["3." + (i)] =
+            "Output " + ((i % 16) + 1)
+            + "|Mollusk PWM out"
+            + "|Mollusk " + (Math.floor(i / 16) + 1)
+            + "|Mollusk" + (Math.floor(i / 16) + 1) + " Out " + ((i % 16) + 1)
+            + "|molluskBoardOutputSelector";
+    }
+    // Table of all internal GPIO connections on the main expansion board.
+    // These generally can't be used for any other purpose.
+    var gInternal = {
+        "PTC10": "TLC5940 XLAT",
+        "PTC6": "TLC5940 SIN",
+        "PTC5": "TLC5940 SCLK",
+        "PTC11": "TLC5940 BLANK",
+        "PTA13": "TLC5940 GSCLK",
+        "PTB0": "Plunger Wiper/INT|Wiper/INT",
+
+    };
+
+    // Table of all external GPIO connections on the main expansion
+    // board.  These KL25Z pins are connected more or less directly
+    // to external headers on the board, so they can be re-purposed
+    // (sometimes with restrictions) for other external uses.  For
+    // example, if a plunger sensor isn't being used, all of the
+    // plunger input pins can be used as button inputs instead.
+    var gExternal = {
+        "PTC13": "Cal Button LED|PLUNGER",
+        "PTC12": "Cal Button Switch|PLUNGER",
+        "PTE30": "PTE30|BOUTON  1",
+        "PTE29": "PTE29|BOUTON 1",
+        "PTE23": "PTE23|BOUTON 1",
+        "PTE22": "PTE22|BOUTON 1",
+        "PTE21": "PTE21|BOUTON 1",
+        "PTE20": "PTE20|BOUTON 1",
+        "PTE5": "PTE5|BOUTON 1",
+        "PTE4": "PTE4|BOUTON 1",
+        "PTE3": "PTE3|BOUTON 1",
+        "PTE2": "PTE2|BOUTON 1",
+        "PTC16": "PTC16|BOUTON 2",
+        "PTC17": "PTC17|BOUTON 2",
+        "PTC7": "PTC7|BOUTON 2",
+        "PTD2": "PTD2|BOUTON 2",
+        "PTD3": "PTD3|BOUTON 2",
+        "PTD4": "PTD4|BOUTON 2",
+        "PTD5": "PTD5|BOUTON 2",
+        "PTD64": "PTD6|BOUTON 2",
+        "PTD7": "PTD7|BOUTON 2",
+        "PTE0": "PTE0|BOUTON 2",
+        "PTE1": "PTE1|BOUTON 2",
+    };
+
+    // Build a combined table of the GPIO port aliases for internal and
+    // external Pinscape Lite board connections.
+    var g = {};
+    $.each(gInternal, function (k, v) { g[k] = v + "|Internal"; });
+    $.each(gExternal, function (k, v) { g[k] = v.split("|").slice(0, 2).join("|"); });
+
+    // Add GPIO aliases for all of the buttons
+    $.each(klShieldFactoryConfig.buttons, function (k, v) {
+        g[v.pin] = "Button " + k + "|KLShield BUTTON|KLShield|Button Inputs-" + k + "|klShieldBoardInputSelector";
+    });
+
+    // Add all of the external ports as output aliases.
+    $.each(gExternal, function (k, v) {
+        // break v into fields - Descriptive Name, Jumper, [output type description]
+        v = v.split("|");
+
+        // if it's a PWM-capable port, add a PWM output type for it
+        var gp = gpioPinsByName[k] || {};
+        if (gp.pwm)
+            o["1." + k] = [v[0], v[2] || "PWM GPIO", "KLShield", v[1], "klShieldBoardPWMOutputSelector"].join("|");
+
+        // add a Digital Out type for it
+        o["2." + k] = [v[0], v[2] || "Digital GPIO", "KLShield", v[1], "klShieldBoardDigitalOutputSelector"].join("|");
+    });
+
+    // remember these
+    klShieldOutPortAlias = o;
+    klShieldGpioPortAlias = g;
+})();
+
 // Build a master map of pin to header info mappings for the given
 // system configuration.  The system type is the same as in the USB
 // protocol for the system type (config variable 14).
@@ -2076,9 +2601,92 @@ function buildPinToHeaderMap(sysType)
             });
         });
         break;
+
+    case 4:
+        // Arnoz RigMaster.  Populate each board, allowing
+        // for up to seven copies of Mollusk board.
+        $.each({
+            "expansion main": { headers: rigMasterBoard_headers, image: "RigMasterBoardPins.png", copies: 1 },
+            "expansion mollusk": { headers: molluskBoard_headers, image: "MolluskBoardPins.png", copies: 7 },
+        }, function (boardName, boardInfo) {
+            $.each(boardInfo.headers, function (headerName, headerInfo) {
+                forEachPin(headerInfo, function (pinName, n, x, y) {
+                    for (var i = 1; i <= boardInfo.copies; ++i) {
+                        var o = {
+                            board: boardName + (boardInfo.copies > 1 ? " #" + i : ""),
+                            header: headerName,
+                            pinNum: n,
+                            image: boardInfo.image,
+                            wrapper: "rigMasterBoardPinSelector",
+                            x: x,
+                            y: y
+                        };
+
+                        // for PTxx ports, index them under 2.x (digital out) and
+                        // 1.x (PWM out), as applicable
+                        if (/PT[A-E]\d+/.test(pinName)) {
+                            // all ports can be used as digital outs
+                            pinInfoMap["2." + pinName] = o;
+
+                            // check for PWM capability
+                            var g = gpioPinsByName[pinName];
+                            if (g && g.pwm)
+                                pinInfoMap["1." + pinName] = o;
+                        }
+                        else {
+                            // not a GPIO port - use the normal N.M notation
+                            pinInfoMap[pinName] = o;
+                        }
+                    }
+                });
+            });
+        });
+        break;
+
+    case 5:
+        // Arnoz KLShield.  Populate each board, allowing
+        // for up to seven copies of Mollusk board.
+        $.each({
+            "expansion main": { headers: klShieldBoard_headers, image: "KLShieldBoardPins.png", copies: 1 },
+            "expansion mollusk": { headers: molluskBoard_headers, image: "MolluskBoardPins.png", copies: 8 },
+        }, function (boardName, boardInfo) {
+            $.each(boardInfo.headers, function (headerName, headerInfo) {
+                forEachPin(headerInfo, function (pinName, n, x, y) {
+                    for (var i = 1; i <= boardInfo.copies; ++i) {
+                        var o = {
+                            board: boardName + (boardInfo.copies > 1 ? " #" + i : ""),
+                            header: headerName,
+                            pinNum: n,
+                            image: boardInfo.image,
+                            wrapper: "klShieldBoardPinSelector",
+                            x: x,
+                            y: y
+                        };
+                        
+                        // for PTxx ports, index them under 2.x (digital out) and
+                        // 1.x (PWM out), as applicable
+                        if (/PT[A-E]\d+/.test(pinName)) {
+                            // all ports can be used as digital outs
+                            pinInfoMap["2." + pinName] = o;
+
+                            // check for PWM capability
+                            var g = gpioPinsByName[pinName];
+                            if (g && g.pwm)
+                                pinInfoMap["1." + pinName] = o;
+                        }
+                        else {
+                            // not a GPIO port - use the normal N.M notation
+                            pinInfoMap[pinName] = o;
+                        }
+                    }
+                });
+            });
+        });
+        break;
     }
 
     // return the result
     return pinInfoMap;
 }
 
+ 

@@ -741,6 +741,27 @@ div.chipNo.header {
     left: 0px;
 }
 
+.rigMasterBoardPinSelector .pinimage {
+    left: 0px;
+}
+.klShieldBoardPinSelector .pinimage {
+    left: 0px;
+}
+.molluskBoardPinSelector .pinimage {
+    left: 0px;
+}
+.rigMasterBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+.klShieldBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
+.molluskBoardPinSelector .pinLegend {
+    left: 0px;
+    bottom: 28px;
+}
 
 .pinimage .pinoverlay {
     display: inline-block;
@@ -851,6 +872,22 @@ div.chipNo.header {
     left: -6px;
     top: -6px;
 }
+.rigMasterBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
+.klShieldBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
+.molluskBoardPinSelector .pinoverlay {
+    /* offset by negative half of pin image size */
+    left: -6px;
+    top: -6px;
+}
+
 .expBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
@@ -862,6 +899,21 @@ div.chipNo.header {
     height: 12px;
 }
 .liteBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.rigMasterBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.klShieldBoardPinSelector .pinButton {
+    background-image: url(expPinSprite.png);
+    width: 12px;
+    height: 12px;
+}
+.molluskBoardPinSelector .pinButton {
     background-image: url(expPinSprite.png);
     width: 12px;
     height: 12px;
