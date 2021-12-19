@@ -2691,9 +2691,9 @@ $("#btnButtonTest").click(function(ev)
     ev.preventDefault();
     var cfgMem = normalizeConfig(configFromUI());
     var cfgDev = normalizeConfig(config);
-    if (!valEq(cfgMem.buttons, cfgDev.buttons)
-        || !valEq(cfgMem.xbuttons, cfgDev.xbuttons)
-        || !valEq(cfgMem.shiftButton, cfgDev.shiftButton))
+    if (!valEq(cfgMem.buttons, cfgDev.buttons, "config.buttons")
+        || !valEq(cfgMem.xbuttons, cfgDev.xbuttons, "config.xbuttons")
+        || !valEq(cfgMem.shiftButton, cfgDev.shiftButton, "config.shiftButton"))
     {
         if (!window.external.YesNoDialog(
             "You've made changes to the button settings that you haven't "
@@ -4124,7 +4124,7 @@ $("#btnOutputTest").click(function(ev)
     ev.preventDefault();
     var cfgMem = normalizeConfig(configFromUI());
     var cfgDev = normalizeConfig(config);
-    if (!valEq(cfgMem.outputs, cfgDev.outputs))
+    if (!valEq(cfgMem.outputs, cfgDev.outputs, "config.outputs"))
     {
         if (!window.external.YesNoDialog(
             "You've made changes to the output port settings that you haven't "
@@ -5762,11 +5762,11 @@ $("#printButton").click(function(ev) {
             control port.
          </div>
          <div>
-            <div class="iconWithTitle button available" data-pin="NC "id="btnMakeVirtualPort">
+            <div class="iconWithTitle button available" data-pin="0" id="btnMakeVirtualPort">
                <img src="virtualOutSmall.png">
                <br>Virtual
             </div>
-            <div class="iconWithTitle button available" data-pin="NC" id="btnMakeZBPort">
+            <div class="iconWithTitle button available" data-pin="0" id="btnMakeZBPort">
                <img src="zbLaunch32.png">
                <br>ZB Launch Port
             </div>
@@ -6062,16 +6062,53 @@ function uiDirty()
 
     // if it matches the device configuration or the last configuration
     // saved or loaded from a file, it's not dirty
-    return !(valEq(uic, normalizeConfig(config)) || valEq(uic, normalizeConfig(fileConfig)))
-        || !(valEq(uixc, normalizeXConfig(xconfig)) || valEq(uic, normalizeXConfig(fileXConfig)));
+    return !(valEq(uic, normalizeConfig(config), "config") || valEq(uic, normalizeConfig(fileConfig), "fileConfig"))
+        || !(valEq(uixc, normalizeXConfig(xconfig), "xconfig") || valEq(uic, normalizeXConfig(fileXConfig), "fileXConfig"));
 }
 
 // Compare two values, doing a deep comparison of properties of objects
-function valEq(a, b)
+function valEq(a, b, path)
 {
-    // Show debugging alerts?  (Helps identify the source of a mismatch,
-    // when spurious mismatches are detected.)
+    // Show debugging alerts?  Enable this if you're trying to debug
+    // a spurious mismatch when exiting the configuration without having
+    // made any changes.  When enabled, alerts will identify the changed
+    // property.  In most cases, a spurious detected change means that
+    // the property involved shouldn't be in the compared data trees
+    // at all, because it's a contingent property that only applies
+    // when certain other configuration settings are made.  The
+    // normalizer function is supposed to remove unused contingent
+    // properties from the trees so that they're not compared in the
+    // first place and thus don't trigger spurious change detection.
     var debugAlert = false;
+    function debugLog(name, msg) {
+        function debugToString(val) {
+            if ($.isArray(val)) {
+                var lst = [];
+                for (var i = 0; i < val.length; ++i)
+                    lst.push(debugToString(val[i]));
+                return "[" + lst.join(", ") + "]";
+            }
+            else if (typeof val == "object") {
+                if (val instanceof Date
+                    || val instanceof RegExp
+                    || val instanceof String
+                    || val instanceof Number)
+                    return val.toString();
+
+                var lst = [];
+                for (var p in val)
+                    lst.push(p + ":" + debugToString(val[p]));
+                return "{ " + lst.join(", ") + " }";
+            }
+            else
+                return val.toString();
+        }
+        if (debugAlert) {
+            if (path)
+                name = path + name;
+            alert(name + ": " + msg + "\n\na=" + debugToString(a) + "\nb=" + debugToString(b));
+        }
+    }
     
     // NaN == NaN requires a special test
     if (isNaN(a) && isNaN(b) && typeof a == "number" && typeof b == "number")
@@ -6088,7 +6125,9 @@ function valEq(a, b)
         || (a instanceof String && b instanceof String)
         || (a instanceof Number && b instanceof Number))
     {
-        return a.toString() === b.toString();
+        var eq = a.toString() === b.toString();
+        if (!eq) debugLog("", "values differ");
+        return eq;
     }
 
     // if they're arrays, check them recursively
@@ -6097,15 +6136,15 @@ function valEq(a, b)
         // if the arrays aren't of equal length, they differ
         var l = a.length;
         if (b.length != l) {
-            if (debugAlert) alert("a.length != b.length"); // [debug]
+            debugLog(".length", "array lengths differ");
             return false;
         }
 
         // the lengths match; compare each element
         for (var i = 0 ; i < l ; ++i)
         {
-            if (!valEq(a[i], b[i])) {
-                if (debugAlert) alert("a[" + i + "] != b[" + i + "]"); // [debug]
+            var sublog = { name: "", msg: "" };
+            if (!valEq(a[i], b[i], path + "[" + i + "]")) {
                 return false;
             }
         }
@@ -6117,15 +6156,19 @@ function valEq(a, b)
         // check that all properties of a are in b
         for (var p in a) {
             if (!(p in b)) {
-                if (debugAlert) alert("p not in b: " + p); // [debug]
+                debugLog("." + p, "property not in RHS");
                 return false;
             }
         }
 
         // all a.p are in b; now check that all b.p equal a.p
+        var sublog = debugAlert ? [] : undefined;
         for (var p in b) {
-            if (!(p in a) || !valEq(a[p], b[p])) {
-                if (debugAlert) alert((p in a) ? "vals differ: " + p : "p not in a: " + p); // [debug]
+            if (!(p in a)) {
+                debugLog("." + p, "property not in LHS");
+                return false;
+            }
+            else if (!valEq(a[p], b[p], path + "." + p)) {
                 return false;
             }
         }
@@ -6135,6 +6178,7 @@ function valEq(a, b)
     }
     
     // consider anything else unequal
+    debugLog("", "values differ");
     return false;
 }
 
@@ -8642,14 +8686,37 @@ function normalizeConfig(config)
     delete config.plungerFilters;
     delete config.plungerBarCode;
 
-    // if in standalone mode, clear all expansion board fields
+    // clear unused expansion board configuration fields
     if (config.expansionBoards) {
-        if (config.expansionBoards.type == 0) {
+        switch (config.expansionBoards.type)
+        {
+        case 0:
+            // Standalone mode - clear all fields
             config.expansionBoards.version = 0;
             config.expansionBoards.ext0 = 0;
             config.expansionBoards.ext1 = 0;
             config.expansionBoards.ext2 = 0;
             config.expansionBoards.ext3 = 0;
+            break;
+
+        case 1:  // Pinscape Expansion Boards (original DIY)
+        case 2:  // Oak Micros AIO
+        case 3:  // Oak Micros Lite
+            // ext0 = number of main boards (always 1)
+            // ext1 = number of MOSFET Power Boards
+            // ext2 = number of Chime Boards
+            // others unused
+            config.expansionBoards.ext3 = 0;
+            break;
+
+        case 4:  // Arnoz RigMaster
+        case 5:  // Arnoz KLShield
+            // ext0 = number of main boards (always 1)
+            // ext1 = number of Mollusk boards
+            // others unused
+            config.expansionBoards.ext2 = 0;
+            config.expansionBoards.ext3 = 0;
+            break;
         }
     }
 
