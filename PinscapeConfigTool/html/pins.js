@@ -1171,8 +1171,8 @@ var expansionBoardFactoryConfig = {
         20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
         21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
         22: { pin: "PTD6",  keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
-        23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
-        24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
+        23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume up
+        24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume down
     },
     outputs: {
         // Map the first 16 ports to the flashers & strobe on TLC5940 #1.
@@ -1347,8 +1347,8 @@ var pinscapeAIOFactoryConfig = {
         20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
         21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
         22: { pin: "PTD6",  keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
-        23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
-        24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
+        23: { pin: "PTD7",  keytype: 3, keycode: 0xE9, flags: 0 },  // media volume up
+        24: { pin: "PTE1",  keytype: 3, keycode: 0xEA, flags: 0 }   // media volume down
     },
     outputs: {
         // Map the first 16 ports to the flashers & strobe on TLC5940 #1.
@@ -1530,8 +1530,8 @@ var pinscapeLiteFactoryConfig = {
         20: { pin: "PTA17", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
         21: { pin: "PTE31", keytype: 2, keycode: 0x2E, flags: 0 },  // "=" = VP volume down
         22: { pin: "PTD6", keytype: 2, keycode: 0x2D, flags: 0 },  // "-" = VP volume up
-        23: { pin: "PTD7", keytype: 3, keycode: 0xE9, flags: 0 },  // media volume down
-        24: { pin: "PTE1", keytype: 3, keycode: 0xEA, flags: 0 }   // media volume up
+        23: { pin: "PTD7", keytype: 3, keycode: 0xE9, flags: 0 },  // media volume up
+        24: { pin: "PTE1", keytype: 3, keycode: 0xEA, flags: 0 }   // media volume down
     },
     outputs: {
         // Map the 12 GPIOs that connect to MOSFET power outputs
@@ -1647,8 +1647,8 @@ var rigMasterFactoryConfig = {
         17: { pin: "PTD3", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
         18: { pin: "PTD2", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
         19: { pin: "PTC16", keytype: 0, keycode: 0, flags: 0 },  // NightMode
-        20: { pin: "PTC7", keytype: 3, keycode: 0xE9, flags: 0 },  // Volume-
-        21: { pin: "PTC17", keytype: 3, keycode: 0xEA, flags: 0 },  // Volume+
+        20: { pin: "PTC7", keytype: 3, keycode: 0xEA, flags: 0 },  // Volume-
+        21: { pin: "PTC17", keytype: 3, keycode: 0xE9, flags: 0 },  // Volume+
     },
     outputs: {
         // Map the 16 GPIOs that connect to MOSFET power outputs
@@ -1749,8 +1749,8 @@ var klShieldFactoryConfig = {
         17: { pin: "PTD3", keytype: 2, keycode: 0x26, flags: 0 },  // "9" = service up/+
         18: { pin: "PTD2", keytype: 2, keycode: 0x27, flags: 0 },  // "0" = service enter
         19: { pin: "PTC16", keytype: 0, keycode: 0, flags: 0 },  // NightMode
-        20: { pin: "PTC7", keytype: 3, keycode: 0xE9, flags: 0 },  // Volume-
-        21: { pin: "PTC17", keytype: 3, keycode: 0xEA, flags: 0 },  // Volume+
+        20: { pin: "PTC7", keytype: 3, keycode: 0xEA, flags: 0 },  // Volume-
+        21: { pin: "PTC17", keytype: 3, keycode: 0xE9, flags: 0 },  // Volume+
     },
     outputs: {
 
