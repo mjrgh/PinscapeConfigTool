@@ -610,13 +610,13 @@ namespace PinscapeConfigTool
         //   $D  -> DWord (32 bits): message byte+byte+byte+byte (little-endian unsigned)
         //          <-> javascript int
         //
-        //   $P  -> Pin: messsage GPIO pin ID byte <-> javascript Pin Name string.
+        //   $P  -> Pin: message GPIO pin ID byte <-> javascript Pin Name string.
         //          The pin ID byte is encoded with the port number [0-4 for
         //          PTA-PTE] in the high 3 bits, and the pin number in the low 
         //          5 bits.  The special value 0xFF means Not Connected.
         //
         //   $o  -> Output port: message byte+byte (port type, pin number) <-> 
-        //          javascript struture {type: <number>, pin: <pin name or number>}.
+        //          javascript structure {type: <number>, pin: <pin name or number>}.
         //          The 'type' entry is simply the first byte of the message byte
         //          pair.  The 'pin' entry is EITHER a Pin Name string or a port
         //          number, according to the type.  For GPIO ports, it's a Pin Name
@@ -645,7 +645,7 @@ namespace PinscapeConfigTool
             "1 USBID {vendor:$W,product:$W}",
             "2 pinscapeID $B",
             "3 joystick {enabled:$B,axisFormat:$B,reportInterval:$D}", 
-            "4 accelerometer {orientation:$B,dynamicRange:$B,autoCenterMode:$B,stutter:$B}",
+            "4 accelerometer {orientation:$B,dynamicRange:$B,autoCenterMode:$B,stutter:$B,velocityScalingFactor:$B}",
             "5 plungerType {type:$B,param1:$B}",
             "6 plungerPins {a:$P,b:$P,c:$P,d:$P}",
             "7 calButtonPins {enabled:$B,button:$P,led:$P}",
@@ -664,6 +664,7 @@ namespace PinscapeConfigTool
             "20 plungerBarCode {startPix:$W}",
             "21 TLC59116 {chipMask:$W,SDA:$P,SCL:$P,RESET:$P}",
             "22 plungerCalRaw {raw0:$W,raw1:$W,raw2:$W}",
+            "23 gpioPwmFreq $W",
             "250[] IRCode3 {codeHi:$D}",
             "251[] IRCode2 {protocol:$B,codeLo:$D}",
             "252[] IRCode1 {flags:$B,keytype:$B,keycode:$B}",
@@ -975,7 +976,8 @@ namespace PinscapeConfigTool
                         + String.Format(@",""SBXPBX"": {0}", cfg.sbxpbx ? "true" : "false")
                         + String.Format(@",""AccelFeatures"": {0}", cfg.accelFeatures ? "true" : "false")
                         + String.Format(@",""ChimeLogicFeatures"": {0}", cfg.chimeLogicFeatures ? "true" : "false")
-                        + String.Format(@",""ReportTimingFeatures"": {0}", cfg.reportTimingFeatures ? "true" : "false");
+                        + String.Format(@",""ReportTimingFeatures"": {0}", cfg.reportTimingFeatures ? "true" : "false")
+                        + String.Format(@",""VelocityFeatures"": {0}", cfg.velocityFeatures ? "true" : "false");
                 }
 
                 // return the basic info from the device list entry

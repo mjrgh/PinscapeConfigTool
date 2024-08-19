@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.IO;
+using System.Windows.Interop;
 
 namespace PinscapeConfigTool
 {
@@ -29,6 +30,19 @@ namespace PinscapeConfigTool
 
         // current joystick position from the background thread
         int x, y, z;
+
+        // velocity readings
+        int vx = 0, vy = 0, vz = 0;
+
+        // velocity readings enabled?
+        bool hasVelocity = false;
+
+        // axis report format
+        int axisFormat = 0;
+
+        // original velocity scaling factor (for comparing on exit, to
+        // ask about saving)
+        int origVelocityScalingFactor = 0;
 
         // current joystick button state
         uint jsButtons = 0;
@@ -63,13 +77,60 @@ namespace PinscapeConfigTool
             // hide the Center Now button if the new accelerometer
             // features aren't present in the firmware
             DeviceInfo.ConfigReport cfg = dev.GetConfigReport();
-            if (cfg != null && !cfg.accelFeatures)
-                linkCenter.Visible = false;
+            if (cfg != null)
+            {
+                if (!cfg.accelFeatures)
+                    linkCenter.Visible = false;
+
+                if (cfg.velocityFeatures)
+                {
+                    hasVelocity = true;
+                }
+                else
+                {
+                    lblVXVY.ForeColor = Color.Gray;
+                    lblVelocityPlot.BackColor = Color.LightGray;
+                    lblAccelVelocityTitle.ForeColor = Color.Gray;
+                }
+            }
+
+            // get the joystick axis format
+            var jsCfg = dev.QueryConfigVar(3);
+            if (jsCfg != null)
+                axisFormat = jsCfg[1];
+
+            // get the velocity scaling factor
+            var accCfg = dev.QueryConfigVar(4);
+            if (accCfg != null)
+            {
+                velocityScale.Text = accCfg[4].ToString();
+                origVelocityScalingFactor = accCfg[4];
+            }
         }
 
         Font menuFont = SystemFonts.MenuFont;
 
-        private void JoystickViewer_FormClosed(object sender, FormClosedEventArgs e)
+		private void JoystickViewer_FormClosing(object sender, FormClosingEventArgs e)
+		{
+            int newVelocityScalingFactor;
+            if (int.TryParse(velocityScale.Text, out newVelocityScalingFactor) && newVelocityScalingFactor != origVelocityScalingFactor)
+            {
+				if (MessageBox.Show("You changed the velocity scaling factor setting. "
+                    + "Would you like to save the new setting on the device (in its flash memory)?",
+					"Pinscape Config Tool", MessageBoxButtons.YesNo) == DialogResult.Yes)
+				{
+                    // save the update - there's no need to reboot for this setting
+					dev.SaveConfig(false);
+				}
+                else
+                {
+                    // restore the original setting
+                    SetVelocityScalingFactor(origVelocityScalingFactor);
+                }
+			}
+		}
+
+		private void JoystickViewer_FormClosed(object sender, FormClosedEventArgs e)
         {
             // dispose of GDI resources
             jsOn.Dispose(); jsOn = null;
@@ -106,14 +167,39 @@ namespace PinscapeConfigTool
                     if (buf == null || (buf[2] & 0x80) != 0)
                         continue;
 
-                    // Read the X, Y, and Z coordinates from the report.  These are
-                    // 16-bit signed values.
-                    x = (int)(Int16)(buf[9] + (buf[10] << 8));
-                    y = (int)(Int16)(buf[11] + (buf[12] << 8));
-                    z = (int)(Int16)(buf[13] + (buf[14] << 8));
+                    // Read the accelerometer X/Y  and plunger Z coordinates from the
+                    // report.  These are 16-bit signed values.  If we're using RX/RY/RZ
+                    // reporting format, the values are in the second group of axes at
+                    // the 'R' values.
+                    switch (axisFormat)
+                    {
+                        case 0:
+                            // X/Y/Z only, in first set of axes
+                            x = (int)(Int16)(buf[9] + (buf[10] << 8));
+                            y = (int)(Int16)(buf[11] + (buf[12] << 8));
+                            z = (int)(Int16)(buf[13] + (buf[14] << 8));
+                            break;
 
-                    // read the button state
-                    jsButtons = (uint)(buf[5] | (buf[6] << 8) | (buf[7] << 16) | (buf[8] << 24));
+                        case 1:
+							// RX/RY/RZ only, in second set of axes
+							x = (int)(Int16)(buf[15] + (buf[16] << 8));
+							y = (int)(Int16)(buf[17] + (buf[18] << 8));
+							z = (int)(Int16)(buf[19] + (buf[20] << 8));
+							break;
+
+                        case 2:
+							// acceleration/plunger on X/Y/Z, velocities on RX/RY/RZ
+							x = (int)(Int16)(buf[9] + (buf[10] << 8));
+							y = (int)(Int16)(buf[11] + (buf[12] << 8));
+							z = (int)(Int16)(buf[13] + (buf[14] << 8));
+							vx = (int)(Int16)(buf[15] + (buf[16] << 8));
+							vy = (int)(Int16)(buf[17] + (buf[18] << 8));
+							vz = (int)(Int16)(buf[19] + (buf[20] << 8));
+                            break;
+					}
+
+					// read the button state
+					jsButtons = (uint)(buf[5] | (buf[6] << 8) | (buf[7] << 16) | (buf[8] << 24));
 
                     // if logging keys, add to the log
                     if (logging)
@@ -154,7 +240,26 @@ namespace PinscapeConfigTool
             lblXY.Text = x + ", " + y;
         }
 
-        private void lblPlunger_Paint(object sender, PaintEventArgs e)
+		private void lblVelocityPlot_Paint(object sender, PaintEventArgs e)
+		{
+            if (hasVelocity)
+            {
+                // get the drawing context
+                Graphics g = e.Graphics;
+                int wid = lblVelocityPlot.Width, ht = lblVelocityPlot.Height;
+
+                // draw the velocity crosshairs
+                int vxprop = (int)(vx * (wid / 2) / 4095.0) + (wid / 2);
+                int vyprop = (int)(vy * (ht / 2) / 4095.0f) + (ht / 2);
+                g.FillRectangle(Brushes.White, 0, 0, wid, ht);
+                g.DrawImage(crosshairs, vxprop, vyprop);
+
+                // update the velocity label
+                lblVXVY.Text = vx + ", " + vy;
+            }
+		}
+
+		private void lblPlunger_Paint(object sender, PaintEventArgs e)
         {
             // get the drawing context
             Graphics g = e.Graphics;
@@ -253,6 +358,7 @@ namespace PinscapeConfigTool
         {
             // update the viewer
             lblAccel.Invalidate();
+            if (hasVelocity) lblVelocityPlot.Invalidate();
             lblPlunger.Invalidate();
             jsKeyState.Invalidate();
         }
@@ -299,7 +405,67 @@ namespace PinscapeConfigTool
             }
         }
 
-        private void btnHelp_Click(object sender, EventArgs e)
+		private void JoystickViewer_Load(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblZ_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label3_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void velocityScale_TextChanged(object sender, EventArgs e)
+		{
+            int val;
+            if (int.TryParse(velocityScale.Text, out val))
+            {
+                if (val >= 0 && val <= 255)
+                {
+                    lblVelocityScalingError.Visible = false;
+                    SetVelocityScalingFactor(val);
+                }
+                else
+                {
+					lblVelocityScalingError.Visible = true;
+				}
+			}
+		}
+
+        private void SetVelocityScalingFactor(int val)
+        {
+            if (val >= 0 && val <= 255)
+            {
+                var c = dev.QueryConfigVar(4);
+                if (c != null)
+                {
+                    c[4] = (byte)val;
+                    dev.SetConfigVar(4, c);
+                }
+            }
+		}
+
+		private void lblPlunger_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label4_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnHelp_Click(object sender, EventArgs e)
         {
             (new Help("HelpJoystickViewer.htm")).Show();
         }

@@ -271,7 +271,8 @@ public class DeviceInfo : IDisposable
             flashStatusFeature = (buf[12] & 0x08) != 0;
             reportTimingFeatures = (buf[12] & 0x10) != 0;
             chimeLogicFeatures = (buf[12] & 0x20) != 0;
-            freeHeapBytes = buf[13] | (buf[14] << 8);
+			velocityFeatures = (buf[12] & 0x40) != 0;
+			freeHeapBytes = buf[13] | (buf[14] << 8);
         }
 
         public bool configured;     // a saved configuration has been loaded; 
@@ -285,7 +286,8 @@ public class DeviceInfo : IDisposable
         public bool flashStatusFeature;  // "flash write ok" status bit is supported in
                                     // joystick reports
         public bool chimeLogicFeatures; // chime logic features enabled
-        public int psUnitNo;        // Pinscape unit number, 1-16
+		public bool velocityFeatures; // accelerometer velocity integration, plunger speed
+		public int psUnitNo;        // Pinscape unit number, 1-16
         public int numOutputs;      // number of configured (in-use) feedback device outputs
         public int plungerZero;     // plunger calibration zero point
         public int plungerMax;      // plunger calibration maximum

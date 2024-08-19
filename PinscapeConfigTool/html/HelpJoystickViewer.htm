@@ -49,6 +49,39 @@
 	  "Center Now" button to zero the accelerometer manually.
    </p>
 
+   <h2>Accelerometer Velocity</h2>
+   <p>
+      This shows the "integrated velocity" reading for the accelerometer.
+      This is only enabled if you're using the August 2024 or later
+      firmware, and you've configured the joystick report to use the
+      <b>X/Y/Z + RX/RY/RZ</b> format.  When that format is enabled,
+      the device calculates the implied cabinet velocity from the
+      acceleration readings, and reports the velocity on the RX/RY
+      axes.  This graph shows the current velocity reading.  
+   </p>
+   <p>
+      The velocity reading is designed for use with pinball
+      simulators that can accept nudge input in the form of velocity.
+      The reason to use velocity input when possible is that the device can
+      calculate this more accurately than the simulator can, because of
+      the device's direct, high-speed access to the sensor.  Calculating
+      the velocity on the device and passing it to the simulator should
+      provide a more natural and realistic nudge response in the simulation.
+   </p>
+   <p>
+      The <b>Scale</b> box below the velocity graph lets you adjust
+      the scaling factor used to send the velocity information to
+      the PC.  Set this to 0 to use the default scaling (currently 20).
+      You should adjust this for your cabinet's dynamics by testing
+      hard nudges - try using nudges equal to the most aggressive
+      you'd use during virtual pinball play.  Adjust the scaling
+      factor so that the hardest nudges result in readings that
+      are <i>almost</i> at full scale, 4096 on the graph.  This will
+      take advantage of the full available precision in the USB
+      transmission.  Readings around 20 should work well in most
+      cabinets.
+   </p>
+   
    <h2>Plunger</h2>
    <p>
 	  The plunger readings shown here take into account the

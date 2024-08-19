@@ -798,7 +798,7 @@ namespace PinscapeConfigTool
             {
                 if (MessageBox.Show("You've changed the " + msg.SerialJoin() + " settings."
                     + " Would you like to save the new setting" + (msg.Count > 1 ? "s" : "")
-                    + " on the device?",
+                    + " on the device (in its flash memory)?",
                     "Pinscape Config Tool", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     // Yes, save - send the updated settings to the device

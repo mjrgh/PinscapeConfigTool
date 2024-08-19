@@ -1319,9 +1319,11 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
       </div>
 
 	  <div id="jsAxisFormat">
-		 Joystick axis format: <select id="jsAxisList" style="margin: .5ex 1em .5ex 1em;">
-			<option value="0">X/Y/Z</option>
-			<option value="1">Rx/Ry/Rz</option>
+         Joystick axis format:
+         <select id="jsAxisList" style="margin: .5ex 1em .5ex 1em;">
+            <option value="0">X/Y/Z</option>
+            <option value="1">Rx/Ry/Rz</option>
+            <option value="2">X/Y/Z + Rx/Ry/Rz Velocity</option>
 		 </select>
 		 <a href="#" class="shower">What's this?</a>
 		 <div class="hider">
@@ -1339,12 +1341,12 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
                in place of the normal X/Y/Z axes.
 			</p>
 			<p>
-               Why would you want to use the "R" axes?  In most cases, you wouldn't;
-               the normal X/Y/Z settings are recommended because they're compatible
-               with most software.  However, the "R" axes can be useful if you have
-               other joysticks in your system that are conflicting with Pinscape.
-               If your other joystick is reporting its input on the normal X/Y/Z
-               axes, and it's creating problems with VP or other software, you 
+               Why would you want to use the "R" axes instead of the regular X/Y/Z axes?
+               In most cases, you wouldn't; the normal X/Y/Z settings are recommended because
+               they're compatible with most of the popular pinball programs.  However, the "R" axes
+               can be useful if you have other joysticks in your system that are conflicting
+               with Pinscape.  If your other joystick is reporting its input on the normal
+               X/Y/Z axes, and it's creating problems with VP or other software, you 
                might be able to fix the conflict by telling Pinscape to use the 
                Rx/Ry/Rz axes instead.
 			</p>
@@ -1359,6 +1361,23 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
                if possible, since that would let you continue using the more 
                compatible X/Y/Z axes for Pinscape.
 			</p>
+            <p class="ifVelocityFeatures">
+               The third option, X/Y/Z + Rx/Ry/Rz Velocity, is a newer option that reports
+               the accelerometer and plunger readings on the traditional X/Y/Z axes,
+               and <b>also</b> reports the <b>accelerometer velocity</b> and
+               <b>plunger speed</b> on the "R" axes.  The additional information
+               can be used in newer versions of Visual Pinball to improve the
+               realism of the physics modeling by providing the simulator with more
+               detailed sensor information than the traditional system allows for.
+               To use the accelerometer velocity readings in VP, use VP's Keys setup
+               dialog to assign the nudge inputs to the Rx and Ry axes, and check
+               the box <b>Nudge Input is Velocity</b>.  (VP doesn't use the X/Y
+               axes as inputs in this arrangement.)  Also assign the Plunger Speed
+               axis in VP to the Rz axis, leaving the Plunger axis assigned
+               to Z as normal.  (For the plunger, VP uses <b>both</b> the position
+               and speed inputs.)  These settings should yield more natural nudge
+               responses and more consistent plunger launch speeds.
+            </p>
 		 </div>
 	  </div>
 
@@ -1367,34 +1386,28 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
 		 <a href="#" class="shower">Explain</a>
 		 <div class="hider">
 			<p>
-			   This lets you set the time between the joystick reports that the
-			   device sends to the PC on the USB connection.  These reports send
-			   current information on the accelerometer readings, plunger position,
-			   and the button-press status for any buttons assigned to the joystick.
+			   This sets the working time on the KL25Z between joystick reports.  In
+               between reports, the KL25Z tends to other tasks.
+            </p>
+            <p>
+               Important: the actual joystick report interval is determined
+               <b>by the PC</b>, not by Pinscape.  This only sets the working time
+               for other tasks on the KL25Z allowed between reports.  This parameter
+               should therefore be set to approximately the same setting as your PC
+               actually uses.  The standard Windows polling rate is about 8ms.  This
+               is not a user-configurable parameter on Windows; it's set inside the
+               USB HID device driver and can't be changed directly, probably because
+               Microsoft believes that the standard value is optimal and that changing
+               t would adversely affect system performance.  However, there are
+               third-party "hack" tools that can mess with it.
 			</p>
 			<p>
-			   Pinscape is capable of sending reports as fast as every 1 to 2
-			   milliseconds.  (The exact speed depends on the type of plunger
-			   sensor and other external hardware you're using.)  But we
-               actually don't want to send reports as fast as we can, because
-               Windows and Visual Pinball can't digest them at that pace.  This
-               setting lets you slow down the reports to a suitable rate 
-               for the PC.
-			</p>
-			<p>
-			   <b>Recommendation:</b> start with an input time of <b>8.333ms</b>
-			   and an "accelerometer stutter" setting of <b>2</b>.  This should
-			   work well on most systems, but it's not necessarily optimal for
-			   everyone, because VP's timing characteristics can vary according
-			   to your PC setup.   You might have to experiment to find the
-			   ideal settings for your system.  After adjusting the timing,
-			   test nudging with VP.  If it seems natural, keep the settings.
-			   If VP's response to nudging seems erratic (for example, it ignores
-			   some nudges, but overreacts to others), try different timings.
-			   It's best to keep the setting in a range from about 5ms to 20ms.
-			   Anything shorter than 5ms will be too fast for Windows to digest
-			   properly, and anything longer than 20ms might produce excessive
-			   latency (games respond slowly to button presses and nudges).
+			   <b>Recommendation:</b> leave this at the standard rate of 8.333ms,
+               <i>unless</i> you've gone to the trouble of hacking your Windows
+               system to change the HID polling rate, in which case you should
+               change this to match your hacked setting.  Setting this to a faster
+               rate than your Windows HID polling rate will have no benefit and will
+               slow down other tasks on the KL25Z.
 			</p>
 		 </div>
 	  </div>
@@ -1422,32 +1435,32 @@ function prepIRCommandSelector(curSelIdx, clickFunc)
 			   every three reports.
 			</p>
 			<p>
-			   Why would you want to slow down the accelerometer readings?  Because
-			   VP can't use the readings if they arrive too quickly.  For best
-			   results in VP, readings should only be sent once per video cycle.
-			   If your graphics card is set to a 60Hz refresh rate, the video
-			   cycle is 16.667 milliseconds long, so VP will work best if you send
-			   accelerometer readings every 16.667ms.  However, you might want to
-			   send joystick reports faster than this, so that joystick button
-			   updates are sent closer to real-time.  This is where the stutter
-			   setting comes in: it lets you send joystick reports at a fast
-			   pace for lower button latency, but slow down the accelerometer
-			   readings to accommodate VP's slowness reading them.
+               The reason that stuttered accelerometer readings can be useful is
+               that VP and other pinball simulators don't always read HID input
+               as fast as the device can send it, so they might not see every
+               reading sent.  Missed readings can cause erratic responsiveness in
+               the simulator, since the simulation simply won't process a nudge if
+               the simulator skips that input.  The stutter rate can help by
+               slowing down the nudge input to a rate that the simulator can
+               process more reliably.
 			</p>
+            <p>
+               The stutter rate only affects the accelerometer readings.
+               The remaining parts of the joystick input (the plunger position
+               and button inputs) are updated on every cycle, so this doesn't
+               increase latency for any other inputs.
+            </p>
 			<p>
-			   <b>Recommendation:</b> start with a joystick report interval
-			   of <b>8.333ms</b> and a stutter setting of <b>2</b>.  This will
-			   read the accelerometer at 60Hz, which is usually optimal for
-			   VP, but will send button input updates twice as often, which
-			   might make other programs that use joystick buttons more
-			   responsive.  The optimal timing in VP can vary according to
-			   your PC setup, though.  Check your video card refresh rate
-               (use the video card rate, <b>not</b> the monitor's refresh
-               rate).  If it's not 60Hz, choose a report interval close to
-               10ms that divides evenly into the refresh interval, and choose
-               a stutter time equal to the refresh interval divided by the
-               report interval.  If your video card refreshes at 120Hz,
-               for example, use an 8.333ms interval and set stutter to 1.
+			   <b>Recommendation:</b>  Start with a setting of 1, which sends
+               accelerometer updates at the natural joystick reporting rate.
+               Make sure that the simulator's nudge parameters (such as VP's
+               "Gain" settings) have been tuned to your liking, then test with
+               a series of strong nudges.  If the simulator erratically responds
+               to some nudges but misses others, try increasing the stutter to
+               2 or 3, and retest to see if it helps.  If it does, leave the
+               stutter in effect; in the absence of a visible improvement,
+               it's probably better to set the stutter to 1 for minimum time
+               padding.
 			</p>			   
 		 </div>
 	  </div>
@@ -1513,7 +1526,8 @@ $("#ckJoystick").change(function() {
 
 
       <div id="newAccelFeatures">
-         <div style="margin-top: 2em;"><b>Dynamic range.</b>  Select the range for
+         <div style="margin-top: 2em;">
+            <b>Dynamic range.</b>  Select the range for
             accelerometer readings.  Ranges above &plusmn;2G have lower precision.
             <a href="#" class="shower">Details</a>
 
@@ -1555,51 +1569,68 @@ $("#ckJoystick").change(function() {
                   and yet again at 8G.
                </p>
             </div>
-
-         <div style="margin-left: 2em; margin-top: 0ex;">
-            <label><input type="radio" name="accelRange" value="0"> &plusmn;1G
-             (original Pinscape setting, highest precision)</label><br>
-            <label><input type="radio" name="accelRange" value="1"> &plusmn;2G
-             (same precision as &plusmn;1G but with wider range)</label><br>
-            <label><input type="radio" name="accelRange" value="2"> &plusmn;4G
-             (reduced precision, wider range)</label><br>
-            <label><input type="radio" name="accelRange" value="3"> &plusmn;8G
-             (lowest precision, widest range)</label><br>
+            
+            <div style="margin-left: 2em; margin-top: 0ex;">
+               <label><input type="radio" name="accelRange" value="0"> &plusmn;1G
+                  (original Pinscape setting, highest precision)</label><br>
+               <label><input type="radio" name="accelRange" value="1"> &plusmn;2G
+                  (same precision as &plusmn;1G but with wider range)</label><br>
+               <label><input type="radio" name="accelRange" value="2"> &plusmn;4G
+                  (reduced precision, wider range)</label><br>
+               <label><input type="radio" name="accelRange" value="3"> &plusmn;8G
+                  (lowest precision, widest range)</label><br>
+            </div>
          </div>
-      </div>
-
-      <div style="margin-top: 2em;">
-         <b>Auto-centering.</b>  The controller automatically zeroes the
-         accelerometer after it's been sitting still for a while.  This
-         compensates for any tilt in the mounting position.  If you prefer,
-         you can disable the automatic centering, and center it manually
-         when needed using the <a href="#" id="accJoystickLink">Joystick Viewer</a>.
-
-         <div id="autoCenterRadioButtons">
-            <div>
-               <label><input type="radio" name="autoCenterMode" value="255"> Manually center only (no auto-centering)</label>
-            </div>
-            <div>
-               <label><input type="radio" name="autoCenterMode" value="0"> Auto-center with default time (5 seconds)</label>
-            </div>
-            <div>
-               <label><input type="radio" name="autoCenterMode" value="1"> Auto-center with custom time</label>
-               <div style="margin: 1ex 2em 0px 1em;" id="accelAutoCenterTimeDiv">
-                  Time in seconds: <input type="text" size="4" id="accelAutoCenterTime">
-                  <span style="padding-left: 3em;"><i>1-60 seconds</i></span>
+         
+         <div style="margin-top: 2em;">
+            <b>Auto-centering.</b>  The controller automatically zeroes the
+            accelerometer after it's been sitting still for a while.  This
+            compensates for any tilt in the mounting position.  If you prefer,
+            you can disable the automatic centering, and center it manually
+            when needed using the <a href="#" id="accJoystickLink">Joystick Viewer</a>.
+            
+            <div id="autoCenterRadioButtons">
+               <div>
+                  <label><input type="radio" name="autoCenterMode" value="255"> Manually center only (no auto-centering)</label>
+               </div>
+               <div>
+                  <label><input type="radio" name="autoCenterMode" value="0"> Auto-center with default time (5 seconds)</label>
+               </div>
+               <div>
+                  <label><input type="radio" name="autoCenterMode" value="1"> Auto-center with custom time</label>
+                  <div style="margin: 1ex 2em 0px 1em;" id="accelAutoCenterTimeDiv">
+                     Time in seconds: <input type="text" size="4" id="accelAutoCenterTime">
+                     <span style="padding-left: 3em;"><i>1-60 seconds</i></span>
+                  </div>
                </div>
             </div>
          </div>
       </div>
-   </div>
-   <div id="noNewAccelFeatures" style="display:none;">
-      The firmware version installed on your device has a fixed &plusmn;1G
-      dynamic range for the accelerometer, and automatic centering (zeroing)
-      after being motionless for 5 seconds.  Update to the latest firmware
-      if you want to customize these settings.
-   </div>
-
-   <script>
+      <div id="noNewAccelFeatures" style="display:none;">
+         The firmware version installed on your device has a fixed &plusmn;1G
+         dynamic range for the accelerometer, and automatic centering (zeroing)
+         after being motionless for 5 seconds.  Update to the latest firmware
+         if you want to customize these settings.
+      </div>
+      
+      <div class="ifVelocityFeatures">
+         <div style="margin-top: 2em;">
+            <b>Velocity scaling factor.</b> This sets the scaling for the
+            velocity axis in joystick reports, if enabled.  The joystick
+            report type must be set to <b>X/Y/Z + RX/RY/RZ</b> for velocity
+            reports to be generated.  The scaling factor should be set so
+            that your hardest nudges show up as approximately full-scale
+            in the joystick viewer on the RX/RY axes.
+            
+            <div style="margin-left: 2em">
+               Scaling factor: <input type="text" size="5" id="accelVelocityScalingFactor">
+               <span style="padding-left: 3em"><i>1-255; 0 = default (20)</i></span>
+            </div>
+         </div>
+            
+      </div>
+      
+      <script>
 $("#accJoystickLink").click(function(ev) {
     ev.preventDefault();
     window.external.ShowJoystickViewer(CPUID);
@@ -4095,6 +4126,38 @@ function showHideNightModeButtonShift()
       For each port, you can select the physical output pin that the port is wired to.
 
       <div>
+         Default PWM GPIO frequency (Hz): <input id="gpioPwmFreq" size="6" value="20000"> (0 = default)
+		 <a href="#" class="shower">Explain</a>
+		 <div class="hider">
+			<p>
+               This sets the default PWM frequency for GPIO output ports.  Enter 0 to
+               select the firmware default (currently 20000 Hz).  This only affects direct
+               GPIO outputs, not outputs through expansion board ports or external controller
+               chips like TLC5940.  If you're using an IR transmitter or TLC5940 chips, the
+               frequency requirements for those functions will supersede this setting for
+               certain ports, because the KL25Z hardware arranges the PWM ports in groups
+               that share a common frequency.  See
+               <a target="_blank" href="http://mjrnet.org/pinscape/BuildGuideV2/BuildGuide.php?sid=kl25zPinOut#PWMLimitations">
+                  KL25Z Pin Out &gt; PWM Limitations</a>
+               in the Pinscape Build Guide for details.
+            </p>
+            <p>
+               The PWM frequency can affect the behavior of attached output devices,
+               such  as LEDs (which can flicker visibly if the rate is too slow,
+               typically below 200 Hz), and motors and solenoids (which can buzz or
+               whine if the rate is within the human hearing range, up to about 20000
+               Hz). If you're using booster/amplifier circuits, setting the rate too
+               <b>high</b> might prevent the boosters from working, since some
+               components used in those have limited switching speeds.  A rate
+               around 20000 is usually safe, but if you have problems with
+               booster circuits, try a lower rate to see if that helps.  If
+               a motor or solenoid is making a lot of noise (especially at low
+               duty cycle settings), try increasing the frequency.
+			</p>
+         </div>
+      </div>
+
+      <div>
          <a href="#" id="btnOutputTest" class="button">Test Outputs</a>
       </div>
 
@@ -6245,6 +6308,12 @@ $(function() {
         // show the appropriate sections for the new accelerometer features
         $("#newAccelFeatures").toggle(!!deviceInfo.AccelFeatures);
         $("#noNewAccelFeatures").toggle(!deviceInfo.AccelFeatures);
+
+        // likewise the velocity features
+        $(".ifVelocityFeatures").toggle(!!deviceInfo.VelocityFeatures);
+        $(".ifNoVelocityFeatures").toggle(!deviceInfo.VelocityFeatures);
+        if (!deviceInfo.VelocityFeatures)
+            $("#jsAxisList option[value=\"2\"]").remove();
 
         // show the appropriate sections for the joystick report timing features
         $("#jsReportTiming, #accelStutter").toggle(!!deviceInfo.ReportTimingFeatures);
@@ -9085,11 +9154,12 @@ function configFunctionSetup()
               return v >= 1 && v <= 60 ? v : 5;
           }
         },
+        { prop: "accelerometer.velocityScalingFactor", ctl: "#accelVelocityScalingFactor", type: tText, datatype: dNumber },
 
         { prop: "plungerType.type", ctl: "#plungerType", type: tSelect, datatype: dNumber },
         {
             variant: function() {
-                switch (config.plungerType.type)
+                switch (config.plungerType && config.plungerType.type)
                 {
                 case 12: // VCNL4010
                     return {
@@ -9233,7 +9303,8 @@ function configFunctionSetup()
                   mask |= 1 << $(this).data("address"); });
               return mask;
           }
-        }
+        },
+        { prop: "gpioPwmFreq", ctl: "#gpioPwmFreq", type: tText, datatype: dNumber },
     ];
 
     // Mappings between controls and xconfig variables
