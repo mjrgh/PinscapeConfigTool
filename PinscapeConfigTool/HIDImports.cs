@@ -1,7 +1,16 @@
-﻿//////////////////////////////////////////////////////////////////////////////////
-//	HIDImports.cs
-//	For more information: http://wiimotelib.codeplex.com/
-//////////////////////////////////////////////////////////////////////////////////
+﻿// HIDImports.cs
+// Based on WiimoteLib by Brian Peek (https://github.com/BrianPeek/WiimoteLib)
+//
+// C# bindings to the native Win32 API functions related to HID access,
+// mostly from hid.lib and setup32.lib, plus low-level file-access
+// functions to directly read and write USB devices via their virtual
+// file system presence.  Everything here is just directly imported
+// from Win32 APIs, so documentation can be found in the Windows SDK
+// documentation.  C# provides managed objects for just a few of the
+// system structs used by these calls, which we use where possible.
+// Windows system handles are generally treated as IntPtr, which is
+// the C# convention for passing handles to unmanaged code.
+
 using System;
 using System.IO;
 using System.Runtime.InteropServices;

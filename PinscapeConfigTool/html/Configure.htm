@@ -4125,7 +4125,7 @@ function showHideNightModeButtonShift()
       port numbers when you set up your <a class="dofconfigtool">DOF configuration</a>.
       For each port, you can select the physical output pin that the port is wired to.
 
-      <div>
+      <div id="pwmFrequencyOptions">
          Default PWM GPIO frequency (Hz): <input id="gpioPwmFreq" size="6" value="20000"> (0 = default)
 		 <a href="#" class="shower">Explain</a>
 		 <div class="hider">
@@ -6305,8 +6305,9 @@ $(function() {
             $("#heapInfo").show();
         }
 
-        // show the appropriate sections for the new accelerometer features
+        // show the appropriate sections for the new accelerometer/plunger/adjustable PWM features
         $("#newAccelFeatures").toggle(!!deviceInfo.AccelFeatures);
+        $("#pwmFrequencyOptions").toggle(!!deviceInfo.AccelFeatures);
         $("#noNewAccelFeatures").toggle(!deviceInfo.AccelFeatures);
 
         // likewise the velocity features
