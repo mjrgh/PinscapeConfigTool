@@ -40,6 +40,9 @@ namespace PinscapeCmd
                     + "NightMode=state : turn night mode ON or OFF (replace 'state' with ON or\n"
                     + "    OFF according to which state you want to engage).\n"
                     + "\n"
+                    + "CheckNightMode : writes a message to the console showing the current Night\n"
+                    + "    Mode setting on the device\n"
+                    + "\n"
                     + "TVON=mode : turn the TV relay on or off, or pulse it.  'mode' can be ON to\n"
                     + "    turn the relay on, OFF to turn it off, or PULSE to pulse the relay for\n"
                     + "    a moment (on and then off), the same way the controller normally pulses\n"
@@ -132,12 +135,20 @@ namespace PinscapeCmd
                                 + "valid options.\n"
                                 + "Please specify NightMode=ON or NightMode=OFF.");
                     }
-                    else if (al == "nightmode")
+					else if (al == "nightmode")
                     {
                         throw new Exception("The \"NightMode\" command requires an ON or OFF parameter.  Write\n"
                             + "this as NightMode=ON or NightMode=OFF.");
                     }
-                    else if (al == "tvon")
+					else if (al == "checknightmode")
+					{
+						byte[] rpt = device.ReadStatusReport();
+						if (rpt == null)
+							System.Console.Write("Unable to read device status\n");
+						else
+							System.Console.Write("Night mode is " + (((rpt[1] & 0x02) != 0) ? "ON" : "OFF") + "\n");
+					}
+					else if (al == "tvon")
                     {
                         if (device == null)
                             throw missingDevice;
