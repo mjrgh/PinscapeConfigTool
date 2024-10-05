@@ -6,7 +6,7 @@ tools for accessing the device through the command line (via a CMD
 box or Windows batch file), which can be helpful for setting up scripted actions
 involving the Pinscape device.
 
-For more information and binary donwloads, visit the
+For more information and binary downloads, visit the
 [Pinscape Release Builds](http://mjrnet.org/pinscape/sw_versions.php) site.
 
 The Pinscape Controller KL25Z firmware source code repository can be found here:
