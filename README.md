@@ -2,7 +2,7 @@
 
 This program lets you set up a KL25Z with the Pinscape Controller firmware and
 select configuration options through a Windows GUI.  There are also some bonus
-tools for accessing controlling features through the command line (via a CMD
+tools for accessing the device through the command line (via a CMD
 box or Windows batch file), which can be helpful for setting up scripted actions
 involving the Pinscape device.
 
