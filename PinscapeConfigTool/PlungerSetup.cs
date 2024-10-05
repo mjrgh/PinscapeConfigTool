@@ -24,17 +24,18 @@ namespace PinscapeConfigTool
         private void PlungerSetup_Load(object sender, EventArgs e)
         {
             // get the plunger type
-            byte[] buf = dev.QueryConfigVar(5);
-            if (buf != null)
+            cfgVar5 = dev.QueryConfigVar(5);
+            if (cfgVar5 != null)
             {
-                // remember the type
-                plungerType = buf[0];
+                // remember the sensor type and 'param1'
+                plungerType = cfgVar5[0];
+                param1 = origParam1 = cfgVar5[1];
 
                 // note the characteristics
                 switch (plungerType)
                 {
                     case PlungerTypeTSL1410R:
-                    case PlungerTypeTSL1412R:
+                    case PlungerTypeTSL1412S:
                     case PlungerTypeTCD1103:
                         // pixel edge detection sensors
                         pixelSensor = true;
@@ -65,6 +66,7 @@ namespace PinscapeConfigTool
             }
 
             // check to see if the firmware has jitter filtering capability
+            byte[] buf;
             if ((buf = dev.QueryConfigVar(0)) != null && buf[0] >= 19)
             {
                 // set the jitter filter control bounds
@@ -86,6 +88,45 @@ namespace PinscapeConfigTool
                 pnlBottom.Top -= h;
                 Height -= h;
                 pnlJitter.Visible = false;
+            }
+
+            // Check for TSL14xx scan mode configuration capability.  Only show
+            // the scan mode selection panel if the firmware capability flag is
+            // set (bit 0x40 of cfgVar19[2]) AND the selected sensor is an image
+            // sensor with scan mode options.
+            bool showScanModePanel = false;
+            if (cfgVar19 != null && (cfgVar19[2] & 0x40) != 0)
+            {
+                // the configuration feature is enabled; check the sensor type
+                if (plungerType == PlungerSetup.PlungerTypeTSL1410R || plungerType == PlungerSetup.PlungerTypeTSL1412S)
+                {
+                    // populate the drop box
+                    cbScanMode.Items.Clear();
+                    cbScanMode.Items.Add("Steady Slope");
+					cbScanMode.Items.Add("Steepest Slope");
+					cbScanMode.Items.Add("Slope Across Gap");
+
+                    // the sensor 'param1' value gives the current mode selection
+                    param1Name = "scan mode";
+                    if (param1 >= 0 && param1 < cbScanMode.Items.Count)
+                        cbScanMode.SelectedIndex = param1;
+
+					// keep the UI controls
+					showScanModePanel = true;
+                }
+            }
+
+            // if we're not showing the scan mode panel, hide it and adjust the
+            // layout to close the gap it leaves
+            if (!showScanModePanel)
+            {
+                int h = pnlScanMode.Height;
+                pnlReverse.Top -= h;
+                pnlJitter.Top -= h;
+                pnlBarCode.Top -= h;
+                pnlBottom.Top -= h;
+                Height -= h;
+                pnlScanMode.Visible = false;
             }
 
             // Check for reverse orientation capability.  To do this, check bit 0x80
@@ -111,7 +152,7 @@ namespace PinscapeConfigTool
             if (barCodeSensor && (cfgVar20 = buf = dev.QueryConfigVar(20)) != null)
             {
                 // read the current offset setting
-                cfgBarCodeOffset = origBarCodeOffset =buf[0] | (buf[1] << 8);
+                cfgBarCodeOffset = origBarCodeOffset = buf[0] | (buf[1] << 8);
                 txtBarCodeOffset.Value = cfgBarCodeOffset;
             }
             else
@@ -136,13 +177,25 @@ namespace PinscapeConfigTool
         {
         }
 
+        // QueryConfigVar results for variable 5, plunger sensor settings
+        byte[] cfgVar5 = null;
+
         // plunger type - plunger type code as defined in the USB protocol
         byte plungerType = PlungerTypeNone;
+
+        // 'param1' from the sensor (config variable 5, byte[1])
+        //   TSL14xx  = scan mode
+        //   TCNL4010 = IRED current setting
+        byte param1 = 0;
+        byte origParam1 = 0;
+
+        // param1 meaning, human-readable, for message boxes
+        string param1Name = null;
 
         // plunger types currently supported
         const byte PlungerTypeNone = 0;             // no plunger installed
         const byte PlungerTypeTSL1410R = 1;         // TSL1410R, edge detection
-        const byte PlungerTypeTSL1412R = 3;         // TSL1412R, edge detection
+        const byte PlungerTypeTSL1412S = 3;         // TSL1412R, edge detection
         const byte PlungerTypePot = 5;              // potentiometer or other analog voltage sensor
         const byte PlungerTypeAEDR8300 = 6;         // AEDR8300 75lpi optical quadrature
         const byte PlungerTypeTSL1410CL = 8;        // TSL1410CL, bar code positioning
@@ -831,6 +884,8 @@ namespace PinscapeConfigTool
                 msg.Add("reversed orientation");
             if (cfgBarCodeOffset != origBarCodeOffset)
                 msg.Add("bar code offset");
+            if (param1 != origParam1 && param1Name != null)
+                msg.Add(param1Name);
 
             // ask if they'd like to save jitter filter changes
             if (msg.Count != 0)
@@ -845,6 +900,8 @@ namespace PinscapeConfigTool
                         SendFilters(jitterWindow, reverseOrientation);
                     if (cfgBarCodeOffset != origBarCodeOffset)
                         SendBarCodeOffset(cfgBarCodeOffset);
+                    if (param1 != origParam1)
+                        SendScanMode(param1);
 
                     // Save the update to flash.  Note that there's no need to reboot 
                     // the device, as the plunger variables we update take effect immediately 
@@ -859,6 +916,8 @@ namespace PinscapeConfigTool
                         SendFilters(origJitterWindow, origReverseOrientation);
                     if (cfgBarCodeOffset != origBarCodeOffset)
                         SendBarCodeOffset(origBarCodeOffset);
+                    if (param1 != origParam1)
+                        SendScanMode(origParam1);
                 }
             }
         }
@@ -869,12 +928,24 @@ namespace PinscapeConfigTool
             // update the config var 19 buffer - use the old buffer so that we
             // retain the original values of any other data in the buffer that
             // we don't currently parse (in case of newer firmware)
-            cfgVar19[0] = (byte)(jitterWindow & 0xff);
-            cfgVar19[1] = (byte)((jitterWindow >> 8) & 0xff);
-            cfgVar19[2] = (byte)((cfgVar19[2] & ~0x01) | (reverse ? 0x01 : 0x00));
+            if (cfgVar19 != null)
+            {
+                cfgVar19[0] = (byte)(jitterWindow & 0xff);
+                cfgVar19[1] = (byte)((jitterWindow >> 8) & 0xff);
+                cfgVar19[2] = (byte)((cfgVar19[2] & ~0x01) | (reverse ? 0x01 : 0x00));
+                dev.SetConfigVar(19, cfgVar19);
+            }
+        }
 
-            // update it on the device
-            dev.SetConfigVar(19, cfgVar19);
+        // update the scan mode setting on the device
+        void SendScanMode(int scanMode)
+        {
+            // update var 5, using the original buffer from the device
+            if (cfgVar5 != null)
+            {
+                cfgVar5[1] = (byte)(scanMode & 0xff);
+                dev.SetConfigVar(5, cfgVar5);
+            }
         }
 
         // update the bar code offset setting on the device
@@ -883,11 +954,12 @@ namespace PinscapeConfigTool
             // update the config var 20 buffer - use the old buffer so that we
             // retain the original values of any other data in the buffer that
             // we don't currently parse (in case of newer firmware)
-            cfgVar20[0] = (byte)(val & 0xff);
-            cfgVar20[1] = (byte)((val >> 8) & 0xff);
-
-            // update it on the device
-            dev.SetConfigVar(20, cfgVar20);
+            if (cfgVar20 != null)
+            {
+                cfgVar20[0] = (byte)(val & 0xff);
+                cfgVar20[1] = (byte)((val >> 8) & 0xff);
+                dev.SetConfigVar(20, cfgVar20);
+            }
         }
 
         // pixel data snapshot, for writing to a capture file
@@ -1562,7 +1634,14 @@ namespace PinscapeConfigTool
             enhanceContrast = ckEnhance.Checked;
         }
 
-        private void txtJitterWindow_ValueChanged(object sender, EventArgs e)
+		private void cbScanMode_SelectedIndexChanged(object sender, EventArgs e)
+		{
+            int v = cbScanMode.SelectedIndex;
+            if (v >= 0)
+                SendScanMode(v);
+		}
+
+		private void txtJitterWindow_ValueChanged(object sender, EventArgs e)
         {
             // if the window value has changed, send the update to the device
             int v = (int)txtJitterWindow.Value;

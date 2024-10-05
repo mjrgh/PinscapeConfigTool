@@ -313,6 +313,97 @@
       for non-imaging sensors.
    </p>
 
+   <h2>Scan Mode</h2>
+   <p>
+      Starting with the October 2024 firmware, the TLS1410R/1412S sensors
+      provide several edge-scanning algorithms that you can choose from.
+      If you're running the latest firmware and you have a suitable sensor
+      installed, the plunger viewer will show a drop list that lets you
+      select which scan mode to use.
+   </p>
+   <p>
+      The reason this is configurable is that it's possible that the
+      performance of the algorithms will vary with different optical
+      conditions, such as the type of light source and its placement.
+      In other words, which algorithm is "best" might vary by setup.
+      Up until the October 2024 firmware, the firmware only implemented
+      one algorithm, so there was never a need to configure this before.
+      The addition of the plunger speed reporting features in the
+      earlier 2024 firmware revealed that the original algorithm
+      performs poorly when the plunger is moving near its peak
+      speed, so a couple of new algorithms were added to improve
+      high-speed tracking.  In my testing, the new "Steady Slope"
+      method performs best across all speed ranges, so it's now the
+      default selection.  However, since this is a change from the
+      very long-standing and well-tested original algorithm, I
+      wanted to provide an option to switch back to the old
+      algorithm in case the new one doesn't work as well on
+      everyone's system as it does on my test system.  
+   </p>
+   <p>
+      All of the algorithms have the same goal, of scanning the
+      sensor image to find the edge of the shadow cast by the plunger,
+      and thus determine the plunger's position across the length
+      of the sensor.  Here's a brief explanation of each algorithm's
+      details:
+   </p>
+   <ul>
+      <li><b>Steady Slope:</b> This is the new default setting.  It
+      detects the shadow edge position by searching for a region of
+      steadily changing brightness, from bright to dark.  This
+      algorithm is particularly good at adapting to different
+      degrees of blur in the shadow image, both from the blurring
+      in the shadow's penumbra and from motion blur when the plunger
+      is moving rapidly, because it's not sensitive to how rapidly
+      the brightness changes across the "slope" region.  It only
+      cares that there's a steady change from bright to shadow.
+
+      <li><b>Steepest Slope:</b> This is the original algorithm
+      that's been used in the firmware for many years, so it's
+      well proven.  This algorithm scans the image to find the
+      location with the greatest difference in brightness between
+      adjacent pixels.  This algorithm is good at identifying the
+      edge when the plunger is stationary and the actual optical
+      shadow edge is sharp, but it's sensitive to focus blur and
+      motion blur.  Blur spreads out the edge over several pixels
+      (which can turn into many pixels when the plunger is moving
+      fast), which reduces the contrast across adjacent pixels.
+      When the blurred region is very wide, as during fast motion,
+      the brightness gradient can become so gradual that random
+      pixel noise in the image can cause a greater pixel-to-pixel
+      brightness difference than in the blurred region, which
+      can fool the algorithm and make it pick a seemingly random
+      point as the plunger location.  This was never very visible
+      before the plunger speed reporting features were added,
+      because such extreme motion blur only occurs very briefly,
+      for about 5-10 ms at a time, during the fastest plunger
+      motions.  But it became apparent with the new speed
+      reporting features, where the moment-to-moment tracking
+      becomes important even at those small time scales.
+      <p>
+         If you want to restore the same tracking behavior of
+         previous versions of the firmware, select this mode.
+      </p>
+
+      <li><b>Slope Across Gap:</b>  This is a slight modification
+      to the original Steepest Slope algorithm that looks for the
+      greatest change in brightness across a gap, rather than
+      between adjacent pixels.  The gap is intended to approximate
+      the amount of blurring expected in the image, and is determined
+      by extrapolating the speed from the prior two exposures to
+      estimate the amount of blurring in the new image.  This
+      algorithm does a better job of tracking the plunger at
+      high speeds than the original Steepest Slope algorithm did,
+      but it still relies on an estimate of the blurred region
+      width, which reduces its precision under changing speed
+      conditions.  The Steady Slope algorithm is inherently
+      adaptive to the blur conditions in each frame, which I think
+      makes it more accurate across different speeds and optical
+      conditions.
+
+   </ul>
+      
+
    <h2>Jitter Filter</h2>
 
    <p>

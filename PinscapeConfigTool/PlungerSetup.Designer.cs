@@ -39,7 +39,6 @@
 			this.rbLowRes = new System.Windows.Forms.RadioButton();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.btnHelp = new System.Windows.Forms.Button();
-			this.txtInfo3 = new System.Windows.Forms.Label();
 			this.btnCal = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -71,6 +70,11 @@
 			this.cbZoom = new System.Windows.Forms.ComboBox();
 			this.lblZoom = new System.Windows.Forms.Label();
 			this.speedometer = new System.Windows.Forms.Label();
+			this.txtInfo3 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
+			this.pnlScanMode = new System.Windows.Forms.Panel();
+			this.cbScanMode = new System.Windows.Forms.ComboBox();
+			this.label13 = new System.Windows.Forms.Label();
 			this.panel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtJitterWindow)).BeginInit();
 			this.pnlJitter.SuspendLayout();
@@ -78,6 +82,7 @@
 			this.pnlBarCode.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtBarCodeOffset)).BeginInit();
 			this.pnlReverse.SuspendLayout();
+			this.pnlScanMode.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// exposure
@@ -176,13 +181,6 @@
 			this.btnHelp.Text = "Help";
 			this.btnHelp.UseVisualStyleBackColor = false;
 			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-			// 
-			// txtInfo3
-			// 
-			this.txtInfo3.Location = new System.Drawing.Point(16, 228);
-			this.txtInfo3.Name = "txtInfo3";
-			this.txtInfo3.Size = new System.Drawing.Size(523, 23);
-			this.txtInfo3.TabIndex = 12;
 			// 
 			// btnCal
 			// 
@@ -354,7 +352,7 @@
 			this.pnlJitter.Controls.Add(this.lblJitterUnits);
 			this.pnlJitter.Controls.Add(this.txtJitterWindow);
 			this.pnlJitter.Controls.Add(this.label3);
-			this.pnlJitter.Location = new System.Drawing.Point(0, 498);
+			this.pnlJitter.Location = new System.Drawing.Point(0, 549);
 			this.pnlJitter.Name = "pnlJitter";
 			this.pnlJitter.Size = new System.Drawing.Size(556, 44);
 			this.pnlJitter.TabIndex = 28;
@@ -364,7 +362,7 @@
 			this.pnlBottom.Controls.Add(this.btnHelp);
 			this.pnlBottom.Controls.Add(this.btnClose);
 			this.pnlBottom.Controls.Add(this.label7);
-			this.pnlBottom.Location = new System.Drawing.Point(0, 586);
+			this.pnlBottom.Location = new System.Drawing.Point(0, 637);
 			this.pnlBottom.Name = "pnlBottom";
 			this.pnlBottom.Size = new System.Drawing.Size(553, 55);
 			this.pnlBottom.TabIndex = 29;
@@ -375,7 +373,7 @@
 			this.pnlBarCode.Controls.Add(this.label10);
 			this.pnlBarCode.Controls.Add(this.txtBarCodeOffset);
 			this.pnlBarCode.Controls.Add(this.label11);
-			this.pnlBarCode.Location = new System.Drawing.Point(0, 542);
+			this.pnlBarCode.Location = new System.Drawing.Point(0, 593);
 			this.pnlBarCode.Name = "pnlBarCode";
 			this.pnlBarCode.Size = new System.Drawing.Size(556, 44);
 			this.pnlBarCode.TabIndex = 29;
@@ -419,7 +417,7 @@
 			// 
 			this.pnlReverse.Controls.Add(this.ckReverseOrientation);
 			this.pnlReverse.Controls.Add(this.label14);
-			this.pnlReverse.Location = new System.Drawing.Point(0, 454);
+			this.pnlReverse.Location = new System.Drawing.Point(0, 505);
 			this.pnlReverse.Name = "pnlReverse";
 			this.pnlReverse.Size = new System.Drawing.Size(556, 44);
 			this.pnlReverse.TabIndex = 29;
@@ -478,12 +476,64 @@
 			this.speedometer.TabIndex = 32;
 			this.speedometer.Paint += new System.Windows.Forms.PaintEventHandler(this.speedometer_Paint);
 			// 
+			// txtInfo3
+			// 
+			this.txtInfo3.Location = new System.Drawing.Point(16, 228);
+			this.txtInfo3.Name = "txtInfo3";
+			this.txtInfo3.Size = new System.Drawing.Size(523, 23);
+			this.txtInfo3.TabIndex = 12;
+			// 
+			// label12
+			// 
+			this.label12.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label12.Location = new System.Drawing.Point(13, 1);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(526, 2);
+			this.label12.TabIndex = 16;
+			// 
+			// pnlScanMode
+			// 
+			this.pnlScanMode.Controls.Add(this.cbScanMode);
+			this.pnlScanMode.Controls.Add(this.label13);
+			this.pnlScanMode.Controls.Add(this.label12);
+			this.pnlScanMode.Location = new System.Drawing.Point(0, 460);
+			this.pnlScanMode.Name = "pnlScanMode";
+			this.pnlScanMode.Size = new System.Drawing.Size(556, 44);
+			this.pnlScanMode.TabIndex = 30;
+			// 
+			// cbScanMode
+			// 
+			this.cbScanMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbScanMode.FormattingEnabled = true;
+			this.cbScanMode.Items.AddRange(new object[] {
+            "100%",
+            "200%",
+            "400%",
+            "800%",
+            "1600%",
+            "3200%"});
+			this.cbScanMode.Location = new System.Drawing.Point(86, 12);
+			this.cbScanMode.Name = "cbScanMode";
+			this.cbScanMode.Size = new System.Drawing.Size(202, 21);
+			this.cbScanMode.TabIndex = 33;
+			this.cbScanMode.SelectedIndexChanged += new System.EventHandler(this.cbScanMode_SelectedIndexChanged);
+			// 
+			// label13
+			// 
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(16, 15);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(64, 13);
+			this.label13.TabIndex = 25;
+			this.label13.Text = "Scan mode:";
+			// 
 			// PlungerSetup
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.SystemColors.Window;
-			this.ClientSize = new System.Drawing.Size(552, 637);
+			this.ClientSize = new System.Drawing.Size(552, 692);
+			this.Controls.Add(this.pnlScanMode);
 			this.Controls.Add(this.speedometer);
 			this.Controls.Add(this.lblZoom);
 			this.Controls.Add(this.cbZoom);
@@ -531,6 +581,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.txtBarCodeOffset)).EndInit();
 			this.pnlReverse.ResumeLayout(false);
 			this.pnlReverse.PerformLayout();
+			this.pnlScanMode.ResumeLayout(false);
+			this.pnlScanMode.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -546,7 +598,6 @@
         private System.Windows.Forms.RadioButton rbLowRes;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.Label txtInfo3;
         private System.Windows.Forms.Button btnCal;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -578,5 +629,10 @@
         private System.Windows.Forms.ComboBox cbZoom;
         private System.Windows.Forms.Label lblZoom;
 		private System.Windows.Forms.Label speedometer;
+		private System.Windows.Forms.Label txtInfo3;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Panel pnlScanMode;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.ComboBox cbScanMode;
 	}
 }
